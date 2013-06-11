@@ -1,7 +1,443 @@
 /**
- * All your custom CSS should go into this file
+ * My custom CSS rules go into this file
  */
 
-body {
-   padding-top: 15px;
+
+/* Main title for my pages based on jumbotron from bootstrap docss.css 
+---------------------------------------------------------------------*/
+
+.jumbotron {
+  position: relative;
+  padding: 30px 0;
+  text-align: left;
+  text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
+  background: #423B3C;
+}
+
+.jumbotron h1 {
+  font-size: 40px;
+  font-weight: bold;
+  color: #C43C35;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.jumbotron p {
+  font-size: 20px;
+  font-weight: 300;
+  color: #DDDBD8;
+  line-height: 1.25;
+  margin-bottom: 0px;
+}
+
+
+/* Don't use Pattern overlay
+------------------------- */
+.jumbotron .container {
+  position: relative;
+  z-index: 2;
+}
+
+
+.jumbotron:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background:none;
+}
+
+
+
+/* Sticky footer based on from http://ryanfait.com/sticky-footer/ 
+--------------------------------------------------------------*/
+
+* {
+margin: 0;
+}
+
+html, body {
+height: 100%;
+}
+
+.wrapper {
+min-height: 100%;
+height: auto !important;
+height: 100%;
+margin: 0 auto -122px; /*footer height=61 + padding-top=30 + padding-bottom=30 + border=1 SUM=122*/
+}
+
+.footer, .push {
+height: 61px;
+}
+
+@media (max-width: 967px){
+  .wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -102px; /*footer height=61 + padding-top=30 + padding-bottom=30 + border=1 SUM=122 minus 20px caused from responsive css = 102*/
+  }
+}
+
+@media (min-width: 967px){
+  body {
+    padding-top: 0px;
+  }
+
+  .jumbotron {
+    padding-top: 70px;
+  }
+}
+
+@media (min-width: 468px) {
+
+  .jumbotron {
+    padding-left: 20px;
+  }
+}
+
+
+.footer {
+  color: #FFF; 
+  text-align: center;
+  padding: 30px 0;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  background-color: #423B3C;
+}
+/* end of sticky footer*/
+
+
+
+/* Table row selector (color adjustment) for datatables
+----------------------------------------------------*/
+/*for selecting rows with dataTables.bootstrap.css
+Normally (without bootstrap intergration I would add the display class to the table
+and use the demo_table.css file that includes the css rules below*/
+
+.table tr.odd.row_selected td {
+    background-color: #51A351;
+}
+
+.table tr.even.row_selected td {
+    background-color: #51A351;
+}
+
+
+/*for styling thumbnails as large square buttons to show sections in welcome view
+-----------------------------------------------------------------------------*/
+
+.thumbsectionbtns {
+  /*http://www.icebluemonkey.com/blog/css/a-set-of-large-square-css3-buttons-using-box-shadow-and-border-radius/*/
+  background: black;
+  background: -webkit-gradient(linear, left top, left bottom, from(#C43C35), to(black));
+  background: -moz-linear-gradient(top, #C43C35, black);
+  /*-webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;*/
+  -webkit-box-shadow: rgba(0,0,0,1) -2px 2px 4px;
+  -moz-box-shadow: rgba(0,0,0,1) -2px 2px 4px;
+  box-shadow: rgba(0,0,0,1) -2px 2px 4px;
+  /*color:#A4A09F;*/
+  color:white;
+  text-align:center;
+  height:100%;
+  width:100%;
+  min-height:150px;
+  margin:0px;
+  /*padding:5px;*/
+  line-height:60px;
+  word-wrap: break-word;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.thumbsectionbtns p {
+  line-height:20px;
+}
+
+.thumbsectionbtns:hover{
+  background: #C43C35;
+  /*color:black;
+  text-shadow: 1px 1px #A4A09F;*/
+}
+
+/*.thumbsectionbtns:active {
+ background: #9A2F2A;
+}*/
+
+
+/*Use everywhere ubuntu font!
+----------------------------*/
+* {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+/* change background colors 
+---------------------------*/
+body{
+  background-color: #EEEEEE;
+}
+
+.form-actions{
+    background-color: #EEEEEE;
+}
+
+
+/* breadcrumb styling 
+---------------------------*/
+
+.breadcrumb {
+  background-color: #E5E5E5;
+  /*border-bottom: 1px solid #D6D6D6;
+  border-top: 1px solid #D6D6D6;*/
+  border:1px solid #D6D6D6;
+  box-shadow: 0 0 1px #FFFFFF;
+
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    color:#8C7D7F;
+    font-size: 12px;
+}
+
+.breadcrumb a:hover {
+    color:#423B3C;
+}
+
+.breadcrumb li span.divider {
+    font-size: 12px; 
+    font-weight: bold;
+}
+
+.breadcrumb li.active {
+    font-size: 12px; 
+    font-weight: bold;
+}
+
+/* nav tabs & pils styling 
+---------------------------*/
+
+.nav a{
+    color:#5B5152;
+}
+
+
+.nav-pills > .active > a, .nav-pills > .active > a:hover, .nav-pills > .active > a:focus {
+    background-color: #C43C35;
+    color: #FFFFFF;
+}
+
+/* content boxes from  
+Unicorn - Admin Template http://wrapbootstrap.com/preview/WB0F35928
+---------------------------*/
+.contentbox {
+    background: none repeat scroll 0 0 #F9F9F9;
+    border-left: 1px solid #CDCDCD;
+    border-right: 1px solid #CDCDCD;
+    border-top: 1px solid #CDCDCD;
+    clear: both;
+    margin-bottom: 16px;
+    margin-top: 16px;
+    position: relative;
+}
+
+.contentbox .title {
+    background-color: #EFEFEF;
+    background-image: -moz-linear-gradient(center top , #FDFDFD 0%, #EAEAEA 100%);
+    border-bottom: 1px solid #CDCDCD;
+    height: 36px;
+}
+
+.contentbox .title span.icon {
+    border-right: 1px solid #CDCDCD;
+    float: left;
+    opacity: 0.7;
+    padding: 9px 10px 6px 11px;
+}
+
+.contentbox .title h5 {
+    color: #666666;
+    float: left;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 12px;
+    margin: 0;
+    padding: 12px;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+
+.contentbox .content {
+    border-bottom: 1px solid #CDCDCD;
+    padding: 12px 15px;
+}
+
+
+.contentbox .buttons {
+    float: right;
+    margin: 8px 10px 0 0;
+}
+
+
+/*CSS rules for multiple records in one page as in payments*/
+@media (max-width: 768px) {
+    .multiplefieldset-header{display: none;}
+}
+
+@media (min-width: 768px) {
+    .multiplefieldset-header {
+        border-left: 1px solid #CDCDCD;
+        border-right: 1px solid #CDCDCD;
+        border-top: 1px solid #CDCDCD;
+        border-bottom: 1px solid #CDCDCD;
+        padding: 10px 20px 10px 15px;
+        color: #666666;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .multiplefieldset-header .selector {
+      float:left;
+      width:15px;
+      padding-top:25px;
+      padding-right:19px;
+    }
+}
+
+
+
+.multiplefieldset {
+    background: none repeat scroll 0 0 #F9F9F9;
+    border-left: 1px solid #CDCDCD;
+    border-right: 1px solid #CDCDCD;
+    border-top: 1px solid #CDCDCD;
+    clear: both;
+    margin-bottom: 6px;
+    margin-top: -7px;
+    position: relative;
+    border-bottom: 1px solid #CDCDCD;
+    padding: 16px 10px 10px 10px;
+}
+
+.multiplefieldset:nth-child(even) {
+   background-color:#EEEEEE;
+}
+
+.multiplefieldset .selector {
+  float:left;
+  border-right: 1px solid #CDCDCD;
+  width:15px;
+  margin-left:0px;
+  margin-top: -16px;
+  padding-top:16px;
+  padding-right:9px;
+  padding-bottom: 37px;
+  margin-bottom: -10px;
+}
+
+
+.paylegend {
+    color: #666666;
+    float: left;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 12px;
+    text-shadow: 0 1px 0 #FFFFFF;
+    border:0px;
+}
+
+.paylegend span{
+    float: left;
+    padding-right: 4px;
+}
+.paylegend .legend-text{
+    cursor:pointer;
+    float: left;
+}
+
+.paylegend .legend-selector{
+    float: right;
+    padding-right: 4px;
+    margin-top: -3px;
+}
+
+
+
+/* Collaplsible fieldsets CSS based on
+https://github.com/malteo/bootstrap-collapsible-fieldset*/
+@media (max-width: 768px) {
+    fieldset.collapsible {
+        border: 1px solid #D5D8D8;
+    }
+
+    fieldset.collapsible > div {
+        display: none;
+    }
+
+    .multiplefieldset .selector{
+      display: none;
+      margin:0px;
+      padding:0px;
+    }
+
+}
+
+@media (min-width: 768px) {
+    fieldset.collapsible > legend {
+      display: none;
+      margin:0px;
+      padding:0px;
+    }
+
+    fieldset.collapsible > div {
+    display: block!important;
+    }
+
+    .multiplefieldset .selector{
+      display: block!important;
+    }
+
+}
+
+
+/*Payments Με τα επιλεγμένα...*/
+
+
+@media (max-width: 768px) {
+    .payments-selected {
+      padding:5px 0px 50px 0px;
+      margin-bottom: -20px;
+    }
+
+    .payments-selected span{
+      display: box;
+      float:right;
+      margin: 3px 0px 0px 0px;
+      padding: 0px 15px 10px 15px;
+    }
+
+    .payments-selected p{
+      float:right;
+    }
+}
+
+@media (min-width: 768px) {
+    .payments-selected {
+      padding:5px 0px 50px 0px;
+      margin-bottom: -20px;
+    }
+
+    .payments-selected span{
+      display: box;
+      float:left;
+      margin: 3px 0px 0px 0px;
+      padding: 0px 15px 10px 15px;
+    }
+
+    .payments-selected p{
+      float:left;
+    }
 }
