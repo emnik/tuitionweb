@@ -48,10 +48,11 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '10.185.9.102';
-$db['default']['username'] = 'tuition_admin';
-$db['default']['password'] = 'usr#6379';
-$db['default']['database'] = 'tuition_management';
+$db['default']['hostname'] = '127.0.0.1';
+$db['default']['username'] = 'emnik_tuition';
+$db['default']['password'] = 'chalkidiki';
+$db['default']['database'] = 'emnik_tuition';
+$db['default']['port'] = '3307';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
