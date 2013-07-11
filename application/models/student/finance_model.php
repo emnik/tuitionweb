@@ -30,27 +30,6 @@ class Finance_model extends CI_Model {
    }
 
 
-   function get_changes($id) {
-      $query = $this-> db
-           -> select('change.*')
-           -> from('change')
-           -> join('vw_schoolyear_reg_ids', 'change.reg_id=vw_schoolyear_reg_ids.id' )
-           -> where('change.reg_id',$id)
-           -> order_by('change.change_dt')
-           -> get();
-
-      if ($query->num_rows() > 0) {
-        foreach ($query->result_array() as $row) {
-          $changes[] = $row;
-        }
-        return $changes;
-      }
-      else
-      {
-        return false;
-      }
-   }
-
 
    function update_payments($sortedformdata, $id){
       foreach ($sortedformdata as $key => $value) {
@@ -126,7 +105,56 @@ class Finance_model extends CI_Model {
    }
 
 //----------------------------CHANGES-----------------------
-      function get_firstchange_data($id) {
+
+   function get_changes($id) {
+      $query = $this-> db
+           -> select('change.*')
+           -> from('change')
+           -> join('vw_schoolyear_reg_ids', 'change.reg_id=vw_schoolyear_reg_ids.id' )
+           -> where('change.reg_id',$id)
+           -> order_by('change.change_dt')
+           -> get();
+
+      if ($query->num_rows() > 0) {
+        foreach ($query->result_array() as $row) {
+          $changes[] = $row;
+        }
+        return $changes;
+      }
+      else
+      {
+        return false;
+      }
+   }
+
+
+   function update_changes($sortedformdata, $id){
+      foreach ($sortedformdata as $key => $value) {
+         if ($key > 0) // positive values represent the old records and negative the new ones
+         {
+            $this->db->where('change.id',$key)
+                     ->update('change', $value); 
+         }
+         else
+         {
+            $value['reg_id'] = $id;
+
+            //I should remove the std_book_no from the change table...
+            $query = $this-> db-> select('std_book_no')
+                      -> from('registration')
+                      -> where('registration.id', $id)
+                      -> get();
+            $value['std_book_no'] = $query->row()->std_book_no;
+
+            $this->db->insert('change', $value);
+         };
+      };
+   }
+
+
+
+
+   function get_firstchange_data($id) {
          $query = $this-> db
                 -> select(array('registration.month_price'))
                 -> from('registration')

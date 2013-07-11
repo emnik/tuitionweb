@@ -269,10 +269,13 @@ public function finance($id, $innersubsection=null, $student) {
 				foreach ($formdata as $key => $value) {
 					switch ($field) {
 						case 'apy_dt':
+						case 'change_dt': // for changes innersubsection
 								$value = implode('-', array_reverse(explode('-', $value)));
 							break;
 
 						case 'amount':
+						case 'prev_month_price': // for changes innersubsection
+						case 'new_month_price': // for changes innersubsection
 								$value = str_replace("€", "", $value);
 							break;
 
@@ -296,20 +299,32 @@ public function finance($id, $innersubsection=null, $student) {
 						$sortedformdata[$key][$field]=$value;	
 					};
 					
-					//if it is not checked it is not set in the $_POST array
-					if (!isset($sortedformdata[$key]['is_credit'])) 
-					{
-						$sortedformdata[$key]['is_credit']=0;
+					if (is_null($innersubsection)){
+						//if it is not checked it is not set in the $_POST array
+						if (!isset($sortedformdata[$key]['is_credit'])) 
+						{
+							$sortedformdata[$key]['is_credit']=0;
+						};	
 					};
+					
 				};	
 			};
 		};
 		// $this->load->library('firephp');
 		// $this->firephp->error($sortedformdata);
 		// $this->firephp->error($selectors);
-		//send the form data to the model to update the payment table
+
 		$this->load->model('student/finance_model');
-		$this->finance_model->update_payments($sortedformdata, $id);
+		if (is_null($innersubsection)){
+			//send the form data to the model to update the payment table
+			$this->finance_model->update_payments($sortedformdata, $id);	
+		}
+		else
+		{
+			//send the form data to the model to update the changes table
+			$this->finance_model->update_changes($sortedformdata, $id);	
+		};
+		
 	};
 
 	$data['student']=$student;
