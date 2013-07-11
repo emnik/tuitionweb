@@ -250,6 +250,7 @@ public function attendance($id, $innersubsection=null, $student) {
 	}
 
 
+//--------------------------PAYMENTS----------------------------
 
 
 public function finance($id, $innersubsection=null, $student) {
@@ -388,6 +389,9 @@ public function finance($id, $innersubsection=null, $student) {
 	}
 
 
+//--------------------------END OF PAYMENTS-------------------------------
+
+
 	public function getlessonplandata()
 	{
         header('Content-Type: application/x-json; charset=utf-8');
@@ -435,6 +439,8 @@ public function finance($id, $innersubsection=null, $student) {
         };
 	}
 
+
+//---------------------ABSENCES IN ATTENDANCE GENERAL--------------------
 
 	public function getabsencesdata($id){
 		header('Content-Type: application/x-json; charset=utf-8');
@@ -596,5 +602,38 @@ public function finance($id, $innersubsection=null, $student) {
 		//$this->firephp->error($updatedata);
 		//$this->firephp->error($insertdata);
 	}
+
+//---------------------END OF ABSENCES IN ATTENDANCE GENERAL-------------------
+
+
+//-----------------------------PAYMENT CHANGES---------------------------------
+	public function getfirstchangedata()
+	{
+
+		$this->load->model('student/finance_model','', TRUE);    
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this
+						->finance_model
+						->get_firstchange_data($this->input->post('stdid'))
+						)
+			);
+	
+	}
+
+
+	public function changes_batch_actions($action){
+		header('Content-Type: application/x-json; charset=utf-8');
+		$this->load->model('student/finance_model','', TRUE);
+ 		if ($action=='delete'){
+	 		foreach ($this->input->post('select') as $changeid => $value) {		
+				$this->finance_model->del_change($changeid);
+			};	
+ 		};
+ 		//MAYBE I'LL HAVE A TRY STATEMENT INSTEAD OF RETURNING SUCCESS...
+ 		$result=array('success'=>'true');
+		echo json_encode($result);
+	}
+
+//----------------------------END OF PAYMENT CHANGES--------------------------
 
 }

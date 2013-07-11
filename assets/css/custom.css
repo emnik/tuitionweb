@@ -383,6 +383,21 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
       padding:0px;
     }
 
+    /* Απόκρυψη των placeholders ΜΟΝΟ όταν γίνεται focus στα αντίστοιχα πεδία*/
+
+    /* WebKit browsers */
+    input:focus::-webkit-input-placeholder { color:transparent; }
+
+    /* Mozilla Firefox 4 to 18 */
+    input:focus:-moz-placeholder { color:transparent; }
+
+    /* Mozilla Firefox 19+ */
+    input:focus::-moz-placeholder { color:transparent; }
+
+    /* Internet Explorer 10+ */
+    input:focus:-ms-input-placeholder { color:transparent; }
+
+
 }
 
 @media (min-width: 768px) {
@@ -399,6 +414,19 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
     .multiplefieldset .selector{
       display: block!important;
     }
+
+    /* Απόκρυψη των placeholders ΓΕΝΙΚΑ αφού σε αυτή τη διάσταση υπαρχουν labels*/
+    /* WebKit browsers */
+    input::-webkit-input-placeholder { color:transparent; }
+
+    /* Mozilla Firefox 4 to 18 */
+    input:-moz-placeholder { color:transparent; }
+
+    /* Mozilla Firefox 19+ */
+    input::-moz-placeholder { color:transparent; }
+
+    /* Internet Explorer 10+ */
+    input:-ms-input-placeholder { color:transparent; }
 
 }
 

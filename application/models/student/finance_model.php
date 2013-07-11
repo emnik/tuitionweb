@@ -125,4 +125,30 @@ class Finance_model extends CI_Model {
              ->update('payment', $data);
    }
 
+//----------------------------CHANGES-----------------------
+      function get_firstchange_data($id) {
+         $query = $this-> db
+                -> select(array('registration.month_price'))
+                -> from('registration')
+                -> where('registration.id',$id)
+                ->limit(1)
+                -> get();
+
+     if ($query->num_rows() > 0) 
+      {
+         return $query->row_array();  
+      }
+      else 
+      {
+         return false;
+      };
+   }
+
+
+
+   function del_change($change_id)
+   {
+    $this->db->delete('change', array('id'=>$change_id));
+   }
+
 }

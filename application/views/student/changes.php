@@ -10,18 +10,18 @@ function my_curr_date() {
 };
 
 
-var monthnames={1:'Ιανουαρίου',
-               2:'Φεβρουαρίου',
-               3:'Μαρτίου',
-               4:'Απριλίου',
-               5:'Μαΐου',
-               6:'Ιουνίου',
-               7:'Ιουλίου',
-               8:'Αυγούστου',
-               9:'Σεπτεμβρίου',
-               10:'Οκτωβρίου',
-               11:'Νοεμβρίου',
-               12:'Δεκεμβρίου'};
+// var monthnames={1:'Ιανουαρίου',
+//                2:'Φεβρουαρίου',
+//                3:'Μαρτίου',
+//                4:'Απριλίου',
+//                5:'Μαΐου',
+//                6:'Ιουνίου',
+//                7:'Ιουλίου',
+//                8:'Αυγούστου',
+//                9:'Σεπτεμβρίου',
+//                10:'Οκτωβρίου',
+//                11:'Νοεμβρίου',
+//                12:'Δεκεμβρίου'};
 
 var firstchange = false; 
 
@@ -39,9 +39,14 @@ $(document).ready(function() {
       firstchange = true;
       undobtn.disabled=false;         
       newchange = newchange + 1;
-      set_latest_apyno(newchange);
-      set_pay_data(newchange);
-      $('#apydate1').attr('value', my_curr_date());
+      set_change_data(newchange);
+      $('#changedt1').attr('value', my_curr_date());
+
+      var hiddenfieldset =  $('#startchanges form > fieldset');
+      hiddenfieldset.find('legend').empty();
+      hiddenfieldset.find('legend').append('<span><i class="icon-certificate"></i></span>');
+      hiddenfieldset.find('legend').append('<div class="legend-text"> Μεταβολή ' + my_curr_date() +'</div>');
+
       var $divs = $('#startchanges form > fieldset > legend').siblings();
       $divs.show();
   });
@@ -57,19 +62,6 @@ $(document).ready(function() {
           newfieldset.insertAfter(lastfieldset);
           var fields = newfieldset.find('input[type="text"]');
           
-          //-------------set new apyno---------------
-          // fields.eq(0).attr("name", "apy_no[" + newindex +"]");        
-          // fields.eq(0).attr('id', "apyno"+newchange);
-
-          // if (firstchange==false && newchange==1){
-          //   set_latest_apyno(newchange);
-          // }
-          // else{
-          //   var newapyno = parseInt(fields.eq(0).val(), 10)+1;
-          //   fields.eq(0).prop('value', newapyno);
-          //   fields.eq(0).attr('value', newapyno);  
-          // };
-
 
           //-------------set new date---------------
           //I use attr to set the new value because the input is "dirty". If I use val() then 
@@ -79,19 +71,19 @@ $(document).ready(function() {
             fields.eq(0).attr('value', my_curr_date());
           };      
           
-          //----------set new month price----------
-          fields.eq(2).attr("name", "new_month_price[" + newindex +"]");  
 
+          //----------set prev month price----------
+          var prevnew;
+          prevnew = fields.eq(2).val();
+          fields.eq(1).prop('value', prevnew);  
+          fields.eq(1).attr('value', prevnew); 
+          fields.eq(1).attr("name", "prev_month_price[" + newindex +"]");
 
-          //----------set new month num-------------
-          // var prevmonth=parseInt(fields.eq(3).val(),10);
-          // var newmonth;
-          // if(prevmonth==12){
-          //   newmonth=1;  
-          // } 
-          // else {
-          //   newmonth=parseInt(fields.eq(3).val(),10)+1;  
-          // };
+          //----------set new month price----------          
+          fields.eq(2).attr("name", "new_month_price[" + newindex +"]");
+          fields.eq(2).prop('value', '');  
+          fields.eq(2).attr('value', ''); 
+
           
           newfieldset.find('legend').empty();
           newfieldset.find('legend').append('<span><i class="icon-certificate"></i></span>');
@@ -100,27 +92,21 @@ $(document).ready(function() {
               newfieldset.find('legend').append('<div class="legend-selector"> <input class="pull-right" type="checkbox" name="select['+ newindex +'] value=\'0\'"></div>');
           };
           
-          // fields.eq(3).prop('value', newmonth);  
-          // fields.eq(3).attr('value', newmonth);  
-          
-          // fields.eq(3).attr("name", "month_range[" + newindex +"]");
 
           //-----------set new reason textarea-------------
           var txtareafields = newfieldset.find('input[type="textarea"]');
           txtareafields.eq(0).attr("name", "reason[" + newindex +"]");  
-
+          txtareafields.eq(0).attr("value",'');
+          txtareafields.eq(0).prop("value",'');
+          
           //-----------set new notes textarea-------------
           var txtareafields = newfieldset.find('input[type="textarea"]');
           txtareafields.eq(1).attr("name", "notes[" + newindex +"]");  
-
-          //----------set new is_credit checkbox----------
-          // var chkboxfields = newfieldset.find('input[type="checkbox"]');
-      
-          // chkboxfields.eq(2).attr("name", "is_credit[" + newindex +"]");  
-          // chkboxfields.eq(2).removeAttr("checked");
-          // chkboxfields.eq(2).val(0);  
+          txtareafields.eq(1).attr("value",'');
+          txtareafields.eq(1).prop("value",'');
 
           //if there are no previous payments the select boxes have no meaning!
+          var chkboxfields = newfieldset.find('input[type="checkbox"]');
           if (firstchange==false){
               //----------set new select checkbox----------
               //normal view
@@ -142,7 +128,6 @@ $(document).ready(function() {
           //----------the new payments should always start visible!------
           var $divs = newfieldset.find('legend').siblings();
           $divs.show();
-          //newfieldset.find('legend > span').html('<i class="icon-certificate"></i>');
   });
 
 
@@ -224,7 +209,7 @@ $(document).ready(function() {
   });
 
 
-//delete or cancel multiple payments using the select checkboxes and the combobox below (the action fires through ajax)
+//delete multiple changes using the select checkboxes and the combobox below (the action fires through ajax)
   $('#select_action').change(function(){
       var act=$(this).val();
       var fieldsets = $('form').find('fieldset');
@@ -236,12 +221,8 @@ $(document).ready(function() {
         var sData = selected_chkboxes.serialize();
         switch(act){
           case 'delete':
-            var msg="Πρόκειται να διαγράψετε τις επιλεγμένες πληρωμές. Η ενέργεια αυτή δεν αναιρείται. Παρακαλώ επιβεβαιώστε.";
-            var post_url = "<?php echo base_url();?>student/payment_batch_actions/delete";
-            break;
-          case 'cancel':
-            var msg="Πρόκειται να ακυρώσετε τις επιλεγμένες πληρωμές. Η ενέργεια αυτή δεν αναιρείται. Παρακαλώ επιβεβαιώστε.";
-            var post_url = "<?php echo base_url();?>student/payment_batch_actions/cancel";
+            var msg="Πρόκειται να διαγράψετε τις επιλεγμένες μεταβολές. Η ενέργεια αυτή δεν αναιρείται. Παρακαλώ επιβεβαιώστε.";
+            var post_url = "<?php echo base_url();?>student/changes_batch_actions/delete";
             break;
         };
         var ans=confirm(msg);
@@ -266,10 +247,84 @@ $(document).ready(function() {
       } //end if act
   })
 
+}); //end of $(document).ready()
+
+//ajax to get current price
+    function set_change_data(id){
+        //post_url is the controller function where I want to post the data
+        var post_url = "<?php echo base_url()?>student/getfirstchangedata/";
+        var apyno;
+        var postdata = {'stdid':<?php echo $student['id'];?>}
+        $.ajax({
+          type: "POST",
+          url: post_url,
+          data : postdata,
+          dataType:'json',
+          //apydata is just a name that gets the result of the controller's function I posted the data
+          success: function(changedata)
+            {
+              //ajax cannot return a value! We must set the value where we want it!
+                if (changedata.month_price==null) 
+                {
+                  alert ('Παρακαλώ ενημερώστε την καρτέλα του μαθητή με την τρέχουσα τιμή μήνα!');
+                }
+                else 
+                {
+                  //the id will be 1 as I call this ajax function only once when the first ever change is being made
+                  //Maybe I should call it in every change instead of setting the previous new as currend old...
+                  //In that case I should update the id of the prevmonthprice# field
+                  $('#prevmonthprice'+id).attr('value', changedata.month_price+'€');
+                  $('#prevmonthprice'+id).prop('value', changedata.month_price+'€');
+                }
+                              
+            } //end success
+          }); //end AJAX
+    }
+
+//delete a specific change
+  function actionchange(action, id){
+    var sData = 'select%5B'+id+'%5D=1';
+    var fieldsets = $('form').find('fieldset');
+
+      if (action == 'del')
+      {
+        var res = confirm("Πρόκειται να διαγράψετε τη μεταβολή. Σίγουρα Θέλετε να συνεχίσετε;");
+        var post_url = "<?php echo base_url();?>student/changes_batch_actions/delete";
+      };
+
+      if (res==true){
+          $.ajax({
+            type: "post",
+            url: post_url,
+            data : sData,
+            dataType:'json', 
+            success: function(){
+              if (fieldsets.length==1){
+                  window.location.href = window.location.href;  
+                  //window.location.reload(true); it pops up an alert message from the browser
+              }
+            }
+          }); //end of ajax
+          $('input[name="select['+id+']"]').parents('fieldset').remove();  
+      }
+
+  }
 
 
+/* Collaplsible fieldsets jquery based on
+https://github.com/malteo/bootstrap-collapsible-fieldset*/
 
-});
+ $(function () {
+    $('fieldset.collapsible > legend').prepend('<span><i class=" icon-plus-sign"></i></span> ');
+        $('body').on('click', 'fieldset.collapsible .legend-text', function () {
+        var $divs = $(this).parent().siblings();
+        $divs.toggle();
+
+        // $(this).find('span').html(function () {
+        //      return ($divs.is(':visible')) ? '<i class="icon-minus-sign"></i>' : '<i class=" icon-plus-sign"></i>';
+        // });
+    });
+ });
 
 </script>
 
@@ -388,7 +443,7 @@ $(document).ready(function() {
                 <fieldset class="multiplefieldset collapsible"> <!--start of fieldset-->
                     <legend class="paylegend">
                       <div class='legend-text'>
-                        Μεταβολή <?php echo $data['change_dt'];?>
+                        Μεταβολή <?php echo implode('-', array_reverse(explode('-', $data['change_dt'])));?>
                       </div>
                       <div class='legend-selector'>
                         <input class="pull-right" type="checkbox" name="select[<?php echo $data['id'];?>]" value="0">
@@ -402,23 +457,23 @@ $(document).ready(function() {
                   </div>
                   
                   <div class="span2">
-                    <input type="text" class="span12" name="change_dt[<?php echo $data['id'];?>]" value="<?php echo implode('-', array_reverse(explode('-', $data['change_dt'])));?>"></input>
+                    <input type="text" class="span12" placeholder="Ημερομηνία μεταβολής" name="change_dt[<?php echo $data['id'];?>]" value="<?php echo implode('-', array_reverse(explode('-', $data['change_dt'])));?>"></input>
                   </div>
 
                   <div class="span1">
-                    <input type="text" class="span12" name="prev_month_price[<?php echo $data['id'];?>]" value="<?php echo $data['prev_month_price'];?>€"></input>
+                    <input type="text" class="span12" placeholder="Προηγούμενη τιμή διδάκτρων" name="prev_month_price[<?php echo $data['id'];?>]" value="<?php echo $data['prev_month_price'];?>€"></input>
                   </div>
 
                   <div class="span1">
-                    <input type="text" class="span12" name="new_month_price[<?php echo $data['id'];?>]" value="<?php echo $data['new_month_price'];?>€">
+                    <input type="text" class="span12" placeholder="Νέα τιμή διδάκτρων" name="new_month_price[<?php echo $data['id'];?>]" value="<?php echo $data['new_month_price'];?>€">
                   </div>
                
                   <div class="span2">
-                    <input type="textarea" class="span12" name="reason[<?php echo $data['id'];?>]" value="<?php echo $data['reason'];?>">
+                    <input type="textarea" class="span12" placeholder="Αιτία μεταβολής" name="reason[<?php echo $data['id'];?>]" value="<?php echo $data['reason'];?>">
                   </div>
 
                   <div class="span2">
-                    <input type="textarea" rows="1" class="span12" name="notes[<?php echo $data['id'];?>]" value="<?php echo $data['notes'];?>">
+                    <input type="textarea" rows="1" class="span12" placeholder="Σημειώσεις" name="notes[<?php echo $data['id'];?>]" value="<?php echo $data['notes'];?>">
                   </div>
 
                   <div class="span2">
@@ -479,23 +534,23 @@ $(document).ready(function() {
                     <legend class="paylegend"></legend>     
                          <div class="row-fluid"> <!--main form row-->
                             <div class="span2">
-                              <input type="text" id="changedt1" class="span12" name="change_dt[-1]" value="">
+                              <input type="text" id="changedt1" class="span12" placeholder="Ημερομηνία μεταβολής" name="change_dt[-1]" value="">
                             </div>
 
                             <div class="span2">
-                              <input type="text" id="prevmonthprice1" class="span12" name="prev_month_price[-1]" value=""></input>
+                              <input type="text" id="prevmonthprice1" placeholder="Προηγούμενη τιμή διδάκτρων" class="span12" name="prev_month_price[-1]" value=""></input>
                             </div>
 
                             <div class="span2">
-                              <input type="text" id="nextmonthprice1" class="span12" name="new_month_price[-1]" value=""></input>
+                              <input type="text" id="nextmonthprice1" placeholder="Νέα τιμή διδάκτρων" class="span12" name="new_month_price[-1]" value=""></input>
                             </div>
 
                             <div class="span2">
-                              <input type="textarea" id="reason1" class="span12" name="reason[-1]" value="">
+                              <input type="textarea" id="reason1" placeholder="Αιτία μεταβολής" class="span12" name="reason[-1]" value="">
                             </div>
 
                             <div class="span2">
-                              <input type="textarea" id="notes1" class="span12" name="notes[-1]" value="">
+                              <input type="textarea" id="notes1" class="span12" placeholder="Σημειώσεις" name="notes[-1]" value="">
                             </div>
 
                             <div class="span2">
@@ -509,7 +564,7 @@ $(document).ready(function() {
                 </fieldset> <!--end of fieldset-->
 
                 <div id="actions" class="form-actions hidden">
-                  <button type="button" class="btn btn-primary pull-right" name="add_change" id="add_change">Πληρωμή</button>
+                  <button type="button" class="btn btn-primary pull-right" name="add_change" id="add_change">Μεταβολή</button>
                   <button type="button" class="btn" name="undo_change" id="undo_change">Αναίρεση</button>
                   <button type="submit" class="btn btn-danger" id="submit1" name="submit">Αποθήκευση</button>
                 </div>
