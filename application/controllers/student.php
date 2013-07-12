@@ -188,6 +188,11 @@ public function attendance($id, $innersubsection=null, $student) {
 	$this->load->model('student/attendance_model');
 	$program = $this->attendance_model->get_program_data($id);
 	$attendance_general = $this->attendance_model->get_attendance_general_data($id);
+	$progress = $this->attendance_model->get_progress_data($id);
+	
+	if ($progress){
+		$data['progress']=$progress;
+	}
 
 	if ($attendance_general){
 		$data['attendance_general'] = $attendance_general;	
@@ -214,6 +219,10 @@ public function attendance($id, $innersubsection=null, $student) {
 	switch ($innersubsection) {
 		case 'program':
 			$this->load->view('student/program', $data);	
+			break;
+
+		case 'progress':
+			$this->load->view('student/progress', $data);	
 			break;
 
 		case 'manage':

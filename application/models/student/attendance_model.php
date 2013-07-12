@@ -302,5 +302,29 @@ public function get_attendance_general_data($id){
 				
 	}
 
+
+
+	public function get_progress_data($id){
+		$query = $this -> db 
+						-> select('*')
+						-> from('progress')
+						-> where('progress.reg_id', $id)
+						-> get();
+
+		if ($query -> num_rows() > 0)
+		{
+			foreach($query->result_array() as $row) 
+				{
+					$progress[] = $row;
+				}
+			return $progress;
+		}
+		else 
+		{
+			return false;
+		}
+	}
+
+
 }
 

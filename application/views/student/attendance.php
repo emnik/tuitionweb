@@ -431,30 +431,34 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
                 <h5>Πρόοδος</h5>
               </div>
             <div class="content">
+              <?php if(empty($progress)):?>
   								<p class="text-info">
-				      				Για την παρακολούθηση προόδου του μαθητή, απαιτείται να έχει ενημερωθεί το πρόγραμμα σπουδών του.
-				      			</p>
-						      	<div class="row-fluid">
-					      			<div class="span12">	
-					      				<a href="#" class="btn  btn-small pull-right disabled" onclick="return false;" >Βαθμολόγιο</a>
-					      			</div>
-					      		</div>
-				      		</div>
-				      	</div>
-				    </div>
-          </div>
+				      				Δεν υπάρχουν δεδομένα για την πρόοδο του μαθητή!
+             			</p>
+              <?php else:?>
+              ...
+              <?php endif;?>
+			      	<div class="row-fluid">
+		      			<div class="span12">	
+		      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn  btn-small pull-right" >Βαθμολόγιο</a>
+		      			</div>
+		      		</div>
+	      		</div>
+	      	</div>
+		    </div>
+      </div>
 
-		     	</div>
+   	</div>
 
-	      </div>
-	  </div>
+  </div>
+</div>
 
 
-      </div> <!--Τέλος συνοπτικής ενημέρωσης-->
+</div> <!--Τέλος συνοπτικής ενημέρωσης-->
 
-  	</div> <!--end of fluid container-->
+</div> <!--end of fluid container-->
 
-  </div> <!--end of main container-->
+</div> <!--end of main container-->
 
 <div class="push"></div>
 </div> <!-- end of body wrapper-->
