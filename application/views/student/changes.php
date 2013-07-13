@@ -233,6 +233,20 @@ $(document).ready(function() {
       } //end if act
   })
 
+
+    /* Collaplsible fieldsets jquery based on
+    https://github.com/malteo/bootstrap-collapsible-fieldset*/
+
+   $('fieldset.collapsible > legend').prepend('<span><i class=" icon-plus-sign"></i></span> ');
+        $('body').on('click', 'fieldset.collapsible .legend-text', function () {
+          var $divs = $(this).parent().siblings();
+          $divs.toggle();
+          if (!$(this).parent().find('span > i').hasClass('icon-certificate')) {
+            $(this).parent().find('span').html(($divs.is(":visible")) ? '<i class="icon-minus-sign"></i>' : '<i class=" icon-plus-sign"></i>');            
+          };
+    });
+
+
 }); //end of $(document).ready()
 
 //ajax to get current price
@@ -295,22 +309,6 @@ $(document).ready(function() {
       }
 
   }
-
-
-/* Collaplsible fieldsets jquery based on
-https://github.com/malteo/bootstrap-collapsible-fieldset*/
-
- $(function () {
-    $('fieldset.collapsible > legend').prepend('<span><i class=" icon-plus-sign"></i></span> ');
-        $('body').on('click', 'fieldset.collapsible .legend-text', function () {
-        var $divs = $(this).parent().siblings();
-        $divs.toggle();
-
-        // $(this).find('span').html(function () {
-        //      return ($divs.is(':visible')) ? '<i class="icon-minus-sign"></i>' : '<i class=" icon-plus-sign"></i>';
-        // });
-    });
- });
 
 </script>
 

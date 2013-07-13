@@ -49,7 +49,7 @@ $(document).ready(function() {
   
 
 
-  $('#add_payment').click(function() {
+  $('#add_payment').click(function(){
           undobtn.disabled=false; 
           newpay = newpay + 1;
           newindex = - newpay;
@@ -129,7 +129,7 @@ $(document).ready(function() {
               chkboxfields.eq(0).removeAttr("checked");
               chkboxfields.eq(0).val(0); 
               chkboxfields.eq(0).prop('disabled', true);
-          };
+          }
 
 
           //----------disable the buttons-------------
@@ -269,6 +269,17 @@ $(document).ready(function() {
   })
 
 
+    /* Collaplsible fieldsets jquery based on
+    https://github.com/malteo/bootstrap-collapsible-fieldset*/
+
+   $('fieldset.collapsible > legend').prepend('<span><i class=" icon-plus-sign"></i></span> ');
+        $('body').on('click', 'fieldset.collapsible .legend-text', function () {
+          var $divs = $(this).parent().siblings();
+          $divs.toggle();
+          if (!$(this).parent().find('span > i').hasClass('icon-certificate')) {
+            $(this).parent().find('span').html(($divs.is(":visible")) ? '<i class="icon-minus-sign"></i>' : '<i class=" icon-plus-sign"></i>');            
+          };
+    });
 
 }) //end of (document).ready()
 
@@ -378,20 +389,6 @@ $(document).ready(function() {
 
   }
 
-/* Collaplsible fieldsets jquery based on
-https://github.com/malteo/bootstrap-collapsible-fieldset*/
-
- $(function () {
-    $('fieldset.collapsible > legend').prepend('<span><i class=" icon-plus-sign"></i></span> ');
-        $('body').on('click', 'fieldset.collapsible .legend-text', function () {
-        var $divs = $(this).parent().siblings();
-        $divs.toggle();
-
-        // $(this).find('span').html(function () {
-        //      return ($divs.is(':visible')) ? '<i class="icon-minus-sign"></i>' : '<i class=" icon-plus-sign"></i>';
-        // });
-    });
- });
 
 
 </script>
