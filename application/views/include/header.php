@@ -13,6 +13,7 @@
    <link href="<?php echo base_url('assets/css/bootstrap.css') ?>" rel="stylesheet">
    <link href="<?php echo base_url('assets/css/bootstrap-responsive.css') ?>" rel="stylesheet">
    <link href="<?php echo base_url('assets/css/docs.css') ?>" rel="stylesheet">
+   <link href="<?php echo base_url('assets/css/footable/footable-0.1.css') ?>" rel="stylesheet">
    
    <link href="<?php echo base_url('assets/css/custom.css') ?>" rel="stylesheet">
 
@@ -28,6 +29,9 @@
    <script src="<?php echo base_url('assets/js/jquery-1.9.1.min.js') ?>"></script>
 
    <script src="<?php echo base_url('assets/js/bootstrap.min.js') ?>"></script>
+
+   <script src="<?php echo base_url('assets/js/footable/footable.js') ?>"></script>
+
 	<script src="<?php echo base_url('assets/js/custom.js') ?>"></script>
 <!-- 
    <script src="<?php echo base_url('assets/js/holder/holder.js') ?>"></script>

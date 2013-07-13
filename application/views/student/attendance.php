@@ -4,32 +4,18 @@
 <script src="<?php echo base_url('assets/js/dataTables.bootstrap.js') ?>"></script>
 
 
-<style type="text/css">
-
-/*responsive tables from http://dbushell.com/demos/tables/rt_05-01-12.html*/
-  @media (max-width: 480px) {
-
-
-    #dayprogram { display: block; position: relative; width: 100%; }
-    #dayprogram thead { display: block; float: left; }
-    #dayprogram tbody { display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
-    #dayprogram thead tr { display: block; }
-    #dayprogram th { display: block; }
-    #dayprogram tbody tr { display: inline-block; vertical-align: top; }
-    #dayprogram td { display: block; min-height: 1.25em; }
-    
-}
-</style>
-
+<!-- 
 <?php if(!empty($attendance_general)){
 
   $tableData=array('aaData'=>$attendance_general);  
 };?>
 
-
+ -->
 <script type="text/javascript">
 
 $(document).ready(function(){
+    
+  $('#dayprogram').footable();
 
 	var oTable;
 
@@ -278,13 +264,15 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 				      			</p>
 				      		<?php endif;?>
 			      		<?php else:?>
-				      		<table id="dayprogram" class="table table-striped table-condensed " >
+				      		<table id="dayprogram" class="footable table table-striped table-condensed " >
 				      			<thead>
-				      				<th>Ώρα</th>
-				      				<th>Μάθημα</th>
-				      				<th>Διδάσκων</th>
-				      				<th>Τμήμα</th>
-				      				<th>Αίθουσα</th>
+                      <tr>
+  				      				<th data-class="expand">Ώρα</th>
+  				      				<th>Μάθημα</th>
+  				      				<th data-hide="phone">Διδάσκων</th>
+  				      				<th data-hide="phone">Τμήμα</th>
+  				      				<th data-hide="phone,tablet">Αίθουσα</th>
+                      </tr>
 				      			</thead>
 				      			<tbody>
 				      				<?php foreach ($dayprogram as $data):?>
@@ -432,17 +420,21 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
               </div>
             <div class="content">
               <?php if(empty($progress)):?>
-  								<p class="text-info">
-				      				Δεν υπάρχουν δεδομένα για την πρόοδο του μαθητή!
-             			</p>
+                <div class="row-fluid">
+                  <div class="span12">  
+                    <p class="text-info">
+                      Δεν υπάρχουν δεδομένα για την πρόοδο του μαθητή!
+                    </p>
+                    <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn  btn-small pull-right disabled" onclick="return false;" >Βαθμολόγιο</a>
+                  </div>
+                </div>
               <?php else:?>
-              ...
+               <div class="row-fluid">
+                <div class="span12">  
+                  <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn  btn-small pull-right" >Βαθμολόγιο</a>
+                </div>
+              </div>
               <?php endif;?>
-			      	<div class="row-fluid">
-		      			<div class="span12">	
-		      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn  btn-small pull-right" >Βαθμολόγιο</a>
-		      			</div>
-		      		</div>
 	      		</div>
 	      	</div>
 		    </div>

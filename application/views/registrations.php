@@ -1,23 +1,6 @@
 <!--<link href="<?php echo base_url('assets/css/demo_table.css') ?>" rel="stylesheet">-->
 <link href="<?php echo base_url('assets/css/dataTables.bootstrap.css') ?>" rel="stylesheet">
 
-<style type="text/css">
-
-/*responsive tables from http://dbushell.com/demos/tables/rt_05-01-12.html*/
-/*  @media (max-width: 768px) {
-
-
-    #stdbook { display: block; position: relative; width: 100%; }
-    #stdbook thead { display: block; float: left; }
-    #stdbook tbody { display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
-    #stdbook thead tr { display: block; }
-    #stdbook th { display: block; }
-    #stdbook tbody tr { display: inline-block; vertical-align: top; }
-    #stdbook td { display: block; min-height: 1.25em; }
-    
-}*/
-</style>
-
 <script src="<?php echo base_url('assets/js/jquery.dataTables.min.js') ?>"></script>
 <script src="<?php echo base_url('assets/js/dataTables.bootstrap.js') ?>"></script>
 

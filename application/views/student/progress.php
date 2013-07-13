@@ -1,6 +1,7 @@
 <script type="text/javascript">
-	// $(document).ready(function(){
-	// });
+	 $(document).ready(function(){
+	   $('.footable').footable();
+   });
 </script>
 
 </head>
@@ -99,13 +100,29 @@
 
             <div class="content">
             	<!-- Μάλλον θα γίνει με datatables για να γίνεται απόκρυψη στηλων στο responsive view -->
-            	<table class="table table-striped table-condensed" width="100%">
-            		<th>Ημερομηνία</th>
-            		<th>Είδος εξέτασης</th>
-            		<th>Μάθημα</th>
-            		<th>Διδάσκων</th>
-            		<th>Επίδοση</th>
-            		<th>Σχόλια</th>
+            	<table class="footable table table-striped table-condensed" width="100%">
+            		<thead>
+                  <tr>
+                    <th data-class="expand">Ημερομηνία</th>
+                		<th data-hide="phone">Εξέταση</th>
+                		<th>Μάθημα</th>
+                		<th data-hide="phone">Διδάσκων</th>
+                		<th>Επίδοση</th>
+                		<th data-hide="phone,tablet">Σχόλια</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- δεδομένα για testing -->
+                  <tr>
+                    <td>13-07-2013</td>
+                    <td>Διαγώνισμα</td>
+                    <td>Φυσική Κατεύθυνσης</td>                    
+                    <td>Μάνος</td>
+                    <td>80/100</td>
+                    <td>Διαβασμένος αλλά απρόσεκτος</td>
+                  </tr>
+
+                </tbody>
             	</table>
           </div>
         </div>

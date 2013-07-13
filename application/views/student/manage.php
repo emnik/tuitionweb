@@ -3,10 +3,10 @@
 
 <script src="<?php echo base_url('assets/js/jquery.dataTables.min.js') ?>"></script>
 <script src="<?php echo base_url('assets/js/dataTables.bootstrap.js') ?>"></script>
-
+<!-- 
 <?php if(!empty($attendance_general)){
   $tableData=array('aaData'=>$attendance_general);  
-};?>
+};?> -->
 
 <style>
     #selectall a{text-decoration: none;}
@@ -239,6 +239,25 @@ $(document).ready(function(){
         $('#addsubmit').attr("disabled", "disabled");
       }
     });
+
+
+$(window).on("load", resizeWindow);
+//If the User resizes the window, adjust the #container height
+$(window).on("resize", resizeWindow);
+
+function resizeWindow(e)
+{
+  var newWindowWidth = $(window).width();
+
+  if(newWindowWidth < 440)
+  {
+    oTable.fnSetColumnVis( 2, false );
+  }
+  else
+  {
+    oTable.fnSetColumnVis( 2, true ); 
+  }
+}
 
 
 });

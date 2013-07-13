@@ -1,19 +1,3 @@
-<style type="text/css">
-
-/*responsive tables from http://dbushell.com/demos/tables/rt_05-01-12.html*/
-  @media (max-width: 480px) {
-
-
-    .dayprogram { display: block; position: relative; width: 100%; }
-    .dayprogram thead { display: block; float: left; }
-    .dayprogram tbody { display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
-    .dayprogram thead tr { display: block; }
-    .dayprogram th { display: block; }
-    .dayprogram tbody tr { display: inline-block; vertical-align: top; }
-    .dayprogram td { display: block; min-height: 1.25em; }
-    
-}
-</style>
 
 <script type="text/javascript">
 var nodays = new Array(7);
@@ -53,6 +37,7 @@ function toggledays(togglecontrol) {
 
 
    $(document).ready(function() {
+
      $('#help').popover({
         placement:'bottom',
         container:'body',
@@ -75,6 +60,8 @@ function toggledays(togglecontrol) {
           $('#dayli'+nodays[i]).hide();
         };
       };
+
+     $('.footable').footable();
 
    });
 
@@ -222,14 +209,16 @@ function toggledays(togglecontrol) {
                         <h5><?php echo $day[$j];?></h5>
                       </div>
                     <div class="content">
-                    <table class="dayprogram table table-striped table-condensed " >
+                    <table class="footable table table-striped table-condensed " >
   				      			<thead>
-  				      				<th>Ώρα</th>
-  				      				<th>Μάθημα</th>
-  				      				<th>Διδάσκων</th>
-  				      				<th>Τμήμα</th>
-  				      				<th>Αίθουσα</th>
-                        <th></th>
+                        <tr>
+    				      				<th data-class="expand">Ώρα</th>
+    				      				<th>Μάθημα</th>
+    				      				<th data-hide="phone">Διδάσκων</th>
+    				      				<th data-hide="phone">Τμήμα</th>
+    				      				<th data-hide="phone,tablet">Αίθουσα</th>
+                          <th></th>
+                        </tr>
   				      			</thead>
   				      			<tbody>
                         <?php $stop=false;?>
