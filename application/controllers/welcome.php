@@ -33,7 +33,7 @@ public function index() {
 				break;
 			
 			case 'submit2': // Προσωπικό
-				#code...
+				redirect('staff');
 				break;
 
 			case 'submit3': // Τμήματα

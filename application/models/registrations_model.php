@@ -1,12 +1,5 @@
 <?php
 
-/*
- * Welcome_model
- * Just a model to start with codeigniter-bootstrap
- *
- * @author Nikiforakis Manos
- */
-
 class Registrations_model extends CI_Model {
 
    public function __construct()

@@ -97,7 +97,7 @@
               <div class="thumbnail">
                   <button type="submit" name="submit" value="submit2" class="thumbsectionbtns">
                     <h4>Προσωπικό</h4>
-                    <p>Περιγραφή ενοτήτων...</p>
+                    <p>Στοιχεία / Τμήματα / Πρόγραμμα</p>
                   </button>
               </div>
             </li>
