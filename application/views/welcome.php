@@ -84,61 +84,45 @@
       <div class="span8"> <!-- images for sections -->
 
         <div class="row-fluid"> <!--first row-->
-          <ul class="thumbnails">
-            <li class="span4">
-              <div class="thumbnail">
-               <button type="submit" name="submit" value="submit1" class="thumbsectionbtns">
+            <div class="span4" style="text-align:center; margin-bottom:15px; margin-top:15px;">
+                  <p><i class="icon-group icon-4x"></i></p>
                   <h4>Μαθητολόγιο</h4>
-                  <p>Στοιχεία / Επικοινωνία / Φοίτηση / Οικονομικά</p>
-                </button>
-              </div>
-            </li>
-            <li class="span4">
-              <div class="thumbnail">
-                  <button type="submit" name="submit" value="submit2" class="thumbsectionbtns">
-                    <h4>Προσωπικό</h4>
-                    <p>Στοιχεία / Τμήματα / Πρόγραμμα</p>
-                  </button>
-              </div>
-            </li>
-            <li class="span4">
-              <div class="thumbnail">
-                  <button type="submit" name="submit" value="submit3" class="thumbsectionbtns">
-                    <h4>Τμήματα</h4>
-                    <p>Περιγραφή ενοτήτων...</p>
-                  </button>
-              </div>
-            </li>
-          </ul>
+                  <!-- <p>Στοιχεία / Επικοινωνία / Φοίτηση / Οικονομικά</p> -->
+            </div>
+
+            <div class="span4" style="text-align:center; margin-bottom:15px; margin-top:15px;">
+                <p><i class="icon-user icon-4x"></i></p>
+                <h4>Προσωπικό</h4>
+                <!-- <p>Στοιχεία / Τμήματα / Πρόγραμμα</p> -->
+            </div>
+      
+            <div class="span4" style="text-align:center; margin-bottom:15px; margin-top:15px;">
+                <p><i class="icon-sitemap icon-4x"></i></p>
+                <h4>Τμήματα</h4>
+                <!-- <p>Περιγραφή ενοτήτων...</p> -->
+            </div>
+
         </div> <!--end of first row-->
 
-        <div class="row-fluid"> <!--second row-->
-          <ul class="thumbnails">
-            <li class="span4">
-              <div class="thumbnail">
-                  <button type="submit" name="submit" value="submit4" class="thumbsectionbtns">
-                    <h4>Οικονομικά</h4>
-                    <p>Περιγραφή ενοτήτων...</p>
-                  </button>
-              </div>
-            </li>
-            <li class="span4">
-              <div class="thumbnail">
-                  <button type="submit" name="submit" value="submit5" class="thumbsectionbtns">
-                    <h4>Αναφορές</h4>
-                    <p>Περιγραφή ενοτήτων...</p>
-                  </button>
-              </div>
-            </li>
-            <li class="span4">
-              <div class="thumbnail">
-                  <button type="submit" name="submit" value="submit6" class="thumbsectionbtns">
-                    <h4>Διαχείριση</h4>
-                    <p>Περιγραφή ενοτήτων...</p>
-                  </button>
-              </div>
-            </li>
-          </ul>
+        <div class="row-fluid" > <!--second row-->
+            <div class="span4" style="text-align:center; margin-bottom:15px; margin-top:15px;">
+                <p><i class="icon-eur icon-4x"></i></p>
+                <h4>Οικονομικά</h4>
+                <!-- <p>Περιγραφή ενοτήτων...</p> -->
+            </div>
+            
+            <div class="span4" style="text-align:center; margin-bottom:15px; margin-top:15px;">
+                <p><i class="icon-edit icon-4x"></i></p>
+                <h4>Αναφορές</h4>
+                <!-- <p>Περιγραφή ενοτήτων...</p> -->
+            </div>
+
+            <div class="span4" style="text-align:center; margin-bottom:15px; margin-top:15px;">
+                <p><i class="icon-cogs icon-4x"></i></p>
+                <h4>Διαχείριση</h4>
+                <!-- <p>Περιγραφή ενοτήτων...</p> -->
+            </div>
+
         </div> <!--end of second row-->
 
       </div> <!--end of image section-->

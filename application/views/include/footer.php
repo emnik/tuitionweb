@@ -2,12 +2,12 @@
         <div class="container">
 			<div class="row-fluid">
 				<div class="span12"> 
-					<small>Designed and build by <a href="mailto:nikiforakis.m@gmail.com">Nikiforakis Manos</a></small>
+					<small><i class="icon-code"></i> Designed and build by <a href="mailto:nikiforakis.m@gmail.com">Nikiforakis Manos</a> <i class="icon-code"></i></small>
 				</div>
 			</div>
 			<div class="row-fluid">
 				<div class="span12"> 
-					<small>Build with <a href="http://ellislab.com/codeigniter">CodeIgniter</a> and <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>. Icons by <a href="http://glyphicons.com/">GlyphIcons</a></small>
+					<small>Build with <a href="http://ellislab.com/codeigniter">CodeIgniter</a> and <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>. Icons by <a href="http://fortawesome.github.io/Font-Awesome/"><i class="icon-flag"> Font Awesome Icons</i></a></small>
 				</div>
 			</div>
 		</div>
