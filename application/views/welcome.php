@@ -84,19 +84,20 @@
       <div class="span8"> <!-- images for sections -->
 
         <div class="row-fluid"> <!--first row-->
-            <div class="span4" style="text-align:center; margin-bottom:15px; margin-top:15px;">
-                  <p><i class="icon-group icon-4x"></i></p>
+            <div class="span4 welcome">
+                  <!-- <p><i class="icon-group icon-4x"></i></p> -->
+                  <button type="submit" class="btn-link" name="submit1"><i class="icon-group icon-4x"></i></p>
                   <h4>Μαθητολόγιο</h4>
                   <!-- <p>Στοιχεία / Επικοινωνία / Φοίτηση / Οικονομικά</p> -->
             </div>
 
-            <div class="span4" style="text-align:center; margin-bottom:15px; margin-top:15px;">
+            <div class="span4 welcome">
                 <p><i class="icon-user icon-4x"></i></p>
                 <h4>Προσωπικό</h4>
                 <!-- <p>Στοιχεία / Τμήματα / Πρόγραμμα</p> -->
             </div>
       
-            <div class="span4" style="text-align:center; margin-bottom:15px; margin-top:15px;">
+            <div class="span4 welcome">
                 <p><i class="icon-sitemap icon-4x"></i></p>
                 <h4>Τμήματα</h4>
                 <!-- <p>Περιγραφή ενοτήτων...</p> -->
@@ -105,19 +106,19 @@
         </div> <!--end of first row-->
 
         <div class="row-fluid" > <!--second row-->
-            <div class="span4" style="text-align:center; margin-bottom:15px; margin-top:15px;">
+            <div class="span4 welcome">
                 <p><i class="icon-eur icon-4x"></i></p>
                 <h4>Οικονομικά</h4>
                 <!-- <p>Περιγραφή ενοτήτων...</p> -->
             </div>
             
-            <div class="span4" style="text-align:center; margin-bottom:15px; margin-top:15px;">
+            <div class="span4 welcome">
                 <p><i class="icon-edit icon-4x"></i></p>
                 <h4>Αναφορές</h4>
                 <!-- <p>Περιγραφή ενοτήτων...</p> -->
             </div>
 
-            <div class="span4" style="text-align:center; margin-bottom:15px; margin-top:15px;">
+            <div class="span4 welcome">
                 <p><i class="icon-cogs icon-4x"></i></p>
                 <h4>Διαχείριση</h4>
                 <!-- <p>Περιγραφή ενοτήτων...</p> -->

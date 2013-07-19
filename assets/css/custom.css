@@ -483,3 +483,22 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
         text-indent: -9999px;
         width: 40px;
     }
+
+
+    .welcome {
+        text-align:center;
+        margin-bottom:15px;
+        margin-top:15px;
+
+    }
+
+    .welcome .btn-link {
+        text-decoration: none;
+        color: black;
+
+    }
+
+
+   .welcome .btn-link:hover {
+        color: red;
+    }
