@@ -85,43 +85,48 @@
 
         <div class="row-fluid"> <!--first row-->
             <div class="span4 welcome">
-                  <!-- <p><i class="icon-group icon-4x"></i></p> -->
-                  <button type="submit" class="btn-link" name="submit1"><i class="icon-group icon-4x"></i></p>
+                <button type="submit" class="btn-link" name="submit" value="submit1">
+                  <i class="icon-group icon-4x"></i>
                   <h4>Μαθητολόγιο</h4>
-                  <!-- <p>Στοιχεία / Επικοινωνία / Φοίτηση / Οικονομικά</p> -->
+                </button>
             </div>
 
             <div class="span4 welcome">
-                <p><i class="icon-user icon-4x"></i></p>
-                <h4>Προσωπικό</h4>
-                <!-- <p>Στοιχεία / Τμήματα / Πρόγραμμα</p> -->
+                <button type="submit" class="btn-link" name="submit" value="submit2">
+                  <i class="icon-user icon-4x"></i>
+                  <h4>Προσωπικό</h4>
+                </button>
             </div>
       
             <div class="span4 welcome">
-                <p><i class="icon-sitemap icon-4x"></i></p>
+              <button type="submit" class="btn-link" name="submit" value="submit3">
+                <i class="icon-sitemap icon-4x"></i>
                 <h4>Τμήματα</h4>
-                <!-- <p>Περιγραφή ενοτήτων...</p> -->
+              </button>
             </div>
 
         </div> <!--end of first row-->
 
         <div class="row-fluid" > <!--second row-->
             <div class="span4 welcome">
-                <p><i class="icon-eur icon-4x"></i></p>
+              <button type="submit" class="btn-link" name="submit" value="submit4">
+                <i class="icon-eur icon-4x"></i>
                 <h4>Οικονομικά</h4>
-                <!-- <p>Περιγραφή ενοτήτων...</p> -->
+              </button>
             </div>
             
             <div class="span4 welcome">
-                <p><i class="icon-edit icon-4x"></i></p>
+              <button type="submit" class="btn-link" name="submit" value="submit5">
+                <i class="icon-edit icon-4x"></i>
                 <h4>Αναφορές</h4>
-                <!-- <p>Περιγραφή ενοτήτων...</p> -->
+              </button>
             </div>
 
             <div class="span4 welcome">
-                <p><i class="icon-cogs icon-4x"></i></p>
+              <button type="submit" class="btn-link" name="submit" value="submit6">
+                <i class="icon-cogs icon-4x"></i>
                 <h4>Διαχείριση</h4>
-                <!-- <p>Περιγραφή ενοτήτων...</p> -->
+              </button>
             </div>
 
         </div> <!--end of second row-->
