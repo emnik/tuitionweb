@@ -1,10 +1,8 @@
 <script type="text/javascript">
 
 function toggleedit(togglecontrol, id) {
-  //var toggle = document.getElementById("mainform"); //get the fieldset by its id
 
   if ($(togglecontrol).hasClass('active')){
-    //toggle.disabled = true;
     $('#' + id).closest('.mainform').find('input:text').each(function(){
       $(this).attr('disabled', 'disabled');
       });
@@ -18,7 +16,6 @@ function toggleedit(togglecontrol, id) {
     }
   
   else {
-    //toggle.disabled = false;
     $('#' + id).closest('.mainform').find('input:text').removeAttr('disabled');
     $('#submitbtn').removeAttr('disabled');
     $('#cancelbtn').removeAttr('disabled');
@@ -61,7 +58,7 @@ $(document).ready(function(){
           <div class="nav-collapse collapse">
             <ul class="nav">
             <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
-            <li class="active"><a href="<?php echo base_url()?>registrations">Μαθητολόγιο</a></li>
+            <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
               <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
               <li><a href="#sections">Τμήματα</a></li>
               <li><a href="#finance">Οικονομικά</a></li>
@@ -97,7 +94,7 @@ $(document).ready(function(){
       <div style="margin-top:20px; margin-bottom:-15px;">
       <ul class="breadcrumb">
         <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>registrations">Μαθητολόγιο</a> <span class="divider">></span></li>
+        <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> <span class="divider">></span></li>
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> <span class="divider">></span></li>
         <li class="active">Επικοινωνία</li>
       </ul>
@@ -139,8 +136,8 @@ $(document).ready(function(){
             <input disabled  type="text" class="span6" placeholder="" name="std_mobile" value="<?php echo $contact['std_mobile'];?>"></input>
           </div>
         </div>
-        </div>
-      </div> <!--end of mainform-->
+        </div><!--end of mainform-->
+      </div> 
 
         <div class="span6"> <!--Στοιχεία επικοινωνίας γονιών-->
                 <div class="mainform">
@@ -163,8 +160,8 @@ $(document).ready(function(){
               <input disabled  type="text" class="span6" placeholder="" name="work_tel" value="<?php echo $contact['work_tel'];?>"></input>
             </div>
           </div>
-        </div>
-        </div> <!--end of mainform-->
+        </div><!--end of mainform-->
+        </div> 
       </div>
       <div class="form-actions">
         <button disabled id="submitbtn" type="button" class="btn btn-primary">Αποθήκευση</button>

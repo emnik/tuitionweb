@@ -423,7 +423,7 @@ $(document).ready(function() {
           <div class="nav-collapse collapse">
             <ul class="nav">
             <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
-            <li class="active"><a href="<?php echo base_url()?>registrations">Μαθητολόγιο</a></li>
+            <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
               <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
               <li><a href="#sections">Τμήματα</a></li>
               <li><a href="#finance">Οικονομικά</a></li>
@@ -459,7 +459,7 @@ $(document).ready(function() {
       <div style="margin-top:20px; margin-bottom:-15px;">
         <ul class="breadcrumb">
           <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
-          <li><a href="<?php echo base_url()?>registrations">Μαθητολόγιο</a> <span class="divider">></span></li>
+          <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> <span class="divider">></span></li>
           <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> <span class="divider">></span></li>
           <li class="active">Οικονομικά</li>
         </ul>

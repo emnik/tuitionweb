@@ -15,27 +15,27 @@ class Student_model extends CI_Model {
    }
 
 
-   public function get_registration_data($id) {
-   	$query=$this
-   		->db
-   		->select('*')
-   		->from('registration')
-   		->join('vw_schoolyear_reg_ids','registration.id=vw_schoolyear_reg_ids.id','right')
-         ->where('registration.id',$id)
-         ->limit(1)
-   		->get();
+  //  public function get_registration_data($id) {
+  //  	$query=$this
+  //  		->db
+  //  		->select('*')
+  //  		->from('registration')
+  //  		//->join('vw_schoolyear_reg_ids','registration.id=vw_schoolyear_reg_ids.id','right')
+  //        ->where('registration.id',$id)
+  //        ->limit(1)
+  //  		->get();
 
-   	if ($query->num_rows() > 0) 
-		{
+  //  	if ($query->num_rows() > 0) 
+		// {
    		 
-         return $query->row_array(); 
-		}
-		else 
-		{
-			return false;
-		}
+  //        return $query->row_array(); 
+		// }
+		// else 
+		// {
+		// 	return false;
+		// }
 
-   }
+  //  }
 
 
 
@@ -77,6 +77,7 @@ class Student_model extends CI_Model {
 
 
    public function get_student_data($id) {
+      //for common use in all student sections
       $query=$this
          ->db
          ->select(array('registration.surname','registration.name','registration.id'))

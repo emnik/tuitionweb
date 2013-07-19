@@ -14,7 +14,22 @@ public function index(){
 	a url such as: http://domain/tuitionweb/student/index/id
 	It must have the index method specified!!! 
 	*/
-	redirect('registrations');
+
+	$this->load->model('registrations_model');
+	$registration=$this->registrations_model->get_registration_data();
+
+	if ($registration) {
+		
+		$data['students'] = $registration;
+		}
+	else {
+		$data['students'] = false;
+	}
+	
+	$this->load->view('include/header');
+	$this->load->view('registrations', $data);
+	$this->load->view('include/footer');
+
 }
 
 public function newreg(){
@@ -27,7 +42,7 @@ public function newreg(){
 public function delreg($id){
 	$this->load->model('registrations_model');
 	$this->registrations_model->delreg($id);
-	redirect('registrations');
+	redirect('student');
 }
 
 
@@ -37,7 +52,7 @@ public function cancel($form=null, $id=null){
 		$this->load->model('registrations_model');
 		if($this->registrations_model->cancelreg($id))
 		{
-			redirect('registrations');
+			redirect('student');
 		}
 		else
 		{
@@ -65,7 +80,7 @@ public function courses()
 
 public function card($id, $subsection=null, $innersubsection=null) {
 
-	if(is_null($id)) redirect('registrations');
+	if(is_null($id)) redirect('student');
 
 	//get student's main data (name surname id) in an array to use everywhere in student section
 	$this->load->model('student_model');

@@ -29,7 +29,8 @@ public function index() {
 				if ($selected_schstart!=$startsch){
 					$this->welcome_model->set_schoolyear($startsch);	
 				}
-				redirect('registrations');
+//				redirect('registrations');
+				redirect('student');
 				break;
 			
 			case 'submit2': // Προσωπικό

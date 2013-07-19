@@ -30,7 +30,7 @@ $(document).ready(function() {
         if ( anSelected.length !== 0 ) {
             var aRow=anSelected[0];
             var id=oTable.fnGetData( aRow, 0 );
-            window.open ('employee/card/'+id,'_self',false);
+            window.open ('staff/card/'+id,'_self',false);
             //alert(id);
         }
         else
@@ -41,7 +41,7 @@ $(document).ready(function() {
 
     /* Add a click handler for the new-reg btn */
     $('#new-reg').click(function(){
-      window.open ('employee/newreg','_self',false);
+      window.open ('staff/newreg','_self',false);
     });
 
     /* Add a click handler for the del-reg btn */
@@ -53,7 +53,7 @@ $(document).ready(function() {
             {
                 var aRow=anSelected[0];
                 var id=oTable.fnGetData( aRow, 0 );
-                window.open ('employee/delreg/'+id,'_self',false);  
+                window.open ('staff/delreg/'+id,'_self',false);  
             }
          }
          else
@@ -159,7 +159,7 @@ function resizeWindow(e)
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
-              <li><a href="<?php echo base_url()?>registrations">Μαθητολόγιο</a></li>
+              <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
               <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
               <li><a href="#sections">Τμήματα</a></li>
               <li><a href="#finance">Οικονομικά</a></li>
