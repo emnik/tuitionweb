@@ -114,6 +114,7 @@ $(document).ready(function(){
       </ul>
 
       <div class="row-fluid">
+
         <form action="<?php echo base_url()?>student/card/<?php echo $student['id']?>/contact" method="post" accept-charset="utf-8">
  
         <div class="span6"> <!--Στοιχεία επικοινωνίας μαθητή-->

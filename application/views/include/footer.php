@@ -1,4 +1,3 @@
-
     <footer class="footer">
         <div class="container">
 			<div class="row-fluid">
@@ -13,6 +12,8 @@
 			</div>
 		</div>
 	</footer>
+	
+	<a class="scrollup" href="#">Scroll</a>
 
 </body>
 

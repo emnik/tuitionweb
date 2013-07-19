@@ -110,7 +110,7 @@ public function newreg(){
 public function delreg($id){
 	$this->load->model('staff_model');
 	$this->staff_model->delreg($id);
-	redirect('student');
+	redirect('staff');
 }
 
 
