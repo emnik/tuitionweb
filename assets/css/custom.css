@@ -127,48 +127,6 @@ and use the demo_table.css file that includes the css rules below*/
 }
 
 
-/*for styling thumbnails as large square buttons to show sections in welcome view
------------------------------------------------------------------------------*/
-
-.thumbsectionbtns {
-  /*http://www.icebluemonkey.com/blog/css/a-set-of-large-square-css3-buttons-using-box-shadow-and-border-radius/*/
-  background: black;
-  background: -webkit-gradient(linear, left top, left bottom, from(#C43C35), to(black));
-  background: -moz-linear-gradient(top, #C43C35, black);
-  /*-webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;*/
-  -webkit-box-shadow: rgba(0,0,0,1) -2px 2px 4px;
-  -moz-box-shadow: rgba(0,0,0,1) -2px 2px 4px;
-  box-shadow: rgba(0,0,0,1) -2px 2px 4px;
-  /*color:#A4A09F;*/
-  color:white;
-  text-align:center;
-  height:100%;
-  width:100%;
-  min-height:150px;
-  margin:0px;
-  /*padding:5px;*/
-  line-height:60px;
-  word-wrap: break-word;
-  font-family: 'Ubuntu', sans-serif;
-}
-
-.thumbsectionbtns p {
-  line-height:20px;
-}
-
-.thumbsectionbtns:hover{
-  background: #C43C35;
-  /*color:black;
-  text-shadow: 1px 1px #A4A09F;*/
-}
-
-/*.thumbsectionbtns:active {
- background: #9A2F2A;
-}*/
-
-
 /*Use everywhere ubuntu font!
 ----------------------------*/
 * {
@@ -482,4 +440,25 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
         right: 20px;
         text-indent: -9999px;
         width: 40px;
+    }
+
+
+/*Welcome buttons styled as links with font awesome*/
+
+    .welcome {
+        text-align:center;
+        margin-bottom:15px;
+        margin-top:15px;
+
+    }
+
+    .welcome .btn-link {
+        text-decoration: none;
+        color: black;
+
+    }
+
+
+   .welcome .btn-link:hover {
+        color: red;
     }

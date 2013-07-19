@@ -84,61 +84,51 @@
       <div class="span8"> <!-- images for sections -->
 
         <div class="row-fluid"> <!--first row-->
-          <ul class="thumbnails">
-            <li class="span4">
-              <div class="thumbnail">
-               <button type="submit" name="submit" value="submit1" class="thumbsectionbtns">
+            <div class="span4 welcome">
+                <button type="submit" class="btn-link" name="submit" value="submit1">
+                  <i class="icon-group icon-4x"></i>
                   <h4>Μαθητολόγιο</h4>
-                  <p>Στοιχεία / Επικοινωνία / Φοίτηση / Οικονομικά</p>
                 </button>
-              </div>
-            </li>
-            <li class="span4">
-              <div class="thumbnail">
-                  <button type="submit" name="submit" value="submit2" class="thumbsectionbtns">
-                    <h4>Προσωπικό</h4>
-                    <p>Στοιχεία / Τμήματα / Πρόγραμμα</p>
-                  </button>
-              </div>
-            </li>
-            <li class="span4">
-              <div class="thumbnail">
-                  <button type="submit" name="submit" value="submit3" class="thumbsectionbtns">
-                    <h4>Τμήματα</h4>
-                    <p>Περιγραφή ενοτήτων...</p>
-                  </button>
-              </div>
-            </li>
-          </ul>
+            </div>
+
+            <div class="span4 welcome">
+                <button type="submit" class="btn-link" name="submit" value="submit2">
+                  <i class="icon-user icon-4x"></i>
+                  <h4>Προσωπικό</h4>
+                </button>
+            </div>
+      
+            <div class="span4 welcome">
+              <button type="submit" class="btn-link" name="submit" value="submit3">
+                <i class="icon-sitemap icon-4x"></i>
+                <h4>Τμήματα</h4>
+              </button>
+            </div>
+
         </div> <!--end of first row-->
 
-        <div class="row-fluid"> <!--second row-->
-          <ul class="thumbnails">
-            <li class="span4">
-              <div class="thumbnail">
-                  <button type="submit" name="submit" value="submit4" class="thumbsectionbtns">
-                    <h4>Οικονομικά</h4>
-                    <p>Περιγραφή ενοτήτων...</p>
-                  </button>
-              </div>
-            </li>
-            <li class="span4">
-              <div class="thumbnail">
-                  <button type="submit" name="submit" value="submit5" class="thumbsectionbtns">
-                    <h4>Αναφορές</h4>
-                    <p>Περιγραφή ενοτήτων...</p>
-                  </button>
-              </div>
-            </li>
-            <li class="span4">
-              <div class="thumbnail">
-                  <button type="submit" name="submit" value="submit6" class="thumbsectionbtns">
-                    <h4>Διαχείριση</h4>
-                    <p>Περιγραφή ενοτήτων...</p>
-                  </button>
-              </div>
-            </li>
-          </ul>
+        <div class="row-fluid" > <!--second row-->
+            <div class="span4 welcome">
+              <button type="submit" class="btn-link" name="submit" value="submit4">
+                <i class="icon-eur icon-4x"></i>
+                <h4>Οικονομικά</h4>
+              </button>
+            </div>
+            
+            <div class="span4 welcome">
+              <button type="submit" class="btn-link" name="submit" value="submit5">
+                <i class="icon-edit icon-4x"></i>
+                <h4>Αναφορές</h4>
+              </button>
+            </div>
+
+            <div class="span4 welcome">
+              <button type="submit" class="btn-link" name="submit" value="submit6">
+                <i class="icon-cogs icon-4x"></i>
+                <h4>Διαχείριση</h4>
+              </button>
+            </div>
+
         </div> <!--end of second row-->
 
       </div> <!--end of image section-->
