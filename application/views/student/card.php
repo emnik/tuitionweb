@@ -187,29 +187,37 @@ function paste_name(where,who){
           <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a></li>
         </ul>
 
-        <div class="row-fluid">
+        <div class="visible-phone">
+          <div class="row-fluid">
+            <div class="span12">
+              <div class="btn-group pull-left">  
+                <a class="btn btn-small" href="#group1">Μαθητή</a>
+                <a class="btn btn-small" href="#group2">Μαθητολογίου</a>
+                <a class="btn btn-small" href="#group3">Οικονομμικών</a>
+              </div>
+            </div>      
+          </div>
+        </div>
 
-          <div class="span12">
-      
-          <!--Body content-->
-          <form action="<?php echo base_url()?>student/card/<?php echo $student['id']?>" method="post" accept-charset="utf-8">
 
-            <div class="contentbox">
+        <form action="<?php echo base_url()?>student/card/<?php echo $student['id']?>" method="post" accept-charset="utf-8">
+       
+        <div class="row-fluid"> <!-- first row --> 
+          <div class="span6"> <!-- first row left side -->
+            <div class="contentbox" id="group1">
               <div class="title">
                   <span class="icon">
-                    <i class="icon-tag"></i>
+                    <i class="icon-user"></i>
                   </span>
-                  <h5>Βασικά στοιχεία μαθητολογίου</h5>
+                  <h5>Στοιχεία μαθητή</h5>
                   <div class="buttons">
                     <button enabled id="editform" type="button" class="btn btn-mini pull-right" data-toggle="button" onclick="toggleedit(this)"><i class="icon-edit"></i></button>
                 </div>
               </div>
             <div class="content">  
-          <div class="row-fluid">
-            <fieldset id="mainform"> <!-- disabled for enabling/disabling all form controls in the fieldset-->
-            <div class="span7"> <!--first column-->
-              <label>Κωδ.μαθητή(id)</label><input disabled class="span2" type="text" placeholder="" name="id" value="<?php echo $regcard['id'];?>">
-              
+              <div class="row-fluid">
+                  <label>Κωδ.μαθητή(id)</label><input disabled class="span2" type="text" placeholder="" name="id" value="<?php echo $regcard['id'];?>">
+              </div>
               <div class="row-fluid">
                  <div class="span6">
                   <label>Όνομα</label><input disabled class="span12" id="name" type="text" placeholder="" name="name" value="<?php echo $regcard['name'];?>">
@@ -270,68 +278,96 @@ function paste_name(where,who){
                 <label>Παρατηρήσεις</label>
                 <textarea disabled class="span12" rows="3"></textarea>  
 
-              </div> <!--end of first column group-->
+            </div> <!-- end of content -->
+          </div> <!-- end of contentbox -->
+        </div> <!-- end of left side -->
 
-              <!--second column-->
-              <div class="span5">
-                
-                <label>Ημ/νία εγγραφής</label>
-                <input disabled type="text" class="span5" placeholder="" name="reg_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['reg_dt'])));?>" ></input>
-
-                <div class="row-fluid">
-                  <div class="span6">
-                    <label>Ημ/νία έναρξης</label>
-                    <input disabled  type="text"  class="span10"  placeholder="" name="start_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['start_lessons_dt'])));?>"></input>
-                  </div>
-                  <div class="span6">
-                    <label>Ημ/νία διαγραφής</label>
-                    <input disabled type="text"  class="span10"  placeholder="" name="del_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['del_lessons_dt'])));?>"></input>
-                  </div>
-                </div>
-
-                <div class="row-fluid">
-                  <div class="span12">
-                    <label>Αρ. Μαθητολογίου</label>
-                    <input disabled type="text" class="span3" placeholder="" name="std_book_no" value="<?php echo $regcard['std_book_no'];?>"></input>
-                  </div>
-                </div>
-
-                <div class="row-fluid">
-                  <div class="span12">
-                    <label>Ποσό</label>
-                    <div class="input-prepend">
-                      <span class="add-on">€</span>
-                       <input disabled type="text" class="span3" placeholder="" name="month_price" value="<?php echo $regcard['month_price'];?>"></input>
+          <div class="span6"> <!-- first row right side -->
+            <div class="row-fluid"> <!-- right side embeded first row -->
+              <div class="span12">
+                <div class="contentbox"  id="group2">
+                  <div class="title">
+                      <span class="icon">
+                        <i class="icon-tag"></i>
+                      </span>
+                      <h5>Στοιχεία μαθητολογίου</h5>
+                      <div class="buttons">
+                        <button enabled id="editform" type="button" class="btn btn-mini pull-right" data-toggle="button" onclick="toggleedit(this)"><i class="icon-edit"></i></button>
                     </div>
                   </div>
-                </div>
-
-
-                <div class="row-fluid" >
-                  <div class="span12">
-                    <label>Παραλήπτης ΑΠΥ</label>
-                    <input disabled id="apy_receiver" type="text" class="span12" placeholder="" name="apy_receiver" value="<?php echo $regcard['apy_receiver'];?>"></input>
+                <div class="content">  
+                  <div class="row-fluid">
+                    <div class="span6">
+                        <label>Αρ. Μαθητολογίου</label>
+                        <input disabled type="text" class="span4" placeholder="" name="std_book_no" value="<?php echo $regcard['std_book_no'];?>"></input>
+                    </div>
+                    <div class="span6">
+                      <label>Ημ/νία εγγραφής</label>
+                      <input disabled type="text" class="span10" placeholder="" name="reg_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['reg_dt'])));?>" ></input>
+                    </div>
                   </div>
-                </div>
-
-
-                <div class="row-fluid">
-                  <div class="span4">
-                    <label>Α.Φ.Μ.</label>
-                    <input disabled type="text" class="span12" placeholder="" name="afm" value="<?php echo $regcard['afm'];?>"></input>
-                  </div>
-                  <div class="span8">
-                    <label>Κάτοχος Α.Φ.Μ.</label>
-                    <input disabled id="afm_owner" type="text" class="span12" name="afm_owner" value="<?php echo $regcard['afm_owner'];?>"></input>
-                  </div>
-                </div>
-            </fieldset>
-
-              </div> <!--end of second column group-->
-
-
+                    <div class="row-fluid">
+                      <div class="span6">
+                        <label>Ημ/νία έναρξης</label>
+                        <input disabled  type="text"  class="span10"  placeholder="" name="start_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['start_lessons_dt'])));?>"></input>
+                      </div>
+                      <div class="span6">
+                        <label>Ημ/νία διαγραφής</label>
+                        <input disabled type="text"  class="span10"  placeholder="" name="del_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['del_lessons_dt'])));?>"></input>
+                      </div>
+                    </div>
+                </div> <!-- end of content -->
+              </div> <!-- end of contentbox -->
             </div>
-          </div>
+          </div> <!-- end of right side embeded first row -->
+
+          <div class="row-fluid"><!-- right side embeded second row -->
+            <div class="span12">
+              <div class="contentbox"  id="group3">
+                <div class="title">
+                    <span class="icon">
+                      <i class="icon-money"></i>
+                    </span>
+                    <h5>Στοιχεία οικονομικών</h5>
+                    <div class="buttons">
+                      <button enabled id="editform" type="button" class="btn btn-mini pull-right" data-toggle="button" onclick="toggleedit(this)"><i class="icon-edit"></i></button>
+                    </div>
+                  </div>
+                <div class="content">  
+                  <div class="row-fluid">
+                    <div class="span4">
+                      <label>Ποσό</label>
+                      <div class="input-prepend">
+                        <span class="add-on">€</span>
+                         <input disabled type="text" class="span9" placeholder="" name="month_price" value="<?php echo $regcard['month_price'];?>"></input>
+                      </div>
+                    </div>
+                    <div class="span8">
+                      <label>Παραλήπτης ΑΠΥ</label>
+                      <input disabled id="apy_receiver" type="text" class="span12" placeholder="" name="apy_receiver" value="<?php echo $regcard['apy_receiver'];?>"></input>
+                    </div>
+                  </div>
+
+                  <div class="row-fluid">
+                    <div class="span4">
+                      <label>Α.Φ.Μ.</label>
+                      <input disabled type="text" class="span12" placeholder="" name="afm" value="<?php echo $regcard['afm'];?>"></input>
+                    </div>
+                    <div class="span8">
+                      <label>Κάτοχος Α.Φ.Μ.</label>
+                      <input disabled id="afm_owner" type="text" class="span12" name="afm_owner" value="<?php echo $regcard['afm_owner'];?>"></input>
+                    </div>
+                  </div>
+                </div> <!-- end  of content -->
+              </div> <!-- end of contentbox -->
+            </div>
+          </div> <!-- end of right side embeded second row -->
+
+
+        </div> <!-- end of right side -->
+      </div> <!-- end of first row -->
+
+
 
 
           <div class="form-actions">
