@@ -127,11 +127,6 @@ and use the demo_table.css file that includes the css rules below*/
 }
 
 
-/*Use everywhere ubuntu font!
-----------------------------*/
-* {
-    font-family: 'Ubuntu', sans-serif;
-}
 
 /* change background colors 
 ---------------------------*/
@@ -374,6 +369,7 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
     }
 
     /* Απόκρυψη των placeholders ΓΕΝΙΚΑ αφού σε αυτή τη διάσταση υπαρχουν labels*/
+    
     /* WebKit browsers */
     input::-webkit-input-placeholder { color:transparent; }
 
@@ -455,6 +451,7 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
     .welcome .btn-link {
         text-decoration: none;
         color: black;
+        font-family: 'Ubuntu';
 
     }
 
@@ -462,3 +459,11 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
    .welcome .btn-link:hover {
         color: red;
     }
+
+
+
+    /*Use everywhere ubuntu font!
+----------------------------*/
+* {
+    font-family: 'Ubuntu', sans-serif;
+}

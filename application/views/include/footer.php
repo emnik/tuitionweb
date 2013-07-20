@@ -2,7 +2,7 @@
         <div class="container">
 			<div class="row-fluid">
 				<div class="span12"> 
-					<small><i class="icon-code"></i> Designed and build by <a href="mailto:nikiforakis.m@gmail.com">Nikiforakis Manos</a> <i class="icon-code"></i></small>
+					<small><i class="icon-code"></i> Designed and build by <a href="mailto:nikiforakis.m@gmail.com">Nikiforakis Manos</a></small>
 				</div>
 			</div>
 			<div class="row-fluid">

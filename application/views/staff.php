@@ -83,7 +83,7 @@ $(document).ready(function() {
               "sLengthMenu": "_MENU_ εργαζόμενοι ανά σελίδα",
               "sLoadingRecords": "Φόρτωση καταλόγου προσωπικού...",
               "sProcessing": "Επεξεργασία...",   
-              "sSearch": "Εύρεση εργαζομένου:",
+              "sSearch": "Εύρεση:",
               "sZeroRecords": "Δεν βρέθηκαν εγγραφές"
               
               // ΑΛΛΕΣ ΕΠΙΛΟΓΕΣ

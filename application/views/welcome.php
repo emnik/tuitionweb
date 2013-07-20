@@ -81,7 +81,7 @@
       
       </div> <!--end of form container-->
 
-      <div class="span8"> <!-- images for sections -->
+      <div class="span8">
 
         <div class="row-fluid"> <!--first row-->
             <div class="span4 welcome">
@@ -131,7 +131,7 @@
 
         </div> <!--end of second row-->
 
-      </div> <!--end of image section-->
+      </div>
 </form>
 
 
