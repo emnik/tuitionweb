@@ -1,26 +1,45 @@
 <script type="text/javascript">
 
-function toggleedit(togglecontrol) {
-  var toggle = document.getElementById("mainform"); //get the fieldset by its id
+function toggleedit(togglecontrol, id) {
 
   if ($(togglecontrol).hasClass('active')){
-    toggle.disabled = true;
-    $('#mainform :input').each(function(){
-      $(this).attr('disabled', 'disabled');
+    $('#' + id).closest('.contentbox').find(':input').each(function(){
+        $(this).attr('disabled', 'disabled');
       });
-    $('#submitbtn').attr('disabled', 'disabled');
-    $('#cancelbtn').attr('disabled', 'disabled');
     }
-  
-  else {
-    toggle.disabled = false;
-    $('#mainform :input').removeAttr('disabled');
-    $('#submitbtn').removeAttr('disabled');
-    $('#cancelbtn').removeAttr('disabled');
+  else 
+    {
+      $('#' + id).closest('.contentbox').find(':input').removeAttr('disabled');
     };
+    
+    $(togglecontrol).removeAttr('disabled');
 }
 
 $(document).ready(function(){
+
+    //we must enable all form fields to submit the form with no errors!
+    $("body").on('click', '#submitbtn', function(){
+        $('.contentbox').find(':input:disabled').removeAttr('disabled');
+        $('form').submit();
+    });
+
+
+    $("body").on('click', '#editform1, #editform2, #editform3', function(){
+      toggleedit(this, this.id);
+
+      var all=$('.content').find(':input').length;
+      var disabled=$('.content').find(':input:disabled').length;
+      
+      if(all==disabled){
+          $('#submitbtn').attr('disabled', 'disabled');
+          $('#cancelbtn').attr('disabled', 'disabled');
+        }
+      else
+        {
+          $('#submitbtn').removeAttr('disabled');
+          $('#cancelbtn').removeAttr('disabled');
+        }
+    });
 
     $('#cancelbtn').click(function(){
       window.open("<?php echo base_url()?>student/cancel/card/<?php echo $student['id']?>", '_self', false);
@@ -28,7 +47,9 @@ $(document).ready(function(){
 
     //if it is a new registration the fields should be enabled
     <?php if(empty($student['surname'])):?>   
-        $('#editform').addClass('active');
+        $('#editform1').addClass('active');
+        $('#editform2').addClass('active');
+        $('#editform3').addClass('active');
         var toggle = document.getElementById("mainform");
         toggle.disabled = false;
         $('#mainform :input').removeAttr('disabled');
@@ -200,7 +221,7 @@ function paste_name(where,who){
         </div>
 
 
-        <form action="<?php echo base_url()?>student/card/<?php echo $student['id']?>" method="post" accept-charset="utf-8">
+        <form id='mainform' action="<?php echo base_url()?>student/card/<?php echo $student['id']?>" method="post" accept-charset="utf-8">
        
         <div class="row-fluid"> <!-- first row --> 
           <div class="span6"> <!-- first row left side -->
@@ -211,7 +232,7 @@ function paste_name(where,who){
                   </span>
                   <h5>Στοιχεία μαθητή</h5>
                   <div class="buttons">
-                    <button enabled id="editform" type="button" class="btn btn-mini pull-right" data-toggle="button" onclick="toggleedit(this)"><i class="icon-edit"></i></button>
+                    <button enabled id="editform1" type="button" class="btn btn-mini pull-right" data-toggle="button"><i class="icon-edit"></i></button>
                 </div>
               </div>
             <div class="content">  
@@ -276,7 +297,7 @@ function paste_name(where,who){
                   </div>
                 </div>
                 <label>Παρατηρήσεις</label>
-                <textarea disabled class="span12" rows="3"></textarea>  
+                <textarea disabled class="span12" rows="3" name="notes"><?php echo $regcard['notes'];?></textarea>  
 
             </div> <!-- end of content -->
           </div> <!-- end of contentbox -->
@@ -292,7 +313,7 @@ function paste_name(where,who){
                       </span>
                       <h5>Στοιχεία μαθητολογίου</h5>
                       <div class="buttons">
-                        <button enabled id="editform" type="button" class="btn btn-mini pull-right" data-toggle="button" onclick="toggleedit(this)"><i class="icon-edit"></i></button>
+                        <button enabled id="editform2" type="button" class="btn btn-mini pull-right" data-toggle="button"><i class="icon-edit"></i></button>
                     </div>
                   </div>
                 <div class="content">  
@@ -330,7 +351,7 @@ function paste_name(where,who){
                     </span>
                     <h5>Στοιχεία οικονομικών</h5>
                     <div class="buttons">
-                      <button enabled id="editform" type="button" class="btn btn-mini pull-right" data-toggle="button" onclick="toggleedit(this)"><i class="icon-edit"></i></button>
+                      <button enabled id="editform3" type="button" class="btn btn-mini pull-right" data-toggle="button"><i class="icon-edit"></i></button>
                     </div>
                   </div>
                 <div class="content">  
@@ -339,7 +360,7 @@ function paste_name(where,who){
                       <label>Ποσό</label>
                       <div class="input-prepend">
                         <span class="add-on">€</span>
-                         <input disabled type="text" class="span9" placeholder="" name="month_price" value="<?php echo $regcard['month_price'];?>"></input>
+                         <input disabled type="text" class="span6" placeholder="" name="month_price" value="<?php echo $regcard['month_price'];?>"></input>
                       </div>
                     </div>
                     <div class="span8">
