@@ -14,8 +14,8 @@ class Registrations_model extends CI_Model {
          ->select(array('registration.id','registration.name','registration.surname','registration.std_book_no','class.class_name','course.course'))
          ->from('registration')
          ->join('vw_schoolyear_reg_ids','registration.id=vw_schoolyear_reg_ids.id','right')
-         ->join('class','registration.class_id=class.id')
-         ->join('course','registration.course_id=course.id')
+         ->join('class','registration.class_id=class.id', 'left')
+         ->join('course','registration.course_id=course.id', 'left')
    		->get();
 
    	if ($query->num_rows() > 0) 

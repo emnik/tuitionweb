@@ -14,7 +14,7 @@ public function index(){
 	a url such as: http://domain/tuitionweb/student/index/id
 	It must have the index method specified!!! 
 	*/
-
+	
 	$this->load->model('registrations_model');
 	$registration=$this->registrations_model->get_registration_data();
 
@@ -255,6 +255,10 @@ public function attendance($id, $innersubsection=null, $student) {
 		
 		default:
 			if(empty($program)){
+				//if a student has been assigned to sections BUT there has not been
+				//assigned weekly program to sections then the student won't have program
+				//and the redirection to attendance/manage would be a fail as it won't be the problem 
+				//the sections assignment !!!
 				$possible_sections = $this->attendance_model->getpossiblesections($id);
 	 			if ($possible_sections!=false)
 	 			{
