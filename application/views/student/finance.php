@@ -281,6 +281,15 @@ $(document).ready(function() {
           };
     });
 
+   //color red the credit payments
+   $('fieldset.collapsible').find('input[name^="is_credit"]').each(function(){
+    if($(this).val()==1){
+      $(this).parent().parent().parent().find('.paylegend').css('color','red');
+      //$(this).parent().parent().parent().find('.span').css('color','red');
+    }
+   });
+
+
 }) //end of (document).ready()
 
 
