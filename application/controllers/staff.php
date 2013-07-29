@@ -56,8 +56,8 @@ public function card($id, $subsection=null, $innersubsection=null) {
 
 	switch ($subsection) {
 	 	case 'program':
-	 		//$this->program($id, $employee);
-	 		//return 0;
+	 		$this->program($id, $employee);
+	 		return 0;
 	 		break;
 
 	 	case 'sections':
@@ -70,18 +70,11 @@ public function card($id, $subsection=null, $innersubsection=null) {
 	 		break;
 	 }
 
-	$this->load->model('employee/card_model');
+	$this->load->model('staff/card_model');
 	$data['emplcard']=array();
 	if (!empty($_POST)) {
-	// 	$date_fields = array('start_lessons_dt','del_lessons_dt','reg_dt');
 	 	foreach ($_POST as $key => $value) 
 	 	{
-			
-	// 		if (in_array($key,$date_fields))
-	// 		{
-	// 			$value = implode('-', array_reverse(explode('-', $value)));	
-	// 			if ($value=='0000-00-00') $value = null;
-	// 		};
 	 		$employee_data[$key]=$value;
 	 	};
 	 	$this->card_model->update_employee_data($employee_data, $id);
@@ -92,7 +85,6 @@ public function card($id, $subsection=null, $innersubsection=null) {
 	}
 
 	$data['emplcard'] = $employee_data;
-	//echo print_r($data);
 	
 	$this->load->view('include/header');
 	$this->load->view('employee/card', $data);
@@ -127,10 +119,24 @@ public function cancel($form=null, $id=null){
 			redirect('staff/card/'.$id);
 		}
 	}
-	// else if ($form=='contact'){
-	// 	redirect('student/card/'.$id.'/contact');
-	// };	
-	
+}
+
+
+public function program ($id, $employee){
+	$this->load->model('staff/program_model');
+	$program = $this->program_model->get_tutor_program($id);
+	$data['employee'] = $employee;
+	if($program){
+		$data['program'] = $program;
+	}
+	else
+	{
+		$data['program'] = false;
+	};
+
+	$this->load->view('include/header');
+	$this->load->view('employee/program', $data);
+	$this->load->view('include/footer');
 }
 
 

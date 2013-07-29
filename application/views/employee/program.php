@@ -42,7 +42,7 @@ function toggledays(togglecontrol) {
         container:'body',
         html:'true',       
         title:'<h4>Συνήθεις επεξεργασίες</h4>',
-        content:"<ul><li>Για προσθήκη ή διαγραφή μαθημάτων πηγαίνετε στην καρτέλα <a href='<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/manage'> Φοίτηση / Διαχείριση προγράμματος σπουδών.</a></li><li>Για επεξεργασία ώρας και αίθουσας ενός μαθήματος πατήστε την επιλογή 'Eπεξεργασία' δεξιά του μαθήματος αυτού.</li></ul>"
+        content:"<ul><li>Για επεξεργασία ώρας και αίθουσας ενός μαθήματος πατήστε την επιλογή 'Eπεξεργασία' δεξιά του μαθήματος αυτού.</li></ul>"
      });
 
      $('#toggledays').tooltip({
@@ -82,9 +82,9 @@ function toggledays(togglecontrol) {
           <!--<a class="brand" href="#">Tuition manager</a>-->
           <div class="nav-collapse collapse">
             <ul class="nav">
-            <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
-            <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-              <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+              <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
+              <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
+              <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
               <li><a href="#sections">Τμήματα</a></li>
               <li><a href="#finance">Οικονομικά</a></li>
               <li><a href="#reports">Αναφορές</a></li>
@@ -119,23 +119,20 @@ function toggledays(togglecontrol) {
       <div style="margin-top:20px; margin-bottom:-15px;">
       <ul class="breadcrumb">
         <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> <span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> <span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Φοίτηση</a> <span class="divider">></span></li>
-        <li class="active">Εβδομαδιαίο Πρόγραμμα</li>
+        <li><a href="<?php echo base_url()?>staff">Προσωπικό</a> <span class="divider">></span></li>
+        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Καρτέλα εργαζομένου</a> <span class="divider">></span></li>
+        <li class="active">Πρόγραμμα εργαζομένου</li>
       </ul>
       </div>
       
       
 
-      <h3><?php echo $student['surname'].' '.$student['name']?></h3>
+      <h3><?php echo $employee['surname'].' '.$employee['name']?></h3>
       
-
       <ul class="nav nav-tabs">
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Στοιχεία</a></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/contact">Επικοινωνία</a></li>
-        <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Φοίτηση</a></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a></li>
+        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Στοιχεία</a></li>
+        <li class="active"><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/program">Πρόγραμμα</a></li>
+        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/sections">Τμήματα</a></li>
       </ul>
 
       <?php $day=array(1 => 'Δευτέρα', 2 => 'Τρίτη', 3 => 'Τετάρτη', 4 => 'Πέμπτη',
@@ -144,7 +141,6 @@ function toggledays(togglecontrol) {
       <div class="row-fluid">
         <div class="span12">
           <div class="btn-toolbar">
-            <a class="btn" href="<?php echo base_url();?>student/card/<?php echo $student['id']?>/attendance"><i class="icon-chevron-left"></i> πίσω</a>
             <div class="btn-group">
               <button type="button" id="toggledays" data-toggle="button" class="btn" onclick="toggledays(this)"><i class="icon-calendar"></i></button>
             </div>
@@ -159,7 +155,7 @@ function toggledays(togglecontrol) {
       		<h4>Εβδομαδιαίο πρόγραμμα :</h4>
         </div>
 
-        <div class="span7">
+        <div class="span6">
 
           <ul class="nav nav-pills">
             <?php for ($i=1; $i <= 7 ; $i++):?>
@@ -178,7 +174,7 @@ function toggledays(togglecontrol) {
 		      	<div class="span12"> 
 			      		<?php if(empty($program)):?>
 			      			<p class="text-info">
-			      				Δεν έχει εισαχθεί το πρόγραμμα για το συγκεκριμένο μαθητή!
+			      				Δεν έχει εισαχθεί το πρόγραμμα για το συγκεκριμένο εργαζόμενο!
 			      			</p>
 			      		<?php else:?>
 			      		<?php $i=$program[0]['priority'];?>
@@ -213,9 +209,9 @@ function toggledays(togglecontrol) {
                         <tr>
     				      				<th data-class="expand">Ώρα</th>
     				      				<th>Μάθημα</th>
-    				      				<th data-hide="phone">Διδάσκων</th>
+    				      				<th data-hide="phone,tablet">Διδακτικές Ώρες</th>
     				      				<th data-hide="phone">Τμήμα</th>
-    				      				<th data-hide="phone,tablet">Αίθουσα</th>
+    				      				<th data-hide="phone">Αίθουσα</th>
                           <th></th>
                         </tr>
   				      			</thead>
@@ -226,10 +222,10 @@ function toggledays(togglecontrol) {
     				      					<tr>
     				      						<td><?php echo date('H:i',strtotime($program[$k]['start_tm'])).'-'.date('H:i',strtotime($program[$k]['end_tm']));?></td>
     				      						<td><?php echo $program[$k]['title'];?></td>
-    				      						<td><?php echo $program[$k]['nickname'];?></td>
+    				      						<td><?php echo $program[$k]['duration'];?></td>
     				      						<td><?php echo $program[$k]['section'];?></td>
     				      						<td><?php echo $program[$k]['classroom'];?></td>
-                              <td><button class="btn btn-small pull-right"><i class="icon-edit"></i><small></small></button></td>
+                              					<td><button class="btn btn-small pull-right"><i class="icon-edit"></i><small></small></button></td>
     				      					</tr>
   				      					  <?php $k++;?>
                           <?php else:?>
