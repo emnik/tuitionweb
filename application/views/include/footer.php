@@ -7,7 +7,7 @@
 			</div>
 			<div class="row-fluid">
 				<div class="span12"> 
-					<small>Build with <a href="http://ellislab.com/codeigniter">CodeIgniter</a> and <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>. Icons by <a href="http://fortawesome.github.io/Font-Awesome/"><i class="icon-flag"> Font Awesome Icons</i></a></small>
+					<small>Build with <a href="http://ellislab.com/codeigniter">CodeIgniter</a> and <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>. Icons by <a href="http://fortawesome.github.io/Font-Awesome/"><i class="icon-flag"> </i>Font Awesome Icons</a></small>
 				</div>
 			</div>
 		</div>

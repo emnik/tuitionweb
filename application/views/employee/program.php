@@ -141,6 +141,7 @@ function toggledays(togglecontrol) {
       <div class="row-fluid">
         <div class="span12">
           <div class="btn-toolbar">
+            <a class="btn" href="<?php echo base_url();?>staff/card/<?php echo $employee['id']?>/teachingplan"><i class="icon-chevron-left"></i> πίσω</a>
             <div class="btn-group">
               <button type="button" id="toggledays" data-toggle="button" class="btn" onclick="toggledays(this)"><i class="icon-calendar"></i></button>
             </div>
@@ -225,7 +226,7 @@ function toggledays(togglecontrol) {
     				      						<td><?php echo $program[$k]['duration'];?></td>
     				      						<td><?php echo $program[$k]['section'];?></td>
     				      						<td><?php echo $program[$k]['classroom'];?></td>
-                              					<td><button class="btn btn-small pull-right"><i class="icon-edit"></i><small></small></button></td>
+                              <td><button class="btn btn-small pull-right"><i class="icon-edit"></i><small></small></button></td>
     				      					</tr>
   				      					  <?php $k++;?>
                           <?php else:?>

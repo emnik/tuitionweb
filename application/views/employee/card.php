@@ -121,8 +121,7 @@ $(document).ready(function(){
 
       <ul class="nav nav-tabs">
         <li class="active"><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Στοιχεία</a></li>
-        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/program">Πρόγραμμα</a></li>
-        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/sections">Τμήματα</a></li>
+        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan">Πλάνο Διδασκαλίας</a></li>
       </ul>
 
       <div class="visible-phone">
@@ -147,11 +146,12 @@ $(document).ready(function(){
      </div>
 
 	<div class="row-fluid">
-        <form action="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>" method="post" accept-charset="utf-8">
-        <input type="hidden" name="active" value="<?php echo $emplcard['active'];?>">        
+       
 
     	<div class="span12">
-
+        <form action="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>" method="post" accept-charset="utf-8">
+        <input type="hidden" name="active" value="<?php echo $emplcard['active'];?>"> 
+        
       	<div class="row-fluid">
         <div class="span6" id="group1">
 			<div class="mainform">

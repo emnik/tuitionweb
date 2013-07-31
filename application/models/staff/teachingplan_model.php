@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) die();
 
-class Program_model extends CI_Model {
+class Teachingplan_model extends CI_Model {
 
    public function __construct()
    {
@@ -41,4 +41,44 @@ class Program_model extends CI_Model {
 			return false;
 		}
 	} 
+
+
+
+	function get_tutor_section_summary($id) {
+
+		$this->db
+			->select(array('section.section', 'catalog_lesson.title', 'COUNT(registration.id) as studentsnum', 'lesson.hours'))
+			->from('std_lesson' )
+			->join('registration', 'std_lesson.reg_id = registration.id')
+			->join('section', 'std_lesson.section_id=section.id')
+			->join('lesson', 'std_lesson.lesson_id = lesson.id')
+			->join('lookup', 'lookup.value_1 = section.schoolyear')
+			->join('lesson_tutor', 'section.tutor_id=lesson_tutor.id')
+			->join('catalog_lesson', 'lesson_tutor.cataloglesson_id = catalog_lesson.id')
+			->join('employee', 'lesson_tutor.employee_id=employee.id')
+			->where('lookup.id','2')
+			->where('employee.id', $id)
+			->group_by('section.id')
+			->order_by('section.section','ASC');
+		
+		$query = $this->db->get();
+		
+		if ($query->num_rows() > 0) 
+		{
+			foreach($query->result_array() as $row) 
+			{
+				$tutor_section_students[] = $row;
+			}
+			return $tutor_section_students;
+		}
+		else {
+			return false;
+		}
+	} 
+
+
+
+
+
+
 }

@@ -55,16 +55,12 @@ public function card($id, $subsection=null, $innersubsection=null) {
 	
 
 	switch ($subsection) {
-	 	case 'program':
-	 		$this->program($id, $employee);
+	 	case 'teachingplan':
+	 		$this->teachingplan($id, $innersubsection, $employee);
 	 		return 0;
 	 		break;
 
-	 	case 'sections':
-	 		//$this->sections($id, $innersubsection, $employee);
-	 		//return 0;
-	 		break;
-	 	
+ 	
 	 	default:
 	 		# code...
 	 		break;
@@ -122,22 +118,66 @@ public function cancel($form=null, $id=null){
 }
 
 
-public function program ($id, $employee){
-	$this->load->model('staff/program_model');
-	$program = $this->program_model->get_tutor_program($id);
-	$data['employee'] = $employee;
+public function teachingplan($id, $innersubsection=null, $employee){
+	
+	$data['employee']=$employee;
+
+	$this->load->model('staff/teachingplan_model');
+	$program = $this->teachingplan_model->get_tutor_program($id);
+
+	$sections_summary = $this->teachingplan_model->get_tutor_section_summary($id);
+	if ($sections_summary){
+		$data['section'] = $sections_summary;
+	};
+
 	if($program){
 		$data['program'] = $program;
-	}
-	else
-	{
-		$data['program'] = false;
+		$dayprogram = array();
+		$j=0;
+		for ($i=0; $i < count($program); $i++) { 
+			if ($program[$i]['priority']==date('N')){
+				$dayprogram[$j]= $program[$i];
+				$j++;
+			}
+		};
+		$data['dayprogram'] = $dayprogram;
 	};
 
 	$this->load->view('include/header');
-	$this->load->view('employee/program', $data);
+
+	switch ($innersubsection) {
+		case 'program':
+			$this->load->view('employee/program', $data);	
+			break;
+		case 'sections':
+			$this->load->view('employee/sections', $data);	
+			break;
+		default:
+			$this->load->view('employee/teachingplan', $data);	
+			break;
+	}
+
 	$this->load->view('include/footer');
 }
+
+
+
+// public function program ($id, $employee){
+// 	$this->load->model('staff/teachingplan_model');
+// 	$program = $this->teachingplan_model->get_tutor_program($id);
+// 	$data['employee'] = $employee;
+// 	if($program){
+// 		$data['program'] = $program;
+// 	}
+// 	else
+// 	{
+// 		$data['program'] = false;
+// 	};
+
+// 	$this->load->view('include/header');
+// 	$this->load->view('employee/program', $data);
+// 	$this->load->view('include/footer');
+// }
 
 
 }
