@@ -128,8 +128,20 @@ public function teachingplan($id, $innersubsection=null, $employee){
 	$sections_summary = $this->teachingplan_model->get_tutor_section_summary($id);
 	if ($sections_summary){
 		$data['section'] = $sections_summary;
-	};
 
+		$section_data=array();
+		foreach ($sections_summary as $tmpdata) {
+			$students = $this->teachingplan_model->get_section_students($tmpdata['id']);
+			$section_data[$tmpdata['section']]=$students;
+		}
+	};
+	
+	$data['section_data'] = $section_data;
+
+	// $this->load->library('firephp');
+	// $this->firephp->info($section_data); 
+
+	
 	if($program){
 		$data['program'] = $program;
 		$dayprogram = array();
@@ -161,23 +173,6 @@ public function teachingplan($id, $innersubsection=null, $employee){
 }
 
 
-
-// public function program ($id, $employee){
-// 	$this->load->model('staff/teachingplan_model');
-// 	$program = $this->teachingplan_model->get_tutor_program($id);
-// 	$data['employee'] = $employee;
-// 	if($program){
-// 		$data['program'] = $program;
-// 	}
-// 	else
-// 	{
-// 		$data['program'] = false;
-// 	};
-
-// 	$this->load->view('include/header');
-// 	$this->load->view('employee/program', $data);
-// 	$this->load->view('include/footer');
-// }
 
 
 }

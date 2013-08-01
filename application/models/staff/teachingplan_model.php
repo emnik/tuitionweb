@@ -47,7 +47,7 @@ class Teachingplan_model extends CI_Model {
 	function get_tutor_section_summary($id) {
 
 		$this->db
-			->select(array('section.section', 'catalog_lesson.title', 'COUNT(registration.id) as studentsnum', 'lesson.hours'))
+			->select(array('section.id', 'section.section', 'catalog_lesson.title', 'COUNT(registration.id) as studentsnum', 'lesson.hours'))
 			->from('std_lesson' )
 			->join('registration', 'std_lesson.reg_id = registration.id')
 			->join('section', 'std_lesson.section_id=section.id')
@@ -78,6 +78,31 @@ class Teachingplan_model extends CI_Model {
 
 
 
+function get_section_students($section_id){
+	$this->db
+			->select(array('section.id', 'CONCAT_WS(" ", registration.surname, registration.name) as stdname', 'registration.fathers_name', 'registration.mothers_name', 'contact.std_mobile','contact.mothers_mobile','contact.fathers_mobile','contact.work_tel','contact.home_tel','catalog_lesson.title'))
+			->from('std_lesson')
+			->join('registration', 'std_lesson.reg_id = registration.id')
+			->join('section', 'std_lesson.section_id = section.id')
+			->join('lookup', 'lookup.value_1 = section.schoolyear')
+			->join('contact', 'contact.reg_id = registration.id')
+			->join('lesson_tutor', 'section.tutor_id=lesson_tutor.id')
+			->join('catalog_lesson', 'lesson_tutor.cataloglesson_id = catalog_lesson.id')
+			->where('std_lesson.section_id', $section_id);
+		$query = $this->db->get();
+		
+		if ($query->num_rows() > 0) 
+		{
+			foreach($query->result_array() as $row) 
+			{
+				$tutor_section_students[] = $row;
+			}
+			return $tutor_section_students;
+		}
+		else {
+			return false;
+		}
+}
 
 
 

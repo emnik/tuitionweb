@@ -82,6 +82,12 @@ $(document).ready(function(){
       </ul>
  -->
 
+      <div class="row-fluid">
+        <div class="span12">
+          <h4>Σύνοψη:</h4>
+        </div>
+      </div>
+
       <div class="row-fluid"> <!--Συνοπτική ενημέρωση-->
       	<div class="span12">
 	      	<div class="row-fluid"> <!--Πρόγραμμα ημέρας-->
@@ -173,7 +179,7 @@ $(document).ready(function(){
                           <td><?php echo $data['studentsnum']?></td>
                           <td><?php echo $data['title']?></td>
                           <td><?php echo $data['hours']?></td>
-                          <?php $sectionsnum++; $stdsum+=$data['studentsnum']; $hourssum+=$data['hours']?>
+                          <?php $sectionsnum++; $stdsum+=$data['studentsnum']; $hourssum+=$data['hours'];?>
                         </tr>
                       <?php endforeach;?>
                     </tbody>

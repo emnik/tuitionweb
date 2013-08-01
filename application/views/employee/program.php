@@ -103,7 +103,7 @@ function toggledays(togglecontrol) {
 ================================================== -->
 <div class="jumbotron subhead">
   <div class="container">
-    <h1>Καρτέλα Μαθητή</h1>
+    <h1>Καρτέλα Εργαζομένου</h1>
     <p class="leap">tuition manager - πρόγραμμα διαχείρισης φροντιστηρίου.</p>
   </div>
 </div>
@@ -131,8 +131,7 @@ function toggledays(togglecontrol) {
       
       <ul class="nav nav-tabs">
         <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Στοιχεία</a></li>
-        <li class="active"><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/program">Πρόγραμμα</a></li>
-        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/sections">Τμήματα</a></li>
+        <li class="active"><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan">Πλάνο Διδασκαλίας</a></li>
       </ul>
 
       <?php $day=array(1 => 'Δευτέρα', 2 => 'Τρίτη', 3 => 'Τετάρτη', 4 => 'Πέμπτη',
