@@ -28,7 +28,8 @@ public function index(){
 	
 	$this->load->view('include/header');
 	$this->load->view('registrations', $data);
-	$this->load->view('include/footer');
+	$footer_data['regs']=$this->session->userdata('fastgo_data');
+	$this->load->view('include/footer', $footer_data);
 
 }
 
@@ -157,7 +158,8 @@ public function card($id, $subsection=null, $innersubsection=null) {
 	
 	$this->load->view('include/header');
 	$this->load->view('student/card', $data);
-	$this->load->view('include/footer');
+	$footer_data['regs']=$this->session->userdata('fastgo_data');
+	$this->load->view('include/footer', $footer_data);
 
 	}
 
@@ -191,7 +193,8 @@ public function contact($id, $student) {
 	
 	$this->load->view('include/header');
 	$this->load->view('student/contact', $data);
-	$this->load->view('include/footer');	
+	$footer_data['regs']=$this->session->userdata('fastgo_data');
+	$this->load->view('include/footer', $footer_data);	
 	}
 
 
@@ -273,7 +276,8 @@ public function attendance($id, $innersubsection=null, $student) {
 			break;
 	}
 
-	$this->load->view('include/footer');	
+	$footer_data['regs']=$this->session->userdata('fastgo_data');
+	$this->load->view('include/footer', $footer_data);
 	
 	}
 
@@ -377,7 +381,8 @@ public function finance($id, $innersubsection=null, $student) {
 		$this->load->view('student/changes', $data);		
 	}
 
-		$this->load->view('include/footer');
+	$footer_data['regs']=$this->session->userdata('fastgo_data');
+	$this->load->view('include/footer', $footer_data);
 	}
 
 

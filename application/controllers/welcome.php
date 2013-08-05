@@ -5,12 +5,29 @@ Class Welcome extends CI_Controller {
 public function __construct() {
 		
 		parent::__construct();
+		//$this->load->library('session');
 	}
 
 public function index() {
 	//$this->output->enable_profiler(TRUE);
 	
 	$this->load->model('welcome_model');
+
+	$regs = $this->welcome_model->get_student_names_ids();
+	$regsdata= array();
+	if($regs) 
+		{
+			foreach ($regs as $key => $value) {
+				$regsdata[$value['id']]=$value['stdname'];
+			};
+			$this->session->set_userdata(array('fastgo_data' => $regsdata));
+		};
+	//$this->load->library('firephp');
+	//$this->firephp->error($this->session->userdata('fastgo_data'));
+	//$this->firephp->error($regsdata);
+
+
+
 	$schoolyears=$this->welcome_model->get_schoolyears();
 	if ($schoolyears) {
 		$data['schoolyears'] = $schoolyears;
@@ -58,7 +75,8 @@ public function index() {
 	
 	$this->load->view('include/header');
 	$this->load->view('welcome', $data);
-	$this->load->view('include/footer');
+	$footer_data['regs']=$this->session->userdata('fastgo_data');
+	$this->load->view('include/footer', $footer_data);
 
 	}
 

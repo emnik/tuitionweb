@@ -68,4 +68,34 @@ class Welcome_model extends CI_Model {
            -> update('lookup',$data);
    }
 
+
+   public function get_student_names_ids(){
+      $this->db
+            ->select(array('registration.id', 'CONCAT_WS(" ",registration.surname, registration.name) as stdname'))
+            ->from('vw_schoolyear_reg_ids')
+            ->join('registration', 'vw_schoolyear_reg_ids.id = registration.id', 'left')
+            ->order_by('stdname', 'ASC');
+      
+      $query=$this->db->get();
+
+      if ($query->num_rows() > 0) 
+      {
+         foreach($query->result_array() as $row) 
+         {
+            $students[] = $row;
+         }
+         return $students;
+      }
+      else 
+      {
+         return false;
+      }
+
+   }
+
+
+
+
+
+
 }

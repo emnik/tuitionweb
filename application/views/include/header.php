@@ -35,6 +35,7 @@
 	<script src="<?php echo base_url('assets/js/custom.js') ?>"></script>
 
 
+
 <!-- http://antesarkkinen.com/blog/easy-jquery-scroll-to-top-of-the-page-code-snippet/ -->
 <script type="text/javascript">
    // scroll-to-top button show and hide
