@@ -65,7 +65,7 @@ $(document).ready(function() {
 
     /* Init the table */
     oTable = $('#stdbook').dataTable( {
-    "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+    "sDom": "<'row'<'col-md-6'l><'col-md-6'f>r>t<'row'<'col-md-6'i><'col-md-6'p>>",
     "sPaginationType": "bootstrap",
     "aoColumnDefs": [
       { "bVisible": false, "aTargets": [0] }, //hide id column
@@ -194,32 +194,37 @@ function resizeWindow(e)
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+  <div class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-header">
+          <a class="navbar-brand" href="#">TuitionWeb</a>
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <!--<a class="brand" href="#">Tuition manager</a>-->
-          <div class="nav-collapse collapse">
-            <ul class="nav">
+     </div>
+
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
             <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
             <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-              <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-              <li><a href="#sections">Τμήματα</a></li>
-              <li><a href="#finance">Οικονομικά</a></li>
-              <li><a href="#reports">Αναφορές</a></li>
-              <li><a href="#admin">Διαχείριση</a></li>
-            </ul>
-            <ul class="nav pull-right">
-              <li><a href="#"><i class="icon-off"></i> Αποσύνδεση</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
+            <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+            <li><a href="#sections">Τμήματα</a></li>
+            <li><a href="#finance">Οικονομικά</a></li>
+            <li><a href="#reports">Αναφορές</a></li>
+            <li><a href="#admin">Διαχείριση</a></li>
+        </ul>
+        <div class="navbar-header navbar-right">
+          <p class="navbar-text">
+              <a href="#" class="navbar-link">Αποσύνδεση</a>
+          </p>
         </div>
-      </div>
-    </div>
+      </div><!--/.navbar-collapse -->
+    </nav>
+  </div>
+
+
 
 
 <!-- Subhead
@@ -239,37 +244,42 @@ function resizeWindow(e)
       
       <div style="margin-top:20px; margin-bottom:15px;">
       <ul class="breadcrumb">
-        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
+        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
         <li class="active">Μαθητολόγιο</li>
       </ul>
       </div>
 
-<!--       <div style="margin:10px 5px;" class="btn-toolbar">
-          <button class="btn btn-small btn-success" id="student-card"><i class="icon-user"> Καρτέλα Μαθητή</i></button>
-        <div class="btn-group pull-right">
-            <button class="btn btn-small"><i class="icon-refresh"> Επανεγγραφή</i></button>
-            <button class="btn btn-small" id="new-reg"><i class="icon-plus"></i> Νέα εγγραφή</button>
-            <button class="btn btn-small btn-danger " id="del-reg"><i class="icon-trash"> Αφαίρεση μαθητή</i></button>
-        </div>
-      </div> -->
-
-
-      <div class="contentbox">
-        <div class="title">
+<!--       <div class="contentbox">
+       <div class="title">
           <span class="icon">
             <i class="icon-book"></i>
           </span>
           <h5>Μαθητολόγιο</h5>
           <div class="buttons">
-            <button class="btn btn-small btn-danger " id="del-reg"><i class="icon-trash"><!--  Αφαίρεση μαθητή --></i></button>
+            <button class="btn btn-sm btn-danger " id="del-reg"><i class="icon-trash"></i></button>
              <div class="btn-group">
-              <button class="btn btn-small"><i class="icon-refresh"><!--  Επανεγγραφή --></i></button>
-              <button class="btn btn-small" id="new-reg"><i class="icon-plus"></i><!--  Νέα εγγραφή --></button>
+              <button class="btn btn-sm"><i class="icon-refresh"></i></button>
+              <button class="btn btn-sm" id="new-reg"><i class="icon-plus"></i></button>
             </div>
-            <button class="btn btn-small btn-success" id="student-card"><i class="icon-user"> Καρτέλα Μαθητή</i></button>
+            <button class="btn btn-xs btn-success" id="student-card"><i class="icon-user"> Καρτέλα Μαθητή</i></button>
           </div>
         </div>
-      <div class="content">
+      <div class="content"> -->
+
+    <div class="panel panel-primary">
+       <div class="panel-heading">
+          <h3 class="panel-title">Μαθητολόγιο</h3>
+       </div>
+    <div class="panel-body">
+          <div class="panel panel-body buttons">
+            <button class="btn btn-sm btn-danger " id="del-reg"><i class="icon-trash"></i></button>
+             <div class="btn-group">
+              <button class="btn btn-default btn-sm"><i class="icon-refresh"></i></button>
+              <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
+            </div>
+            <button class="btn btn-xs btn-success" id="student-card"><i class="icon-user"> Καρτέλα Μαθητή</i></button>
+          </div>
+  
       <!--width="100%" option in the table is required when there are hidden columns in the table to resize properly on window change-->
       <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="stdbook" width="100%">
         <thead>
@@ -307,27 +317,31 @@ function resizeWindow(e)
           </tr>
         </tfoot>
       </table>
-    </div>
-    </div>
+    </div> <!-- end of content -->
+    </div> <!-- end of contentbox -->
     </div> <!--end of main container-->
 
 <div class="push"></div>
 </div> <!-- end of body wrapper-->
 
 <!-- Modal -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Κενό Μαθητολόγιο</h3>
-  </div>
-  <div class="modal-body">
-    <p>Δέν έχετε εισάγει καμία εγγραφή στο μαθητολόγιο για το σχολικό έτος που επιλέξατε. 
-      Μπορείτε είτε να προχωρήσετε σε μια νέα εγγραφή, είτε να επιστρέψετε στην αρχική σελίδα και 
-      να επιλέξετε ένα προηγούμενο σχολικό έτος για επανεγγραφή παλαιοτέρων μαθητών.</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Κλείσιμο</button>
-    <a href="<?php echo base_url();?>" class="btn">Επιστροφή στην αρχ. σελίδα</a>
-    <a href="#" class="btn btn-primary">Νέα εγγραφή</a>
-  </div>
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 id="myModalLabel">Κενό Μαθητολόγιο</h3>
+        </div>
+        <div class="modal-body">
+          <p>Δέν έχετε εισάγει καμία εγγραφή στο μαθητολόγιο για το σχολικό έτος που επιλέξατε. 
+            Μπορείτε είτε να προχωρήσετε σε μια νέα εγγραφή, είτε να επιστρέψετε στην αρχική σελίδα και 
+            να επιλέξετε ένα προηγούμενο σχολικό έτος για επανεγγραφή παλαιοτέρων μαθητών.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Κλείσιμο</button>
+          <a href="<?php echo base_url();?>" class="btn btn-default">Επιστροφή στην αρχ. σελίδα</a>
+          <a href="#" class="btn btn-primary">Νέα εγγραφή</a>
+        </div>
+      </div>
+    </div>
 </div>

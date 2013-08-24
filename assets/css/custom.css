@@ -213,6 +213,11 @@ Unicorn - Admin Template http://wrapbootstrap.com/preview/WB0F35928
     margin: 8px 10px 0 0;
 }
 
+/*bootstrap panels*/
+.panel .panel-body .buttons {
+    float: right;
+}
+
 
 /*CSS rules for multiple records in one page as in payments*/
 @media (max-width: 768px) {
