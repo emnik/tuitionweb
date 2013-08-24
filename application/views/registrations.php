@@ -14,6 +14,8 @@ var asInitVals = new Array(); //for specific columns filtering with input field 
 
 $(document).ready(function() {
   
+
+
      /* Add/remove class to a row when clicked on */
     $('#stdbook tbody tr').click( function( e ) {
         if ( $(this).hasClass('row_selected') ) {
@@ -106,6 +108,9 @@ $(document).ready(function() {
       $('#myModal').modal('show');
     <?php endif;?>
 
+    //bootstrap3 add class="form-control" to inputs"
+    $('#stdbook_filter').find('input').addClass("form-control");
+    $('#stdbook_length').find('select').addClass("form-control");
 
 
 // HIDING COLUMNS FOR RESPONSIVE VIEW:
@@ -193,35 +198,40 @@ function resizeWindow(e)
 </head>
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
-
-  <div class="container">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
       <div class="navbar-header">
-          <a class="navbar-brand" href="#">TuitionWeb</a>
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
      </div>
 
-      <div class="navbar-collapse collapse">
+      <div class="navbar-collapse collapse" role="navigation">
         <ul class="nav navbar-nav">
-            <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
+            <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
             <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
             <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
             <li><a href="#sections">Τμήματα</a></li>
             <li><a href="#finance">Οικονομικά</a></li>
             <li><a href="#reports">Αναφορές</a></li>
-            <li><a href="#admin">Διαχείριση</a></li>
         </ul>
-        <div class="navbar-header navbar-right">
-          <p class="navbar-text">
-              <a href="#" class="navbar-link">Αποσύνδεση</a>
-          </p>
-        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Νικηφορακης Μανος</li>
+                <li><a href="#">Αλλαγή κωδικού</a></li>
+                <li><a href="#admin">Διαχείριση</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Αποσύνδεση</a></li>
+              </ul>
+            </li>
+        </ul>
       </div><!--/.navbar-collapse -->
-    </nav>
+    </div>
   </div>
 
 
@@ -261,25 +271,27 @@ function resizeWindow(e)
               <button class="btn btn-sm"><i class="icon-refresh"></i></button>
               <button class="btn btn-sm" id="new-reg"><i class="icon-plus"></i></button>
             </div>
-            <button class="btn btn-xs btn-success" id="student-card"><i class="icon-user"> Καρτέλα Μαθητή</i></button>
+            <button class="btn btn-sm btn-success" id="student-card"><i class="icon-user"> Καρτέλα Μαθητή</i></button>
           </div>
         </div>
       <div class="content"> -->
 
-    <div class="panel panel-primary">
+    <div class="panel panel-default">
        <div class="panel-heading">
+          <span class="icon">
+            <i class="icon-book"></i>
+          </span>
           <h3 class="panel-title">Μαθητολόγιο</h3>
-       </div>
-    <div class="panel-body">
-          <div class="panel panel-body buttons">
+          <div class="buttons">
             <button class="btn btn-sm btn-danger " id="del-reg"><i class="icon-trash"></i></button>
              <div class="btn-group">
               <button class="btn btn-default btn-sm"><i class="icon-refresh"></i></button>
               <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
             </div>
-            <button class="btn btn-xs btn-success" id="student-card"><i class="icon-user"> Καρτέλα Μαθητή</i></button>
+            <button class="btn btn-sm btn-success" id="student-card"><i class="icon-user"> Καρτέλα Μαθητή</i></button>
           </div>
-  
+       </div>
+    <div class="panel-body">
       <!--width="100%" option in the table is required when there are hidden columns in the table to resize properly on window change-->
       <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="stdbook" width="100%">
         <thead>
@@ -312,8 +324,8 @@ function resizeWindow(e)
             <th></th>
             <th></th>
             <th></th>
-            <th><input type="text" name="search_classnames" value="Φίλτρο τάξεων" class="search_init" /></th>
-            <th><input type="text" name="search_coursenames" value="Φίλτρο κατευθύνσεων" class="search_init" /></th>
+            <th><input type="text" class="form-control" name="search_classnames" value="Φίλτρο τάξεων" class="search_init" /></th>
+            <th><input type="text" class="form-control" name="search_coursenames" value="Φίλτρο κατευθύνσεων" class="search_init" /></th>
           </tr>
         </tfoot>
       </table>

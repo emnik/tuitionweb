@@ -71,7 +71,7 @@ height: 100%;
 min-height: 100%;
 height: auto !important;
 height: 100%;
-margin: 0 auto -171px; /*footer height=110 + padding-top=30 + padding-bottom=30 + border=1 SUM=171*/
+margin: 0 auto -101px; /*footer height=110 + padding-top=30 + padding-bottom=30 + border=1 SUM=171*/
 }
 
 .footer, .push {
@@ -213,11 +213,35 @@ Unicorn - Admin Template http://wrapbootstrap.com/preview/WB0F35928
     margin: 8px 10px 0 0;
 }
 
-/*bootstrap panels*/
-.panel .panel-body .buttons {
-    float: right;
+
+/*bootstrap panels: add span icon on the left and buttons on the right*/
+
+.panel-heading {
+  padding-bottom: 25px;
 }
 
+.panel-title {
+  float: left;
+  padding-left: 10px;
+  font-weight: bold;
+  text-shadow: 0 1px 0 #FFFFFF;
+  color: #666666;
+  margin-bottom: 15px;
+}
+
+.panel >.panel-heading > .buttons {
+    float: right;
+    margin-top: -7px;
+}
+
+.panel >.panel-heading >span.icon {
+    border-right: 1px solid;
+    border-color: inherit;
+    float: left;
+    opacity: 0.7;
+    margin-top: -10px;
+    padding: 8px 10px 7px 0px;
+}
 
 /*CSS rules for multiple records in one page as in payments*/
 @media (max-width: 768px) {
