@@ -13,27 +13,31 @@
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+  <div class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-header">
+          <a class="navbar-brand" href="#">TuitionWeb</a>
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <!--<a class="brand" href="#">Tuition manager</a>-->
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-            <li class="active pull-right"><a href="<?php echo base_url()?>">Αρχική</a></li>
-              <li><a href="#about">Περί</a></li>
-            </ul>
-            <ul class="nav pull-right">
-              <li><a href="#"><i class="icon-off"></i> Αποσύνδεση</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
+     </div>
+
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="<?php echo base_url()?>">Αρχική</a></li>
+          <li><a href="#about">Περί</a></li>
+        </ul>
+        <div class="navbar-header navbar-right">
+          <p class="navbar-text">
+              <a href="#" class="navbar-link">Αποσύνδεση</a>
+          </p>
         </div>
-      </div>
-    </div>
+      </div><!--/.navbar-collapse -->
+    </nav>
+  </div>
+
 
 
 <!-- Subhead
@@ -49,11 +53,10 @@
 <!-- main container
 ================================================== -->
 <div class="container"  style="margin-top:40px; margin-bottom:60px;">
-  <div class="container-fluid">
 
-    <div class="row-fluid"> <!--main row-->
+    <div class="row"> <!--main row-->
 
-      <div class="span4"> <!-- form container -->
+      <div class="col-md-4"> <!-- form container -->
 
         <form class="form" action="<?php echo base_url()?>welcome/" method="post" accept-charset="utf-8">
            <fieldset>
@@ -61,7 +64,7 @@
                 <div class="control-group">
                   <label  class="control-label">Επιλέξτε σχολικό έτος: </label>
                   <div class="controls">
-                    <select class="span6" name="startschoolyear">
+                    <select class="col-md-6" name="startschoolyear">
                       <?php foreach($schoolyears as $data):?>
                        <option value="<?php {$return=explode('-', $data['schoolyear']); echo $return[0];}?>" 
                         <?php if($return[0] == $selected_schstart){ echo "selected = 'selected'";}?> >
@@ -72,33 +75,27 @@
                   </div>
                 </div>
           </fieldset>
-<!--             <div class="control-group">
-              <div class="controls">
-                <button type="submit" class="btn">Είσοδος</button>
-              </div>
-            </div>
-        </form>  -->
-      
+
       </div> <!--end of form container-->
 
-      <div class="span8">
+      <div class="col-md-8"> <!-- submit buttons -->
 
-        <div class="row-fluid"> <!--first row-->
-            <div class="span4 welcome">
+        <div class="row"> <!--first row-->
+            <div class="col-md-4 welcome">
                 <button type="submit" class="btn-link" name="submit" value="submit1">
                   <i class="icon-group icon-4x"></i>
                   <h4>Μαθητολόγιο</h4>
                 </button>
             </div>
 
-            <div class="span4 welcome">
+            <div class="col-md-4 welcome">
                 <button type="submit" class="btn-link" name="submit" value="submit2">
                   <i class="icon-user icon-4x"></i>
                   <h4>Προσωπικό</h4>
                 </button>
             </div>
       
-            <div class="span4 welcome">
+            <div class="col-md-4 welcome">
               <button type="submit" class="btn-link" name="submit" value="submit3">
                 <i class="icon-sitemap icon-4x"></i>
                 <h4>Τμήματα</h4>
@@ -107,22 +104,22 @@
 
         </div> <!--end of first row-->
 
-        <div class="row-fluid" > <!--second row-->
-            <div class="span4 welcome">
+        <div class="row" > <!--second row-->
+            <div class="col-md-4 welcome">
               <button type="submit" class="btn-link" name="submit" value="submit4">
                 <i class="icon-eur icon-4x"></i>
                 <h4>Οικονομικά</h4>
               </button>
             </div>
             
-            <div class="span4 welcome">
+            <div class="col-md-4 welcome">
               <button type="submit" class="btn-link" name="submit" value="submit5">
                 <i class="icon-edit icon-4x"></i>
                 <h4>Αναφορές</h4>
               </button>
             </div>
 
-            <div class="span4 welcome">
+            <div class="col-md-4 welcome">
               <button type="submit" class="btn-link" name="submit" value="submit6">
                 <i class="icon-cogs icon-4x"></i>
                 <h4>Διαχείριση</h4>
@@ -131,13 +128,15 @@
 
         </div> <!--end of second row-->
 
-      </div>
-</form>
+      </div> <!-- end of submit buttons -->
+    </form>
+
+  </div> <!--end of main row-->
 
 
-    </div> <!--end of main row-->
 
-  </div> <!--end of container fluid -->
+
+  </div> <!--end of container -->
 </div>
 
 <div class="push"></div>

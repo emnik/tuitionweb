@@ -1,12 +1,12 @@
     <footer class="footer">
         <div class="container">
-			<div class="row-fluid">
-				<div class="span12"> 
+			<div class="row">
+				<div class="col-md-12"> 
 					<small><i class="icon-code"></i> Designed and build by <a href="mailto:nikiforakis.m@gmail.com">Nikiforakis Manos</a></small>
 				</div>
 			</div>
-			<div class="row-fluid">
-				<div class="span12"> 
+			<div class="row">
+				<div class="col-md-12"> 
 					<small>Build with <a href="http://ellislab.com/codeigniter">CodeIgniter</a> and <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>. Icons by <a href="http://fortawesome.github.io/Font-Awesome/"><i class="icon-flag"> </i>Font Awesome Icons</a></small>
 				</div>
 			</div>
@@ -66,10 +66,12 @@ function fastgo(section){
 </style>
 
 
-<div id="footerModal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="footerModalLabel" aria-hidden="true">
-	<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3 id="footerModalLabel">Γρήγορη εναλλαγή μαθητή</h3>
+<div id="footerModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="footerModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+      <div class="modal-content">	
+		<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="footerModalLabel">Γρήγορη εναλλαγή μαθητή</h3>
 		</div>
 		<div class="modal-body">
 			<p>Επιλέξτε μαθητή:</p>
@@ -90,6 +92,8 @@ function fastgo(section){
 		<div class="modal-footer">
 			<!-- <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> -->
 			<button class="btn btn-primary">Επανεγγραφή</button>
+		</div>
+		</div>
 	</div>
 </div>
 

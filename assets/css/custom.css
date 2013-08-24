@@ -3,13 +3,15 @@
  */
 
 
-/* Main title for my pages based on jumbotron from bootstrap docss.css 
+/* Main title for my pages based on jumbotron from bootstrap docs.css 
 ---------------------------------------------------------------------*/
+body {
+    padding-top: 0px;
+}
 
 .jumbotron {
   position: relative;
-  padding: 30px 0;
-  text-align: left;
+  padding-top: 70px;
   text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
   background: #423B3C;
 }
@@ -21,6 +23,7 @@
   letter-spacing: -1px;
   line-height: 1;
 }
+
 .jumbotron p {
   font-size: 20px;
   font-weight: 300;
@@ -30,8 +33,10 @@
 }
 
 
+
 /* Don't use Pattern overlay
 ------------------------- */
+
 .jumbotron .container {
   position: relative;
   z-index: 2;
@@ -66,37 +71,11 @@ height: 100%;
 min-height: 100%;
 height: auto !important;
 height: 100%;
-margin: 0 auto -122px; /*footer height=61 + padding-top=30 + padding-bottom=30 + border=1 SUM=122*/
+margin: 0 auto -171px; /*footer height=110 + padding-top=30 + padding-bottom=30 + border=1 SUM=171*/
 }
 
 .footer, .push {
-height: 61px;
-}
-
-@media (max-width: 967px){
-  .wrapper {
-  min-height: 100%;
-  height: auto !important;
-  height: 100%;
-  margin: 0 auto -102px; /*footer height=61 + padding-top=30 + padding-bottom=30 + border=1 SUM=122 minus 20px caused from responsive css = 102*/
-  }
-}
-
-@media (min-width: 967px){
-  body {
-    padding-top: 0px;
-  }
-
-  .jumbotron {
-    padding-top: 70px;
-  }
-}
-
-@media (min-width: 468px) {
-
-  .jumbotron {
-    padding-left: 20px;
-  }
+height: 110px;
 }
 
 
