@@ -11,7 +11,6 @@
 
    <!--the css file ordering is important to work everything as intented. Do not change! -->
    <link href="<?php echo base_url('assets/css/bootstrap.css') ?>" rel="stylesheet">
-   <!-- <link href="<?php echo base_url('assets/css/bootstrap-responsive.css') ?>" rel="stylesheet"> -->
    <link href="<?php echo base_url('assets/css/docs.css') ?>" rel="stylesheet">
    <link href="<?php echo base_url('assets/css/footable/footable-0.1.css') ?>" rel="stylesheet">
    
@@ -32,7 +31,7 @@
 
    <script src="<?php echo base_url('assets/js/footable/footable.js') ?>"></script>
 
-	<script src="<?php echo base_url('assets/js/custom.js') ?>"></script>
+	
 
 
 

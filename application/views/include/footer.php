@@ -19,9 +19,10 @@
 
 <?php if(!empty($regs)):?>
 
-<link href="<?php echo base_url('assets/css/bootstrap-combobox.css')?>" rel="stylesheet">
+<!-- I will use select2 from http://fk.github.io/select2-bootstrap-css/ -->
+<!-- <link href="<?php echo base_url('assets/css/bootstrap-combobox.css')?>" rel="stylesheet">
 <script src="<?php echo base_url('assets/js/bootstrap-combobox.js')?>"></script>
-
+ -->
 <script type="text/javascript">
 $(document).keydown(function(event) {
         if (event.ctrlKey==true && (event.which == '39')) { //ctrl + right arrow
@@ -76,17 +77,17 @@ function fastgo(section){
 		<div class="modal-body">
 			<p>Επιλέξτε μαθητή:</p>
 			<p>
-				<select class="combobox input-large" id="combo">
+				<select class="combobox form-control" id="combo">
 					<?php foreach ($regs as $key => $value):?>
 						<option value="<?php echo $key;?>"><?php echo $value;?></option>
 					<?php endforeach;?>
 				</select>
 			</p>
 			<div class="btn-toolbar">
-			    <a class="btn" href="#" onclick="fastgo('card');">Στοιχεία</a>
-			    <a class="btn" href="#" onclick="fastgo('contact');">Επικοινωνία</a>
-			    <a class="btn" href="#" onclick="fastgo('attendance');">Φοίτηση</a>
-			    <a class="btn" href="#" onclick="fastgo('finance');">Οικονομικά</a>
+			    <a class="btn btn-default" href="#" onclick="fastgo('card');">Στοιχεία</a>
+			    <a class="btn btn-default" href="#" onclick="fastgo('contact');">Επικοινωνία</a>
+			    <a class="btn btn-default" href="#" onclick="fastgo('attendance');">Φοίτηση</a>
+			    <a class="btn btn-default" href="#" onclick="fastgo('finance');">Οικονομικά</a>
 			</div>
 		</div>
 		<div class="modal-footer">

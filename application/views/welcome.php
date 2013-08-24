@@ -12,9 +12,8 @@
 
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
-
-  <div class="container">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
       <div class="navbar-header">
           <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -42,7 +41,7 @@
             </li>
         </ul>
       </div><!--/.navbar-collapse -->
-    </nav>
+    </div>
   </div>
 
 
@@ -59,7 +58,7 @@
 
 <!-- main container
 ================================================== -->
-<div class="container"  style="margin-top:40px; margin-bottom:60px;">
+<div class="container" >
 
     <div class="row"> <!--main row-->
 
@@ -71,7 +70,7 @@
                 <div class="control-group">
                   <label  class="control-label">Επιλέξτε σχολικό έτος: </label>
                   <div class="controls">
-                    <select class="form-control" name="startschoolyear">
+                    <select class="form-control input-lg" name="startschoolyear">
                       <?php foreach($schoolyears as $data):?>
                        <option value="<?php {$return=explode('-', $data['schoolyear']); echo $return[0];}?>" 
                         <?php if($return[0] == $selected_schstart){ echo "selected = 'selected'";}?> >
