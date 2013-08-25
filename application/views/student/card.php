@@ -96,7 +96,7 @@ $(document).ready(function(){
       trigger:"click",
       container:'body',
       html:true,
-      title:"<span style=\"text-align:center;font-weight:bold;font-size:95%;color:grey;\">Επικόληση ονόματος:</span>",
+      title:"<col-md- style=\"text-align:center;font-weight:bold;font-size:95%;color:grey;\">Επικόληση ονόματος:</col-md->",
       content:"<div style=\"text-align:center;\"><button type=\"button\" class=\"btn btn-small\" onclick=\"paste_name('apy_receiver','name');\">Μαθητή</button><button type=\"button\" class=\"btn btn-small\" onclick=\"paste_name('apy_receiver','fathersname');\">Πατέρα</button><button type=\"button\" class=\"btn btn-small\" onclick=\"paste_name('apy_receiver','');\"><i class=\"icon-remove-circle\"></i></button></div>"
   });
 
@@ -106,7 +106,7 @@ $(document).ready(function(){
       container:'body',
       trigger:"click",
       html:true,
-      title:"<span style=\"text-align:center;font-weight:bold;font-size:95%;color:grey;\">Επικόληση ονόματος:</span>",
+      title:"<col-md- style=\"text-align:center;font-weight:bold;font-size:95%;color:grey;\">Επικόληση ονόματος:</col-md->",
       content:"<div style=\"text-align:center;\"><button type=\"button\" class=\"btn btn-small\" onclick=\"paste_name('afm_owner','name');\">Μαθητή</button><button type=\"button\" class=\"btn btn-small\" onclick=\"paste_name('afm_owner','fathersname');\">Πατέρα</button><button type=\"button\" class=\"btn btn-small\" onclick=\"paste_name('afm_owner','');\"><i class=\"icon-remove-circle\"></i></button></div>"
   });
 
@@ -133,31 +133,40 @@ function paste_name(where,who){
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+      <div class="container">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <col-md- class="icon-bar"></col-md->
+            <col-md- class="icon-bar"></col-md->
+            <col-md- class="icon-bar"></col-md->
           </button>
-          <!--<a class="brand" href="#">Tuition manager</a>-->
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-            <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
+          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
+     </div>
+
+      <div class="navbar-collapse collapse" role="navigation">
+        <ul class="nav navbar-nav">
+            <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
             <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-              <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-              <li><a href="#sections">Τμήματα</a></li>
-              <li><a href="#finance">Οικονομικά</a></li>
-              <li><a href="#reports">Αναφορές</a></li>
-              <li><a href="#admin">Διαχείριση</a></li>
-            </ul>
-            <ul class="nav pull-right">
-              <li><a href="#"><i class="icon-off"></i> Αποσύνδεση</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+            <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+            <li><a href="#sections">Τμήματα</a></li>
+            <li><a href="#finance">Οικονομικά</a></li>
+            <li><a href="#reports">Αναφορές</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Νικηφορακης Μανος</li>
+                <li><a href="#">Αλλαγή κωδικού</a></li>
+                <li><a href="#admin">Διαχείριση</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Αποσύνδεση</a></li>
+              </ul>
+            </li>
+        </ul>
+      </div><!--/.navbar-collapse -->
     </div>
+  </div>
 
 
 <!-- Subhead
@@ -175,12 +184,12 @@ function paste_name(where,who){
 
     <div class="container"  style="margin-bottom:60px;">
       
-      <div class="container-fluid">
+      <div class="container">
         
         <div style="margin-top:20px; margin-bottom:-15px;">
         <ul class="breadcrumb">
-          <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
-          <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> <span class="divider">></span></li>
+          <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
+          <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
           <li class="active">Καρτέλα μαθητή</li>
         </ul>
           <!-- <a class="btn btn-mini" href="<?php echo base_url();?>"><i class="icon-arrow-left"></i> πίσω</a>         -->
@@ -209,8 +218,8 @@ function paste_name(where,who){
         </ul>
 
         <div class="visible-phone">
-          <div class="row-fluid">
-            <div class="span12">
+          <div class="row">
+            <div class="col-md-12">
               <div class="btn-group pull-left">  
                 <a class="btn btn-small" href="#group1">Μαθητή</a>
                 <a class="btn btn-small" href="#group2">Μαθητολογίου</a>
@@ -223,46 +232,46 @@ function paste_name(where,who){
 
         <form id='mainform' action="<?php echo base_url()?>student/card/<?php echo $student['id']?>" method="post" accept-charset="utf-8">
        
-        <div class="row-fluid"> <!-- first row --> 
-          <div class="span6"> <!-- first row left side -->
+        <div class="row"> <!-- first row --> 
+          <div class="col-md-6"> <!-- first row left side -->
             <div class="contentbox" id="group1">
               <div class="title">
-                  <span class="icon">
+                  <col-md- class="icon">
                     <i class="icon-user"></i>
-                  </span>
+                  </col-md->
                   <h5>Στοιχεία μαθητή</h5>
                   <div class="buttons">
                     <button enabled id="editform1" type="button" class="btn btn-mini pull-right" data-toggle="button"><i class="icon-edit"></i></button>
                 </div>
               </div>
             <div class="content">  
-              <div class="row-fluid">
-                  <label>Κωδ.μαθητή(id)</label><input disabled class="span2" type="text" placeholder="" name="id" value="<?php echo $regcard['id'];?>">
+              <div class="row">
+                  <label>Κωδ.μαθητή(id)</label><input disabled class="col-md-2" type="text" placeholder="" name="id" value="<?php echo $regcard['id'];?>">
               </div>
-              <div class="row-fluid">
-                 <div class="span6">
-                  <label>Όνομα</label><input disabled class="span12" id="name" type="text" placeholder="" name="name" value="<?php echo $regcard['name'];?>">
+              <div class="row">
+                 <div class="col-md-6">
+                  <label>Όνομα</label><input disabled class="col-md-12" id="name" type="text" placeholder="" name="name" value="<?php echo $regcard['name'];?>">
                  </div>
-                 <div class="span6">
-                   <label>Επίθετο</label><input disabled class="span12" id="surname" type="text" placeholder="" name="surname" value="<?php echo $regcard['surname'];?>">
+                 <div class="col-md-6">
+                   <label>Επίθετο</label><input disabled class="col-md-12" id="surname" type="text" placeholder="" name="surname" value="<?php echo $regcard['surname'];?>">
                  </div>
               </div>  
-                <div class="row-fluid">
-                  <div class="span6">
-                    <label>Πατρώνυμο</label><input disabled class="span12" id="fathersname" type="text" placeholder="" name="fathers_name" value="<?php echo $regcard['fathers_name'];?>">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label>Πατρώνυμο</label><input disabled class="col-md-12" id="fathersname" type="text" placeholder="" name="fathers_name" value="<?php echo $regcard['fathers_name'];?>">
                   </div>
-                  <div class="span6">
-                    <label>Μητρώνυμο</label><input disabled class="span12" type="text" placeholder="" name="mothers_name" value="<?php echo $regcard['mothers_name'];?>">
+                  <div class="col-md-6">
+                    <label>Μητρώνυμο</label><input disabled class="col-md-12" type="text" placeholder="" name="mothers_name" value="<?php echo $regcard['mothers_name'];?>">
                   </div>
                 </div>
 
-                <div class="row-fluid">
-                  <div class="span6">
-                    <label>Διεύθυνση</label><input disabled class="span12" type="text" placeholder="" name="address" value="<?php echo $regcard['address'];?>">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label>Διεύθυνση</label><input disabled class="col-md-12" type="text" placeholder="" name="address" value="<?php echo $regcard['address'];?>">
                   </div>
-                  <div class="span6">
+                  <div class="col-md-6">
                     <label>Πόλη</label>
-                    <select disabled class="span12" name="region">
+                    <select disabled class="col-md-12" name="region">
                       <?php $sel=false;?>
                       <?php foreach ($region as $data):?>
                         <option value="<?php echo $data['region']?>"<?php if ($regcard['region'] == $data['region']){echo ' selected';$sel=true;}?>><?php echo $data['region']?></option>
@@ -272,10 +281,10 @@ function paste_name(where,who){
                   </div>
                 </div>
 
-                <div class="row-fluid">
-                  <div class="span6">
+                <div class="row">
+                  <div class="col-md-6">
                     <label>Τάξη</label>
-                    <select disabled id="classes" class="span12" name="class_id">
+                    <select disabled id="classes" class="col-md-12" name="class_id">
                       <?php $sel=false;?>
                       <?php foreach ($class as $data):?>
                         <option value="<?php echo $data['id']?>"<?php if ($regcard['class_id'] == $data['id']){echo ' selected'; $sel=true;}?>><?php echo $data['class_name'];?></option>
@@ -283,9 +292,9 @@ function paste_name(where,who){
                       <option value="" <?php if($sel==false) echo 'selected';?>></option>
                     </select>
                   </div>
-                  <div class="span6">
+                  <div class="col-md-6">
                     <label>Κατεύθυνση</label>
-                    <select disabled id="courses" class="span12" name="course_id">
+                    <select disabled id="courses" class="col-md-12" name="course_id">
                       <?php if ($course):?>
                         <?php $sel=false;?>
                         <?php foreach ($course as $data):?>
@@ -297,44 +306,44 @@ function paste_name(where,who){
                   </div>
                 </div>
                 <label>Παρατηρήσεις</label>
-                <textarea disabled class="span12" rows="3" name="notes"><?php echo $regcard['notes'];?></textarea>  
+                <textarea disabled class="col-md-12" rows="3" name="notes"><?php echo $regcard['notes'];?></textarea>  
 
             </div> <!-- end of content -->
           </div> <!-- end of contentbox -->
         </div> <!-- end of left side -->
 
-          <div class="span6"> <!-- first row right side -->
-            <div class="row-fluid"> <!-- right side embeded first row -->
-              <div class="span12">
+          <div class="col-md-6"> <!-- first row right side -->
+            <div class="row"> <!-- right side embeded first row -->
+              <div class="col-md-12">
                 <div class="contentbox"  id="group2">
                   <div class="title">
-                      <span class="icon">
+                      <col-md- class="icon">
                         <i class="icon-tag"></i>
-                      </span>
+                      </col-md->
                       <h5>Στοιχεία μαθητολογίου</h5>
                       <div class="buttons">
                         <button enabled id="editform2" type="button" class="btn btn-mini pull-right" data-toggle="button"><i class="icon-edit"></i></button>
                     </div>
                   </div>
                 <div class="content">  
-                  <div class="row-fluid">
-                    <div class="span6">
+                  <div class="row">
+                    <div class="col-md-6">
                         <label>Αρ. Μαθητολογίου</label>
-                        <input disabled type="text" class="span4" placeholder="" name="std_book_no" value="<?php echo $regcard['std_book_no'];?>"></input>
+                        <input disabled type="text" class="col-md-4" placeholder="" name="std_book_no" value="<?php echo $regcard['std_book_no'];?>"></input>
                     </div>
-                    <div class="span6">
+                    <div class="col-md-6">
                       <label>Ημ/νία εγγραφής</label>
-                      <input disabled type="text" class="span10" placeholder="" name="reg_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['reg_dt'])));?>" ></input>
+                      <input disabled type="text" class="col-md-10" placeholder="" name="reg_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['reg_dt'])));?>" ></input>
                     </div>
                   </div>
-                    <div class="row-fluid">
-                      <div class="span6">
+                    <div class="row">
+                      <div class="col-md-6">
                         <label>Ημ/νία έναρξης</label>
-                        <input disabled  type="text"  class="span10"  placeholder="" name="start_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['start_lessons_dt'])));?>"></input>
+                        <input disabled  type="text"  class="col-md-10"  placeholder="" name="start_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['start_lessons_dt'])));?>"></input>
                       </div>
-                      <div class="span6">
+                      <div class="col-md-6">
                         <label>Ημ/νία διαγραφής</label>
-                        <input disabled type="text"  class="span10"  placeholder="" name="del_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['del_lessons_dt'])));?>"></input>
+                        <input disabled type="text"  class="col-md-10"  placeholder="" name="del_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['del_lessons_dt'])));?>"></input>
                       </div>
                     </div>
                 </div> <!-- end of content -->
@@ -342,41 +351,41 @@ function paste_name(where,who){
             </div>
           </div> <!-- end of right side embeded first row -->
 
-          <div class="row-fluid"><!-- right side embeded second row -->
-            <div class="span12">
+          <div class="row"><!-- right side embeded second row -->
+            <div class="col-md-12">
               <div class="contentbox"  id="group3">
                 <div class="title">
-                    <span class="icon">
+                    <col-md- class="icon">
                       <i class="icon-money"></i>
-                    </span>
+                    </col-md->
                     <h5>Στοιχεία οικονομικών</h5>
                     <div class="buttons">
                       <button enabled id="editform3" type="button" class="btn btn-mini pull-right" data-toggle="button"><i class="icon-edit"></i></button>
                     </div>
                   </div>
                 <div class="content">  
-                  <div class="row-fluid">
-                    <div class="span4">
+                  <div class="row">
+                    <div class="col-md-4">
                       <label>Ποσό</label>
                       <div class="input-prepend">
-                        <span class="add-on">€</span>
-                         <input disabled type="text" class="span6" placeholder="" name="month_price" value="<?php echo $regcard['month_price'];?>"></input>
+                        <col-md- class="add-on">€</col-md->
+                         <input disabled type="text" class="col-md-6" placeholder="" name="month_price" value="<?php echo $regcard['month_price'];?>"></input>
                       </div>
                     </div>
-                    <div class="span8">
+                    <div class="col-md-8">
                       <label>Παραλήπτης ΑΠΥ</label>
-                      <input disabled id="apy_receiver" type="text" class="span12" placeholder="" name="apy_receiver" value="<?php echo $regcard['apy_receiver'];?>"></input>
+                      <input disabled id="apy_receiver" type="text" class="col-md-12" placeholder="" name="apy_receiver" value="<?php echo $regcard['apy_receiver'];?>"></input>
                     </div>
                   </div>
 
-                  <div class="row-fluid">
-                    <div class="span4">
+                  <div class="row">
+                    <div class="col-md-4">
                       <label>Α.Φ.Μ.</label>
-                      <input disabled type="text" class="span12" placeholder="" name="afm" value="<?php echo $regcard['afm'];?>"></input>
+                      <input disabled type="text" class="col-md-12" placeholder="" name="afm" value="<?php echo $regcard['afm'];?>"></input>
                     </div>
-                    <div class="span8">
+                    <div class="col-md-8">
                       <label>Κάτοχος Α.Φ.Μ.</label>
-                      <input disabled id="afm_owner" type="text" class="span12" name="afm_owner" value="<?php echo $regcard['afm_owner'];?>"></input>
+                      <input disabled id="afm_owner" type="text" class="col-md-12" name="afm_owner" value="<?php echo $regcard['afm_owner'];?>"></input>
                     </div>
                   </div>
                 </div> <!-- end  of content -->
