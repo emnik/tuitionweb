@@ -227,6 +227,7 @@ Unicorn - Admin Template http://wrapbootstrap.com/preview/WB0F35928
 /*  text-shadow: 0 1px 0 #FFFFFF;
   color: #666666;*/
   margin-bottom: 15px;
+  font-size: 14px;
 }
 
 .panel >.panel-heading > .buttons {

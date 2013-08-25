@@ -47,31 +47,41 @@ $(document).ready(function(){
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+      <div class="container">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <col-md- class="icon-bar"></col-md->
+            <col-md- class="icon-bar"></col-md->
+            <col-md- class="icon-bar"></col-md->
           </button>
-          <!--<a class="brand" href="#">Tuition manager</a>-->
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-            <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
+          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
+     </div>
+
+      <div class="navbar-collapse collapse" role="navigation">
+        <ul class="nav navbar-nav">
+            <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
             <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-              <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-              <li><a href="#sections">Τμήματα</a></li>
-              <li><a href="#finance">Οικονομικά</a></li>
-              <li><a href="#reports">Αναφορές</a></li>
-              <li><a href="#admin">Διαχείριση</a></li>
-            </ul>
-            <ul class="nav pull-right">
-              <li><a href="#"><i class="icon-off"></i> Αποσύνδεση</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+            <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+            <li><a href="#sections">Τμήματα</a></li>
+            <li><a href="#finance">Οικονομικά</a></li>
+            <li><a href="#reports">Αναφορές</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Νικηφορακης Μανος</li>
+                <li><a href="#">Αλλαγή κωδικού</a></li>
+                <li><a href="#admin">Διαχείριση</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Αποσύνδεση</a></li>
+              </ul>
+            </li>
+        </ul>
+      </div><!--/.navbar-collapse -->
     </div>
+  </div>
+
 
 
 <!-- Subhead
@@ -89,22 +99,19 @@ $(document).ready(function(){
 
   <div class="container"  style="margin-bottom:60px;">
       
-    <div class="container-fluid">
-      
-      <div style="margin-top:20px; margin-bottom:-15px;">
-      <ul class="breadcrumb">
-        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> <span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> <span class="divider">></span></li>
-        <li class="active">Επικοινωνία</li>
-      </ul>
-        <!-- <a class="btn btn-mini" href="<?php echo base_url();?>"><i class="icon-arrow-left"></i> πίσω</a>         -->
+      <div>
+        <ul class="breadcrumb">
+          <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
+          <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
+          <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a></li>
+          <li class="active">Επικοινωνία</li>
+        </ul>
       </div>
       
       
-
-      <h3><?php echo $student['surname'].' '.$student['name']?></h3>
-      
+      <p>
+        <h3><?php echo $student['surname'].' '.$student['name']?></h3>
+      </p>
 
       <ul class="nav nav-tabs">
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Στοιχεία</a></li>
@@ -113,63 +120,75 @@ $(document).ready(function(){
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a></li>
       </ul>
 
-      <div class="row-fluid">
+      <p></p>
+
+      <div class="row">
 
         <form action="<?php echo base_url()?>student/card/<?php echo $student['id']?>/contact" method="post" accept-charset="utf-8">
  
-        <div class="span6"> <!--Στοιχεία επικοινωνίας μαθητή-->
+        <div class="col-md-6"> <!--Στοιχεία επικοινωνίας μαθητή-->
           <div class="mainform">  
-          <div class="contentbox">
-            <div class="title">
+          <div class="panel panel-default">
+            <div class="panel-heading">
               <span class="icon">
                 <i class="icon-tag"></i>
               </span>
-              <h5>Στοιχεία επικοινωνίας μαθητή</h5>
+              <h3 class="panel-title">Στοιχεία επικοινωνίας μαθητή</h3>
               <div class="buttons">
-                  <button enabled id="editform1" type="button" class="btn btn-mini" data-toggle="button"><i class="icon-edit"></i></button>
+                  <button enabled id="editform1" type="button" class="btn btn-default btn-sm" data-toggle="button"><i class="icon-edit"></i></button>
               </div>
             </div>
 
-            <div class="content">
-            <label>Τηλέφωνο σπιτιού</label>
-            <input disabled type="text" class="span6" placeholder="" name="home_tel" value="<?php echo $contact['home_tel'];?>"></input>
-            <label>Κινητό τηλέφωνο</label>
-            <input disabled  type="text" class="span6" placeholder="" name="std_mobile" value="<?php echo $contact['std_mobile'];?>"></input>
+            <div class="panel-body">
+              <div class="form-group">
+                <label>Τηλέφωνο σπιτιού</label>
+                <input disabled type="text" class="form-control" placeholder="" name="home_tel" value="<?php echo $contact['home_tel'];?>"></input>
+               </div>
+              <div class="form-group">
+                <label>Κινητό τηλέφωνο</label>
+                <input disabled  type="text" class="form-control" placeholder="" name="std_mobile" value="<?php echo $contact['std_mobile'];?>"></input>
+              </div>
           </div>
         </div>
         </div><!--end of mainform-->
       </div> 
 
-        <div class="span6"> <!--Στοιχεία επικοινωνίας γονιών-->
+        <div class="col-md-6"> <!--Στοιχεία επικοινωνίας γονιών-->
                 <div class="mainform">
-          <div class="contentbox">
-            <div class="title">
+          <div class="panel panel-default">
+            <div class="panel-heading">
               <span class="icon">
                 <i class="icon-tag"></i>
               </span>
-              <h5>Στοιχεία επικοινωνίας γονέων</h5>
+              <h3 class="panel-title">Στοιχεία επικοινωνίας γονέων</h3>
               <div class="buttons">
-                  <button enabled id="editform2" type="button" class="btn btn-mini" data-toggle="button"><i class="icon-edit"></i></button>
+                  <button enabled id="editform2" type="button" class="btn btn-default btn-sm" data-toggle="button"><i class="icon-edit"></i></button>
               </div>
             </div>
-            <div class="content">
-              <label>Κινητό πατέρα <?php if(!empty($secondary)) {if (!is_null($secondary['fathers_name'])) echo '('.$secondary['fathers_name'].')';}?></label>
-              <input disabled  type="text" class="span6" placeholder="" name="fathers_mobile" value="<?php echo $contact['fathers_mobile'];?>"></input>
-              <label>Κινητό μητέρας <?php if(!empty($secondary)) {if (!is_null($secondary['mothers_name'])) echo '('.$secondary['mothers_name'].')';}?></label>
-              <input disabled  type="text" class="span6" placeholder="" name="mothers_mobile" value="<?php echo $contact['mothers_mobile'];?>"></input>
-              <label>Τηλέφωνο εργασίας</label>
-              <input disabled  type="text" class="span6" placeholder="" name="work_tel" value="<?php echo $contact['work_tel'];?>"></input>
+            <div class="panel-body">
+              <div class="form-group">
+                <label>Κινητό πατέρα <?php if(!empty($secondary)) {if (!is_null($secondary['fathers_name'])) echo '('.$secondary['fathers_name'].')';}?></label>
+                <input disabled  type="text" class="form-control" placeholder="" name="fathers_mobile" value="<?php echo $contact['fathers_mobile'];?>"></input>
+              </div>
+              <div class="form-group">
+                <label>Κινητό μητέρας <?php if(!empty($secondary)) {if (!is_null($secondary['mothers_name'])) echo '('.$secondary['mothers_name'].')';}?></label>
+                <input disabled  type="text" class="form-control" placeholder="" name="mothers_mobile" value="<?php echo $contact['mothers_mobile'];?>"></input>
+              </div>
+              <div class="form-group">
+                <label>Τηλέφωνο εργασίας</label>
+                <input disabled  type="text" class="form-control" placeholder="" name="work_tel" value="<?php echo $contact['work_tel'];?>"></input>
+              </div>
             </div>
           </div>
         </div><!--end of mainform-->
         </div> 
       </div>
-      <div class="form-actions">
+      <div>
         <button disabled id="submitbtn" type="button" class="btn btn-primary">Αποθήκευση</button>
-        <button disabled id="cancelbtn" type="button" class="btn btn">Ακύρωση</button>
+        <button disabled id="cancelbtn" type="button" class="btn btn-default">Ακύρωση</button>
       </div>
     </form>
-    </div>
+
   </div> <!--end of main container-->
 <div class="push"></div>
 </div> <!-- end of body wrapper-->

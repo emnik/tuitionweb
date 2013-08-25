@@ -3,13 +3,13 @@
 function toggleedit(togglecontrol, id) {
 
   if ($(togglecontrol).hasClass('active')){
-    $('#' + id).closest('.contentbox').find(':input').each(function(){
+    $('#' + id).closest('.panel').find(':input').each(function(){
         $(this).attr('disabled', 'disabled');
       });
     }
   else 
     {
-      $('#' + id).closest('.contentbox').find(':input').removeAttr('disabled');
+      $('#' + id).closest('.panel').find(':input').removeAttr('disabled');
     };
     
     $(togglecontrol).removeAttr('disabled');
@@ -19,7 +19,7 @@ $(document).ready(function(){
 
     //we must enable all form fields to submit the form with no errors!
     $("body").on('click', '#submitbtn', function(){
-        $('.contentbox').find(':input:disabled').removeAttr('disabled');
+        $('.panel').find(':input:disabled').removeAttr('disabled');
         $('form').submit();
     });
 
@@ -27,8 +27,8 @@ $(document).ready(function(){
     $("body").on('click', '#editform1, #editform2, #editform3', function(){
       toggleedit(this, this.id);
 
-      var all=$('.content').find(':input').length;
-      var disabled=$('.content').find(':input:disabled').length;
+      var all=$('.panel-body').find(':input').length;
+      var disabled=$('.panel-body').find(':input:disabled').length;
       
       if(all==disabled){
           $('#submitbtn').attr('disabled', 'disabled');
@@ -96,8 +96,8 @@ $(document).ready(function(){
       trigger:"click",
       container:'body',
       html:true,
-      title:"<col-md- style=\"text-align:center;font-weight:bold;font-size:95%;color:grey;\">Επικόληση ονόματος:</col-md->",
-      content:"<div style=\"text-align:center;\"><button type=\"button\" class=\"btn btn-small\" onclick=\"paste_name('apy_receiver','name');\">Μαθητή</button><button type=\"button\" class=\"btn btn-small\" onclick=\"paste_name('apy_receiver','fathersname');\">Πατέρα</button><button type=\"button\" class=\"btn btn-small\" onclick=\"paste_name('apy_receiver','');\"><i class=\"icon-remove-circle\"></i></button></div>"
+      title:"<span style=\"text-align:center;font-weight:bold;font-size:95%;color:grey;\">Επικόληση ονόματος:</span>",
+      content:"<div style=\"text-align:center;\"><button type=\"button\" class=\"btn btn-default btn-sm\" onclick=\"paste_name('apy_receiver','name');\">Μαθητή</button><button type=\"button\" class=\"btn btn-default btn-sm\" onclick=\"paste_name('apy_receiver','fathersname');\">Πατέρα</button><button type=\"button\" class=\"btn btn-default btn-sm\" onclick=\"paste_name('apy_receiver','');\"><i class=\"icon-remove-circle\"></i></button></div>"
   });
 
 
@@ -106,8 +106,8 @@ $(document).ready(function(){
       container:'body',
       trigger:"click",
       html:true,
-      title:"<col-md- style=\"text-align:center;font-weight:bold;font-size:95%;color:grey;\">Επικόληση ονόματος:</col-md->",
-      content:"<div style=\"text-align:center;\"><button type=\"button\" class=\"btn btn-small\" onclick=\"paste_name('afm_owner','name');\">Μαθητή</button><button type=\"button\" class=\"btn btn-small\" onclick=\"paste_name('afm_owner','fathersname');\">Πατέρα</button><button type=\"button\" class=\"btn btn-small\" onclick=\"paste_name('afm_owner','');\"><i class=\"icon-remove-circle\"></i></button></div>"
+      title:"<span style=\"text-align:center;font-weight:bold;font-size:95%;color:grey;\">Επικόληση ονόματος:</span>",
+      content:"<div style=\"text-align:center;\"><button type=\"button\" class=\"btn btn-default btn-sm\" onclick=\"paste_name('afm_owner','name');\">Μαθητή</button><button type=\"button\" class=\"btn btn-default btn-sm\" onclick=\"paste_name('afm_owner','fathersname');\">Πατέρα</button><button type=\"button\" class=\"btn btn-default btn-sm\" onclick=\"paste_name('afm_owner','');\"><i class=\"icon-remove-circle\"></i></button></div>"
   });
 
 }); //end of (document).ready
@@ -183,30 +183,26 @@ function paste_name(where,who){
 ================================================== -->
 
     <div class="container"  style="margin-bottom:60px;">
-      
-      <div class="container">
         
-        <div style="margin-top:20px; margin-bottom:-15px;">
-        <ul class="breadcrumb">
-          <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
-          <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-          <li class="active">Καρτέλα μαθητή</li>
-        </ul>
-          <!-- <a class="btn btn-mini" href="<?php echo base_url();?>"><i class="icon-arrow-left"></i> πίσω</a>         -->
+        <div>
+          <ul class="breadcrumb">
+            <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
+            <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
+            <li class="active">Καρτέλα μαθητή</li>
+          </ul>
         </div>
         
-        
-
-        <h3>
-          <?php
-          if(!empty($student['surname'])){
-            echo $student['surname'].' '.$student['name'];
-          }
-          else {
-            echo "Νέα εγγραφή";
-          };?>
-        </h3>
-        
+        <p>
+          <h3>
+            <?php
+            if(!empty($student['surname'])){
+              echo $student['surname'].' '.$student['name'];
+            }
+            else {
+              echo "Νέα εγγραφή";
+            };?>
+          </h3>
+        </p>        
 
         <ul class="nav nav-tabs">
           <li class="active">
@@ -217,13 +213,15 @@ function paste_name(where,who){
           <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a></li>
         </ul>
 
-        <div class="visible-phone">
+        <p></p>
+
+        <div class="visible-xs visible-sm">
           <div class="row">
             <div class="col-md-12">
               <div class="btn-group pull-left">  
-                <a class="btn btn-small" href="#group1">Μαθητή</a>
-                <a class="btn btn-small" href="#group2">Μαθητολογίου</a>
-                <a class="btn btn-small" href="#group3">Οικονομμικών</a>
+                <a class="btn btn-default btn-sm" href="#group1">Μαθητή</a>
+                <a class="btn btn-default btn-sm" href="#group2">Μαθητολογίου</a>
+                <a class="btn btn-default btn-sm" href="#group3">Οικονομμικών</a>
               </div>
             </div>      
           </div>
@@ -232,164 +230,215 @@ function paste_name(where,who){
 
         <form id='mainform' action="<?php echo base_url()?>student/card/<?php echo $student['id']?>" method="post" accept-charset="utf-8">
        
+       <p></p>
+
         <div class="row"> <!-- first row --> 
           <div class="col-md-6"> <!-- first row left side -->
-            <div class="contentbox" id="group1">
-              <div class="title">
-                  <col-md- class="icon">
+            <div class="panel panel-default" id="group1">
+              <div class="panel-heading">
+                  <span class="icon">
                     <i class="icon-user"></i>
-                  </col-md->
-                  <h5>Στοιχεία μαθητή</h5>
+                  </span>
+                  <h3 class="panel-title">Στοιχεία μαθητή</h3>
                   <div class="buttons">
-                    <button enabled id="editform1" type="button" class="btn btn-mini pull-right" data-toggle="button"><i class="icon-edit"></i></button>
+                    <button enabled id="editform1" type="button" class="btn btn-default btn-sm pull-right" data-toggle="button"><i class="icon-edit"></i></button>
                 </div>
               </div>
-            <div class="content">  
+            <div class="panel-body">  
               <div class="row">
-                  <label>Κωδ.μαθητή(id)</label><input disabled class="col-md-2" type="text" placeholder="" name="id" value="<?php echo $regcard['id'];?>">
+                <div class="col-md-3 form-group">
+                  <label>Κωδ.μαθητή(id)</label>
+                  <input disabled class="form-control" type="text" placeholder="" name="id" value="<?php echo $regcard['id'];?>">
+                </div>
               </div>
               <div class="row">
                  <div class="col-md-6">
-                  <label>Όνομα</label><input disabled class="col-md-12" id="name" type="text" placeholder="" name="name" value="<?php echo $regcard['name'];?>">
+                    <div class="form-group"> 
+                      <label>Όνομα</label>
+                      <input disabled class="form-control" id="name" type="text" placeholder="" name="name" value="<?php echo $regcard['name'];?>">
+                    </div>
                  </div>
                  <div class="col-md-6">
-                   <label>Επίθετο</label><input disabled class="col-md-12" id="surname" type="text" placeholder="" name="surname" value="<?php echo $regcard['surname'];?>">
+                    <div class="form-group"> 
+                      <label>Επίθετο</label>
+                      <input disabled class="form-control" id="surname" type="text" placeholder="" name="surname" value="<?php echo $regcard['surname'];?>">
+                    </div>
                  </div>
               </div>  
                 <div class="row">
                   <div class="col-md-6">
-                    <label>Πατρώνυμο</label><input disabled class="col-md-12" id="fathersname" type="text" placeholder="" name="fathers_name" value="<?php echo $regcard['fathers_name'];?>">
+                    <div class="form-group">  
+                      <label>Πατρώνυμο</label>
+                      <input disabled class="form-control" id="fathersname" type="text" placeholder="" name="fathers_name" value="<?php echo $regcard['fathers_name'];?>">
+                    </div>
                   </div>
                   <div class="col-md-6">
-                    <label>Μητρώνυμο</label><input disabled class="col-md-12" type="text" placeholder="" name="mothers_name" value="<?php echo $regcard['mothers_name'];?>">
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-6">
-                    <label>Διεύθυνση</label><input disabled class="col-md-12" type="text" placeholder="" name="address" value="<?php echo $regcard['address'];?>">
-                  </div>
-                  <div class="col-md-6">
-                    <label>Πόλη</label>
-                    <select disabled class="col-md-12" name="region">
-                      <?php $sel=false;?>
-                      <?php foreach ($region as $data):?>
-                        <option value="<?php echo $data['region']?>"<?php if ($regcard['region'] == $data['region']){echo ' selected';$sel=true;}?>><?php echo $data['region']?></option>
-                      <?php endforeach;?>
-                      <option value='NULL' <?php if($sel==false) echo ' selected';?>></option>
-                    </select>
+                    <div class="form-group">
+                      <label>Μητρώνυμο</label>
+                      <input disabled class="form-control" type="text" placeholder="" name="mothers_name" value="<?php echo $regcard['mothers_name'];?>">
+                    </div>
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-md-6">
-                    <label>Τάξη</label>
-                    <select disabled id="classes" class="col-md-12" name="class_id">
-                      <?php $sel=false;?>
-                      <?php foreach ($class as $data):?>
-                        <option value="<?php echo $data['id']?>"<?php if ($regcard['class_id'] == $data['id']){echo ' selected'; $sel=true;}?>><?php echo $data['class_name'];?></option>
-                      <?php endforeach;?>
-                      <option value="" <?php if($sel==false) echo 'selected';?>></option>
-                    </select>
+                      <div class="form-group">
+                        <label>Διεύθυνση</label>
+                        <input disabled class="form-control" type="text" placeholder="" name="address" value="<?php echo $regcard['address'];?>">
+                      </div>
                   </div>
                   <div class="col-md-6">
-                    <label>Κατεύθυνση</label>
-                    <select disabled id="courses" class="col-md-12" name="course_id">
-                      <?php if ($course):?>
+                    <div class="form-group">
+                      <label>Πόλη</label>
+                      <select disabled class="form-control" name="region">
                         <?php $sel=false;?>
-                        <?php foreach ($course as $data):?>
-                          <option value="<?php echo $data['id']?>"<?php if ($regcard['course_id'] == $data['id']){echo ' selected'; $sel=true;}?>><?php echo $data['course'];?></option>
+                        <?php foreach ($region as $data):?>
+                          <option value="<?php echo $data['region']?>"<?php if ($regcard['region'] == $data['region']){echo ' selected';$sel=true;}?>><?php echo $data['region']?></option>
                         <?php endforeach;?>
-                        <!-- <option value="none" <?php if($sel==false) echo 'selected';?>></option> -->
-                      <?php endif;?>
-                    </select>
+                        <option value='NULL' <?php if($sel==false) echo ' selected';?>></option>
+                      </select>
+                      </div>
                   </div>
                 </div>
-                <label>Παρατηρήσεις</label>
-                <textarea disabled class="col-md-12" rows="3" name="notes"><?php echo $regcard['notes'];?></textarea>  
 
-            </div> <!-- end of content -->
-          </div> <!-- end of contentbox -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Τάξη</label>
+                      <select disabled id="classes" class="form-control" name="class_id">
+                        <?php $sel=false;?>
+                        <?php foreach ($class as $data):?>
+                          <option value="<?php echo $data['id']?>"<?php if ($regcard['class_id'] == $data['id']){echo ' selected'; $sel=true;}?>><?php echo $data['class_name'];?></option>
+                        <?php endforeach;?>
+                        <option value="" <?php if($sel==false) echo 'selected';?>></option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Κατεύθυνση</label>
+                      <select disabled id="courses" class="form-control" name="course_id">
+                        <?php if ($course):?>
+                          <?php $sel=false;?>
+                          <?php foreach ($course as $data):?>
+                            <option value="<?php echo $data['id']?>"<?php if ($regcard['course_id'] == $data['id']){echo ' selected'; $sel=true;}?>><?php echo $data['course'];?></option>
+                          <?php endforeach;?>
+                          <!-- <option value="none" <?php if($sel==false) echo 'selected';?>></option> -->
+                        <?php endif;?>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Παρατηρήσεις</label>
+                    <textarea disabled class="form-control" rows="3" name="notes">
+                      <?php echo $regcard['notes'];?>
+                    </textarea>  
+                  </div>
+                </div>
+                </div>
+            </div> <!-- end of panel-body -->
+          </div> <!-- end of panel -->
         </div> <!-- end of left side -->
 
           <div class="col-md-6"> <!-- first row right side -->
             <div class="row"> <!-- right side embeded first row -->
               <div class="col-md-12">
-                <div class="contentbox"  id="group2">
-                  <div class="title">
-                      <col-md- class="icon">
+                <div class="panel panel-default"  id="group2">
+                  <div class="panel-heading">
+                      <span class="icon">
                         <i class="icon-tag"></i>
-                      </col-md->
-                      <h5>Στοιχεία μαθητολογίου</h5>
+                      </span>
+                      <h3 class="panel-title">Στοιχεία μαθητολογίου</h3>
                       <div class="buttons">
-                        <button enabled id="editform2" type="button" class="btn btn-mini pull-right" data-toggle="button"><i class="icon-edit"></i></button>
+                        <button enabled id="editform2" type="button" class="btn btn-default btn-sm pull-right" data-toggle="button"><i class="icon-edit"></i></button>
                     </div>
                   </div>
-                <div class="content">  
+                <div class="panel-body">  
                   <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Αρ. Μαθητολογίου</label>
+                          <div class="col-md-6" style="margin-left:-15px; padding-right:0px; margin-right:30px;">
+                            <input disabled type="text" class="form-control" placeholder="" name="std_book_no" value="<?php echo $regcard['std_book_no'];?>"></input>
+                          </div>
+                       </div>
+                     </div>
                     <div class="col-md-6">
-                        <label>Αρ. Μαθητολογίου</label>
-                        <input disabled type="text" class="col-md-4" placeholder="" name="std_book_no" value="<?php echo $regcard['std_book_no'];?>"></input>
+                      <div class="form-group">
+                        <label>Ημ/νία εγγραφής</label>  
+                        <input disabled type="text" class="form-control" placeholder="" name="reg_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['reg_dt'])));?>" ></input>
+                      </div>
                     </div>
-                    <div class="col-md-6">
-                      <label>Ημ/νία εγγραφής</label>
-                      <input disabled type="text" class="col-md-10" placeholder="" name="reg_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['reg_dt'])));?>" ></input>
-                    </div>
-                  </div>
+                  </div>                  
                     <div class="row">
                       <div class="col-md-6">
-                        <label>Ημ/νία έναρξης</label>
-                        <input disabled  type="text"  class="col-md-10"  placeholder="" name="start_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['start_lessons_dt'])));?>"></input>
+                        <div class="form-group">
+                          <label>Ημ/νία έναρξης</label>
+                          <input disabled  type="text"  class="form-control"  placeholder="" name="start_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['start_lessons_dt'])));?>"></input>
+                        </div>
                       </div>
                       <div class="col-md-6">
-                        <label>Ημ/νία διαγραφής</label>
-                        <input disabled type="text"  class="col-md-10"  placeholder="" name="del_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['del_lessons_dt'])));?>"></input>
+                        <div class="form-group">
+                          <label>Ημ/νία διαγραφής</label>
+                          <input disabled type="text"  class="form-control"  placeholder="" name="del_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['del_lessons_dt'])));?>"></input>
+                        </div>
                       </div>
                     </div>
-                </div> <!-- end of content -->
-              </div> <!-- end of contentbox -->
+                </div> <!-- end of panel-body -->
+              </div> <!-- end of panel -->
             </div>
           </div> <!-- end of right side embeded first row -->
 
           <div class="row"><!-- right side embeded second row -->
             <div class="col-md-12">
-              <div class="contentbox"  id="group3">
-                <div class="title">
-                    <col-md- class="icon">
+              <div class="panel panel-default"  id="group3">
+                <div class="panel-heading">
+                    <span class="icon">
                       <i class="icon-money"></i>
-                    </col-md->
-                    <h5>Στοιχεία οικονομικών</h5>
+                    </span>
+                    <h3 class="panel-title">Στοιχεία οικονομικών</h3>
                     <div class="buttons">
-                      <button enabled id="editform3" type="button" class="btn btn-mini pull-right" data-toggle="button"><i class="icon-edit"></i></button>
+                      <button enabled id="editform3" type="button" class="btn btn-default btn-sm pull-right" data-toggle="button"><i class="icon-edit"></i></button>
                     </div>
                   </div>
-                <div class="content">  
+                <div class="panel-body">  
                   <div class="row">
                     <div class="col-md-4">
-                      <label>Ποσό</label>
-                      <div class="input-prepend">
-                        <col-md- class="add-on">€</col-md->
-                         <input disabled type="text" class="col-md-6" placeholder="" name="month_price" value="<?php echo $regcard['month_price'];?>"></input>
+                      <div class="form-group">
+                        <label>Ποσό</label>
+                        <div class="input-group">
+                          <span class="input-group-addon">€</span>
+                          <input disabled type="text" class="form-control" placeholder="" name="month_price" value="<?php echo $regcard['month_price'];?>"></input>
+                        </div>
                       </div>
                     </div>
                     <div class="col-md-8">
-                      <label>Παραλήπτης ΑΠΥ</label>
-                      <input disabled id="apy_receiver" type="text" class="col-md-12" placeholder="" name="apy_receiver" value="<?php echo $regcard['apy_receiver'];?>"></input>
+                      <div class="form-group">
+                        <label>Παραλήπτης ΑΠΥ</label>
+                        <input disabled id="apy_receiver" type="text" class="form-control" placeholder="" name="apy_receiver" value="<?php echo $regcard['apy_receiver'];?>"></input>
+                      </div>
                     </div>
                   </div>
 
                   <div class="row">
                     <div class="col-md-4">
-                      <label>Α.Φ.Μ.</label>
-                      <input disabled type="text" class="col-md-12" placeholder="" name="afm" value="<?php echo $regcard['afm'];?>"></input>
+                      <div class="form-group">
+                        <label>Α.Φ.Μ.</label>
+                        <input disabled type="text" class="form-control" placeholder="" name="afm" value="<?php echo $regcard['afm'];?>"></input>
+                      </div>
                     </div>
                     <div class="col-md-8">
-                      <label>Κάτοχος Α.Φ.Μ.</label>
-                      <input disabled id="afm_owner" type="text" class="col-md-12" name="afm_owner" value="<?php echo $regcard['afm_owner'];?>"></input>
+                      <div class="form-group">
+                        <label>Κάτοχος Α.Φ.Μ.</label>
+                        <input disabled id="afm_owner" type="text" class="form-control" name="afm_owner" value="<?php echo $regcard['afm_owner'];?>"></input>
+                      </div>
                     </div>
                   </div>
-                </div> <!-- end  of content -->
-              </div> <!-- end of contentbox -->
+                </div> <!-- end  of panel-body -->
+              </div> <!-- end of panel -->
             </div>
           </div> <!-- end of right side embeded second row -->
 
@@ -397,18 +446,16 @@ function paste_name(where,who){
         </div> <!-- end of right side -->
       </div> <!-- end of first row -->
 
-
-
-
-          <div class="form-actions">
-            <button disabled id="submitbtn" type="submit" class="btn btn-primary">Αποθήκευση</button>
-            <button disabled id="cancelbtn" type="button" class="btn">Ακύρωση</button>
-          </div>
-        </form>
+      <div>
+        <button disabled id="submitbtn" type="submit" class="btn btn-primary">Αποθήκευση</button>
+        <button disabled id="cancelbtn" type="button" class="btn btn-default">Ακύρωση</button>
       </div>
-    </div>
-    </div> <!--end of main fluid row container-->
-   </div> <!-- /container -->
+    </form>
+  </div>
+</div>
+
+
+</div> <!-- /container -->
 
 <div class="push"></div>
 </div> <!-- end of body wrapper-->

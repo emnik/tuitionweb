@@ -252,29 +252,13 @@ function resizeWindow(e)
 
     <div class="container" style="padding-top:10px; padding-bottom:70px;">
       
-      <div style="margin-top:20px; margin-bottom:15px;">
+      <div>
       <ul class="breadcrumb">
         <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
         <li class="active">Μαθητολόγιο</li>
       </ul>
       </div>
 
-<!--       <div class="contentbox">
-       <div class="title">
-          <span class="icon">
-            <i class="icon-book"></i>
-          </span>
-          <h5>Μαθητολόγιο</h5>
-          <div class="buttons">
-            <button class="btn btn-sm btn-danger " id="del-reg"><i class="icon-trash"></i></button>
-             <div class="btn-group">
-              <button class="btn btn-sm"><i class="icon-refresh"></i></button>
-              <button class="btn btn-sm" id="new-reg"><i class="icon-plus"></i></button>
-            </div>
-            <button class="btn btn-sm btn-success" id="student-card"><i class="icon-user"> Καρτέλα Μαθητή</i></button>
-          </div>
-        </div>
-      <div class="content"> -->
 
     <div class="panel panel-default">
        <div class="panel-heading">
