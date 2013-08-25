@@ -101,7 +101,7 @@ $(document).ready(function(){
     "aaData": sData,
     "aoColumns": [
             { "mData": "id",
-              "sClass": "span2",
+              //"sClass": "col-md-2",
               "mRender": function (data, type, full) {
                   return '<label class="checkbox"><input type="checkbox" name="selection['+data+']"></input></label>';
                   }
@@ -110,9 +110,9 @@ $(document).ready(function(){
             { "mData": "nickname" },
             { "mData": "section" }
         ],
-    // "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+    // "sDom": "<'row'<'col-md-6'l><'col-md-6'f>r>t<'row'<'col-md-6'i><'col-md-6'p>>",
     // "sPaginationType": "bootstrap",
-    "sDom": "<'row-fluid'<'span12'rt>>",
+    "sDom": "<'row'<'col-md-12'rt>>",
     "bSort": true,
     "bFilter": false,
     "bPaginate": false,
@@ -290,31 +290,40 @@ function noprograminfo(){
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <div class="container">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <!--<a class="brand" href="#">Tuition manager</a>-->
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-            <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
+          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
+     </div>
+
+      <div class="navbar-collapse collapse" role="navigation">
+        <ul class="nav navbar-nav">
+            <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
             <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-              <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-              <li><a href="#sections">Τμήματα</a></li>
-              <li><a href="#finance">Οικονομικά</a></li>
-              <li><a href="#reports">Αναφορές</a></li>
-              <li><a href="#admin">Διαχείριση</a></li>
-            </ul>
-            <ul class="nav pull-right">
-              <li><a href="#"><i class="icon-off"></i> Αποσύνδεση</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+            <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+            <li><a href="#sections">Τμήματα</a></li>
+            <li><a href="#finance">Οικονομικά</a></li>
+            <li><a href="#reports">Αναφορές</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Νικηφορακης Μανος</li>
+                <li><a href="#">Αλλαγή κωδικού</a></li>
+                <li><a href="#admin">Διαχείριση</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Αποσύνδεση</a></li>
+              </ul>
+            </li>
+        </ul>
+      </div><!--/.navbar-collapse -->
     </div>
+  </div>
 
 
 <!-- Subhead
@@ -332,22 +341,19 @@ function noprograminfo(){
 
   <div class="container"  style="margin-bottom:60px;">
   
-    <div class="container-fluid">
-      
-      <div style="margin-top:20px; margin-bottom:-15px;">
-      <ul class="breadcrumb">
-        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> <span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> <span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Φοίτηση</a> <span class="divider">></span></li>
-        <li class="active">Διαχείριση</li>
-      </ul>
-        <!-- <a class="btn btn-mini" href="<?php echo base_url();?>"><i class="icon-arrow-left"></i> πίσω</a>         -->
+      <div>
+        <ul class="breadcrumb">
+          <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
+          <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> </li>
+          <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> </li>
+          <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Φοίτηση</a> </li>
+          <li class="active">Διαχείριση</li>
+        </ul>
       </div>
       
-      
-
-      <h3><?php echo $student['surname'].' '.$student['name']?></h3>
+      <p>
+        <h3><?php echo $student['surname'].' '.$student['name']?></h3>
+      </p>
       
 
       <ul class="nav nav-tabs">
@@ -357,57 +363,63 @@ function noprograminfo(){
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a></li>
       </ul>
      
-      <ul class="nav nav-pills">
+      <ul class="nav nav-pills" style="margin:15px 0px;">
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Σύνοψη</a></li>
         <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/manage">Διαχείριση</a></li>
       </ul>
 
 
-      <div class="row-fluid"> <!--Προσθήκη μαθήματος-->
-      	<div class="span12">
-            <div class="contentbox">
-              <div class="title">
+      <div class="row"> <!--Προσθήκη μαθήματος-->
+      	<div class="col-md-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
                 <span class="icon">
                   <i class="icon-chevron-down"></i>
                 </span>
-                <h5>Εισαγωγή μαθητή σε τμήματα</h5>
+                <h3 class="panel-title">Εισαγωγή μαθητή σε τμήματα</h3>
               </div>
-            <div class="content">
-      			<form id="addform" accept-charset="utf-8">
-  					<div class="row-fluid">
-  						<div class="span5">
-	      					<label class="radio">
-	      						<input type="radio" id="radioall" name="insertoption" value="all" checked></input>
-	      						Εισαγωγή σε <u>όλα τα μαθήματα του τμήματος</u> :
-	      					</label>
+            <div class="panel-body">
+      			<form id="addform" accept-charset="utf-8" role="form">
+  					<div class="row">
+  						<div class="col-md-5">
+                <div class="radio">
+	      					  <label>
+	      						   <input type="radio" id="radioall" name="insertoption" value="all" checked></input>
+	      						   Εισαγωγή σε <u>όλα τα μαθήματα του τμήματος</u> :
+	      					  </label>
 	      				</div>
-	      				<div class="span7">
-		      				<select id="sectiongroups" class="span12 pull-left" name="section">
+              </div>
+	      				<div class="col-md-7">
+		      				<select id="sectiongroups" class="form-control pull-left" name="section">
                       <?php foreach ($group_sections as $data):?>
                         <option value="<?php echo $data['section']?>"><?php echo $data['section'];?></option>
                       <?php endforeach;?>
 		      				</select>
 		      			</div>
 		      		</div>
-  					<div class="row-fluid">
-  						<div class="span5">
-	      					<label class="radio">
-	      						<input type="radio" id="radiomultiple" name="insertoption" value="multiple"></input>
-	      						Εισαγωγή στα ακόλουθα μαθήματα (<u>πολλαπλών τμήμάτων</u>) :
-	      					</label>
-	      				</div>
-	      				<div class="span7">
-		      				<select multiple id="sectionsmultiple" size="7" class="span12" name="sections[]">
+  					<div class="row">
+  						<div class="col-md-5">
+  	      			  <div class="radio">
+                		<label>
+  	      						<input type="radio" id="radiomultiple" name="insertoption" value="multiple"></input>
+  	      						Εισαγωγή στα ακόλουθα μαθήματα (<u>πολλαπλών τμήμάτων</u>) :
+  	      					</label>
+  	      			  </div>
+              	</div>
+	      				<div class="col-md-7">
+		      				<select multiple id="sectionsmultiple" size="7" class="form-control" name="sections[]">
                       <?php foreach ($all_sections as $data):?>
                         <option value="<?php echo $data['id']?>"><?php echo $data['section_title'];?></option>
                       <?php endforeach;?>
 		      				</select>
 		      			</div>
 		      		</div>
-      			<div class="row-fluid">
-      				<div class="span12">
-      					<button type="button" class="btn btn-primary pull-right" id="addsubmit" name="addsubmit">Εισαγωγή</button>
-      				</div>
+      			<div class="row">
+      				<div class="col-md-12">
+                <div class="form-group"> <!--needed for margins... -->
+      					   <button type="button" class="btn btn-primary pull-right" id="addsubmit" name="addsubmit">Εισαγωγή</button>
+      				  </div>
+              </div>
       			</div>
       		</form>
       		</div>
@@ -415,22 +427,22 @@ function noprograminfo(){
       </div>
     </div>
 
-		<div class="row-fluid"> <!--Πρόγραμμα Σπουδών-->
-      	<div class="span12"> 
-            <div class="contentbox">
-              <div class="title">
+		<div class="row"> <!--Πρόγραμμα Σπουδών-->
+      	<div class="col-md-12"> 
+            <div class="panel panel-default">
+              <div class="panel-heading">
                 <span class="icon">
                   <i class="icon-file"></i>
                 </span>
-                <h5>Πρόγραμμα σπουδών</h5>
+                <h3 class="panel-title">Πρόγραμμα σπουδών</h3>
               </div>
-            <div class="content">
+            <div class="panel-body">
 					<div class="alert alert-info fade-in" id="nodata">
 		          <p><i class="icon-info-sign"></i> Επιλέξτε την εισαγωγή του μαθητή σε όλα τα μαθήματα ενός τμήματος ή σε μαθήματα διαφορετικών τμημάτων από τα παραπάνω πεδία επιλογής.</p>
 		      </div> <!-- end of nodata div -->
           <div id="data">
   		    	<form id="deleteform" charset="utf-8">
-  		    	<table cellpadding="0" cellspacing="0" border="0"  id="lessonstable" class = "table table-striped table-condensed" width="100%">
+  		    	<table cellpadding="0" cellspacing="0" border="0"  id="lessonstable" class = "table table-striped table-condensed table-hover" width="100%">
   		    		<thead>
   		    			<th>Επιλογή</th>
   		    			<th>Μάθημα</th>
@@ -441,8 +453,8 @@ function noprograminfo(){
                   <!-- The table gets populated via ajax by datatables -->
   		    		</tbody>
         			</table>
-        			<div class="row-fluid">
-        				<div class="span12">
+        			<div class="row">
+        				<div class="col-md-12">
                   <div id="selectall">
                     <a href="#" onclick="selectall();return false;"><i class="icon-check"> Επιλογή όλων</i><a>
                   </div>
@@ -455,8 +467,6 @@ function noprograminfo(){
 			</div>
 		</div>
   </div>
-
-  	</div> <!--end of fluid container-->
 
   </div> <!--end of main container-->
 

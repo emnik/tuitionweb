@@ -47,7 +47,7 @@ $(document).ready(function(){
             { "mData": "title" },
             { "mData": "hours" },
             { "mData": "id",
-              "sClass": "span2",
+              "sClass": "col-md-2",
               "mRender": function (data, type, full) {
               	  if(data==''){
               	  	whetherchecked = "checked='checked'";
@@ -63,7 +63,7 @@ $(document).ready(function(){
                   }
             },
             { "mData": "id",
-              "sClass": "span2",
+              "sClass": "col-md-2",
               "mRender": function (data, type, full) {
               	  if(data!==''){
               	  	whetherchecked = "checked='checked'";
@@ -75,7 +75,7 @@ $(document).ready(function(){
                   }
             },
             { "mData": "excused",
-              "sClass": "span2",
+              "sClass": "col-md-2",
               "mRender": function (data, type, full) {
               	  if(data==1){
               	  	whetherchecked = "checked='checked'";
@@ -91,13 +91,13 @@ $(document).ready(function(){
               //I use a hidden form field in a visible datatable column to sent the stdlessonid in the controller.
               //If the datatable colum was set to non-visible then it doesnt sends the data!
               "mRender": function(data, type, full){
-              		return '<input class="span1" type="text" name="stdlessonid['+newabsencecounter+']" value='+data+'></input>';
+              		return '<input class="col-md-1" type="text" name="stdlessonid['+newabsencecounter+']" value='+data+'></input>';
               }
         	}
         ],
-    // "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+    // "sDom": "<'row'<'col-md-6'l><'col-md-6'f>r>t<'row'<'col-md-6'i><'col-md-6'p>>",
     // "sPaginationType": "bootstrap",
-    "sDom": "<'row-fluid'<'span12'rt>>",
+    "sDom": "<'row'<'col-md-12'rt>>",
     "bSort": false,
     "bFilter": false,
     "bPaginate": false,
@@ -169,31 +169,40 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <div class="container">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <!--<a class="brand" href="#">Tuition manager</a>-->
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-            <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
+          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
+     </div>
+
+      <div class="navbar-collapse collapse" role="navigation">
+        <ul class="nav navbar-nav">
+            <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
             <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-              <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-              <li><a href="#sections">Τμήματα</a></li>
-              <li><a href="#finance">Οικονομικά</a></li>
-              <li><a href="#reports">Αναφορές</a></li>
-              <li><a href="#admin">Διαχείριση</a></li>
-            </ul>
-            <ul class="nav pull-right">
-              <li><a href="#"><i class="icon-off"></i> Αποσύνδεση</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+            <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+            <li><a href="#sections">Τμήματα</a></li>
+            <li><a href="#finance">Οικονομικά</a></li>
+            <li><a href="#reports">Αναφορές</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Νικηφορακης Μανος</li>
+                <li><a href="#">Αλλαγή κωδικού</a></li>
+                <li><a href="#admin">Διαχείριση</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Αποσύνδεση</a></li>
+              </ul>
+            </li>
+        </ul>
+      </div><!--/.navbar-collapse -->
     </div>
+  </div>
 
 
 <!-- Subhead
@@ -211,21 +220,18 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 
   <div class="container"  style="margin-bottom:60px;">
   
-    <div class="container-fluid">
-      
-      <div style="margin-top:20px; margin-bottom:-15px;">
-      <ul class="breadcrumb">
-        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> <span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> <span class="divider">></span></li>
-        <li class="active">Φοίτηση</li>
-      </ul>
-        <!-- <a class="btn btn-mini" href="<?php echo base_url();?>"><i class="icon-arrow-left"></i> πίσω</a>         -->
+      <div>
+        <ul class="breadcrumb">
+          <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
+          <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> </li>
+          <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> </li>
+          <li class="active">Φοίτηση</li>
+        </ul>
       </div>
       
-      
-
-      <h3><?php echo $student['surname'].' '.$student['name']?></h3>
+      <p>
+        <h3><?php echo $student['surname'].' '.$student['name']?></h3>
+      </p>
       
 
       <ul class="nav nav-tabs">
@@ -235,24 +241,24 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a></li>
       </ul>
      
-      <ul class="nav nav-pills">
+      <ul class="nav nav-pills" style="margin:15px 0px;">
         <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Σύνοψη</a></li>
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/manage">Διαχείριση</a></li>
       </ul>
 
 
-      <div class="row-fluid"> <!--Συνοπτική ενημέρωση-->
-      	<div class="span12">
-	      	<div class="row-fluid"> <!--Πρόγραμμα ημέρας-->
-		      	<div class="span12"> 
-		      	<div class="contentbox">
-              <div class="title">
+      <div class="row"> <!--Συνοπτική ενημέρωση-->
+      	<div class="col-md-12">
+	      	<div class="row"> <!--Πρόγραμμα ημέρας-->
+		      	<div class="col-md-12"> 
+		      	<div class="panel panel-default">
+              <div class="panel-heading">
                 <span class="icon">
                   <i class="icon-time"></i>
                 </span>
-                <h5>Πρόγραμμα ημέρας</h5>
+                <h3 class="panel-title">Πρόγραμμα ημέρας</h3>
               </div>
-            <div class="content">
+            <div class="panel-body">
 			      		<?php if(empty($dayprogram)):?>
 			      			<?php if(empty($program)):?>
 				      			<p class="text-info">
@@ -287,10 +293,10 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 				      			</tbody>
 				      		</table>
 				      	<?php endif;?>
-				      	<div class="row-fluid">
-			      			<div class="span12">	
+				      	<div class="row">
+			      			<div class="col-md-12">	
 			      				<!-- onclick="return false;" is needed as an a tag can't be disabled by the disabled property. I'm using the property just for it's css -->
-			      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/program" class="btn btn-small pull-right" <?php if(empty($program)) echo 'disabled="disabled" onclick="return false;"';?> >Εβδομαδιαίο πρόγραμμα</a>
+			      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/program" class="btn btn-default btn-sm pull-right" <?php if(empty($program)) echo 'disabled="disabled" onclick="return false;"';?> >Εβδομαδιαίο πρόγραμμα</a>
 			      			</div>
 			      		</div>
 				      </div>
@@ -298,16 +304,16 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
           </div>
 		      </div> <!--τέλος ημερησίου προγράμματος-->
 
-		      <div class="row-fluid">
-		      	<div class="span6"> <!--Πρόγραμμα Σπουδών-->
-		      		<div class="contentbox">
-              <div class="title">
+		      <div class="row">
+		      	<div class="col-md-6"> <!--Πρόγραμμα Σπουδών-->
+		      		<div class="panel panel-default">
+              <div class="panel-heading">
                 <span class="icon">
                   <i class=" icon-cog"></i>
                 </span>
-                <h5>Πρόγραμμα σπουδών</h5>
+                <h3 class="panel-title">Πρόγραμμα σπουδών</h3>
               </div>
-            <div class="content">
+            <div class="panel-body">
 		      			<?php if (empty($program)):?>
       					<div class="alert alert-block alert-error fade in">
 				            <!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
@@ -318,9 +324,9 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 				        </div>
 				    <?php else:?>
 				    	<!-- I don't check if $attendance_general exists as it will be if $program exists! -->
-				    	<h5>Αρ. μαθημάτων που παρακολουθεί : <span class="badge badge-success"><?php echo count($attendance_general);?></span></h5>
+				    	<h5>Αρ. μαθημάτων που παρακολουθεί : <span class="badge"><?php echo count($attendance_general);?></span></h5>
 				    	<p><span class="label label-success">Ανάλυση:</span></p>
-				    	<table class = "table table-striped table-condensed" width="100%">
+				    	<table class = "table table-striped table-condensed table-hover" width="100%">
 				    		<thead>
 				    			<th>Μάθημα</th>
 				    			<th>Διδάσκων</th>
@@ -337,46 +343,46 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 				    		</tbody>
 		      			</table>
 		      		<?php endif;?>
-				      	<div class="row-fluid">
-			      			<div class="span12">	
-			      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/manage" class="btn btn-danger btn-small pull-right">Διαχείριση</a>
+				      	<div class="row">
+			      			<div class="col-md-12">	
+			      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/manage" class="btn btn-danger btn-sm pull-right">Διαχείριση</a>
 				   			</div>
 				   		</div>
   				    </div>
 		      	</div>
           </div>
 
-		      	<div class="span6"> <!--απουσίες & πρόοδος-->
+		      	<div class="col-md-6"> <!--απουσίες & πρόοδος-->
 
-			      <div class="row-fluid">
-			      	<div class="span12"> <!--Σύνολο απουσιών (στο τέλος Περισότερα...) -->
-			      	<div class="contentbox">
-              <div class="title">
+			      <div class="row">
+			      	<div class="col-md-12"> <!--Σύνολο απουσιών (στο τέλος Περισότερα...) -->
+			      	<div class="panel panel-default">
+              <div class="panel-heading">
                 <span class="icon">
                   <i class=" icon-flag"></i>
                 </span>
-                <h5>Απουσίες</h5>
+                <h3 class="panel-title">Απουσίες</h3>
               </div>
-            <div class="content">
+            <div class="panel-body">
 				      		<?php if(empty($dayprogram)):?>
 				      			<?php if(empty($program)):?>
 					      			<p class="text-info">
 					      				Για την παρακολούθηση των απουσιών του μαθητή, απαιτείται να έχει ενημερωθεί το πρόγραμμα σπουδών του.
 					      			</p>
-							      	<div class="row-fluid">
-						      			<div class="span12">	
-						      				<a href="#" class="btn  btn-small pull-right disabled" onclick="return false;" >Απουσιολόγιο</a>
+							      	<div class="row">
+						      			<div class="col-md-12">	
+						      				<a href="#" class="btn btn-default btn-sm pull-right disabled" onclick="return false;" >Απουσιολόγιο</a>
 							   			</div>
 							   		</div>
 					      		<?php else:?>
-					      			<h5>Δικαιολογημένες: <span class="badge badge-success">2</span> &nbsp Αδικαιολόγητες: <span class="badge badge-important">0</span></h5>
+					      			<h5>Δικαιολογημένες: <span class="badge">2</span> &nbsp Αδικαιολόγητες: <span class="badge">0</span></h5>
 					      			<p><span class="label label-warning">Σήμερα:</span></p>
 					      			<p class="text-info">
 					      				Σήμερα δεν έχει κανένα μάθημα!
 					      			</p>
-							      	<div class="row-fluid">
-						      			<div class="span12">	
-						      				<a href="#" class="btn  btn-danger btn-small pull-right" onclick="return false;" >Απουσιολόγιο</a>
+							      	<div class="row">
+						      			<div class="col-md-12">	
+						      				<a href="#" class="btn  btn-danger btn-sm pull-right" onclick="return false;" >Απουσιολόγιο</a>
 							   			</div>
 							   		</div>
 					      		<?php endif;?>
@@ -397,10 +403,10 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 					      			</tbody>
 					      		</table>
                   </form>
-					      	<div class="row-fluid">
-				      			<div class="span12">	
-				      				<button class="btn  btn-warning btn-small" id="savedayabsence" >Αποθήκευση</button>
-				      				<a href="#" class="btn  btn-danger btn-small pull-right" onclick="return false;" >Απουσιολόγιο</a>
+					      	<div class="row">
+				      			<div class="col-md-12">	
+				      				<button class="btn  btn-warning btn-sm" id="savedayabsence" >Αποθήκευση</button>
+				      				<a href="#" class="btn  btn-danger btn-sm pull-right" onclick="return false;" >Απουσιολόγιο</a>
 					   			</div>
 					   		</div>
 					      	<?php endif;?>
@@ -409,29 +415,29 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 			      </div>
           </div>
 
-			      	<div class="row-fluid">
-				      	<div class="span12"> <!--Βαθμολογία τελευταίου διαγωνίσματος - Μέσος όρος βαθμολογίας (στο τέλος Περισότερα...) -->
-				      		<div class="contentbox">
-              <div class="title">
+			      	<div class="row">
+				      	<div class="col-md-12"> <!--Βαθμολογία τελευταίου διαγωνίσματος - Μέσος όρος βαθμολογίας (στο τέλος Περισότερα...) -->
+				      		<div class="panel panel-default">
+              <div class="panel-heading">
                 <span class="icon">
                   <i class="icon-random"></i>
                 </span>
-                <h5>Πρόοδος</h5>
+                <h3 class="panel-title">Πρόοδος</h3>
               </div>
-            <div class="content">
+            <div class="panel-body">
               <?php if(empty($progress)):?>
-                <div class="row-fluid">
-                  <div class="span12">  
+                <div class="row">
+                  <div class="col-md-12">  
                     <p class="text-info">
                       Δεν υπάρχουν δεδομένα για την πρόοδο του μαθητή!
                     </p>
-                    <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn  btn-small pull-right disabled" onclick="return false;" >Βαθμολόγιο</a>
+                    <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right disabled" onclick="return false;" >Βαθμολόγιο</a>
                   </div>
                 </div>
               <?php else:?>
-               <div class="row-fluid">
-                <div class="span12">  
-                  <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn  btn-small pull-right" >Βαθμολόγιο</a>
+               <div class="row">
+                <div class="col-md-12">  
+                  <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right" >Βαθμολόγιο</a>
                 </div>
               </div>
               <?php endif;?>
@@ -448,7 +454,6 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 
 </div> <!--Τέλος συνοπτικής ενημέρωσης-->
 
-</div> <!--end of fluid container-->
 
 </div> <!--end of main container-->
 
