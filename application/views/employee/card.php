@@ -55,31 +55,40 @@ $(document).ready(function(){
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <div class="container">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <!--<a class="brand" href="#">Tuition manager</a>-->
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
-              <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-              <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-              <li><a href="#sections">Τμήματα</a></li>
-              <li><a href="#finance">Οικονομικά</a></li>
-              <li><a href="#reports">Αναφορές</a></li>
-              <li><a href="#admin">Διαχείριση</a></li>
-            </ul>
-            <ul class="nav pull-right">
-              <li><a href="#"><i class="icon-off"></i> Αποσύνδεση</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
+     </div>
+
+      <div class="navbar-collapse collapse" role="navigation">
+        <ul class="nav navbar-nav">
+            <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
+            <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
+            <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+            <li><a href="#sections">Τμήματα</a></li>
+            <li><a href="#finance">Οικονομικά</a></li>
+            <li><a href="#reports">Αναφορές</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Νικηφορακης Μανος</li>
+                <li><a href="#">Αλλαγή κωδικού</a></li>
+                <li><a href="#admin">Διαχείριση</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Αποσύνδεση</a></li>
+              </ul>
+            </li>
+        </ul>
+      </div><!--/.navbar-collapse -->
     </div>
+  </div>
 
 
 <!-- Subhead
@@ -96,27 +105,26 @@ $(document).ready(function(){
 ================================================== -->
 
   <div class="container"  style="margin-bottom:60px;">
-      
-    <div class="container-fluid">
-      
-      <div style="margin-top:20px; margin-bottom:-15px;">
+           
+      <div>
 	      <ul class="breadcrumb">
-	        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
-	        <li><a href="<?php echo base_url()?>staff">Προσωπικό</a> <span class="divider">></span></li>
+	        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
+	        <li><a href="<?php echo base_url()?>staff">Προσωπικό</a> </li>
 	        <li class="active">Καρτέλα εργαζομένου</li>
 	      </ul>
       </div>
       
-      
-    <h3>
-      <?php
-      if(!empty($employee['surname'])){
-        echo $employee['surname'].' '.$employee['name'];
-      }
-      else {
-        echo "Νέος εργαζόμενος";
-      };?>
-    </h3>
+     <p> 
+      <h3>
+        <?php
+        if(!empty($employee['surname'])){
+          echo $employee['surname'].' '.$employee['name'];
+        }
+        else {
+          echo "Νέος εργαζόμενος";
+        };?>
+      </h3>
+    </p>
         
 
       <ul class="nav nav-tabs">
@@ -124,124 +132,146 @@ $(document).ready(function(){
         <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan">Πλάνο Διδασκαλίας</a></li>
       </ul>
 
-      <div class="visible-phone">
-        <div class="row-fluid">
-          <div class="span12">
+      <p></p>
+
+      <div class="visible-sm visible-xs">
+        <div class="row">
+          <div class="col-md-12">
             <div class="btn-group pull-left">  
-              <a class="btn btn-small" href="#group1">Εργαζομένου</a>
-              <a class="btn btn-small" href="#group2">Πρόσληψης</a>
+              <a class="btn btn-default btn-sm" href="#group1">Εργαζομένου</a>
+              <a class="btn btn-default btn-sm" href="#group2">Πρόσληψης</a>
             </div>
           </div>      
         </div>
       </div>
      
-
-     <div class="row-fluid">
-      <div class="span12">
-       <div class="btn-group pull-right" data-toggle="buttons-radio">
-          <button type="button" value='1' class="btn btn-small btn-primary <?php if($emplcard['active']==1) echo 'active';?>">Ενεργός</button>
-          <button type="button" value='0' class="btn btn-small btn-primary <?php if($emplcard['active']==0) echo 'active';?>">Ανενεργός</button>
+      <div style="margin:15px 0px;">
+       <div class="row">
+        <div class="col-md-12">
+         <div class="btn-group pull-right" data-toggle="buttons">
+          <label class="btn btn-sm btn-primary">
+            <input type="radio" value='1' class="<?php if($emplcard['active']==1) echo 'active';?>">Ενεργός
+          </label>
+          <label class="btn btn-sm btn-primary">
+            <input type="radio" value='0' class="<?php if($emplcard['active']==0) echo 'active';?>">Ανενεργός
+          </label>
         </div>
       </div>
      </div>
+   </div>
 
-	<div class="row-fluid">
-       
+	<div class="row">
 
-    	<div class="span12">
-        <form action="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>" method="post" accept-charset="utf-8">
+    	<div class="col-md-12">
+        <form action="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>" method="post" accept-charset="utf-8" role="form">
         <input type="hidden" name="active" value="<?php echo $emplcard['active'];?>"> 
         
-      	<div class="row-fluid">
-        <div class="span6" id="group1">
-			<div class="mainform">
+      	<div class="row">
+          <div class="col-md-6" id="group1">
+			       <div class="mainform">
        
-          <div class="contentbox">
-            <div class="title">
+          <div class="panel panel-default">
+            <div class="panel-heading">
               <span class="icon">
                 <i class="icon-tag"></i>
               </span>
-              <h5>Στοιχεία εργαζομένου</h5>
+              <h3 class="panel-title">Στοιχεία εργαζομένου</h3>
               <div class="buttons">
-                  <button enabled id="editform1" type="button" class="btn btn-mini" data-toggle="button"><i class="icon-edit"></i></button>
+                  <button enabled id="editform1" type="button" class="btn btn-default btn-sm" data-toggle="button"><i class="icon-edit"></i></button>
               </div>
             </div>
 
-            <div class="row-fluid">
-	            <div class="content">
- 	 		          <div class="row-fluid">
-	        	       <div class="row-fluid">	
-	        	    		<div class="span4">
-	        	    			<label>Επώνυμο</label><input disabled class="span12" id="surname" type="text" placeholder="" name="surname" value="<?php echo $emplcard['surname'];?>">
-	        	    		</div>
-	        	    		<div class="span4">
-	        	    			<label>Όνομα</label><input disabled class="span12" id="name" type="text" placeholder="" name="name" value="<?php echo $emplcard['name'];?>">
-	        	    		</div>
-	        	    		<div class="span4">
-	        	    			<label>Σύντομο</label><input disabled class="span12" id="nickname" type="text" placeholder="για καθηγητές" name="nickname" value="<?php echo $emplcard['nickname'];?>">
-	        	    		</div>
+<!--             <div class="row"> -->
+	            <div class="panel-body">
+ 	 		          <!-- <div class="row"> -->
+	        	       <div class="row">	
+	        	    		<div class="col-md-4">
+	        	    			<div class="form-group">  
+                        <label>Επώνυμο</label>
+                        <input disabled class="form-control" id="surname" type="text" placeholder="" name="surname" value="<?php echo $emplcard['surname'];?>">
+	        	    		  </div>
+                    </div>
+	        	    		<div class="col-md-4">
+  	        	    		<div class="form-group">
+                      	<label>Όνομα</label>
+                        <input disabled class="form-control" id="name" type="text" placeholder="" name="name" value="<?php echo $emplcard['name'];?>">
+	        	    		  </div>
+                    </div>
+	        	    		<div class="col-md-4">
+                      <div class="form-group">
+	        	    			  <label>Σύντομο</label>
+                        <input disabled class="form-control" id="nickname" type="text" placeholder="για καθηγητές" name="nickname" value="<?php echo $emplcard['nickname'];?>">
+	        	    		  </div>
+                    </div>
 	        	    	</div>
 
-	           	       <div class="row-fluid">	
-	        	    		<div class="span6">
-	        	    			<label>Σταθερό τηλ.</label><input disabled class="span12" id="home_tel" type="text" placeholder="" name="home_tel" value="<?php echo $emplcard['home_tel'];?>">
-	        	    		</div>
-	        	    		<div class="span6">
-	        	    			<label>Κινητό τηλ.</label><input disabled class="span12" id="mobile" type="text" placeholder="" name="mobile" value="<?php echo $emplcard['mobile'];?>">
-	        	    		</div>
+	           	     <div class="row">	
+	        	    		<div class="col-md-6">
+                      <div class="form-group">
+	        	    	   	 <label>Σταθερό τηλ.</label>
+                       <input disabled class="form-control" id="home_tel" type="text" placeholder="" name="home_tel" value="<?php echo $emplcard['home_tel'];?>">
+	        	    		  </div>
+                    </div>
+	        	    		<div class="col-md-6">
+	        	    			 <div class="form-group">
+                          <label>Κινητό τηλ.</label>
+                          <input disabled class="form-control" id="mobile" type="text" placeholder="" name="mobile" value="<?php echo $emplcard['mobile'];?>">
+	        	    		   </div>
+                    </div>
 	        	    	</div>
 		        	   </div> <!-- end of content row -->
-	            </div> <!-- end of content -->
-	          </div> <!-- end of content box -->
+<!-- 	            </div>
+	          </div> -->
+	         </div>
 	      </div>
-	      </div>
-	  </div>
-	  	<div class="span6" id="group2">
-	          <div class="mainform">
-	          <div class="contentbox">
-	            <div class="title">
+	  </div> <!-- end of group#1 -->
+	  	<div class="col-md-6" id="group2">
+          <div class="mainform">
+	          <div class="panel panel-default">
+	            <div class="panel-heading">
 	              <span class="icon">
 	                <i class="icon-tag"></i>
 	              </span>
-	              <h5>Στοιχεία πρόσληψης</h5>
+	              <h3 class="panel-title">Στοιχεία πρόσληψης</h3>
 	              <div class="buttons">
-	                  <button enabled id="editform2" type="button" class="btn btn-mini" data-toggle="button"><i class="icon-edit"></i></button>
+	                  <button enabled id="editform2" type="button" class="btn btn-default btn-sm" data-toggle="button"><i class="icon-edit"></i></button>
 	              </div>
 	            </div>
-	            <div class="content">
-	 		       <div class="row-fluid">
-	        	       <div class="row-fluid">	
-			              <div class="span4">
+	            <div class="panel-body">
+	 		       <!-- <div class="row"> -->
+	        	       <div class="row">	
+			              <div class="col-md-4">
+                      <div class="form-group">
 		                    <label>Καθηγητής</label>
-		                    <select disabled class="span12" name="is_tutor">
+		                    <select disabled class="form-control" name="is_tutor">
 		                        <option value=1 <?php if($emplcard["is_tutor"] === 1) echo "selected"; ?> >Ναι </option>
    		                      <option value=0 <?php if($emplcard["is_tutor"] === 0) echo "selected"; ?> >Όχι </option>
 		                    </select>
 		                  </div>
-		                  <div class="span8">
-	        	    		<label>Ειδικότητα</label><input disabled class="span12" id="speciality" type="text" placeholder="" name="speciality" value="<?php echo $emplcard['speciality'];?>">
+                    </div>
+		              <div class="col-md-8">
+	        	    	 <div class="form-group">
+                  	 <label>Ειδικότητα</label>
+                     <input disabled class="form-control" id="speciality" type="text" placeholder="" name="speciality" value="<?php echo $emplcard['speciality'];?>">
 	        	    	  </div>
+                  </div>
 	        	       	<!-- (ΑΦΜ / Ταυτότητα / ΑΜΚΑ ...) -->
 	        	    	</div>
-	        	   </div> <!-- end of content row -->
-	            </div> <!-- end of content -->
-	          </div> <!-- end of content box -->
-	      </div>
+	        	   </div> <!-- end of pabel-body -->
+	            </div> <!-- end of panel -->
+	          </div> <!-- end of mainform -->
+  	      </div> <!-- end of group#2 -->
 	      </div>     
+
+        <div>
+          <button id="submitbtn" type="submit" class="btn btn-primary">Αποθήκευση</button>
+          <button id="cancelbtn" type="button" class="btn btn-default">Ακύρωση</button>
         </div>
-    </div>
-</div>
-</div>
 
-          <div class="form-actions">
-            <button id="submitbtn" type="submit" class="btn btn-primary">Αποθήκευση</button>
-            <button id="cancelbtn" type="button" class="btn">Ακύρωση</button>
-          </div>
+      </form>
 
-        </form>
-
-  </div> 
-
+    </div> 
+  </div>
 </div><!--end of main container-->
 
 <div class="push"></div>

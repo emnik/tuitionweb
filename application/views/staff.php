@@ -64,7 +64,7 @@ $(document).ready(function() {
 
     /* Init the table */
     oTable = $('#stdbook').dataTable( {
-    "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+    "sDom": "<'row'<'col-md-6'l><'col-md-6'f>r>t<'row'<'col-md-6'i><'col-md-6'p>>",
     "sPaginationType": "bootstrap",
     "aoColumnDefs": [
       { "bVisible": false, "aTargets": [0] }, //hide id column
@@ -100,7 +100,10 @@ $(document).ready(function() {
 
        } );
 
-
+    //bootstrap3 add class="form-control" to inputs"
+    $('#stdbook_filter').find('input').addClass("form-control");
+    $('#stdbook_length').find('select').addClass("form-control");
+    
 // HIDING COLUMNS FOR RESPONSIVE VIEW:
 
 $(window).on("load", resizeWindow);
@@ -148,31 +151,40 @@ function resizeWindow(e)
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <div class="container">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <!--<a class="brand" href="#">Tuition manager</a>-->
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
-              <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-              <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-              <li><a href="#sections">Τμήματα</a></li>
-              <li><a href="#finance">Οικονομικά</a></li>
-              <li><a href="#reports">Αναφορές</a></li>
-              <li><a href="#admin">Διαχείριση</a></li>
-            </ul>
-            <ul class="nav pull-right">
-              <li><a href="#"><i class="icon-off"></i> Αποσύνδεση</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
+     </div>
+
+      <div class="navbar-collapse collapse" role="navigation">
+        <ul class="nav navbar-nav">
+            <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
+            <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
+            <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+            <li><a href="#sections">Τμήματα</a></li>
+            <li><a href="#finance">Οικονομικά</a></li>
+            <li><a href="#reports">Αναφορές</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Νικηφορακης Μανος</li>
+                <li><a href="#">Αλλαγή κωδικού</a></li>
+                <li><a href="#admin">Διαχείριση</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Αποσύνδεση</a></li>
+              </ul>
+            </li>
+        </ul>
+      </div><!--/.navbar-collapse -->
     </div>
+  </div>
 
 
 <!-- Subhead
@@ -190,38 +202,28 @@ function resizeWindow(e)
 
     <div class="container" style="padding-top:10px; padding-bottom:70px;">
       
-      <div style="margin-top:20px; margin-bottom:15px;">
+      <div>
       <ul class="breadcrumb">
-        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
+        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
         <li class="active">Προσωπικό</li>
       </ul>
       </div>
 
-<!--       <div style="margin:10px 5px;" class="btn-toolbar">
-          <button class="btn btn-small btn-success" id="employee-card"><i class="icon-user"> Καρτέλα Μαθητή</i></button>
-        <div class="btn-group pull-right">
-            <button class="btn btn-small"><i class="icon-refresh"> Επανεγγραφή</i></button>
-            <button class="btn btn-small" id="new-reg"><i class="icon-plus"></i> Νέα εγγραφή</button>
-            <button class="btn btn-small btn-danger " id="del-reg"><i class="icon-trash"> Αφαίρεση μαθητή</i></button>
-        </div>
-      </div> -->
-
-
-      <div class="contentbox">
-        <div class="title">
+      <div class="panel panel-default">
+        <div class="panel-heading">
           <span class="icon">
             <i class="icon-book"></i>
           </span>
-          <h5>Προσωπικό</h5>
+          <h3 class="panel-title">Προσωπικό</h3>
           <div class="buttons">
-            <button class="btn btn-small btn-danger " id="del-reg"><i class="icon-trash"><!--  Αφαίρεση μαθητή --></i></button>
+            <button class="btn btn-sm btn-danger " id="del-reg"><i class="icon-trash"></i></button>
              <div class="btn-group">
-              <button class="btn btn-small" id="new-reg"><i class="icon-plus"></i><!--  Νέα εγγραφή --></button>
+              <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
             </div>
-            <button class="btn btn-small btn-success" id="employee-card"><i class="icon-user"> Καρτέλα Εργαζομένου</i></button>
+            <button class="btn btn-sm btn-success" id="employee-card"><i class="icon-user"> Καρτέλα Εργαζομένου</i></button>
           </div>
         </div>
-      <div class="content">
+      <div class="panel-body">
       <!--width="100%" option in the table is required when there are hidden columns in the table to resize properly on window change-->
       <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="stdbook" width="100%">
         <thead>

@@ -71,8 +71,10 @@ height: 100%;
 min-height: 100%;
 height: auto !important;
 height: 100%;
-margin: 0 auto -101px; /*footer height=110 + padding-top=30 + padding-bottom=30 + border=1 SUM=171*/
+margin: 0 auto -110px;
 }
+
+
 
 .footer, .push {
 height: 110px;
