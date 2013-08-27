@@ -11,31 +11,40 @@ $(document).ready(function(){
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <div class="container">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <!--<a class="brand" href="#">Tuition manager</a>-->
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
-              <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-              <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-              <li><a href="#sections">Τμήματα</a></li>
-              <li><a href="#finance">Οικονομικά</a></li>
-              <li><a href="#reports">Αναφορές</a></li>
-              <li><a href="#admin">Διαχείριση</a></li>
-            </ul>
-            <ul class="nav pull-right">
-              <li><a href="#"><i class="icon-off"></i> Αποσύνδεση</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
+     </div>
+
+      <div class="navbar-collapse collapse" role="navigation">
+        <ul class="nav navbar-nav">
+            <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
+            <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
+            <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+            <li><a href="#sections">Τμήματα</a></li>
+            <li><a href="#finance">Οικονομικά</a></li>
+            <li><a href="#reports">Αναφορές</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Νικηφορακης Μανος</li>
+                <li><a href="#">Αλλαγή κωδικού</a></li>
+                <li><a href="#admin">Διαχείριση</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Αποσύνδεση</a></li>
+              </ul>
+            </li>
+        </ul>
+      </div><!--/.navbar-collapse -->
     </div>
+  </div>
 
 
 <!-- Subhead
@@ -43,7 +52,7 @@ $(document).ready(function(){
 <div class="jumbotron subhead">
   <div class="container">
     <h1>Καρτέλα Εργαζομένου</h1>
-    <p class="leap">tuition manager - πρόγραμμα διαχείρισης φροντιστηρίου.</p>
+    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
   </div>
 </div>
 
@@ -53,21 +62,19 @@ $(document).ready(function(){
 
   <div class="container"  style="margin-bottom:60px;">
   
-    <div class="container-fluid">
-      
-      <div style="margin-top:20px; margin-bottom:-15px;">
-      <ul class="breadcrumb">
-        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>staff">Προσωπικό</a> <span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Καρτέλα εργαζομένου</a> <span class="divider">></span></li>
-        <li class="active">Πλάνο Διδασκαλίας</li>
-      </ul>
-        <!-- <a class="btn btn-mini" href="<?php echo base_url();?>"><i class="icon-arrow-left"></i> πίσω</a>         -->
+      <div>
+        <ul class="breadcrumb">
+          <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
+          <li><a href="<?php echo base_url()?>staff">Προσωπικό</a> </li>
+          <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Καρτέλα εργαζομένου</a> </li>
+          <li class="active">Πλάνο Διδασκαλίας</li>
+        </ul>
       </div>
       
       
-
-      <h3><?php echo $employee['surname'].' '.$employee['name']?></h3>
+      <p>
+        <h3><?php echo $employee['surname'].' '.$employee['name']?></h3>
+      </p>
       
 
       <ul class="nav nav-tabs">
@@ -75,31 +82,24 @@ $(document).ready(function(){
         <li class="active"><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan">Πλάνο Διδασκαλίας</a></li>
       </ul>
      
-
-<!--       <ul class="nav nav-pills">
-        <li class="active"><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/program">Πρόγραμμα</a></li>
-        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/sections">Τμήματα</a></li>
-      </ul>
- -->
-
-      <div class="row-fluid">
-        <div class="span12">
+      <div class="row">
+        <div class="col-md-12">
           <h4>Σύνοψη:</h4>
         </div>
       </div>
 
-      <div class="row-fluid"> <!--Συνοπτική ενημέρωση-->
-      	<div class="span12">
-	      	<div class="row-fluid"> <!--Πρόγραμμα ημέρας-->
-		      	<div class="span12"> 
-		      	<div class="contentbox">
-              <div class="title">
+      <div class="row"> <!--Συνοπτική ενημέρωση-->
+      	<div class="col-md-12">
+	      	<div class="row"> <!--Πρόγραμμα ημέρας-->
+		      	<div class="col-md-12"> 
+		      	<div class="panel panel-default">
+              <div class="panel-heading">
                 <span class="icon">
                   <i class="icon-time"></i>
                 </span>
-                <h5>Πρόγραμμα ημέρας</h5>
+                <h3 class="panel-title">Πρόγραμμα ημέρας</h3>
               </div>
-            <div class="content">
+            <div class="panel-body">
 			      		<?php if(empty($dayprogram)):?>
 			      			<?php if(empty($program)):?>
 				      			<p class="text-info">
@@ -134,10 +134,10 @@ $(document).ready(function(){
 				      			</tbody>
 				      		</table>
 				      	<?php endif;?>
-				      	<div class="row-fluid">
-			      			<div class="span12">	
+				      	<div class="row">
+			      			<div class="col-md-12">	
 			      				<!-- onclick="return false;" is needed as an a tag can't be disabled by the disabled property. I'm using the property just for it's css -->
-			      				<a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan/program" class="btn btn-small pull-right" <?php if(empty($program)) echo 'disabled="disabled" onclick="return false;"';?> >Εβδομαδιαίο πρόγραμμα</a>
+			      				<a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan/program" class="btn btn-default btn-sm pull-right" <?php if(empty($program)) echo 'disabled="disabled" onclick="return false;"';?> >Εβδομαδιαίο πρόγραμμα</a>
 			      			</div>
 			      		</div>
 				      </div>
@@ -145,16 +145,16 @@ $(document).ready(function(){
           </div>
 		      </div> <!--τέλος ημερησίου προγράμματος-->
 
-		      <div class="row-fluid">
-		      	<div class="span6"> <!--Αριθμός/Ονομασία Τμημάτων - Ίσως και αρ. ατόμων ανα τμήμα-->
-		      		<div class="contentbox">
-              <div class="title">
+		      <div class="row">
+		      	<div class="col-md-6"> <!--Αριθμός/Ονομασία Τμημάτων - Ίσως και αρ. ατόμων ανα τμήμα-->
+		      		<div class="panel panel-default">
+              <div class="panel-heading">
                 <span class="icon">
                   <i class=" icon-cog"></i>
                 </span>
-                <h5>Τμήματα</h5>
+                <h3 class="panel-title">Τμήματα</h3>
               </div>
-            <div class="content">
+            <div class="panel-body">
 		      			<?php if (empty($program)):?>
       					<div class="alert alert-block alert-error fade in">
 				            <!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
@@ -199,40 +199,40 @@ $(document).ready(function(){
                     </tfoot>
                   </table>
 		      		<?php endif;?>
-				      	<div class="row-fluid">
-			      			<div class="span12">	
-			      				<a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan/sections" class="btn btn-small pull-right">Περισσότερα</a>
+				      	<div class="row">
+			      			<div class="col-md-12">	
+			      				<a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan/sections" class="btn btn-default btn-sm pull-right">Περισσότερα</a>
 				   			</div>
 				   		</div>
   				    </div>
 		      	</div>
           </div>
 
-		      	<div class="span6"> <!--απουσίες & πρόοδος-->
+		      	<div class="col-md-6"> <!--απουσίες & πρόοδος-->
 
-			      	<div class="row-fluid">
-				      	<div class="span12"> <!--Βαθμολογία τελευταίου διαγωνίσματος - Μέσος όρος βαθμολογίας (στο τέλος Περισότερα...) -->
-				      		<div class="contentbox">
-              <div class="title">
+			      	<div class="row">
+				      	<div class="col-md-12"> <!--Βαθμολογία τελευταίου διαγωνίσματος - Μέσος όρος βαθμολογίας (στο τέλος Περισότερα...) -->
+				      		<div class="panel panel-default">
+              <div class="panel-heading">
                 <span class="icon">
                   <i class="icon-random"></i>
                 </span>
-                <h5>Καταγραφή προόδου</h5>
+                <h3 class="panel-title">Καταγραφή προόδου</h3>
               </div>
-            <div class="content">
+            <div class="panel-body">
               <?php if(empty($progress)):?>
-                <div class="row-fluid">
-                  <div class="span12">  
+                <div class="row">
+                  <div class="col-md-12">  
                     <p class="text-info">
                       Δεν υπάρχουν δεδομένα για την πρόοδο του μαθητή!
                     </p>
-                    <!-- <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn  btn-small pull-right disabled" onclick="return false;" >Βαθμολόγιο</a> -->
+                    <!-- <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right disabled" onclick="return false;" >Βαθμολόγιο</a> -->
                   </div>
                 </div>
               <?php else:?>
-               <div class="row-fluid">
-                <div class="span12">  
-                  <!-- <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn  btn-small pull-right" >Βαθμολόγιο</a> -->
+               <div class="row">
+                <div class="col-md-12">  
+                  <!-- <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right" >Βαθμολόγιο</a> -->
                 </div>
               </div>
               <?php endif;?>
@@ -248,8 +248,6 @@ $(document).ready(function(){
 
 
 </div> <!--Τέλος συνοπτικής ενημέρωσης-->
-
-</div> <!--end of fluid container-->
 
 </div> <!--end of main container-->
 

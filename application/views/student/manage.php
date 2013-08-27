@@ -331,7 +331,7 @@ function noprograminfo(){
 <div class="jumbotron subhead">
   <div class="container">
     <h1>Καρτέλα Μαθητή</h1>
-    <p class="leap">tuition manager - πρόγραμμα διαχείρισης φροντιστηρίου.</p>
+    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
   </div>
 </div>
 

@@ -243,7 +243,7 @@ function resizeWindow(e)
 <div class="jumbotron subhead">
   <div class="container">
     <h1>Μαθητολόγιο</h1>
-    <p class="leap">tuition manager - πρόγραμμα διαχείρισης φροντιστηρίου.</p>
+    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
   </div>
 </div>
 
