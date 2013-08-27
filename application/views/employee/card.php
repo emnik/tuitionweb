@@ -39,9 +39,9 @@ $(document).ready(function(){
     <?php endif;?>
 
     //get the radio button value when clicked to the hidden input field to be submitted with the form
-    $("body").find(".btn-group > .btn").each(function(){
-      $(this).bind('click', function(){
-        $("input[name=active]").val(this.value);
+    $('input:radio').each(function(){
+      $(this).parent().bind('click', function(){
+        $("input[name=active]").val($(this).find('input').attr('value'));
         });
     });
  
@@ -149,11 +149,11 @@ $(document).ready(function(){
        <div class="row">
         <div class="col-md-12">
          <div class="btn-group pull-right" data-toggle="buttons">
-          <label class="btn btn-sm btn-primary">
-            <input type="radio" value='1' class="<?php if($emplcard['active']==1) echo 'active';?>">Ενεργός
+          <label class="btn btn-sm btn-primary <?php if($emplcard['active']==1) echo 'active';?>">
+            <input type="radio" value='1'>Ενεργός
           </label>
-          <label class="btn btn-sm btn-primary">
-            <input type="radio" value='0' class="<?php if($emplcard['active']==0) echo 'active';?>">Ανενεργός
+          <label class="btn btn-sm btn-primary <?php if($emplcard['active']==0) echo 'active';?>">
+            <input type="radio" value='0'>Ανενεργός
           </label>
         </div>
       </div>
@@ -180,10 +180,7 @@ $(document).ready(function(){
                   <button enabled id="editform1" type="button" class="btn btn-default btn-sm" data-toggle="button"><i class="icon-edit"></i></button>
               </div>
             </div>
-
-<!--             <div class="row"> -->
 	            <div class="panel-body">
- 	 		          <!-- <div class="row"> -->
 	        	       <div class="row">	
 	        	    		<div class="col-md-4">
 	        	    			<div class="form-group">  
@@ -220,8 +217,6 @@ $(document).ready(function(){
                     </div>
 	        	    	</div>
 		        	   </div> <!-- end of content row -->
-<!-- 	            </div>
-	          </div> -->
 	         </div>
 	      </div>
 	  </div> <!-- end of group#1 -->
@@ -238,7 +233,6 @@ $(document).ready(function(){
 	              </div>
 	            </div>
 	            <div class="panel-body">
-	 		       <!-- <div class="row"> -->
 	        	       <div class="row">	
 			              <div class="col-md-4">
                       <div class="form-group">
