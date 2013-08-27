@@ -2,17 +2,7 @@
 
 
    $(document).ready(function() {
-
-     // $('#help').popover({
-     //    placement:'bottom',
-     //    container:'body',
-     //    html:'true',       
-     //    title:'<h4>Συνήθεις επεξεργασίες</h4>',
-     //    content:"<ul><li>Για επεξεργασία ώρας και αίθουσας ενός μαθήματος πατήστε την επιλογή 'Eπεξεργασία' δεξιά του μαθήματος αυτού.</li></ul>"
-     // });
-
      $('.footable').footable();
-
    });
 
 
@@ -23,31 +13,40 @@
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <div class="container">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <!--<a class="brand" href="#">Tuition manager</a>-->
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
-              <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-              <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-              <li><a href="#sections">Τμήματα</a></li>
-              <li><a href="#finance">Οικονομικά</a></li>
-              <li><a href="#reports">Αναφορές</a></li>
-              <li><a href="#admin">Διαχείριση</a></li>
-            </ul>
-            <ul class="nav pull-right">
-              <li><a href="#"><i class="icon-off"></i> Αποσύνδεση</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
+     </div>
+
+      <div class="navbar-collapse collapse" role="navigation">
+        <ul class="nav navbar-nav">
+            <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
+            <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
+            <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+            <li><a href="#sections">Τμήματα</a></li>
+            <li><a href="#finance">Οικονομικά</a></li>
+            <li><a href="#reports">Αναφορές</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Νικηφορακης Μανος</li>
+                <li><a href="#">Αλλαγή κωδικού</a></li>
+                <li><a href="#admin">Διαχείριση</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Αποσύνδεση</a></li>
+              </ul>
+            </li>
+        </ul>
+      </div><!--/.navbar-collapse -->
     </div>
+  </div>
 
 
 <!-- Subhead
@@ -55,7 +54,7 @@
 <div class="jumbotron subhead">
   <div class="container">
     <h1>Καρτέλα Εργαζομένου</h1>
-    <p class="leap">tuition manager - πρόγραμμα διαχείρισης φροντιστηρίου.</p>
+    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
   </div>
 </div>
 
@@ -64,46 +63,38 @@
 ================================================== -->
 
   <div class="container" style="margin-bottom:60px;">
-  
-    <div class="container-fluid">
-      
-      <div style="margin-top:20px; margin-bottom:-15px;">
-      <ul class="breadcrumb">
-        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>staff">Προσωπικό</a> <span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Καρτέλα εργαζομένου</a> <span class="divider">></span></li>
-        <li class="active">Τμήματα</li>
-      </ul>
+        
+      <div>
+        <ul class="breadcrumb">
+          <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
+          <li><a href="<?php echo base_url()?>staff">Προσωπικό</a> </li>
+          <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Καρτέλα εργαζομένου</a> </li>
+          <li class="active">Τμήματα</li>
+        </ul>
       </div>
       
-      
+      <p>
+        <h3><?php echo $employee['surname'].' '.$employee['name']?></h3>
+      </p>
 
-      <h3><?php echo $employee['surname'].' '.$employee['name']?></h3>
-      
       <ul class="nav nav-tabs">
         <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Στοιχεία</a></li>
         <li class="active"><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan">Πλάνο Διδασκαλίας</a></li>
       </ul>
 
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="btn-toolbar">
-            <a class="btn" href="<?php echo base_url();?>staff/card/<?php echo $employee['id']?>/teachingplan"><i class="icon-chevron-left"></i> πίσω</a>
-            <div class="btn-group">
-            </div>
-<!--             <buttton type="button" class="btn pull-right" id="help">Βοήθεια</button>    -->         
+      <div class="row">
+        <div class="col-md-12">
+          <div class="btn-toolbar" style="margin:15px 0px;">
+            <a class="btn btn-default" href="<?php echo base_url();?>staff/card/<?php echo $employee['id']?>/teachingplan"><i class="icon-chevron-left"></i> πίσω</a>
           </div>
         </div>
       </div>
 
-      <div class="row-fluid">
-      	
-        <div class="span5">
+      <div class="row">
+        <div class="col-md-2">
       		<h4>Τμήματα:</h4>
         </div>
-
-        <div class="span6">
-
+        <div class="col-md-10">
           <ul class="nav nav-pills">
             <?php foreach ($section as $data):?>
             <li>
@@ -111,29 +102,28 @@
             </li>
             <?php endforeach;?>
           </ul>
-
         </div>
-
       </div>
 
+      <p></p>
 
-	      	<div class="row-fluid">
-		      	<div class="span12"> 
-			      		<?php if(empty($section)):?>
-			      			<p class="text-info">
-			      				Δεν έχουν αντιστοιχιστεί τμήματα για το συγκεκριμένο εργαζόμενο!
-			      			</p>
-			      		<?php else:?>
-                  <?php foreach ($section_data as $key=>$value):?>
-                      <div class="contentbox" id="<?php echo $value[0]['id'];?>">
-                       <div class="title">
-                        <span class="icon">
-                          <i class="icon-calendar"></i>
-                        </span>
-                        <h5><?php echo $key.' / '.$value[0]['title'];?></h5>
-                      </div>
-                    <div class="content">
-                      <table class="footable table table-striped table-condensed " >
+    	<div class="row">
+      	<div class="col-md-12"> 
+	      		<?php if(empty($section)):?>
+	      			<p class="text-info">
+	      				Δεν έχουν αντιστοιχιστεί τμήματα για το συγκεκριμένο εργαζόμενο!
+	      			</p>
+	      		<?php else:?>
+              <?php foreach ($section_data as $key=>$value):?>
+                  <div class="panel panel-default" id="<?php echo $value[0]['id'];?>">
+                   <div class="panel-heading">
+                    <span class="icon">
+                      <i class="icon-calendar"></i>
+                    </span>
+                    <h3 class="panel-title"><?php echo $key.' / '.$value[0]['title'];?></h3>
+                  </div>
+                  <div class="panel-body">
+                    <table class="footable table table-striped table-condensed " >
                       <thead>
                         <tr>
                           <th data-class="expand">Ονοματεπώνυμο</th>
@@ -163,10 +153,11 @@
                     </table>
                   </div>
                 </div>
-                  <?php endforeach;?>
-            <?php endif;?>
+            <?php endforeach;?>
+          <?php endif;?>
+
       </div>
-  	</div> <!--end of fluid container-->
+
 
   </div> <!--end of main container-->
 
