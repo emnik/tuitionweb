@@ -115,10 +115,6 @@ body{
   background-color: #EEEEEE;
 }
 
-.form-actions{
-    background-color: #EEEEEE;
-}
-
 
 /* breadcrumb styling 
 ---------------------------*/
@@ -293,8 +289,9 @@ Unicorn - Admin Template http://wrapbootstrap.com/preview/WB0F35928
 .multiplefieldset .selector {
   float:left;
   border-right: 1px solid #CDCDCD;
-  width:15px;
-  margin-left:0px;
+  width:30px;
+  margin-left:10px;
+  margin-right:10px;
   margin-top: -16px;
   padding-top:16px;
   padding-right:9px;
@@ -322,7 +319,7 @@ Unicorn - Admin Template http://wrapbootstrap.com/preview/WB0F35928
     float: left;
 }
 
-.paylegend .legend-selector{
+.paylegend .legend-selector {
     float: right;
     padding-right: 4px;
     margin-top: -3px;
@@ -341,7 +338,7 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
         display: none;
     }
 
-    .multiplefieldset .selector{
+    .multiplefieldset .selector {
       display: none;
       margin:0px;
       padding:0px;

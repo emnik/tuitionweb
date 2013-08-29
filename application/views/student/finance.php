@@ -421,31 +421,40 @@ $(document).ready(function() {
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <div class="container">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <!--<a class="brand" href="#">Tuition manager</a>-->
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-            <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
+          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
+     </div>
+
+      <div class="navbar-collapse collapse" role="navigation">
+        <ul class="nav navbar-nav">
+            <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
             <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-              <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-              <li><a href="#sections">Τμήματα</a></li>
-              <li><a href="#finance">Οικονομικά</a></li>
-              <li><a href="#reports">Αναφορές</a></li>
-              <li><a href="#admin">Διαχείριση</a></li>
-            </ul>
-            <ul class="nav pull-right">
-              <li><a href="#"><i class="icon-off"></i> Αποσύνδεση</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+            <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+            <li><a href="#sections">Τμήματα</a></li>
+            <li><a href="#finance">Οικονομικά</a></li>
+            <li><a href="#reports">Αναφορές</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Νικηφορακης Μανος</li>
+                <li><a href="#">Αλλαγή κωδικού</a></li>
+                <li><a href="#admin">Διαχείριση</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Αποσύνδεση</a></li>
+              </ul>
+            </li>
+        </ul>
+      </div><!--/.navbar-collapse -->
     </div>
+  </div>
 
 
 <!-- Subhead
@@ -453,7 +462,7 @@ $(document).ready(function() {
 <div class="jumbotron subhead">
   <div class="container">
     <h1>Καρτέλα Μαθητή</h1>
-    <p class="leap">tuition manager - πρόγραμμα διαχείρισης φροντιστηρίου.</p>
+    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
   </div>
 </div>
 
@@ -462,22 +471,20 @@ $(document).ready(function() {
 ================================================== -->
 
   <div class="container"  style="margin-bottom:60px;">
-  
-    <div class="container-fluid">
       
-      <div style="margin-top:20px; margin-bottom:-15px;">
+      <div>
         <ul class="breadcrumb">
-          <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
-          <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> <span class="divider">></span></li>
-          <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> <span class="divider">></span></li>
+          <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
+          <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> </li>
+          <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> </li>
           <li class="active">Οικονομικά</li>
         </ul>
       </div>
       
       
-
-      <h3><?php echo $student['surname'].' '.$student['name']?></h3>
-      
+      <p>
+        <h3><?php echo $student['surname'].' '.$student['name']?></h3>
+      </p>
 
       <ul class="nav nav-tabs">
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Στοιχεία</a></li>
@@ -486,39 +493,39 @@ $(document).ready(function() {
         <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a></li>
       </ul>
 
-      <ul class="nav nav-pills">
+      <ul class="nav nav-pills"  style="margin:15px 0px;">
         <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Πληρωμές</a></li>
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance/changes">Μεταβολές</a></li>        
       </ul>
 
 
-      <div class="row-fluid">
-        <div class="span12"> <!--main column-->
-          <div class="contentbox">
-          <div class="title">
+      <div class="row">
+        <div class="col-md-12"> <!--main column-->
+          <div class="panel panel-default">
+          <div class="panel-heading">
             <span class="icon">
               <i class="icon-shopping-cart"></i>
             </span>
-            <h5>Πληρωμές διδάκτρων</h5>
+            <h3 class="panel-title">Πληρωμές διδάκτρων</h3>
           </div>
         </div>
       </div>
     </div>
    <?php if (!empty($payments)):?>
       <div class="multiplefieldset-header">    
-        <div class="row-fluid">
-          <div class="selector"></div>
-          <div class="span2">Αρ. ΑΠΥ</div>
-          <div class="span2">Ημερομηνία ΑΠΥ</div>
-          <div class="span1">Ποσό</div>
-          <div class="span1">Μήνας</div>
-          <div class="span1">Ε.Π.</div>
-          <div class="span2">Παρατηρήσεις</div>
-          <div class="span2"><p class="pull-right">Ενέργειες</p></div>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-2">Αρ. ΑΠΥ</div>
+          <div class="col-md-2">Ημερομηνία ΑΠΥ</div>
+          <div class="col-md-1">Ποσό</div>
+          <div class="col-md-1">Μήνας</div>
+          <div class="col-md-1">Ε.Π.</div>
+          <div class="col-md-2">Παρατηρήσεις</div>
+          <div class="col-md-2"><p class="pull-right">Ενέργειες</p></div>
         </div>
       </div>
-        <div class="row-fluid">
-          <div class="span12">
+        <div class="row">
+          <div class="col-md-12">
               <form action="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance" method="post" accept-charset="utf-8">
                 <?php foreach ($payments as $data):?>
                   <fieldset class="multiplefieldset collapsible"> <!--start of fieldset-->
@@ -526,46 +533,49 @@ $(document).ready(function() {
                       <div class='legend-text'>
                         Πληρωμή <?php echo $monthnames[$data['month_range']];?>
                       </div>
-                      <div class='legend-selector'>
-                        <input class="pull-right" type="checkbox" name="select[<?php echo $data['id'];?>]" value="0">
+                      <div class='col-md-1'>
+                        <label class="pull-right">
+                          <input type="checkbox" name="select[<?php echo $data['id'];?>]" value="0">
+                        </label>
                       </div>
                     </legend>
-                         <div class="row-fluid"> <!--main form row-->
-
-                            <div class="selector">
-                              <input class="pull-right" type="checkbox" name="select[<?php echo $data['id'];?>]" value="0">  
+                         <div class="row"> <!--main form row-->
+                            <div class="col-md-1">
+                              <label class="clearfix checkbox">
+                                <input class="pull-right" type="checkbox" name="select[<?php echo $data['id'];?>]" value="0">  
+                              </label>
                             </div>
 
-                            <div class="span2">
-                              <input type="text" class="span12" name="apy_no[<?php echo $data['id'];?>]" value="<?php echo $data['apy_no'];?>">
+                            <div class="col-md-2">
+                              <input type="text" class="form-control" name="apy_no[<?php echo $data['id'];?>]" value="<?php echo $data['apy_no'];?>">
                             </div>
 
-                            <div class="span2">
-                              <input type="text" class="span12" name="apy_dt[<?php echo $data['id'];?>]" value="<?php echo implode('-', array_reverse(explode('-', $data['apy_dt'])));?>"></input>
+                            <div class="col-md-2">
+                              <input type="text" class="form-control" name="apy_dt[<?php echo $data['id'];?>]" value="<?php echo implode('-', array_reverse(explode('-', $data['apy_dt'])));?>">
                             </div>
 
-                            <div class="span1">
-                              <input type="text" class="span12" name="amount[<?php echo $data['id'];?>]" value="<?php echo $data['amount'];?>€"></input>
+                            <div class="col-md-1">
+                              <input type="text" class="form-control" name="amount[<?php echo $data['id'];?>]" value="<?php echo $data['amount'];?>€">
                             </div>
 
-                            <div class="span1">
-                              <input type="text" class="span12" name="month_range[<?php echo $data['id'];?>]" value="<?php echo $data['month_range'];?>">
+                            <div class="col-md-1">
+                              <input type="text" class="form-control" name="month_range[<?php echo $data['id'];?>]" value="<?php echo $data['month_range'];?>">
                             </div>
 
-                            <div class="span1">
+                            <div class="col-md-1">
                               <!-- <label class="checkbox"> -->
-                                <input type="checkbox" name="is_credit[<?php echo $data['id'];?>]" <?php if($data['is_credit']==true) echo "checked='yes'";?> value=<?php echo $data['is_credit'];?>></input>
+                                <input type="checkbox" name="is_credit[<?php echo $data['id'];?>]" <?php if($data['is_credit']==true) echo "checked='yes'";?> value=<?php echo $data['is_credit'];?>>
                              <!-- </label> -->
                             </div>
                             
-                            <div class="span2">
-                              <input type="textarea" rows="1" class="span12" name="notes[<?php echo $data['id'];?>]" value="<?php echo $data['notes'];?>">
+                            <div class="col-md-2">
+                              <input type="textarea" rows="1" class="form-control" name="notes[<?php echo $data['id'];?>]" value="<?php echo $data['notes'];?>">
                             </div>
 
-                            <div class="span2">
+                            <div class="col-md-2">
                               <div class="btn-group pull-right">
-                                <a class="btn cancelbtn" onclick="actionpay('cancel',<?php echo $data['id']?>);return false;" href="#"><i class="icon-ban-circle"></i></a>
-                                <a class="btn delbtn" onclick="actionpay('del',<?php echo $data['id']?>);return false;" href="#"><i class="icon-remove-circle"></i></a>
+                                <a class="btn btn-default cancelbtn" onclick="actionpay('cancel',<?php echo $data['id']?>);return false;" href="#"><i class="icon-ban-circle"></i></a>
+                                <a class="btn btn-default delbtn" onclick="actionpay('del',<?php echo $data['id']?>);return false;" href="#"><i class="icon-remove-circle"></i></a>
                               </div>
                             </div>
 
@@ -575,20 +585,25 @@ $(document).ready(function() {
        
                 <?php endforeach;?>
 
+                <div class="row">
                 <div class="payments-selected">
                   <span><i class="icon-hand-up"></i></span>
-                  <p>Με τα επιλεγμένα :  
-                    <select class="input-medium" style="margin:3px 0px 5px 6px;" name="select_action" id="select_action">
-                      <option value="none" selected>-</option>
-                      <option value="delete">Διαγραφή</option>
-                      <option value="cancel">Ακύρωση</option>
-                    </select>
-                  </p>
+                  <div class="col-md-2">
+                    Με τα επιλεγμένα :  
+                  </div>
+                  <div class="col-md-2">
+                      <select class="form-control"  name="select_action" id="select_action">
+                        <option value="none" selected>-</option>
+                        <option value="delete">Διαγραφή</option>
+                        <option value="cancel">Ακύρωση</option>
+                      </select>
+                    </div>
                 </div>
+              </div>
 
-              <div class="form-actions">
+              <div>
                 <button type="button" class="btn btn-primary pull-right" name="add_payment" id="add_payment">Πληρωμή</button>
-                <button type="button" class="btn" name="undo_payment" id="undo_payment">Αναίρεση</button>
+                <button type="button" class="btn btn-default" name="undo_payment" id="undo_payment">Αναίρεση</button>
                 <button type="submit" class="btn btn-danger" name="submit">Αποθήκευση</button>
               </div>
 
@@ -606,52 +621,52 @@ $(document).ready(function() {
 
               <div id="startpayments" class="hidden">
                 <div class="multiplefieldset-header">    
-                  <div class="row-fluid">
-                    <div class="span2">Αρ. ΑΠΥ</div>
-                    <div class="span2">Ημερομηνία ΑΠΥ</div>
-                    <div class="span2">Ποσό</div>
-                    <div class="span1">Μήνας</div>
-                    <div class="span1">Ε.Π.</div>
-                    <div class="span2">Παρατηρήσεις</div>
-                    <div class="span2"><p class="pull-right">Ενέργειες</p></div>
+                  <div class="row">
+                    <div class="col-md-2">Αρ. ΑΠΥ</div>
+                    <div class="col-md-2">Ημερομηνία ΑΠΥ</div>
+                    <div class="col-md-2">Ποσό</div>
+                    <div class="col-md-1">Μήνας</div>
+                    <div class="col-md-1">Ε.Π.</div>
+                    <div class="col-md-2">Παρατηρήσεις</div>
+                    <div class="col-md-2"><p class="pull-right">Ενέργειες</p></div>
                   </div>
                 </div>
-                  <div class="row-fluid">
-                    <div class="span12">
+                  <div class="row">
+                    <div class="col-md-12">
                   <form action="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance" method="post" accept-charset="utf-8">
                   <fieldset class="multiplefieldset collapsible"> <!--start of fieldset-->
                     <legend class="paylegend"></legend>     
-                         <div class="row-fluid"> <!--main form row-->
-                            <div class="span2">
-                              <input type="text" id="apyno1" class="span12" name="apy_no[-1]" value="">
+                         <div class="row"> <!--main form row-->
+                            <div class="col-md-2">
+                              <input type="text" id="apyno1" class="form-control" name="apy_no[-1]" value="">
                             </div>
 
-                            <div class="span2">
-                              <input type="text" id="apydate1" class="span12" name="apy_dt[-1]" value=""></input>
+                            <div class="col-md-2">
+                              <input type="text" id="apydate1" class="form-control" name="apy_dt[-1]" value="">
                             </div>
 
-                            <div class="span2">
-                              <input type="text" id="apyamount1" class="span12" name="amount[-1]" value=""></input>
+                            <div class="col-md-2">
+                              <input type="text" id="apyamount1" class="form-control" name="amount[-1]" value="">
                             </div>
 
-                            <div class="span1">
-                              <input type="text" id="apymonthrange1" class="span12" name="month_range[-1]" value="">
+                            <div class="col-md-1">
+                              <input type="text" id="apymonthrange1" class="form-control" name="month_range[-1]" value="">
                             </div>
 
-                            <div class="span1">
+                            <div class="col-md-1">
                               <!-- <label class="checkbox"> -->
-                                <input type="checkbox" name="is_credit[-1]" value="0"></input>
+                                <input type="checkbox" name="is_credit[-1]" value="0">
                              <!-- </label> -->
                             </div>
                             
-                            <div class="span2">
-                              <input type="textarea" rows="1" class="span12" name="notes[-1]" value="">
+                            <div class="col-md-2">
+                              <input type="textarea" rows="1" class="form-control" name="notes[-1]" value="">
                             </div>
 
-                            <div class="span2">
+                            <div class="col-md-2">
                               <div class="btn-group pull-right">
-                                <a class="btn cancelbtn" onclick="return false;" href="#" disabled ><i class="icon-ban-circle"></i></a>
-                                <a class="btn delbtn" onclick="return false;" href="#" disabled><i class="icon-remove-circle"></i></a>
+                                <a class="btn btn-default cancelbtn" onclick="return false;" href="#" disabled ><i class="icon-ban-circle"></i></a>
+                                <a class="btn btn-default delbtn" onclick="return false;" href="#" disabled><i class="icon-remove-circle"></i></a>
                               </div>
                             </div>
 
@@ -659,9 +674,9 @@ $(document).ready(function() {
 
                 </fieldset> <!--end of fieldset-->
 
-                <div id="actions" class="form-actions hidden">
+                <div id="actions" class="hidden">
                   <button type="button" class="btn btn-primary pull-right" name="add_payment" id="add_payment">Πληρωμή</button>
-                  <button type="button" class="btn" name="undo_payment" id="undo_payment">Αναίρεση</button>
+                  <button type="button" class="btn btn-default" name="undo_payment" id="undo_payment">Αναίρεση</button>
                   <button type="submit" class="btn btn-danger" id="submit1" name="submit">Αποθήκευση</button>
                 </div>
 
@@ -674,9 +689,6 @@ $(document).ready(function() {
         <!-- </div>  end of well class-->
 
       </div>
-
-    </div> <!--end of fluid container-->
-
   </div> <!--end of main container-->
 
 <div class="push"></div>
