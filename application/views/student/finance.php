@@ -514,14 +514,14 @@ $(document).ready(function() {
    <?php if (!empty($payments)):?>
       <div class="multiplefieldset-header">    
         <div class="row">
-          <div class="col-md-1"></div>
-          <div class="col-md-2">Αρ. ΑΠΥ</div>
-          <div class="col-md-2">Ημερομηνία ΑΠΥ</div>
-          <div class="col-md-1">Ποσό</div>
-          <div class="col-md-1">Μήνας</div>
-          <div class="col-md-1">Ε.Π.</div>
-          <div class="col-md-2">Παρατηρήσεις</div>
-          <div class="col-md-2"><p class="pull-right">Ενέργειες</p></div>
+          <div class="col-md-1 col-sm-1"><input type="checkbox"></div>
+          <div class="col-md-2 col-sm-2">Αρ. ΑΠΥ</div>
+          <div class="col-md-2 col-sm-2">Ημερομηνία ΑΠΥ</div>
+          <div class="col-md-2 col-sm-2">Ποσό Πληρωμής</div>
+          <div class="col-md-2 col-sm-2">Μήνας</div>
+          <div class="col-md-1 col-sm-1">Ε.Π.</div>
+          <div class="col-md-2 col-sm-2">Παρατηρήσεις</div>
+          <!-- <div class="col-md-1"><p class="pull-right">Ενέργειες</p></div> -->
         </div>
       </div>
         <div class="row">
@@ -533,51 +533,46 @@ $(document).ready(function() {
                       <div class='legend-text'>
                         Πληρωμή <?php echo $monthnames[$data['month_range']];?>
                       </div>
-                      <div class='col-md-1'>
-                        <label class="pull-right">
+                      <div class='col-md-1 col-sm-1 legend-selector'>
                           <input type="checkbox" name="select[<?php echo $data['id'];?>]" value="0">
-                        </label>
                       </div>
                     </legend>
+                      <div class="clearfix"></div>
                          <div class="row"> <!--main form row-->
-                            <div class="col-md-1">
-                              <label class="clearfix checkbox">
-                                <input class="pull-right" type="checkbox" name="select[<?php echo $data['id'];?>]" value="0">  
-                              </label>
+                            <div class="col-md-1 col-sm-1 hidden-xs selector">
+                                <input type="checkbox" name="select[<?php echo $data['id'];?>]" value="0">  
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-sm-2">
                               <input type="text" class="form-control" name="apy_no[<?php echo $data['id'];?>]" value="<?php echo $data['apy_no'];?>">
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-sm-2">
                               <input type="text" class="form-control" name="apy_dt[<?php echo $data['id'];?>]" value="<?php echo implode('-', array_reverse(explode('-', $data['apy_dt'])));?>">
                             </div>
 
-                            <div class="col-md-1">
+                            <div class="col-md-2 col-sm-2">
                               <input type="text" class="form-control" name="amount[<?php echo $data['id'];?>]" value="<?php echo $data['amount'];?>€">
                             </div>
 
-                            <div class="col-md-1">
+                            <div class="col-md-2 col-sm-2">
                               <input type="text" class="form-control" name="month_range[<?php echo $data['id'];?>]" value="<?php echo $data['month_range'];?>">
                             </div>
 
-                            <div class="col-md-1">
-                              <!-- <label class="checkbox"> -->
+                            <div class="col-md-1 col-sm-1">
                                 <input type="checkbox" name="is_credit[<?php echo $data['id'];?>]" <?php if($data['is_credit']==true) echo "checked='yes'";?> value=<?php echo $data['is_credit'];?>>
-                             <!-- </label> -->
                             </div>
                             
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-sm-2">
                               <input type="textarea" rows="1" class="form-control" name="notes[<?php echo $data['id'];?>]" value="<?php echo $data['notes'];?>">
                             </div>
 
-                            <div class="col-md-2">
+<!--                             <div class="col-md-1">
                               <div class="btn-group pull-right">
                                 <a class="btn btn-default cancelbtn" onclick="actionpay('cancel',<?php echo $data['id']?>);return false;" href="#"><i class="icon-ban-circle"></i></a>
                                 <a class="btn btn-default delbtn" onclick="actionpay('del',<?php echo $data['id']?>);return false;" href="#"><i class="icon-remove-circle"></i></a>
                               </div>
-                            </div>
+                            </div> -->
 
                         </div> <!--end main form row-->
 
@@ -586,20 +581,25 @@ $(document).ready(function() {
                 <?php endforeach;?>
 
                 <div class="row">
-                <div class="payments-selected">
-                  <span><i class="icon-hand-up"></i></span>
-                  <div class="col-md-2">
-                    Με τα επιλεγμένα :  
+                  <div class="col-md-1 col-sm-1 hidden-xs">
+                    <span style="margin-left:15px;">
+                      <i class="icon-hand-up"></i>
+                    </span>
                   </div>
-                  <div class="col-md-2">
-                      <select class="form-control"  name="select_action" id="select_action">
+                  <div class="col-md-2 col-sm-3">
+                    <label>Με τα επιλεγμένα : </label>
+                  </div>
+                  <div class="col-md-3 col-sm-3">
+                     <select class="form-control"  name="select_action" id="select_action">
                         <option value="none" selected>-</option>
                         <option value="delete">Διαγραφή</option>
                         <option value="cancel">Ακύρωση</option>
                       </select>
-                    </div>
-                </div>
+                  </div>
               </div>
+
+
+              <p></p>
 
               <div>
                 <button type="button" class="btn btn-primary pull-right" name="add_payment" id="add_payment">Πληρωμή</button>
