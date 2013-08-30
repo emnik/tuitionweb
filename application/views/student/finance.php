@@ -507,6 +507,9 @@ $(document).ready(function() {
               <i class="icon-shopping-cart"></i>
             </span>
             <h3 class="panel-title">Πληρωμές διδάκτρων</h3>
+            <div class="buttons visible-xs" style="padding-top:3px;">
+                <input type="checkbox">
+            </div>
           </div>
         </div>
       </div>
@@ -544,27 +547,29 @@ $(document).ready(function() {
                             </div>
 
                             <div class="col-md-2 col-sm-2">
-                              <input type="text" class="form-control" name="apy_no[<?php echo $data['id'];?>]" value="<?php echo $data['apy_no'];?>">
+                              <input type="text" class="form-control" placeholder="Αριθμός ΑΠΥ" name="apy_no[<?php echo $data['id'];?>]" value="<?php echo $data['apy_no'];?>">
                             </div>
 
                             <div class="col-md-2 col-sm-2">
-                              <input type="text" class="form-control" name="apy_dt[<?php echo $data['id'];?>]" value="<?php echo implode('-', array_reverse(explode('-', $data['apy_dt'])));?>">
+                              <input type="text" class="form-control" placeholder="Ημερομηνια ΑΠΥ" name="apy_dt[<?php echo $data['id'];?>]" value="<?php echo implode('-', array_reverse(explode('-', $data['apy_dt'])));?>">
                             </div>
 
                             <div class="col-md-2 col-sm-2">
-                              <input type="text" class="form-control" name="amount[<?php echo $data['id'];?>]" value="<?php echo $data['amount'];?>€">
+                              <input type="text" class="form-control" placeholder="Ποσό" name="amount[<?php echo $data['id'];?>]" value="<?php echo $data['amount'];?>€">
                             </div>
 
                             <div class="col-md-2 col-sm-2">
-                              <input type="text" class="form-control" name="month_range[<?php echo $data['id'];?>]" value="<?php echo $data['month_range'];?>">
+                              <input type="text" class="form-control" placeholder="Μήνας" name="month_range[<?php echo $data['id'];?>]" value="<?php echo $data['month_range'];?>">
                             </div>
 
                             <div class="col-md-1 col-sm-1">
-                                <input type="checkbox" name="is_credit[<?php echo $data['id'];?>]" <?php if($data['is_credit']==true) echo "checked='yes'";?> value=<?php echo $data['is_credit'];?>>
+                                <label class="checkbox">
+                                  <input type="checkbox" name="is_credit[<?php echo $data['id'];?>]" <?php if($data['is_credit']==true) echo "checked='yes'";?> value=<?php echo $data['is_credit'];?>>
+                                Ε.Π </label>
                             </div>
                             
                             <div class="col-md-2 col-sm-2">
-                              <input type="textarea" rows="1" class="form-control" name="notes[<?php echo $data['id'];?>]" value="<?php echo $data['notes'];?>">
+                              <input type="textarea" rows="1" class="form-control" placeholder="Παρατηρήσεις" name="notes[<?php echo $data['id'];?>]" value="<?php echo $data['notes'];?>">
                             </div>
 
 <!--                             <div class="col-md-1">
@@ -599,9 +604,7 @@ $(document).ready(function() {
               </div>
 
 
-              <p></p>
-
-              <div>
+              <div style="margin-top:30px;">
                 <button type="button" class="btn btn-primary pull-right" name="add_payment" id="add_payment">Πληρωμή</button>
                 <button type="button" class="btn btn-default" name="undo_payment" id="undo_payment">Αναίρεση</button>
                 <button type="submit" class="btn btn-danger" name="submit">Αποθήκευση</button>
