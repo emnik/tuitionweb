@@ -35,15 +35,24 @@ public function index() {
 		$data['schoolyears']=array();
 	}
 	
+	$justyears=array();
+	foreach ($schoolyears as $tmpdata) {
+		array_push($justyears, $tmpdata['schoolyear']);
+	};
+
 	$selected_schstart = $this->welcome_model->get_selected_startschyear(); 
 	$data['selected_schstart']= $selected_schstart; 
 
 	$startsch = $this->input->post('startschoolyear');
-	if (!empty($startsch)) {
+	if (!empty($startsch) and $startsch!="addnextschoolyear") {
 		switch ($this->input->post('submit')) {
 			case 'submit1': //Μαθητολόγιο
 				if ($selected_schstart!=$startsch){
 					$this->welcome_model->set_schoolyear($startsch);	
+				};
+			
+				if (in_array($startsch.'-'.($startsch+1), $justyears)==false){
+					$this->welcome_model->insert_schoolyear($startsch);
 				}
 //				redirect('registrations');
 				redirect('student');

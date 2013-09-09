@@ -8,6 +8,23 @@
   }
 </style>
 
+<script type="text/javascript">
+  $(document).ready(function(){
+ 
+    $('select[name=startschoolyear]').change(function(){
+        var sel=$(this).find('option:selected').val();
+        var prevpos=$(this).find('option:selected').prevAll().size()-1;
+        var prevval=$(this).find('option:eq('+ prevpos +")").val();
+        if (sel=="addnextschoolyear") {
+          var o = new Option((parseInt(prevval,10)+1) + "-" + (parseInt(prevval,10)+2) , parseInt(prevval,10)+1);
+          $(this).find('option:selected').before(o);
+          $(this).val(parseInt(prevval,10)+1);
+        }
+    });
+
+  });
+</script>
+
 </head>
 
 <body>
@@ -70,13 +87,14 @@
                 <div class="control-group">
                   <label  class="control-label">Επιλέξτε σχολικό έτος: </label>
                   <div class="controls">
-                    <select class="form-control input-lg" name="startschoolyear">
+                    <select class="form-control input-lg" name="startschoolyear" id="schoolyearcombo">
                       <?php foreach($schoolyears as $data):?>
                        <option value="<?php {$return=explode('-', $data['schoolyear']); echo $return[0];}?>" 
                         <?php if($return[0] == $selected_schstart){ echo "selected = 'selected'";}?> >
                         <?php echo $data['schoolyear'];?>
                       </option>
                       <?php endforeach;?>
+                      <option value="addnextschoolyear">Προσθήκη επόμενου σχ. έτους</option>
                     </select>
                   </div>
                 </div>

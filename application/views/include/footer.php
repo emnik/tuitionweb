@@ -32,7 +32,7 @@ $(document).keydown(function(event) {
     });
 
 $(document).ready(function(){
-	$('.combobox').combobox();
+	//$('.combobox').combobox();
 	// $('#footerModal').on('shown', function(){
 	// 	$(this).find(".modal-body > #combo").focus()
 	// });

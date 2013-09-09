@@ -628,10 +628,10 @@ $(document).ready(function() {
                     <div class="col-md-2">Αρ. ΑΠΥ</div>
                     <div class="col-md-2">Ημερομηνία ΑΠΥ</div>
                     <div class="col-md-2">Ποσό</div>
-                    <div class="col-md-1">Μήνας</div>
+                    <div class="col-md-2">Μήνας</div>
                     <div class="col-md-1">Ε.Π.</div>
                     <div class="col-md-2">Παρατηρήσεις</div>
-                    <div class="col-md-2"><p class="pull-right">Ενέργειες</p></div>
+                    <!-- <div class="col-md-2"><p class="pull-right">Ενέργειες</p></div> -->
                   </div>
                 </div>
                   <div class="row">
@@ -652,7 +652,7 @@ $(document).ready(function() {
                               <input type="text" id="apyamount1" class="form-control" name="amount[-1]" value="">
                             </div>
 
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                               <input type="text" id="apymonthrange1" class="form-control" name="month_range[-1]" value="">
                             </div>
 

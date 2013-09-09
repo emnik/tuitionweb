@@ -68,6 +68,12 @@ class Welcome_model extends CI_Model {
            -> update('lookup',$data);
    }
 
+   public function insert_schoolyear($newstartyear){
+      $data = array('schoolyear' => $newstartyear.'-'.($newstartyear+1));
+      $this-> db
+           -> insert('schoolyear',$data);
+   }
+
 
    public function get_student_names_ids(){
       $this->db
