@@ -9,19 +9,26 @@
 </style>
 
 <script type="text/javascript">
+  var addedyear=false;
   $(document).ready(function(){
- 
     $('select[name=startschoolyear]').change(function(){
         var sel=$(this).find('option:selected').val();
         var prevpos=$(this).find('option:selected').prevAll().size()-1;
         var prevval=$(this).find('option:eq('+ prevpos +")").val();
         if (sel=="addnextschoolyear") {
-          var o = new Option((parseInt(prevval,10)+1) + "-" + (parseInt(prevval,10)+2) , parseInt(prevval,10)+1);
-          $(this).find('option:selected').before(o);
-          $(this).val(parseInt(prevval,10)+1);
+          if (addedyear==false) {
+            addedyear=true;
+            var o = new Option((parseInt(prevval,10)+1) + "-" + (parseInt(prevval,10)+2) , parseInt(prevval,10)+1);
+            $(this).find('option:selected').before(o);
+            $(this).val(parseInt(prevval,10)+1);  
+          }
+          else {
+           alert("Δεν μπορείτε να προσθέσετε περισσότερα του ενός έτη τη φορά.")
+           $(this).val(parseInt(prevval,10)); 
+          }  
         }
+        
     });
-
   });
 </script>
 
@@ -86,7 +93,7 @@
              <legend>Διαχειριστική Περίοδος</legend>
                 <div class="control-group">
                   <label  class="control-label">Επιλέξτε σχολικό έτος: </label>
-                  <div class="controls">
+                  <div>  <!-- class="input-group"> -->
                     <select class="form-control input-lg" name="startschoolyear" id="schoolyearcombo">
                       <?php foreach($schoolyears as $data):?>
                        <option value="<?php {$return=explode('-', $data['schoolyear']); echo $return[0];}?>" 
@@ -96,6 +103,14 @@
                       <?php endforeach;?>
                       <option value="addnextschoolyear">Προσθήκη επόμενου σχ. έτους</option>
                     </select>
+<!-- 
+                    <div class="input-group-btn">
+                      <button type="button" class="input-lg btn btn-default dropdown-toggle" data-toggle="dropdown">Ενέργειες <span class="caret"></span></button>
+                      <ul class="dropdown-menu pull-right">
+                        <li><a href="#">Προσθηκη επόμενου σχολ. έτους</a></li>
+                        <li><a href="#">Διαγραφή σχολ. έτους</a></li>
+                     </div> -->
+
                   </div>
                 </div>
           </fieldset>
@@ -161,7 +176,8 @@
 
 
   </div> <!--end of container -->
+<div class="push"></div>  
 </div>
 
-<div class="push"></div>
+
 </div> <!-- end of body wrapper-->

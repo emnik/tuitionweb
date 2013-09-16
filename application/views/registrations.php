@@ -164,13 +164,13 @@ function resizeWindow(e)
    * the footer
    */
   $("tfoot input").each( function (i) {
-    asInitVals[i] = this.value;
+     asInitVals[i] = this.value;
   } );
   
   $("tfoot input").focus( function () {
-    if ( this.className == "search_init" )
+    if ( this.className == "search_init form-control" )
     {
-      this.className = "";
+      this.className = "form-control";
       this.value = "";
     }
   } );
@@ -178,7 +178,7 @@ function resizeWindow(e)
   $("tfoot input").blur( function (i) {
     if ( this.value == "" )
     {
-      this.className = "search_init";
+      this.className = "search_init form-control";
       this.value = asInitVals[$("tfoot input").index(this)];
     }
   } );
@@ -309,8 +309,8 @@ function resizeWindow(e)
             <th></th>
             <th></th>
             <th></th>
-            <th><input type="text" class="form-control" name="search_classnames" value="Φίλτρο τάξεων" class="search_init" /></th>
-            <th><input type="text" class="form-control" name="search_coursenames" value="Φίλτρο κατευθύνσεων" class="search_init" /></th>
+            <th><input type="text" class="search_init form-control" name="search_classnames" value="Φίλτρο τάξεων" class="search_init" /></th>
+            <th><input type="text" class="search_init form-control" name="search_coursenames" value="Φίλτρο κατευθύνσεων" class="search_init" /></th>
           </tr>
         </tfoot>
       </table>

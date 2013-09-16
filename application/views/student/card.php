@@ -452,9 +452,6 @@ function paste_name(where,who){
       </div>
     </form>
   </div>
-</div>
-
-
 </div> <!-- /container -->
 
 <div class="push"></div>

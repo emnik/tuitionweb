@@ -317,32 +317,42 @@ $(document).ready(function() {
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
+
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <div class="container">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <!--<a class="brand" href="#">Tuition manager</a>-->
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-            <li><a href="<?php echo base_url()?>">Αρχική</a></li> 
+          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
+     </div>
+
+      <div class="navbar-collapse collapse" role="navigation">
+        <ul class="nav navbar-nav">
+            <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
             <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-              <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-              <li><a href="#sections">Τμήματα</a></li>
-              <li><a href="#finance">Οικονομικά</a></li>
-              <li><a href="#reports">Αναφορές</a></li>
-              <li><a href="#admin">Διαχείριση</a></li>
-            </ul>
-            <ul class="nav pull-right">
-              <li><a href="#"><i class="icon-off"></i> Αποσύνδεση</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+            <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+            <li><a href="#sections">Τμήματα</a></li>
+            <li><a href="#finance">Οικονομικά</a></li>
+            <li><a href="#reports">Αναφορές</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Νικηφορακης Μανος</li>
+                <li><a href="#">Αλλαγή κωδικού</a></li>
+                <li><a href="#admin">Διαχείριση</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Αποσύνδεση</a></li>
+              </ul>
+            </li>
+        </ul>
+      </div><!--/.navbar-collapse -->
     </div>
+  </div>
 
 
 <!-- Subhead
@@ -350,7 +360,7 @@ $(document).ready(function() {
 <div class="jumbotron subhead">
   <div class="container">
     <h1>Καρτέλα Μαθητή</h1>
-    <p class="leap">tuition manager - πρόγραμμα διαχείρισης φροντιστηρίου.</p>
+    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
   </div>
 </div>
 
@@ -360,23 +370,20 @@ $(document).ready(function() {
 
   <div class="container"  style="margin-bottom:60px;">
       
-    <div class="container-fluid">
-      
-      <div style="margin-top:20px; margin-bottom:-15px;">
-      <ul class="breadcrumb">
-        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a><span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> <span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> <span class="divider">></span></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a> <span class="divider">></span></li>
-        <li class="active">Μεταβολές</li>
-      </ul>
-        <!-- <a class="btn btn-mini" href="<?php echo base_url();?>"><i class="icon-arrow-left"></i> πίσω</a>         -->
+      <div>
+        <ul class="breadcrumb">
+          <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
+          <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> </li>
+          <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> </li>
+          <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a> </li>
+          <li class="active">Μεταβολές</li>
+        </ul>
       </div>
       
       
-
-      <h3><?php echo $student['surname'].' '.$student['name']?></h3>
-      
+      <p>
+        <h3><?php echo $student['surname'].' '.$student['name']?></h3>
+      </p>
 
       <ul class="nav nav-tabs">
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Στοιχεία</a></li>
@@ -386,21 +393,21 @@ $(document).ready(function() {
       </ul>
 
 
-      <ul class="nav nav-pills">
+      <ul class="nav nav-pills"   style="margin:15px 0px;">
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Πληρωμές</a></li>
         <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance/changes">Μεταβολές</a></li>        
       </ul>
 
-      <div class="row-fluid">
+      <div class="row">
  
-        <div class="span12"> 
+        <div class="col-md-12 col-sm-12"> 
 
-          <div class="contentbox">
-            <div class="title">
+          <div class="panel panel-default">
+            <div class="panel-heading">
               <span class="icon">
                 <i class="icon-retweet"></i>
               </span>
-              <h5>Μεταβολές διδάκτρων</h5>
+              <h3 class="panel-title">Μεταβολές διδάκτρων</h3>
               <div class="buttons">
                   <!-- <button enabled id="editform1" type="button" class="btn btn-mini" data-toggle="button"><i class="icon-edit"></i></button> -->
               </div>
@@ -410,18 +417,18 @@ $(document).ready(function() {
       </div>
       <?php if(!empty($change)):?>
         <div class="multiplefieldset-header">    
-          <div class="row-fluid">
-            <div class="selector"></div>
-            <div class="span2">Ημερ/νία</div>
-            <div class="span1">Από</div>
-            <div class="span1">Σε</div>
-            <div class="span2">Αιτιολογία</div>
-            <div class="span2">Σημειώσεις</div>
-            <div class="span2"><p class="pull-right">Ενέργειες</p></div>
+          <div class="row">
+            <div class="col-md-1 col-sm-1"><input type="checkbox"></div>
+            <div class="col-md-2 col-sm-2">Ημερ/νία</div>
+            <div class="col-md-1 col-sm-1">Από</div>
+            <div class="col-md-1 col-sm-1">Σε</div>
+            <div class="col-md-2 col-sm-2">Αιτιολογία</div>
+            <div class="col-md-3 col-sm-2">Σημειώσεις</div>
+            <div class="col-md-2 col-sm-2"><p class="pull-right">Ενέργειες</p></div>
           </div>
         </div>
-        <div class="row-fluid">
-          <div class="span12">
+        <div class="row">
+          <div class="col-md-12 col-sm-12">
             <form action="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance/changes" method="post" accept-charset="utf-8">
               <?php foreach ($change as $data):?>
                 <fieldset class="multiplefieldset collapsible"> <!--start of fieldset-->
@@ -434,33 +441,33 @@ $(document).ready(function() {
                       </div>
                     </legend>
 
-                <div class="row-fluid"> 
+                <div class="row"> 
                   
                   <div class="selector">
                     <input type="checkbox" class="checkbox" name="select[<?php echo $data['id'];?>]" value="0"></input>
                   </div>
                   
-                  <div class="span2">
-                    <input type="text" class="span12" placeholder="Ημερομηνία μεταβολής" name="change_dt[<?php echo $data['id'];?>]" value="<?php echo implode('-', array_reverse(explode('-', $data['change_dt'])));?>"></input>
+                  <div class="col-md-2 col-sm-2">
+                    <input type="text" class="col-md-12 col-sm-12" placeholder="Ημερομηνία μεταβολής" name="change_dt[<?php echo $data['id'];?>]" value="<?php echo implode('-', array_reverse(explode('-', $data['change_dt'])));?>"></input>
                   </div>
 
-                  <div class="span1">
-                    <input type="text" class="span12" placeholder="Προηγούμενη τιμή διδάκτρων" name="prev_month_price[<?php echo $data['id'];?>]" value="<?php echo $data['prev_month_price'];?>€"></input>
+                  <div class="col-md-1 col-sm-1">
+                    <input type="text" class="col-md-12 col-sm-12" placeholder="Προηγούμενη τιμή διδάκτρων" name="prev_month_price[<?php echo $data['id'];?>]" value="<?php echo $data['prev_month_price'];?>€"></input>
                   </div>
 
-                  <div class="span1">
-                    <input type="text" class="span12" placeholder="Νέα τιμή διδάκτρων" name="new_month_price[<?php echo $data['id'];?>]" value="<?php echo $data['new_month_price'];?>€">
+                  <div class="col-md-1 col-sm-1">
+                    <input type="text" class="col-md-12 col-sm-12" placeholder="Νέα τιμή διδάκτρων" name="new_month_price[<?php echo $data['id'];?>]" value="<?php echo $data['new_month_price'];?>€">
                   </div>
                
-                  <div class="span2">
-                    <input type="textarea" class="span12" placeholder="Αιτία μεταβολής" name="reason[<?php echo $data['id'];?>]" value="<?php echo $data['reason'];?>">
+                  <div class="col-md-2 col-sm-2">
+                    <input type="textarea" class="col-md-12 col-sm-12" placeholder="Αιτία μεταβολής" name="reason[<?php echo $data['id'];?>]" value="<?php echo $data['reason'];?>">
                   </div>
 
-                  <div class="span2">
-                    <input type="textarea" rows="1" class="span12" placeholder="Σημειώσεις" name="notes[<?php echo $data['id'];?>]" value="<?php echo $data['notes'];?>">
+                  <div class="col-md-2 col-sm-2">
+                    <input type="textarea" rows="1" class="col-md-12 col-sm-12" placeholder="Σημειώσεις" name="notes[<?php echo $data['id'];?>]" value="<?php echo $data['notes'];?>">
                   </div>
 
-                  <div class="span2">
+                  <div class="col-md-2 col-sm-2">
                     <div class="btn-group pull-right">
                       <a class="btn delbtn" onclick="actionchange('del',<?php echo $data['id']?>);return false;" href="#"><i class="icon-remove-circle"></i></a>
                     </div>
@@ -479,9 +486,9 @@ $(document).ready(function() {
                   </p>
                 </div>
 
-              <div class="form-actions">
+              <div>
                 <button type="button" class="btn btn-primary pull-right" name="add_change" id="add_change">Μεταβολή</button>
-                <button type="button" class="btn" name="undo_change" id="undo_change">Αναίρεση</button>
+                <button type="button" class="btn btn-default" name="undo_change" id="undo_change">Αναίρεση</button>
                 <button type="submit" class="btn btn-danger" name="submit">Αποθήκευση</button>
               </div>
 
@@ -502,44 +509,44 @@ $(document).ready(function() {
 
              <div id="startchanges" class="hidden">
                 <div class="multiplefieldset-header">    
-                  <div class="row-fluid">
-                    <div class="span2">Ημερ/νία</div>
-                    <div class="span2">Από</div>
-                    <div class="span2">Σε</div>
-                    <div class="span2">Αιτιολογία</div>
-                    <div class="span2">Σημειώσεις</div>
-                    <div class="span2"><p class="pull-right">Ενέργειες</p></div>
+                  <div class="row">
+                    <div class="col-md-2 col-sm-2">Ημερ/νία</div>
+                    <div class="col-md-2 col-sm-2">Από</div>
+                    <div class="col-md-2 col-sm-2">Σε</div>
+                    <div class="col-md-2 col-sm-2">Αιτιολογία</div>
+                    <div class="col-md-2 col-sm-2">Σημειώσεις</div>
+                    <div class="col-md-2 col-sm-2"><p class="pull-right">Ενέργειες</p></div>
                   </div>
                 </div>
-              <div class="row-fluid">
-                <div class="span12">
+              <div class="row">
+                <div class="col-md-12 col-sm-12">
                   <form action="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance/changes" method="post" accept-charset="utf-8">
                   <fieldset class="multiplefieldset collapsible"> <!--start of fieldset-->
                     <legend class="paylegend"></legend>     
-                         <div class="row-fluid"> <!--main form row-->
-                            <div class="span2">
-                              <input type="text" id="changedt1" class="span12" placeholder="Ημερομηνία μεταβολής" name="change_dt[-1]" value="">
+                         <div class="row"> <!--main form row-->
+                            <div class="col-md-2 col-sm-2">
+                              <input type="text" id="changedt1" class="col-md-12 col-sm-12" placeholder="Ημερομηνία μεταβολής" name="change_dt[-1]" value="">
                             </div>
 
-                            <div class="span2">
-                              <input type="text" id="prevmonthprice1" placeholder="Προηγούμενη τιμή διδάκτρων" class="span12" name="prev_month_price[-1]" value=""></input>
+                            <div class="col-md-2 col-sm-2">
+                              <input type="text" id="prevmonthprice1" placeholder="Προηγούμενη τιμή διδάκτρων" class="col-md-12 col-sm-12" name="prev_month_price[-1]" value=""></input>
                             </div>
 
-                            <div class="span2">
-                              <input type="text" id="nextmonthprice1" placeholder="Νέα τιμή διδάκτρων" class="span12" name="new_month_price[-1]" value=""></input>
+                            <div class="col-md-2 col-sm-2">
+                              <input type="text" id="nextmonthprice1" placeholder="Νέα τιμή διδάκτρων" class="col-md-12 col-sm-12" name="new_month_price[-1]" value=""></input>
                             </div>
 
-                            <div class="span2">
-                              <input type="textarea" id="reason1" placeholder="Αιτία μεταβολής" class="span12" name="reason[-1]" value="">
+                            <div class="col-md-2 col-sm-2">
+                              <input type="textarea" id="reason1" placeholder="Αιτία μεταβολής" class="col-md-12 col-sm-12" name="reason[-1]" value="">
                             </div>
 
-                            <div class="span2">
-                              <input type="textarea" id="notes1" class="span12" placeholder="Σημειώσεις" name="notes[-1]" value="">
+                            <div class="col-md-2 col-sm-2">
+                              <input type="textarea" id="notes1" class="col-md-12 col-sm-12" placeholder="Σημειώσεις" name="notes[-1]" value="">
                             </div>
 
-                            <div class="span2">
+                            <div class="col-md-2 col-sm-2">
                               <div class="btn-group pull-right">
-                                <a class="btn delbtn" onclick="return false;" href="#" disabled><i class="icon-remove-circle"></i></a>
+                                <a class="btn btn-default delbtn" onclick="return false;" href="#" disabled><i class="icon-remove-circle"></i></a>
                               </div>
                             </div>
 
@@ -547,9 +554,9 @@ $(document).ready(function() {
 
                 </fieldset> <!--end of fieldset-->
 
-                <div id="actions" class="form-actions hidden">
+                <div id="actions" class="hidden">
                   <button type="button" class="btn btn-primary pull-right" name="add_change" id="add_change">Μεταβολή</button>
-                  <button type="button" class="btn" name="undo_change" id="undo_change">Αναίρεση</button>
+                  <button type="button" class="btn btn-default" name="undo_change" id="undo_change">Αναίρεση</button>
                   <button type="submit" class="btn btn-danger" id="submit1" name="submit">Αποθήκευση</button>
                 </div>
 
@@ -567,7 +574,6 @@ $(document).ready(function() {
       </div> 
     </form>
     </div> <!--end of row-->
-   </div> <!--end of fluid container--> 
   </div> <!--end of main container-->
 
 <div class="push"></div>
