@@ -133,27 +133,13 @@ $(document).ready(function() {
 
 
           //----------disable the buttons-------------
-          newfieldset.find('a.btn').attr('onclick', 'return false;').addClass('disabled');
+          // newfieldset.find('a.btn').attr('onclick', 'return false;').addClass('disabled');
 
           //----------the new payments should always start visible!------
           var $divs = newfieldset.find('legend').siblings();
           $divs.show();
           //newfieldset.find('legend > span').html('<i class="icon-certificate"></i>');
   });
-
-   $('.cancelbtn').tooltip({
-      title:"Ακύρωση ΑΠΥ",
-      trigger:'hover',
-      placement: 'top',
-      container:'body'
-   });
-
-    $('.delbtn').tooltip({
-      title:"Διαγραφή ΑΠΥ",
-      trigger:'hover',
-      placement: 'top',
-      container:'body'
-   });
 
 
   $('#undo_payment').click(function(){
@@ -282,10 +268,10 @@ $(document).ready(function() {
     });
 
    //color red the credit payments
-   $('fieldset.collapsible').find('input[name^="is_credit"]').each(function(){
+   $('input[name^="is_credit"]').each(function(){
     if($(this).val()==1){
-      $(this).parent().parent().parent().find('.paylegend').css('color','red');
-      //$(this).parent().parent().parent().find('.span').css('color','red');
+      console.log('found');
+      $(this).parent().parent().parent().parent().find('.paylegend').css('color','red');
     }
    });
 
@@ -528,7 +514,7 @@ $(document).ready(function() {
         </div>
       </div>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12 col-sm-12">
               <form action="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance" method="post" accept-charset="utf-8">
                 <?php foreach ($payments as $data):?>
                   <fieldset class="multiplefieldset collapsible"> <!--start of fieldset-->
