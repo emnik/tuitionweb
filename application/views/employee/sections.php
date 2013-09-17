@@ -98,7 +98,7 @@
           <ul class="nav nav-pills">
             <?php foreach ($section as $data):?>
             <li>
-                <a href="#<?php echo $data['id']?>"><?php echo $data['section'].'/'.mb_substr($data['title'], 0, 1, 'UTF-8' /* (the correct encoding) */);?></a>
+                <a href="#<?php echo $data['id']?>"><?php echo $data['section'].'/'.mb_substr($data['title'], 0, 3, 'UTF-8' /* (the correct encoding) */);?></a>
             </li>
             <?php endforeach;?>
           </ul>
@@ -120,7 +120,7 @@
                     <span class="icon">
                       <i class="icon-calendar"></i>
                     </span>
-                    <h3 class="panel-title"><?php echo $key.' / '.$value[0]['title'];?></h3>
+                    <h3 class="panel-title"><?php echo $value[0]['section'].' / '.$value[0]['title'];?></h3>
                   </div>
                   <div class="panel-body">
                     <table class="footable table table-striped table-condensed " >

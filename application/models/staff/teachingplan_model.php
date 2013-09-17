@@ -80,7 +80,7 @@ class Teachingplan_model extends CI_Model {
 
 function get_section_students($section_id){
 	$this->db
-			->select(array('section.id', 'CONCAT_WS(" ", registration.surname, registration.name) as stdname', 'registration.fathers_name', 'registration.mothers_name', 'contact.std_mobile','contact.mothers_mobile','contact.fathers_mobile','contact.work_tel','contact.home_tel','catalog_lesson.title'))
+			->select(array('section.id', 'section.section','CONCAT_WS(" ", registration.surname, registration.name) as stdname', 'registration.fathers_name', 'registration.mothers_name', 'contact.std_mobile','contact.mothers_mobile','contact.fathers_mobile','contact.work_tel','contact.home_tel','catalog_lesson.title'))
 			->from('std_lesson')
 			->join('registration', 'std_lesson.reg_id = registration.id')
 			->join('section', 'std_lesson.section_id = section.id')

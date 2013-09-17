@@ -546,7 +546,7 @@ $(document).ready(function() {
 
                 </fieldset> <!--end of fieldset-->
 
-                <div id="actions" class="hidden">
+                <div style="margin-top:30px;" id="actions" class="hidden">
                   <button type="button" class="btn btn-primary pull-right" name="add_change" id="add_change">Μεταβολή</button>
                   <button type="button" class="btn btn-default" name="undo_change" id="undo_change">Αναίρεση</button>
                   <button type="submit" class="btn btn-danger" id="submit1" name="submit">Αποθήκευση</button>
