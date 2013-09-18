@@ -124,13 +124,13 @@ function toggledays(togglecontrol) {
   <div class="container" style="margin-bottom:60px;">
   
       <div>
-      <ul class="breadcrumb">
-        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
-        <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> </li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> </li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Φοίτηση</a> </li>
-        <li class="active">Εβδομαδιαίο Πρόγραμμα</li>
-      </ul>
+        <ul class="breadcrumb">
+          <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
+          <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> </li>
+          <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> </li>
+          <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Φοίτηση</a> </li>
+          <li class="active">Εβδομαδιαίο Πρόγραμμα</li>
+        </ul>
       </div>
       
       

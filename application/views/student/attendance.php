@@ -406,7 +406,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 					      	<div class="row">
 				      			<div class="col-md-12">	
 				      				<button class="btn  btn-warning btn-sm" id="savedayabsence" >Αποθήκευση</button>
-				      				<a href="#" class="btn  btn-danger btn-sm pull-right" onclick="return false;" >Απουσιολόγιο</a>
+				      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" class="btn  btn-danger btn-sm pull-right">Απουσιολόγιο</a>
 					   			</div>
 					   		</div>
 					      	<?php endif;?>

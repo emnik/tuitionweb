@@ -255,6 +255,14 @@ public function attendance($id, $innersubsection=null, $student) {
 			$this->load->view('student/manage', $data);	
 			break;
 
+		case 'absences':
+			$all_absences = $this->attendance_model->get_allabsences($id);
+			if ($all_absences!=false)
+			{
+				$data['absences']=$all_absences;
+			}
+			$this->load->view('student/absences', $data);
+			break;
 		
 		default:
 			if(empty($program)){
