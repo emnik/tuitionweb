@@ -248,6 +248,33 @@ public function get_attendance_general_data($id){
 	}
 
 
+	public function count_absences($id)
+	{
+		$allabsences = $this->db
+				->where('reg_id', $id)
+				->count_all_results('absences');
+
+		if ($allabsences>0){
+			$excused = $this->db
+					->where('reg_id', $id)
+					->where('excused',1)
+					->count_all_results('absences');
+
+			$unexcused = $allabsences - $excused;	
+			
+			$absences = array();
+			$absences['excused']=$excused;
+			$absences['unexcused']=$unexcused;
+
+		}
+		else
+		{
+			$absences = $allabsences; //this will be zero
+		}
+			return $absences;
+	}
+
+
 	public function get_allabsences($id)
 	{
 		$query=$this->db->select(array('absences.id','absences.stdlesson_id','absences.date', 'absences.excused', 'catalog_lesson.title', "CONCAT_WS('-', DATE_FORMAT(`section_program`.`start_tm`, '%H:%i'), DATE_FORMAT(`section_program`.`end_tm`, '%H:%i')) AS 'hours'"))

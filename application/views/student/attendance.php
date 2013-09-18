@@ -44,8 +44,10 @@ $(document).ready(function(){
     "sAjaxSource": "<?php echo base_url();?>student/getabsencesdata/<?php echo $student['id']?>/",
     //"aoColumnDefs": [/*stdlesson_id*/{ "bVisible": false, "aTargets": [5] }],
     "aoColumns": [
-            { "mData": "title" },
-            { "mData": "hours" },
+            { "mData": "title",
+              "sClass":"col-md-3"},
+            { "mData": "hours",
+              "sClass":"col-md-2"},
             { "mData": "id",
               "sClass": "col-md-2",
               "mRender": function (data, type, full) {
@@ -59,7 +61,7 @@ $(document).ready(function(){
               	  	newabsencecounter=data;
                     excusedstatus="enabled";
               	  };
-                  return '<label class="radio"><input type="radio" name="todaypresense['+newabsencecounter+']" value="present"' + whetherchecked + '></input></label>';
+                  return '<input type="radio" name="todaypresense['+newabsencecounter+']" value="present"' + whetherchecked + '>';
                   }
             },
             { "mData": "id",
@@ -71,7 +73,7 @@ $(document).ready(function(){
               	  else {
               	  	whetherchecked = "";	
               	  };
-                  return '<label class="radio"><input type="radio" name="todaypresense['+newabsencecounter+']" value="absent"' + whetherchecked +'></input></label>';
+                  return '<input type="radio" name="todaypresense['+newabsencecounter+']" value="absent"' + whetherchecked +'>';
                   }
             },
             { "mData": "excused",
@@ -83,15 +85,15 @@ $(document).ready(function(){
               	  else {
               	  	whetherchecked = "";
               	  };
-                  return '<label class="checkbox"><input type="checkbox" name="excused['+newabsencecounter+']"' + whetherchecked + ' ' + excusedstatus +' ></input></label>';
+                  return '<input type="checkbox" name="excused['+newabsencecounter+']"' + whetherchecked + ' ' + excusedstatus +' >';
                   }
             },
             { "mData": "stdlesson_id",
-              "sClass": "hidden",
+              "sClass": "col-md-1 hidden",
               //I use a hidden form field in a visible datatable column to sent the stdlessonid in the controller.
               //If the datatable colum was set to non-visible then it doesnt sends the data!
               "mRender": function(data, type, full){
-              		return '<input class="col-md-1" type="text" name="stdlessonid['+newabsencecounter+']" value='+data+'></input>';
+              		return '<input type="text" name="stdlessonid['+newabsencecounter+']" value='+data+'>';
               }
         	}
         ],
