@@ -1404,7 +1404,9 @@ class CI_DB_active_record extends CI_DB_driver {
 				}
 				else
 				{
-					$not[] = $k.'-'.$v;
+					//http://stackoverflow.com/questions/11279262/update-database-field-error-codeigniter
+					//fixed in C.I 2.1.4
+					$not[] = $k2.'-'.$v2;
 				}
 
 				if ($escape === FALSE)

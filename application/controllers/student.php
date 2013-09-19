@@ -503,8 +503,6 @@ public function finance($id, $innersubsection=null, $student) {
 		//1. get possible absences for current day
 		$dayabsences = $this->attendance_model->get_dayabsences($id);	
 
-		//$this->load->library('firephp');
-		//$this->firephp->info($dayabsences);
 
 		//2. if there are absences then get the stdlesson's ids to get the REST lessons of the day if there are any
 		$stdlessonsids=array();
@@ -514,19 +512,18 @@ public function finance($id, $innersubsection=null, $student) {
 			};
 		};
 
-		//$this->firephp->info($stdlessonsids);
 
 		//3. get the day lessons (excluding the lessons that already exists in the absences table)
 		$daylessons = $this->attendance_model->get_daylessonshours($id, $stdlessonsids);
 		
-		//$this->firephp->info($daylessons);
+
 	
 		$dayabsencesdata=array();
 		if($daylessons!=false){
 			//4. Make a new array from daylessons array by adding in the excused key and set the id as stdlessons_id whereas id will be empty string
 			$i=0;
 			foreach ($daylessons as $data) {
-					$dayabsencesdata[$i]['id']="";
+					$dayabsencesdata[$i]['id']=-($i+1);//id is a negative index!
 					$dayabsencesdata[$i]['stdlesson_id']=$data['id'];
 					$dayabsencesdata[$i]['excused']=0;
 					$dayabsencesdata[$i]['title']=$data['title'];
@@ -544,9 +541,19 @@ public function finance($id, $innersubsection=null, $student) {
 		{
 			$dayabsencesdata = $dayabsences;
 		};
+
+		//SORTING MULTIDIMENTIONAL ARRAYS
+		//http://stackoverflow.com/questions/3232965/sort-multidimensional-array-by-multiple-keys
+		# get a list of sort columns and their data to pass to array_multisort
+		$sort = array();
+		foreach($dayabsencesdata as $k=>$v) {
+    		$sort['hours'][$k] = $v['hours'];
+    	}
+		# sort by event_type desc and then title asc
+		array_multisort($sort['hours'], SORT_ASC,$dayabsencesdata);
 		
-		//$this->firephp->info($dayabsencesdata);
 		
+		//return results
 		$tableData=array('aaData'=>$dayabsencesdata);
 		echo json_encode($tableData);
 
@@ -653,6 +660,7 @@ public function finance($id, $innersubsection=null, $student) {
 				};
 			};
 		};
+
 
 		//Send the data to be inserted-updated-deleted to the model
 		echo json_encode($this->attendance_model->ins_del_upd_absences($insertdata, $updatedata, $deletedata));
