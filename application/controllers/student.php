@@ -201,8 +201,6 @@ public function contact($id, $student) {
 
 public function attendance($id, $innersubsection=null, $student) {
 
-	//$this->output->enable_profiler(TRUE);
-	
 	$data['student']=$student;
 
 	$this->load->model('student/attendance_model');
@@ -212,8 +210,8 @@ public function attendance($id, $innersubsection=null, $student) {
 	$absences_count = $this->attendance_model->count_absences($id);
 
 	$data['absences_count']=$absences_count;
-	$this->load->library('firephp');
-	$this->firephp->info($absences_count);
+	// $this->load->library('firephp');
+	// $this->firephp->info($absences_count);
 	
 	if ($progress){
 		$data['progress']=$progress;
@@ -301,9 +299,7 @@ public function attendance($id, $innersubsection=null, $student) {
 
 
 public function finance($id, $innersubsection=null, $student) {
-	//$this->output->enable_profiler(TRUE);
- 	// $this->load->library('firephp');
- 	// $this->firephp->error($_POST);	
+	
 	if (!empty($_POST)) {
 		$sortedformdata=array();
 		$selectors=array();
@@ -357,10 +353,7 @@ public function finance($id, $innersubsection=null, $student) {
 				};	
 			};
 		};
-		// $this->load->library('firephp');
-		// $this->firephp->error($sortedformdata);
-		// $this->firephp->error($selectors);
-
+	
 		$this->load->model('student/finance_model');
 		if (is_null($innersubsection)){
 			//send the form data to the model to update the payment table
@@ -436,14 +429,12 @@ public function finance($id, $innersubsection=null, $student) {
  		if ($action=='delete'){
 	 		foreach ($this->input->post('select') as $payid => $value) {		
 				$this->finance_model->del_payment($payid);
-				//$this->firephp->info($payid, 'deleted payment with id');
 			};	
  		}
  		else
  		{
  			foreach ($this->input->post('select') as $payid => $value) {
 				$this->finance_model->cancel_payment($payid);
-				//$this->firephp->info($payid, 'canceled payment with id');
 			};		
  		};
  		//MAYBE I'LL HAVE A TRY STATEMENT INSTEAD OF RETURNING SUCCESS...
@@ -512,6 +503,7 @@ public function finance($id, $innersubsection=null, $student) {
 		//1. get possible absences for current day
 		$dayabsences = $this->attendance_model->get_dayabsences($id);	
 
+	
 		//2. if there are absences then get the stdlesson's ids to get the REST lessons of the day if there are any
 		$stdlessonsids=array();
 		if($dayabsences!=false){
@@ -520,9 +512,11 @@ public function finance($id, $innersubsection=null, $student) {
 			};
 		};
 
+	
 		//3. get the day lessons (excluding the lessons that already exists in the absences table)
 		$daylessons = $this->attendance_model->get_daylessonshours($id, $stdlessonsids);
 
+	
 		$dayabsencesdata=array();
 		if($daylessons!=false){
 			//4. Make a new array from daylessons array by adding in the excused key and set the id as stdlessons_id whereas id will be empty string
@@ -550,9 +544,8 @@ public function finance($id, $innersubsection=null, $student) {
 		$tableData=array('aaData'=>$dayabsencesdata);
 		echo json_encode($tableData);
 
-		//$this->load->library('firephp');
- 		//$this->firephp->error($tableData);	
 	}
+
 
 	public function updatedayabsencedata()
 	{
@@ -657,13 +650,6 @@ public function finance($id, $innersubsection=null, $student) {
 
 		//Send the data to be inserted-updated-deleted to the model
 		echo json_encode($this->attendance_model->ins_del_upd_absences($insertdata, $updatedata, $deletedata));
-
-
-		//echo json_encode(array('status'=>'success'));	
-		//$this->firephp->error($nonexisting);
-		//$this->firephp->error($deletedata);
-		//$this->firephp->error($updatedata);
-		//$this->firephp->error($insertdata);
 	}
 
 //---------------------END OF ABSENCES IN ATTENDANCE GENERAL-------------------

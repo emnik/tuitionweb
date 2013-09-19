@@ -384,7 +384,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 					      			</p>
 							      	<div class="row">
 						      			<div class="col-md-12">	
-						      				<a href="#" class="btn  btn-danger btn-sm pull-right" onclick="return false;" >Απουσιολόγιο</a>
+						      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" class="btn  btn-danger btn-sm pull-right">Απουσιολόγιο</a>
 							   			</div>
 							   		</div>
 					      		<?php endif;?>
@@ -394,12 +394,14 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
                     <form id="absencesform">
 					      		<table id="absencestable" class="table table-striped table-condensed" width="100%">
 					      			<thead>
-					      				<th>Μάθημα</th>
-					      				<th>Ώρα</th>
-					      				<th>Παρών</th>
-					      				<th>Απών</th>
-					      				<th>Δικ</th>
-					      				<th></th>
+                        <tr>
+  					      				<th>Μάθημα</th>
+  					      				<th>Ώρα</th>
+  					      				<th>Παρών</th>
+  					      				<th>Απών</th>
+  					      				<th>Δικ</th>
+  					      				<th></th>
+                        </tr>
 					      			</thead>
 					      			<tbody>
 					      			</tbody>

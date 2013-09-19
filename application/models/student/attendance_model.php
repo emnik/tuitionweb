@@ -250,6 +250,8 @@ public function get_attendance_general_data($id){
 
 	public function count_absences($id)
 	{
+		$absences = array();
+		
 		$allabsences = $this->db
 				->where('reg_id', $id)
 				->count_all_results('absences');
@@ -262,14 +264,15 @@ public function get_attendance_general_data($id){
 
 			$unexcused = $allabsences - $excused;	
 			
-			$absences = array();
 			$absences['excused']=$excused;
 			$absences['unexcused']=$unexcused;
 
 		}
 		else
 		{
-			$absences = $allabsences; //this will be zero
+			$absences['excused']=0;
+			$absences['unexcused']=0;
+
 		}
 			return $absences;
 	}
@@ -285,7 +288,7 @@ public function get_attendance_general_data($id){
 						->join('weekday', 'section_program.day=weekday.name')
 						->join('lesson_tutor', 'section.tutor_id=lesson_tutor.id')
 						->join('catalog_lesson', 'lesson_tutor.cataloglesson_id=catalog_lesson.id')
-						->where('weekday.priority', date('N', strtotime('absences.date')))
+						->where('weekday.priority', 'DAYOFWEEK(`absences`.`date`)-1', false)
 						->where('absences.reg_id', $id)
 						->order_by('date')
 						->order_by('hours')
@@ -310,11 +313,7 @@ public function get_attendance_general_data($id){
 	{
 		$query=$this->db->select(array('absences.id','absences.stdlesson_id', 'absences.excused', 'catalog_lesson.title', "CONCAT_WS('-', DATE_FORMAT(`section_program`.`start_tm`, '%H:%i'), DATE_FORMAT(`section_program`.`end_tm`, '%H:%i')) AS 'hours'"))
 						->from('absences')
-						->join('std_lesson', 'absences.stdlesson_id=std_lesson.id', 'left')
-						//->join('lesson', 'lesson.id=std_lesson.lesson_id')
-						//->join('catalog_lesson', 'catalog_lesson.id=lesson.cataloglesson_id')
-						//->join('lesson_tutor', 'std_lesson.tutor_id=lesson_tutor.id')
-						//->join('catalog_lesson', 'lesson_tutor.cataloglesson_id=catalog_lesson.id')
+						->join('std_lesson', 'absences.stdlesson_id=std_lesson.id')
 						->join('section', 'std_lesson.section_id=section.id')
 						->join('lesson_tutor', 'section.tutor_id=lesson_tutor.id')
 						->join('catalog_lesson', 'lesson_tutor.cataloglesson_id=catalog_lesson.id')
