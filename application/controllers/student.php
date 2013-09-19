@@ -503,7 +503,9 @@ public function finance($id, $innersubsection=null, $student) {
 		//1. get possible absences for current day
 		$dayabsences = $this->attendance_model->get_dayabsences($id);	
 
-	
+		//$this->load->library('firephp');
+		//$this->firephp->info($dayabsences);
+
 		//2. if there are absences then get the stdlesson's ids to get the REST lessons of the day if there are any
 		$stdlessonsids=array();
 		if($dayabsences!=false){
@@ -512,10 +514,12 @@ public function finance($id, $innersubsection=null, $student) {
 			};
 		};
 
-	
+		//$this->firephp->info($stdlessonsids);
+
 		//3. get the day lessons (excluding the lessons that already exists in the absences table)
 		$daylessons = $this->attendance_model->get_daylessonshours($id, $stdlessonsids);
-
+		
+		//$this->firephp->info($daylessons);
 	
 		$dayabsencesdata=array();
 		if($daylessons!=false){
@@ -541,6 +545,8 @@ public function finance($id, $innersubsection=null, $student) {
 			$dayabsencesdata = $dayabsences;
 		};
 		
+		//$this->firephp->info($dayabsencesdata);
+		
 		$tableData=array('aaData'=>$dayabsencesdata);
 		echo json_encode($tableData);
 
@@ -550,7 +556,7 @@ public function finance($id, $innersubsection=null, $student) {
 	public function updatedayabsencedata()
 	{
 		header('Content-Type: application/x-json; charset=utf-8');
-		$this->load->library('firephp');
+		//$this->load->library('firephp');
 		
 		//I get the keys from whatever table. The positive ones exist in the absence array and
 		//maybe altered while the negative ones are new data

@@ -38,6 +38,7 @@ $(document).ready(function(){
 
     /* Init the table */
     var newabsencecounter = 0;
+    var olddata=0;
     oTable = $('#absencestable').dataTable( {
     "bProcessing": true,
     //"aaData": sData,
@@ -55,13 +56,16 @@ $(document).ready(function(){
               	  	whetherchecked = "checked='checked'";
               	  	newabsencecounter = newabsencecounter -1;
                     excusedstatus="disabled";
+                    return '<input type="radio" name="todaypresense['+newabsencecounter+']" value="present"' + whetherchecked + '>';
               	  }
               	  else {
               	  	whetherchecked = "";
-              	  	newabsencecounter=data;
+              	  	//newabsencecounter=data;
+                    olddata=data;
                     excusedstatus="enabled";
-              	  };
-                  return '<input type="radio" name="todaypresense['+newabsencecounter+']" value="present"' + whetherchecked + '>';
+              	    return '<input type="radio" name="todaypresense['+data+']" value="present"' + whetherchecked + '>';
+                  };
+                  //return '<input type="radio" name="todaypresense['+newabsencecounter+']" value="present"' + whetherchecked + '>';
                   }
             },
             { "mData": "id",
@@ -69,11 +73,13 @@ $(document).ready(function(){
               "mRender": function (data, type, full) {
               	  if(data!==''){
               	  	whetherchecked = "checked='checked'";
-              	  }
+              	    return '<input type="radio" name="todaypresense['+data+']" value="absent"' + whetherchecked +'>';
+                  }
               	  else {
-              	  	whetherchecked = "";	
+              	  	whetherchecked = "";
+                    return '<input type="radio" name="todaypresense['+newabsencecounter+']" value="absent"' + whetherchecked +'>';	
               	  };
-                  return '<input type="radio" name="todaypresense['+newabsencecounter+']" value="absent"' + whetherchecked +'>';
+                  //return '<input type="radio" name="todaypresense['+newabsencecounter+']" value="absent"' + whetherchecked +'>';
                   }
             },
             { "mData": "excused",
@@ -85,7 +91,14 @@ $(document).ready(function(){
               	  else {
               	  	whetherchecked = "";
               	  };
-                  return '<input type="checkbox" name="excused['+newabsencecounter+']"' + whetherchecked + ' ' + excusedstatus +' >';
+                  if(olddata!=0){
+                    return '<input type="checkbox" name="excused['+olddata+']"' + whetherchecked + ' ' + excusedstatus +' >';                   
+                  }
+                  else
+                  {
+                    return '<input type="checkbox" name="excused['+newabsencecounter+']"' + whetherchecked + ' ' + excusedstatus +' >';
+                  }
+                  //return '<input type="checkbox" name="excused['+newabsencecounter+']"' + whetherchecked + ' ' + excusedstatus +' >';
                   }
             },
             { "mData": "stdlesson_id",
@@ -93,7 +106,16 @@ $(document).ready(function(){
               //I use a hidden form field in a visible datatable column to sent the stdlessonid in the controller.
               //If the datatable colum was set to non-visible then it doesnt sends the data!
               "mRender": function(data, type, full){
-              		return '<input type="text" name="stdlessonid['+newabsencecounter+']" value='+data+'>';
+                if(olddata!=0)
+                {
+                  return '<input type="text" name="stdlessonid['+olddata+']" value='+data+'>';
+                }
+                else
+                {
+                  return '<input type="text" name="stdlessonid['+newabsencecounter+']" value='+data+'>';
+                }
+              		//return '<input type="text" name="stdlessonid['+newabsencecounter+']" value='+data+'>';
+                  olddata=0;
               }
         	}
         ],
@@ -108,7 +130,8 @@ $(document).ready(function(){
 
   $('#absencesform').on("click", 'input[type="radio"]', function(){
       //extract get id from the radio input clicked (it is the only numeric positive or negative) part of the name        
-      id=$(this).prop('name').match(/[-0-9]+/g);
+      var id=$(this).prop('name').match(/[-0-9]+/g);
+      console.log($(this).val());
       if($(this).val()=='present'){
          $('input[name="excused['+id+']"]').prop('checked', false);
          $('input[name="excused['+id+']"]').prop('disabled', true);
