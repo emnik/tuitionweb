@@ -377,7 +377,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 							   			</div>
 							   		</div>
 					      		<?php else:?>
-					      			<h5>Δικαιολογημένες: <span class="badge">2</span> &nbsp Αδικαιολόγητες: <span class="badge">0</span></h5>
+					      			<h5>Δικαιολογημένες: <span class="badge"><?php echo $absences_count['excused'];?></span> &nbsp Αδικαιολόγητες: <span class="badge"><?php echo $absences_count['unexcused'];?></span></h5>
 					      			<p><span class="label label-warning">Σήμερα:</span></p>
 					      			<p class="text-info">
 					      				Σήμερα δεν έχει κανένα μάθημα!
@@ -389,7 +389,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 							   		</div>
 					      		<?php endif;?>
 				      		<?php else:?>
-				      			<h5>Δικαιολογημένες: <span class="badge badge-success">2</span> &nbsp Αδικαιολόγητες: <span class="badge badge-important">0</span></h5>
+				      			<h5>Δικαιολογημένες: <span class="badge badge-success"><?php echo $absences_count['excused'];?></span> &nbsp Αδικαιολόγητες: <span class="badge badge-important"><?php echo $absences_count['unexcused'];?></span></h5>
 					      		<p><span class="label label-warning">Σήμερα:</span></p>
                     <form id="absencesform">
 					      		<table id="absencestable" class="table table-striped table-condensed" width="100%">

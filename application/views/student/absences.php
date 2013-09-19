@@ -106,27 +106,31 @@
       			</div>
     			<div class="panel-body">
 			        <!-- <form action="<?php echo base_url()?>student/card/<?php echo $student['id']?>/contact" method="post" accept-charset="utf-8"> -->
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>Ημερομηνία</th>
-								<th>Μάθημα</th>
-								<th>Ώρα</th>
-								<th>Δικαιολογημένη</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ($absences as $data):?>
-								<tr>
-									<td><?php echo implode('-', array_reverse(explode('-', $data['date'])));?></td>
-									<td><?php echo $data['title'];?></td>
-									<td><?php echo $data['hours'];?></td>
-									<td><input type="checkbox" <?php if($data['excused']==1) echo 'checked="checked"';?>"></td>
-								</tr>
-							<?php endforeach;?>
-						</tbody>
-					</table>
-			    </div>
+					<?php if (!empty($absences)):?>
+            <table class="table table-striped">
+  						<thead>
+  							<tr>
+  								<th>Ημερομηνία</th>
+  								<th>Μάθημα</th>
+  								<th>Ώρα</th>
+  								<th>Δικαιολογημένη</th>
+  							</tr>
+  						</thead>
+  						<tbody>
+  							<?php foreach ($absences as $data):?>
+  								<tr>
+  									<td><?php echo implode('-', array_reverse(explode('-', $data['date'])));?></td>
+  									<td><?php echo $data['title'];?></td>
+  									<td><?php echo $data['hours'];?></td>
+  									<td><input type="checkbox" <?php if($data['excused']==1) echo 'checked="checked"';?>"></td>
+  								</tr>
+  							<?php endforeach;?>
+  						</tbody>
+  					</table>
+          <?php else:?>
+            <p>Δεν υπαρχει καμία απουσία καταχωρημένη!</p> 
+          <?php endif;?>
+          </div>
 			</div>
 		</div>
 	</div>

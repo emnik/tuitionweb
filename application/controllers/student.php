@@ -14,7 +14,7 @@ public function index(){
 	a url such as: http://domain/tuitionweb/student/index/id
 	It must have the index method specified!!! 
 	*/
-	
+
 	$this->load->model('registrations_model');
 	$registration=$this->registrations_model->get_registration_data();
 
@@ -201,6 +201,8 @@ public function contact($id, $student) {
 
 public function attendance($id, $innersubsection=null, $student) {
 
+	//$this->output->enable_profiler(TRUE);
+	
 	$data['student']=$student;
 
 	$this->load->model('student/attendance_model');
@@ -210,8 +212,8 @@ public function attendance($id, $innersubsection=null, $student) {
 	$absences_count = $this->attendance_model->count_absences($id);
 
 	$data['absences_count']=$absences_count;
-	// $this->load->library('firephp');
-	// $this->firephp->info($absences_count);
+	$this->load->library('firephp');
+	$this->firephp->info($absences_count);
 	
 	if ($progress){
 		$data['progress']=$progress;

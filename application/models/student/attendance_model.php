@@ -257,7 +257,7 @@ public function get_attendance_general_data($id){
 		if ($allabsences>0){
 			$excused = $this->db
 					->where('reg_id', $id)
-					->where('excused',1)
+					->where('excused','1')
 					->count_all_results('absences');
 
 			$unexcused = $allabsences - $excused;	
@@ -279,14 +279,14 @@ public function get_attendance_general_data($id){
 	{
 		$query=$this->db->select(array('absences.id','absences.stdlesson_id','absences.date', 'absences.excused', 'catalog_lesson.title', "CONCAT_WS('-', DATE_FORMAT(`section_program`.`start_tm`, '%H:%i'), DATE_FORMAT(`section_program`.`end_tm`, '%H:%i')) AS 'hours'"))
 						->from('absences')
-						->join('std_lesson', 'absences.stdlesson_id=std_lesson.id', 'left')
-						->join('lesson', 'lesson.id=std_lesson.lesson_id')
-						->join('catalog_lesson', 'catalog_lesson.id=lesson.cataloglesson_id')
+						->join('std_lesson', 'absences.stdlesson_id=std_lesson.id')
 						->join('section', 'std_lesson.section_id=section.id')
-						->join('section_program', 'section.id=section_program.section_id')
-						->where('absences.reg_id', $id)
+						->join('section_program', 'section.id=section_program.section_id')	
 						->join('weekday', 'section_program.day=weekday.name')
-						->where('weekday.priority', date('N'))
+						->join('lesson_tutor', 'section.tutor_id=lesson_tutor.id')
+						->join('catalog_lesson', 'lesson_tutor.cataloglesson_id=catalog_lesson.id')
+						->where('weekday.priority', date('N', strtotime('absences.date')))
+						->where('absences.reg_id', $id)
 						->order_by('date')
 						->order_by('hours')
 						->get();
@@ -311,9 +311,13 @@ public function get_attendance_general_data($id){
 		$query=$this->db->select(array('absences.id','absences.stdlesson_id', 'absences.excused', 'catalog_lesson.title', "CONCAT_WS('-', DATE_FORMAT(`section_program`.`start_tm`, '%H:%i'), DATE_FORMAT(`section_program`.`end_tm`, '%H:%i')) AS 'hours'"))
 						->from('absences')
 						->join('std_lesson', 'absences.stdlesson_id=std_lesson.id', 'left')
-						->join('lesson', 'lesson.id=std_lesson.lesson_id')
-						->join('catalog_lesson', 'catalog_lesson.id=lesson.cataloglesson_id')
+						//->join('lesson', 'lesson.id=std_lesson.lesson_id')
+						//->join('catalog_lesson', 'catalog_lesson.id=lesson.cataloglesson_id')
+						//->join('lesson_tutor', 'std_lesson.tutor_id=lesson_tutor.id')
+						//->join('catalog_lesson', 'lesson_tutor.cataloglesson_id=catalog_lesson.id')
 						->join('section', 'std_lesson.section_id=section.id')
+						->join('lesson_tutor', 'section.tutor_id=lesson_tutor.id')
+						->join('catalog_lesson', 'lesson_tutor.cataloglesson_id=catalog_lesson.id')
 						->join('section_program', 'section.id=section_program.section_id')
 						->where('absences.reg_id', $id)
 						->where('absences.date', date('Y-m-d'))
