@@ -261,7 +261,21 @@ public function attendance($id, $innersubsection=null, $student) {
 			break;
 
 		case 'absences':
-			$all_absences = $this->attendance_model->get_allabsences($id);
+			$this->load->model('student/absences_model');
+			$excused_data=array();
+			if (!empty($_POST['excused'])){
+				foreach ($_POST['excused'] as $key => $value) {
+					if (isset($key)){
+						$value=1;
+					};
+				$excused_data[$key]=$value;
+				};
+			 	$this->absences_model->updateabsences($excused_data, $id);
+			 	//$this->load->library('firephp');
+			 	//$this->firephp->info($excused_data);
+			};
+			
+			$all_absences = $this->absences_model->get_allabsences($id);
 			if ($all_absences!=false)
 			{
 				$data['absences']=$all_absences;
@@ -669,6 +683,26 @@ public function finance($id, $innersubsection=null, $student) {
 //---------------------END OF ABSENCES IN ATTENDANCE GENERAL-------------------
 
 
+
+//-----------------------------START OF ABSENCES ------------------------------
+
+	public function absences_batch_actions($action){
+		header('Content-Type: application/x-json; charset=utf-8');
+		$this->load->model('student/absences_model','', TRUE);
+ 		if ($action=='delete'){
+	 		foreach ($this->input->post('select') as $absenceid => $value) {		
+				$this->absences_model->del_absence($absenceid);
+			};	
+ 		};
+ 		//MAYBE I'LL HAVE A TRY STATEMENT INSTEAD OF RETURNING SUCCESS...
+ 		$result=array('success'=>'true');
+		echo json_encode($result);
+	}
+
+//---------------------------- END OF ABSENCES --------------------------------
+
+
+
 //-----------------------------PAYMENT CHANGES---------------------------------
 	public function getfirstchangedata()
 	{
@@ -698,5 +732,8 @@ public function finance($id, $innersubsection=null, $student) {
 	}
 
 //----------------------------END OF PAYMENT CHANGES--------------------------
+
+
+
 
 }

@@ -345,7 +345,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 		      		<?php endif;?>
 				      	<div class="row">
 			      			<div class="col-md-12">	
-			      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/manage" class="btn btn-danger btn-sm pull-right">Διαχείριση</a>
+			      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/manage" class="btn btn-default btn-sm pull-right">Διαχείριση</a>
 				   			</div>
 				   		</div>
   				    </div>
@@ -382,7 +382,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 					      			</p>
 							      	<div class="row">
 						      			<div class="col-md-12">	
-						      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" class="btn  btn-danger btn-sm pull-right">Απουσιολόγιο</a>
+						      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" class="btn  btn-default btn-sm pull-right">Απουσιολόγιο</a>
 							   			</div>
 							   		</div>
 					      		<?php endif;?>
@@ -408,7 +408,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 					      	<div class="row">
 				      			<div class="col-md-12">	
 				      				<button class="btn  btn-warning btn-sm" id="savedayabsence" >Αποθήκευση</button>
-				      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" class="btn  btn-danger btn-sm pull-right">Απουσιολόγιο</a>
+				      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" class="btn  btn-default btn-sm pull-right">Απουσιολόγιο</a>
 					   			</div>
 					   		</div>
 					      	<?php endif;?>

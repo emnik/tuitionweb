@@ -278,36 +278,6 @@ public function get_attendance_general_data($id){
 	}
 
 
-	public function get_allabsences($id)
-	{
-		$query=$this->db->select(array('absences.id','absences.stdlesson_id','absences.date', 'absences.excused', 'catalog_lesson.title', "CONCAT_WS('-', DATE_FORMAT(`section_program`.`start_tm`, '%H:%i'), DATE_FORMAT(`section_program`.`end_tm`, '%H:%i')) AS 'hours'"))
-						->from('absences')
-						->join('std_lesson', 'absences.stdlesson_id=std_lesson.id')
-						->join('section', 'std_lesson.section_id=section.id')
-						->join('section_program', 'section.id=section_program.section_id')	
-						->join('weekday', 'section_program.day=weekday.name')
-						->join('lesson_tutor', 'section.tutor_id=lesson_tutor.id')
-						->join('catalog_lesson', 'lesson_tutor.cataloglesson_id=catalog_lesson.id')
-						->where('weekday.priority', 'DAYOFWEEK(`absences`.`date`)-1', false)
-						->where('absences.reg_id', $id)
-						->order_by('date')
-						->order_by('hours')
-						->get();
-
-		if ($query -> num_rows() > 0)
-		{
-			foreach($query->result_array() as $row) 
-				{
-					$allabsences[] = $row;
-				}
-			return $allabsences;
-		}
-		else 
-		{
-			return false;
-		}
-	}
-
 
 	public function get_dayabsences($id)
 	{

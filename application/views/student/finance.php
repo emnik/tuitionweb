@@ -249,8 +249,8 @@ $(document).ready(function() {
             selected_chkboxes.each(function(){
               $(this).parents('fieldset').remove();
             });
-            $(this).prop('selectedIndex',0);
         } //end if ans
+      $(this).prop('selectedIndex',0);
       } //end if act
   })
 

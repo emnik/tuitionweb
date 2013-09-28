@@ -15,30 +15,6 @@ class Student_model extends CI_Model {
    }
 
 
-  //  public function get_registration_data($id) {
-  //  	$query=$this
-  //  		->db
-  //  		->select('*')
-  //  		->from('registration')
-  //  		//->join('vw_schoolyear_reg_ids','registration.id=vw_schoolyear_reg_ids.id','right')
-  //        ->where('registration.id',$id)
-  //        ->limit(1)
-  //  		->get();
-
-  //  	if ($query->num_rows() > 0) 
-		// {
-   		 
-  //        return $query->row_array(); 
-		// }
-		// else 
-		// {
-		// 	return false;
-		// }
-
-  //  }
-
-
-
    public function get_regions() {
       $query=$this
          ->db
