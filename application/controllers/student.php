@@ -680,6 +680,20 @@ public function finance($id, $innersubsection=null, $student) {
 		echo json_encode($this->attendance_model->ins_del_upd_absences($insertdata, $updatedata, $deletedata));
 	}
 
+
+	public function get_absences_count($id)
+	{
+
+		$this->load->model('student/attendance_model','', TRUE);    
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this
+						->attendance_model
+						->count_absences($id)
+						)
+			);
+	
+	}
+
 //---------------------END OF ABSENCES IN ATTENDANCE GENERAL-------------------
 
 

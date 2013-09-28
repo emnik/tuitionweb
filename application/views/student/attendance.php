@@ -18,21 +18,26 @@ $(document).ready(function(){
   $('#dayprogram').footable();
 
 	var oTable;
+  get_absences_count();
 
 	$('#savedayabsence').click(function(){
 		var sData = oTable.$('input').serialize();
-		sData = sData+'&'+'stdid='+<?php echo $student['id']?>;
-        console.log(sData);
-        $.ajax({  
-                  type: "POST",  
-                  url: "<?php echo base_url()?>student/updatedayabsencedata",  
-                  data: sData,
-                  success: function(result) {  
-                      if (result!=false){
-                          oTable.fnReloadAjax();
-                      };
-                  }
-              });
+		sData = sData+'&'+'stdid='+<?php echo $student['id'];?>;
+    $.ajax({  
+              type: "POST",  
+              url: "<?php echo base_url()?>student/updatedayabsencedata",  
+              data: sData,
+              success: function(result) {  
+                  if (result!=false){
+                      oTable.fnReloadAjax();
+                  };
+              }
+          });
+    
+    $(document).ajaxStop(function () {
+        get_absences_count(); 
+    });
+    
 	});
 
 
@@ -54,11 +59,11 @@ $(document).ready(function(){
               	  absid=data;
                   if(data<0){
               	  	whetherchecked = "checked='checked'";
-                    excusedstatus="disabled";
+                    excusedstatus="disabled='disabled'";
               	  }
               	  else {
               	  	whetherchecked = "";
-                    excusedstatus="enabled";
+                    excusedstatus="enabled='enabled'";
                   };
                   return '<input type="radio" name="todaypresense['+absid+']" value="present"' + whetherchecked + '>';
                   }
@@ -109,6 +114,7 @@ $(document).ready(function(){
       var id=$(this).prop('name').match(/[-0-9]+/g);
       if($(this).val()=='present'){
          $('input[name="excused['+id+']"]').prop('checked', false);
+
          $('input[name="excused['+id+']"]').prop('disabled', true);
       }
       else
@@ -118,6 +124,16 @@ $(document).ready(function(){
 
     });
 
+
+  $('#absencesform').on("click", 'input[type="checkbox"]', function(){
+      if ($(this).attr('checked')){
+        $(this).removeAttr('checked');
+      }
+      else
+      {
+        $(this).attr("checked", 'checked'); 
+      };
+  });
 
 });
 
@@ -159,8 +175,26 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
             fnCallback( oSettings );
         }
     }, oSettings );
-}
+};
 
+    function get_absences_count(){
+        //post_url is the controller function where I want to post the data
+        var post_url = "<?php echo base_url()?>student/get_absences_count/<?php echo $student['id'];?>";
+        $.ajax({
+          type: "POST",
+          url: post_url,
+          data : '',
+          dataType:'json',
+          //absencesdata is just a name that gets the result of the controller's function I posted the data
+          success: function(absencesdata)
+            {
+              //ajax cannot return a value! We must set the value where we want it!
+              //console.log(absencesdata.excused, absencesdata.unexcused);
+              $('#excusedbadged').html(absencesdata.excused);
+              $('#unexcusedbadged').html(absencesdata.unexcused);
+            } //end success
+          }); //end AJAX
+    }
 
 </script>
 
@@ -355,7 +389,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 		      	<div class="col-md-6"> <!--απουσίες & πρόοδος-->
 
 			      <div class="row">
-			      	<div class="col-md-12"> <!--Σύνολο απουσιών (στο τέλος Περισότερα...) -->
+			      	<div class="col-md-12"> <!--Σύνολο απουσιών -->
 			      	<div class="panel panel-default">
               <div class="panel-heading">
                 <span class="icon">
@@ -375,7 +409,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 							   			</div>
 							   		</div>
 					      		<?php else:?>
-					      			<h5>Δικαιολογημένες: <span class="badge"><?php echo $absences_count['excused'];?></span> &nbsp Αδικαιολόγητες: <span class="badge"><?php echo $absences_count['unexcused'];?></span></h5>
+					      			<h5>Δικαιολογημένες: <span id="excusedbadged" class="badge">-</span> &nbsp Αδικαιολόγητες: <span id="unexcusedbadged" class="badge">-</span></h5>
 					      			<p><span class="label label-warning">Σήμερα:</span></p>
 					      			<p class="text-info">
 					      				Σήμερα δεν έχει κανένα μάθημα!
@@ -387,7 +421,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 							   		</div>
 					      		<?php endif;?>
 				      		<?php else:?>
-				      			<h5>Δικαιολογημένες: <span class="badge badge-success"><?php echo $absences_count['excused'];?></span> &nbsp Αδικαιολόγητες: <span class="badge badge-important"><?php echo $absences_count['unexcused'];?></span></h5>
+				      			<h5>Δικαιολογημένες: <span id="excusedbadged" class="badge">-</span> &nbsp Αδικαιολόγητες: <span id="unexcusedbadged" class="badge">-</span></h5>
 					      		<p><span class="label label-warning">Σήμερα:</span></p>
                     <form id="absencesform">
 					      		<table id="absencestable" class="table table-striped table-condensed" width="100%">
