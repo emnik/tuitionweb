@@ -262,17 +262,18 @@ public function attendance($id, $innersubsection=null, $student) {
 
 		case 'absences':
 			$this->load->model('student/absences_model');
-			$excused_data=array();
-			if (!empty($_POST['excused'])){
-				foreach ($_POST['excused'] as $key => $value) {
-					if (isset($key)){
-						$value=1;
-					};
-				$excused_data[$key]=$value;
+			
+			if (!empty($_POST)){
+				$excused_data=array();
+				if (!empty($_POST['excused'])){
+					foreach ($_POST['excused'] as $key => $value) {
+						if (isset($key)){
+							$value=1;
+						};
+					$excused_data[$key]=$value;
+					}
 				};
-			 	$this->absences_model->updateabsences($excused_data, $id);
-			 	//$this->load->library('firephp');
-			 	//$this->firephp->info($excused_data);
+				$this->absences_model->updateabsences($excused_data, $id);
 			};
 			
 			$all_absences = $this->absences_model->get_allabsences($id);

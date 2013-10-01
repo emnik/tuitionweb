@@ -178,8 +178,8 @@ $(document).ready(function(){
     				<h3 class="panel-title">Απουσιολόγιο</h3>
       			</div>
     			<div class="panel-body">
-			    <form action="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" method="post" accept-charset="utf-8">
   					<?php if (!empty($absences)):?>
+            <form action="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" method="post" accept-charset="utf-8">
               <table class="table footable table-striped">
     						<thead>
     							<tr>
