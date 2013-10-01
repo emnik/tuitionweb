@@ -189,7 +189,24 @@ $(document).ready(function() {
         $(this).removeAttr('checked');
         alterchkbox.val(0);
         alterchkbox.removeAttr('checked');
+      };
+      //check or uncheck the "allcheck" checkbox depending on whether all payments are checked or not!
+      var fieldsets = $('form').find('fieldset');
+      var selected_chkboxes = $('form').find(':input[type="checkbox"][name*="select"]:visible:checked');
+
+      if(selected_chkboxes.length == fieldsets.length)
+      {
+        $('.checkall').each(function(){
+          $(this).prop('checked', true);
+        });
       }
+      else
+      {
+        $('.checkall').each(function(){
+          $(this).prop('checked', false);
+        });
+      };
+
   });
 
   //when we click a select box in normal view the corresponding hidden select box in the responsive view should get the same value.
@@ -208,7 +225,25 @@ $(document).ready(function() {
         $(this).removeAttr('checked');
         alterchkbox.val(0);
         alterchkbox.removeAttr('checked');
+      };
+
+      //check or uncheck the "allcheck" checkbox depending on whether all payments are checked or not!
+      var fieldsets = $('form').find('fieldset');
+      var selected_chkboxes = $('form').find(':input[type="checkbox"][name*="select"]:visible:checked');
+
+      if(selected_chkboxes.length == fieldsets.length)
+      {
+        $('.checkall').each(function(){
+          $(this).prop('checked', true);
+        });
       }
+      else
+      {
+        $('.checkall').each(function(){
+          $(this).prop('checked', false);
+        });
+      };
+
   });
 
 
@@ -274,6 +309,34 @@ $(document).ready(function() {
       $(this).parent().parent().parent().parent().find('.paylegend').css('color','red');
     }
    });
+
+//check or uncheck all payments
+  $('.checkall').click(function(){
+    var fieldsets = $('form').find('fieldset');
+    var selected_chkboxes = $('form').find(':input[type="checkbox"][name*="select"]:visible:checked');
+    if(selected_chkboxes.length < fieldsets.length)
+    {
+      $('form').find(':input[type="checkbox"][name*="select"]').each(function(){
+        $(this).prop('checked', true);
+        $(this).attr('checked', 'checked');
+        $(this).val(1);
+      });
+      $('.checkall').each(function(){
+        $(this).prop('checked', true);
+        $(this).attr('checked', 'checked');
+      });
+    }
+    else
+      {
+        $('form').find(':input[type="checkbox"][name*="select"]').each(function(){
+          $(this).removeAttr('checked');
+          $(this).val(0);
+        });
+        $('.checkall').each(function(){
+          $(this).removeAttr('checked');        
+        });
+      };
+  });
 
 
 }) //end of (document).ready()
@@ -494,7 +557,7 @@ $(document).ready(function() {
             </span>
             <h3 class="panel-title">Πληρωμές διδάκτρων</h3>
             <div class="buttons visible-xs" style="padding-top:3px;">
-                <input type="checkbox">
+                <input type="checkbox" class="checkall">
             </div>
           </div>
         </div>
@@ -503,7 +566,7 @@ $(document).ready(function() {
    <?php if (!empty($payments)):?>
       <div class="multiplefieldset-header">    
         <div class="row">
-          <div class="col-md-1 col-sm-1"><input type="checkbox"></div>
+          <div class="col-md-1 col-sm-1"><input type="checkbox" class="checkall"></div>
           <div class="col-md-2 col-sm-2">Αρ. ΑΠΥ</div>
           <div class="col-md-2 col-sm-2">Ημερομηνία ΑΠΥ</div>
           <div class="col-md-2 col-sm-2">Ποσό Πληρωμής</div>
