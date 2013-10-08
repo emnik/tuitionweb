@@ -70,7 +70,7 @@ $(document).ready(function(){
             <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
             <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
             <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-            <li><a href="#sections">Τμήματα</a></li>
+            <li><a href="<?php echo base_url()?>section">Τμήματα</a></li>
             <li><a href="#finance">Οικονομικά</a></li>
             <li><a href="#reports">Αναφορές</a></li>
         </ul>
