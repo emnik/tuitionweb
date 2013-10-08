@@ -24,41 +24,41 @@ $(document).ready(function() {
           }
     } );
     
-    /* Add a click handler for the employee-card btn */
-    $('#employee-card').click( function() {
+    /* Add a click handler for the section-card btn */
+    $('#section-card').click( function() {
         var anSelected = fnGetSelected( oTable );
         if ( anSelected.length !== 0 ) {
             var aRow=anSelected[0];
             var id=oTable.fnGetData( aRow, 0 );
-            window.open ('staff/card/'+id,'_self',false);
+            window.open ('section/card/'+id,'_self',false);
             //alert(id);
         }
         else
         {
-           alert("Δεν έχετε επιλέξει κανέναν εργαζόμενο.");
+           alert("Δεν έχετε επιλέξει κανένα τμήμα.");
         }
     });
 
     /* Add a click handler for the new-reg btn */
     $('#new-reg').click(function(){
-      window.open ('staff/newreg','_self',false);
+      window.open ('section/newreg','_self',false);
     });
 
     /* Add a click handler for the del-reg btn */
     $('#del-reg').click(function(){
         var anSelected = fnGetSelected( oTable );
         if ( anSelected.length !== 0 ) {
-            var r=confirm("Ο εργαζόμενος που επιλέξατε πρόκειται να διαγραφεί. Παρακαλώ επιβεβαιώστε.");
+            var r=confirm("Το τμήμα που επιλέξατε πρόκειται να διαγραφεί. Παρακαλώ επιβεβαιώστε.");
             if (r==true)
             {
                 var aRow=anSelected[0];
                 var id=oTable.fnGetData( aRow, 0 );
-                window.open ('staff/delreg/'+id,'_self',false);  
+                window.open ('section/delreg/'+id,'_self',false);  
             }
          }
          else
          {
-          alert("Δεν έχετε επιλέξει κανέναν εργαζόμενο.");
+          alert("Δεν έχετε επιλέξει κανένα τμήμα.");
          }
     });
 
@@ -77,11 +77,11 @@ $(document).ready(function() {
                   "sNext":     "",
                   "sLast":     "Τελευταία"
               },
-              "sInfo": "Εμφανίζονται οι _START_ έως _END_ από τους _TOTAL_ εργαζομένους",
+              "sInfo": "Εμφανίζονται οι _START_ έως _END_ από τα _TOTAL_ τμήματα",
               "sInfoEmpty": "Εμφάνιζονται 0 εγγραφές",
-              "sInfoFiltered": "Φιλτράρισμα από _MAX_ συνολικά εργαζομένους",
-              "sLengthMenu": "_MENU_ εργαζόμενοι ανά σελίδα",
-              "sLoadingRecords": "Φόρτωση καταλόγου προσωπικού...",
+              "sInfoFiltered": "Φιλτράρισμα από _MAX_ συνολικά τμήματα",
+              "sLengthMenu": "_MENU_ τμήματα ανά σελίδα",
+              "sLoadingRecords": "Φόρτωση καταλόγου τμημάτων...",
               "sProcessing": "Επεξεργασία...",   
               "sSearch": "Εύρεση:",
               "sZeroRecords": "Δεν βρέθηκαν εγγραφές"
@@ -117,16 +117,16 @@ function resizeWindow(e)
     if(newWindowWidth >= 800)
     {
       oTable.fnSetColumnVis( 4, true );
-      oTable.fnSetColumnVis( 3, true );
+      oTable.fnSetColumnVis( 5, true );
     }
     else if((newWindowWidth >= 600) && (newWindowWidth < 800))
     {
-      oTable.fnSetColumnVis( 3, true );
+      oTable.fnSetColumnVis( 5, true );
       oTable.fnSetColumnVis( 4, false );
     }
     else if(newWindowWidth < 600)
     {
-      oTable.fnSetColumnVis( 3, false );
+      oTable.fnSetColumnVis( 5, false );
       oTable.fnSetColumnVis( 4, false );
     }
     
@@ -165,8 +165,8 @@ function resizeWindow(e)
         <ul class="nav navbar-nav">
             <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
             <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-            <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-            <li><a href="<?php echo base_url()?>section">Τμήματα</a></li>
+            <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+            <li class="active"><a href="<?php echo base_url()?>section">Τμήματα</a></li>
             <li><a href="#finance">Οικονομικά</a></li>
             <li><a href="#reports">Αναφορές</a></li>
         </ul>
@@ -191,7 +191,7 @@ function resizeWindow(e)
 ================================================== -->
 <div class="jumbotron subhead">
   <div class="container">
-    <h1>Προσωπικό Φροντιστηρίου</h1>
+    <h1>Τμήματα Φροντιστηρίου</h1>
     <p class="leap">tuition manager - πρόγραμμα διαχείρισης φροντιστηρίου.</p>
   </div>
 </div>
@@ -205,22 +205,22 @@ function resizeWindow(e)
       <div>
       <ul class="breadcrumb">
         <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
-        <li class="active">Προσωπικό</li>
+        <li class="active">Τμήματα</li>
       </ul>
       </div>
 
       <div class="panel panel-default">
         <div class="panel-heading">
           <span class="icon">
-            <i class="icon-book"></i>
+            <i class="icon-sitemap"></i>
           </span>
-          <h3 class="panel-title">Προσωπικό</h3>
+          <h3 class="panel-title">Τμήματα</h3>
           <div class="buttons">
             <button class="btn btn-sm btn-danger " id="del-reg"><i class="icon-trash"></i></button>
              <div class="btn-group">
               <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
             </div>
-            <button class="btn btn-sm btn-success" id="employee-card"><i class="icon-user"> Καρτέλα Εργαζομένου</i></button>
+            <button class="btn btn-sm btn-success" id="section-card"><i class="icon-tag"> Καρτέλα Τμήματος</i></button>
           </div>
         </div>
       <div class="panel-body">
@@ -229,21 +229,23 @@ function resizeWindow(e)
         <thead>
           <tr>
             <th>id</th>
-            <th>Επώνυμο</th>
-            <th>Όνομα</th>
-            <th>Ειδικότητα</th>
-            <th>Κατάσταση</th>
+            <th>Τμήμα</th>
+            <th>Μάθημα</th>
+            <th>Διδάσκων</th>
+            <th>Τάξη</th>
+            <th>Κατεύθυνση</th>
           </tr>
         </thead>
         <tbody>
-          <?php if($employees):?>
-            <?php foreach ($employees as $data):?>
+          <?php if($section):?>
+            <?php foreach ($section as $data):?>
               <tr>
                 <td><?php echo $data["id"];?></td>
-                <td><?php echo $data["surname"];?></td>
+                <td><?php echo $data["section"];?></td>
+                <td><?php echo $data["title"];?></td>
                 <td><?php echo $data["name"];?></td>
-                <td><?php echo $data["speciality"];?></td>
-                <td><?php if($data["active"]==0){echo 'Ανενεργός';} else {echo 'Ενεργός';}?></td>
+                <td><?php echo $data["class_name"];?></td>
+                <td><?php echo $data["course"];?></td>
               </tr>            
             <?php endforeach;?>
           <?php endif;?>

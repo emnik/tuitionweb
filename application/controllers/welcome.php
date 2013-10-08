@@ -63,7 +63,7 @@ public function index() {
 				break;
 
 			case 'submit3': // Τμήματα
-				#code...
+				redirect('section');
 				break;
 
 			case 'submit4': // Οικονομικά
