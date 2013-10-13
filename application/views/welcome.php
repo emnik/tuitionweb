@@ -146,22 +146,22 @@
         <div class="row" > <!--second row-->
             <div class="col-sm-4 welcome">
               <button type="submit" class="btn-link" name="submit" value="submit4">
-                <i class="icon-eur icon-4x"></i>
+                <i class="icon-money icon-4x"></i>
                 <h4>Οικονομικά</h4>
               </button>
             </div>
             
             <div class="col-sm-4 welcome">
               <button type="submit" class="btn-link" name="submit" value="submit5">
-                <i class="icon-edit icon-4x"></i>
+                <i class="icon-print icon-4x"></i>
                 <h4>Αναφορές</h4>
               </button>
             </div>
 
             <div class="col-sm-4 welcome">
               <button type="submit" class="btn-link" name="submit" value="submit6">
-                <i class="icon-cogs icon-4x"></i>
-                <h4>Διαχείριση</h4>
+                <i class="icon-code-fork icon-4x"></i>
+                <h4>Πολλαππλές ενέργειες</h4>
               </button>
             </div>
 
