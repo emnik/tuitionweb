@@ -42,6 +42,30 @@ class Section_model extends CI_Model {
    }
 
 
+   public function get_section_common_data($id) {
+      $query=$this
+         ->db
+         ->select(array('section.section','section.id', 'catalog_lesson.title'))
+         ->from('section')
+         ->join('lesson','section.lesson_id=lesson.id')
+         ->join('catalog_lesson','lesson.cataloglesson_id=catalog_lesson.id')
+         ->where('section.id',$id)
+         ->limit(1)
+         ->get();
+
+      if ($query->num_rows() > 0) 
+      {
+          
+         return $query->row_array(); 
+      }
+      else 
+      {
+         return false;
+      }
+
+   }
+
+
    public function delreg($id)
    {      
       $this->db->delete('section', array('id' => $id)); 
