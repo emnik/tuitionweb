@@ -44,7 +44,8 @@ $(document).ready(function(){
     //     $("input[name=active]").val($(this).find('input').attr('value'));
     //     });
     // });
- 
+    
+
 }) //end of (document).ready(function())
 
 </script>
@@ -136,7 +137,7 @@ $(document).ready(function(){
 
       <p></p>
 
-      <div class="visible-sm visible-xs">
+      <div class="visible-sm visible-xs" style="margin:15px 0px;">
         <div class="row">
           <div class="col-md-12">
             <div class="btn-group pull-left">  
@@ -183,30 +184,38 @@ $(document).ready(function(){
             		</div>
 	            <div class="panel-body">
 	        	    <div class="row">	
-	        	   		<div class="col-md-3">
+	        	   		<div class="col-md-3 col-xs-3">
 	        	   			<div class="form-group">  
                 		        <label>Όνομα τμήματος</label>
                         		<input disabled class="form-control" id="section" type="text" placeholder="" name="section" value="<?php echo $sectioncard['section'];?>">
 	        	    		</div>
                     	</div>
-	        	    	<div class="col-md-3">
+                    </div> <!--end of row-->
+                  <div class="row">
+	        	    	<div class="col-md-3 col-xs-6">
   	        	    		<div class="form-group">
                       			<label>Τάξη</label>
                         		<input disabled class="form-control" id="class_id" type="text" placeholder="" name="class_id" value="<?php echo $sectioncard['class_id'];?>">
 	        	    		</div>
                     	</div>
-	        	    	<div class="col-md-3">
+	        	    	<div class="col-md-3  col-xs-6">
                     		<div class="form-group">
 	        	    			<label>Κατεύθυνση</label>
                         		<input disabled class="form-control" id="course_id" type="text" placeholder="" name="course_id" value="<?php echo $sectioncard['course_id'];?>">
 	        	    		</div>
                     	</div>
-                    	<div class="col-md-3">
+                    	<div class="col-md-3  col-xs-6">
                       		<div class="form-group">
-	        	    	   		<label>Διδάσκων.</label>
+	        	    	   		    <label>Διδάσκων</label>
                        			<input disabled class="form-control" id="tutor_id" type="text" placeholder="" name="tutor_id" value="<?php echo $sectioncard['tutor_id'];?>">
-	        	    		</div>
+	        	    		      </div>
                     	</div>
+                      <div class="col-md-3  col-xs-6">
+                          <div class="form-group">
+                            <label>Μάθημα</label>
+                            <input disabled class="form-control" id="lesson_id" type="text" placeholder="" name="lesson_id" value="<?php echo $sectioncard['lesson_id'];?>">
+                          </div>
+                      </div>
 	        	    </div>
        	    	</div>
 		     </div> <!-- end of content row -->
@@ -220,7 +229,7 @@ $(document).ready(function(){
 	        	<div class="panel panel-default">
 	            	<div class="panel-heading">
 	              		<span class="icon">
-	                		<i class="icon-tag"></i>
+	                		<i class="icon-calendar"></i>
 	              		</span>
 	              		<h3 class="panel-title">Πρόγραμμα τμήματος</h3>
 	              		<div class="buttons">
@@ -228,7 +237,55 @@ $(document).ready(function(){
 	              		</div>
 	            	</div>
 	            	<div class="panel-body">
+                  <?php if(!empty($sectionprog)):?>
+                  <?php foreach ($sectionprog as $daysectionprog):?>
+                    <div class="row"> 
 
+                      <div class="col-xs-3">
+                        <div class="form-group">  
+                                <label>Ημέρα</label>
+                                <input disabled class="form-control" id="day" type="text" placeholder="" name="day" value="<?php echo $daysectionprog['day'];?>">
+                        </div>
+                          </div>
+
+                      <div class="col-xs-3">
+                          <div class="form-group">
+                                <label>Έναρξη</label>
+                                <input disabled class="form-control" id="start_tm" type="text" placeholder="" name="start_tm" value="<?php echo $daysectionprog['start_tm'];?>">
+                        </div>
+                          </div>
+                      <div class="col-xs-3">
+                            <div class="form-group">
+                          <label>Λήξη</label>
+                                <input disabled class="form-control" id="end_tm" type="text" placeholder="" name="end_tm" value="<?php echo $daysectionprog['end_tm'];?>">
+                        </div>
+                          </div>
+                          <div class="col-xs-3">
+                              <div class="form-group">
+                                <label>Αίθουσα</label>
+                                <input disabled class="form-control" id="classroom_id" type="text" placeholder="" name="classroom_id" value="<?php echo $daysectionprog['classroom_id'];?>">
+                              </div>
+                          </div>
+
+                    </div>
+                  <?php endforeach;?>
+                <?php endif;?>
+                <div class="row">
+                <div class="col-md-12">    
+                  <div class="btn-toolbar pull-right" role="toolbar">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        Διαγραφή <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Δευτέρας</a></li>
+                        <li><a href="#">Τρίτης..</a></li>
+                      </ul>
+                    </div>
+                    <button id="newdaybtn" type="button" class="btn btn-primary">Προσθήκη μέρας</button>
+                </div>
+              </div>
+              </div>
         	   		</div> <!-- end of pabel-body -->
 	            </div> <!-- end of panel -->
 	        </div> <!-- end of mainform -->

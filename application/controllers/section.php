@@ -77,10 +77,12 @@ public function card($id, $subsection=null) {
 	}
 	else 
 	{
-		$section_data=$this->card_model->get_section_data($id);
+		$section_data = $this->card_model->get_section_data($id);
+		$section_program = $this->card_model->get_section_program($id);
 	}
 
 	$data['sectioncard'] = $section_data;
+	$data['sectionprog'] = $section_program;
 	
 	$this->load->view('include/header');
 	$this->load->view('section/card', $data);
