@@ -27,6 +27,30 @@ public function index() {
 
 	}
 
+public function courses()
+{
+		$this->load->model('section/card_model','', TRUE);    
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this
+						->card_model
+						->get_courses($this->input->post('jsclassid'))
+						)
+			);
+
+}
+
+public function lessons()
+{
+		$this->load->model('section/card_model','', TRUE);    
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this
+						->card_model
+						->get_lessons($this->input->post('jsclassid'), $this->input->post('jscourseid'))
+						)
+			);
+
+}
+
 
 public function card($id, $subsection=null) {
 
@@ -83,7 +107,10 @@ public function card($id, $subsection=null) {
 
 	$data['sectioncard'] = $section_data;
 	$data['sectionprog'] = $section_program;
-	
+	$data['class'] = $this->card_model->get_classes();
+	$data['course'] = $this->card_model->get_courses($section_data['class_id']);
+	$data['lesson'] = $this->card_model->get_lessons($section_data['class_id'], $section_data['course_id']);
+
 	$this->load->view('include/header');
 	$this->load->view('section/card', $data);
 	$this->load->view('include/footer');

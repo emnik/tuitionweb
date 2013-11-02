@@ -38,15 +38,97 @@ $(document).ready(function(){
         $('.mainform').find(':input:disabled').removeAttr('disabled');
     <?php endif;?>
 
-    //get the radio button value when clicked to the hidden input field to be submitted with the form
-    // $('input:radio').each(function(){
-    //   $(this).parent().bind('click', function(){
-    //     $("input[name=active]").val($(this).find('input').attr('value'));
-    //     });
-    // });
     
+        $('#classes').change(function(){
+          getcourses();
+          document.getElementById('lessons').options.length = 0;
+        })
+
+        // $('#courses').click(function(){
+        //   if((this).options.length==1){
+        //     $('#courses').trigger('change');
+        //   }
+        // }); //end change event 
+
+        $('#courses').change(function(){
+          getlessons();
+        }); //end change event 
+
 
 }) //end of (document).ready(function())
+
+function getcourses(){
+          var classid = $('#classes option:selected').val();
+        //alert(classid);
+
+        //clear options from course select input
+        document.getElementById('courses').options.length = 0;
+
+        //the following is ajax post to populate the course dropdown 
+        var postdata = {'jsclassid': classid};
+        //post_url is the controller function where I want to post the data
+        var post_url = "<?php echo base_url()?>section/courses";
+        $.ajax({
+          type: "POST",
+          url: post_url,
+          data : postdata,
+          dataType:'json',
+          async: false,
+          //courses is just a name that gets the result of the controller's function I posted the data
+          success: function(courses) //we're calling the response json array 'courses data'
+            {
+              $.each(courses,function(id,course) 
+                {
+                  var opt = $('<option />'); // here we're creating a new select option for each group
+                  opt.val(id);
+                  opt.text(course);
+                  $('#courses').append(opt); 
+                  //console.log(opt);
+                });
+              $("#courses option:first").prop("selected", "selected");
+            } //end success
+          }); //end AJAX
+   
+            //if only one course, get the lessons too. The above ajax query MUST be async=false to work!!! this one...
+            if ($('#courses').get(0).options.length==1){
+              getlessons();
+            };
+
+}
+
+
+function getlessons(){
+        var classid = $('#classes option:selected').val();
+        var courseid = $('#courses option:selected').val();
+
+        //clear options from lessons select input
+        document.getElementById('lessons').options.length = 0;
+
+        //the following is ajax post to populate the course dropdown 
+        var postdata = {'jsclassid': classid, 'jscourseid': courseid};
+        //post_url is the controller function where I want to post the data
+        var post_url = "<?php echo base_url()?>section/lessons";
+        $.ajax({
+          type: "POST",
+          url: post_url,
+          data : postdata,
+          dataType:'json',
+          //lessons is just a name that gets the result of the controller's function I posted the data
+          success: function(lessons) 
+            {
+              $.each(lessons,function(id, lesson) 
+                {
+                  
+                  var opt = $('<option />'); // here we're creating a new select option for each group
+                  opt.val(id);
+                  opt.text(lesson);
+                  $('#lessons').append(opt); 
+                  //console.log(opt);
+                });
+            } //end success
+          }); //end AJAX
+      
+}
 
 </script>
 
@@ -148,20 +230,6 @@ $(document).ready(function(){
         </div>
       </div>
      
-<!--       <div style="margin:15px 0px;">
-       <div class="row">
-        <div class="col-md-12">
-         <div class="btn-group pull-right" data-toggle="buttons">
-          <label class="btn btn-sm btn-primary <?php if($emplcard['active']==1) echo 'active';?>">
-            <input type="radio" value='1'>Ενεργός
-          </label>
-          <label class="btn btn-sm btn-primary <?php if($emplcard['active']==0) echo 'active';?>">
-            <input type="radio" value='0'>Ανενεργός
-          </label>
-        </div>
-      </div>
-     </div>
-   </div> -->
 
 	<div class="row">
 
@@ -193,29 +261,51 @@ $(document).ready(function(){
                     </div> <!--end of row-->
                   <div class="row">
 	        	    	<div class="col-md-3 col-xs-6">
-  	        	    		<div class="form-group">
-                      			<label>Τάξη</label>
-                        		<input disabled class="form-control" id="class_id" type="text" placeholder="" name="class_id" value="<?php echo $sectioncard['class_id'];?>">
-	        	    		</div>
-                    	</div>
+                      <label>Τάξη</label>
+                        <select disabled id="classes" class="form-control" name="class_id">
+                          <?php $sel=false;?>
+                          <?php foreach ($class as $data):?>
+                            <option value="<?php echo $data['id']?>"<?php if ($sectioncard['class_id'] == $data['id']){echo ' selected'; $sel=true;}?>><?php echo $data['class_name'];?></option>
+                          <?php endforeach;?>
+                          <option value="" <?php if($sel==false) echo 'selected';?>></option>
+                        </select>
+                      </div>
+                    <!-- </div> -->
 	        	    	<div class="col-md-3  col-xs-6">
-                    		<div class="form-group">
-	        	    			<label>Κατεύθυνση</label>
-                        		<input disabled class="form-control" id="course_id" type="text" placeholder="" name="course_id" value="<?php echo $sectioncard['course_id'];?>">
-	        	    		</div>
-                    	</div>
+                        <div class="form-group">
+                          <label>Κατεύθυνση</label>
+                          <select disabled id="courses" class="form-control" name="course_id">
+                            <?php if ($course):?>
+                              <?php $sel=false;?>
+                              <?php foreach ($course as $id=>$value):?>
+                                <option value="<?php echo $id;?>"<?php if ($sectioncard['course_id'] == $id){echo ' selected'; $sel=true;}?>><?php echo $value;?></option>
+                              <?php endforeach;?>
+                              <!-- <option value="none" <?php if($sel==false) echo 'selected';?>></option> -->
+                            <?php endif;?>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-3  col-xs-6">
+                        <div class="form-group">
+                          <label>Μάθημα</label>
+                          <select disabled id="lessons" class="form-control" name="lesson_id">
+                            <?php if ($lesson):?>
+                              <?php $sel=false;?>
+                              <?php foreach ($lesson as $id=>$value):?>
+                                <option value="<?php echo $id;?>"<?php if ($sectioncard['lesson_id'] == $id){echo ' selected'; $sel=true;}?>><?php echo $value;?></option>
+                              <?php endforeach;?>
+                              <!-- <option value="none" <?php if($sel==false) echo 'selected';?>></option> -->
+                            <?php endif;?>
+                          </select>
+                        </div>
+
+                      </div>
                     	<div class="col-md-3  col-xs-6">
                       		<div class="form-group">
 	        	    	   		    <label>Διδάσκων</label>
                        			<input disabled class="form-control" id="tutor_id" type="text" placeholder="" name="tutor_id" value="<?php echo $sectioncard['tutor_id'];?>">
 	        	    		      </div>
                     	</div>
-                      <div class="col-md-3  col-xs-6">
-                          <div class="form-group">
-                            <label>Μάθημα</label>
-                            <input disabled class="form-control" id="lesson_id" type="text" placeholder="" name="lesson_id" value="<?php echo $sectioncard['lesson_id'];?>">
-                          </div>
-                      </div>
 	        	    </div>
        	    	</div>
 		     </div> <!-- end of content row -->
@@ -251,13 +341,13 @@ $(document).ready(function(){
                       <div class="col-xs-3">
                           <div class="form-group">
                                 <label>Έναρξη</label>
-                                <input disabled class="form-control" id="start_tm" type="text" placeholder="" name="start_tm" value="<?php echo $daysectionprog['start_tm'];?>">
+                                <input disabled class="form-control" id="start_tm" type="text" placeholder="" name="start_tm" value="<?php echo date('H:i',strtotime($daysectionprog['start_tm']));?>">
                         </div>
                           </div>
                       <div class="col-xs-3">
                             <div class="form-group">
                           <label>Λήξη</label>
-                                <input disabled class="form-control" id="end_tm" type="text" placeholder="" name="end_tm" value="<?php echo $daysectionprog['end_tm'];?>">
+                                <input disabled class="form-control" id="end_tm" type="text" placeholder="" name="end_tm" value="<?php echo date('H:i',strtotime($daysectionprog['end_tm']));?>">
                         </div>
                           </div>
                           <div class="col-xs-3">

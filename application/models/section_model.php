@@ -66,6 +66,11 @@ class Section_model extends CI_Model {
    }
 
 
+
+
+
+
+
    public function delreg($id)
    {      
       $this->db->delete('section', array('id' => $id)); 
