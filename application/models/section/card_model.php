@@ -32,7 +32,7 @@ class Card_model extends CI_Model {
    public function get_section_program($id) {
       $query=$this
          ->db
-         ->select(array('section_program.day', 'section_program.classroom_id', 'section_program.start_tm', 'section_program.end_tm', 'section_program.duration'))
+         ->select(array('section_program.id', 'section_program.day', 'section_program.classroom_id', 'section_program.start_tm', 'section_program.end_tm', 'section_program.duration'))
          ->from('section_program')
          ->where('section_id',$id)
          ->get();
@@ -111,6 +111,39 @@ class Card_model extends CI_Model {
                $lessons_data[$row->id] = $row->title;
          };
          return $lessons_data;   
+      }
+      
+      else
+      {
+         return false;
+      };
+      
+   }
+
+   public function get_tutors($classid, $courseid, $lessonid)
+   {
+
+      $query = $this->db->select(array('lesson_tutor.id', 'employee.nickname'))
+                        ->from('class')
+                        ->join('course', 'course.class_id=class.id')
+                        ->join('lesson', 'course.id = lesson.course_id')
+                        ->join('catalog_lesson', 'lesson.cataloglesson_id = catalog_lesson.id')
+                        ->join('lesson_tutor', 'catalog_lesson.id = lesson_tutor.cataloglesson_id')
+                        ->join('employee', 'lesson_tutor.employee_id = employee.id')
+                        ->where('class.id', $classid)
+                        ->where('course.id', $courseid)
+                        ->where('lesson.id', $lessonid)
+                        ->where('employee.is_tutor',1)
+                        ->where('employee.active',1)
+                        ->get();
+      
+      if ($query->num_rows() > 0)
+      {
+         foreach ($query->result() as $row)
+         {
+               $tutors_data[$row->id] = $row->nickname;
+         };
+         return $tutors_data;   
       }
       
       else

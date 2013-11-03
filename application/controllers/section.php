@@ -51,6 +51,18 @@ public function lessons()
 
 }
 
+public function tutors()
+{
+		$this->load->model('section/card_model','', TRUE);    
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this
+						->card_model
+						->get_tutors($this->input->post('jsclassid'), $this->input->post('jscourseid'), $this->input->post('jslessonid'))
+						)
+			);
+
+}
+
 
 public function card($id, $subsection=null) {
 
@@ -97,19 +109,21 @@ public function card($id, $subsection=null) {
 	 	{
 	 		$section_data[$key]=$value;
 	 	};
-	 	$this->card_model->update_section_data($section_data, $id);
+	 	//$this->card_model->update_section_data($section_data, $id);
 	}
-	else 
+	else
 	{
-		$section_data = $this->card_model->get_section_data($id);
-		$section_program = $this->card_model->get_section_program($id);
+		$section_data = $this->card_model->get_section_data($id);		
 	}
+
+	$section_program = $this->card_model->get_section_program($id);
 
 	$data['sectioncard'] = $section_data;
 	$data['sectionprog'] = $section_program;
 	$data['class'] = $this->card_model->get_classes();
 	$data['course'] = $this->card_model->get_courses($section_data['class_id']);
 	$data['lesson'] = $this->card_model->get_lessons($section_data['class_id'], $section_data['course_id']);
+	$data['tutor'] = $this->card_model->get_tutors($section_data['class_id'], $section_data['course_id'], $section_data['lesson_id']);
 
 	$this->load->view('include/header');
 	$this->load->view('section/card', $data);

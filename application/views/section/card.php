@@ -40,20 +40,60 @@ $(document).ready(function(){
 
     
         $('#classes').change(function(){
-          getcourses();
           document.getElementById('lessons').options.length = 0;
+          document.getElementById('tutors').options.length = 0;
+          getcourses();
         })
 
-        // $('#courses').click(function(){
-        //   if((this).options.length==1){
-        //     $('#courses').trigger('change');
-        //   }
-        // }); //end change event 
 
         $('#courses').change(function(){
+          document.getElementById('tutors').options.length = 0;
           getlessons();
         }); //end change event 
 
+
+        $('#lessons').change(function(){
+          gettutors();
+        }); //end change event 
+          
+        //addind new days in program
+        var newdayc = 0;
+        var newdayindex = - newdayc;
+        $('#newdaybtn').click(function(){
+          
+          newdayc = newdayc + 1;
+          newdayindex = - newdayc;
+          var lastdayrow = $(this).closest('.row').prev('.row');
+          var newday = lastdayrow.clone();
+          newday.insertAfter(lastdayrow);
+          var fields = newday.find('input[type="text"]');
+
+          //Reset values for the cloned fields
+
+          //-------------set new dayname---------------
+          fields.eq(0).attr("name", "day[" + newdayindex +"]");        
+          fields.eq(0).attr('id', "day"+newdayc);
+          fields.eq(0).prop('value', '');  
+          fields.eq(0).attr('value', '');  
+
+          //-------------set new start_tm---------------
+          fields.eq(1).attr("name", "start_tm[" + newdayindex +"]");        
+          fields.eq(1).attr('id', "starttm"+newdayc);
+          fields.eq(1).prop('value', '');  
+          fields.eq(1).attr('value', '');  
+
+          //-------------set new end_tm---------------
+          fields.eq(2).attr("name", "end_tm[" + newdayindex +"]");        
+          fields.eq(2).attr('id', "endtm"+newdayc);
+          fields.eq(2).prop('value', '');  
+          fields.eq(2).attr('value', '');
+
+          //-------------set new classroom---------------
+          fields.eq(3).attr("name", "classroom_id[" + newdayindex +"]");        
+          fields.eq(3).attr('id', "classroomid"+newdayc);
+          fields.eq(3).prop('value', '');  
+          fields.eq(3).attr('value', '');
+          });
 
 }) //end of (document).ready(function())
 
@@ -85,13 +125,23 @@ function getcourses(){
                   $('#courses').append(opt); 
                   //console.log(opt);
                 });
-              $("#courses option:first").prop("selected", "selected");
+              //$("#courses option:first").prop("selected", "selected");
+              $("#courses option:first").removeAttr('selected').attr("selected", "selected");
             } //end success
           }); //end AJAX
    
             //if only one course, get the lessons too. The above ajax query MUST be async=false to work!!! this one...
             if ($('#courses').get(0).options.length==1){
               getlessons();
+            }
+            else
+            //select none so once a user selection in that happens to trigger the get lessons function
+            {
+                var opt = $('<option />');
+                opt.val('none');
+                opt.text(" ");
+                $('#courses').prepend(opt); 
+                $("#courses option:first").removeAttr('selected').attr("selected", "selected");
             };
 
 }
@@ -125,9 +175,56 @@ function getlessons(){
                   $('#lessons').append(opt); 
                   //console.log(opt);
                 });
+                //$("#lessons option:first").prop("selected", "selected");
+                
+                
+                var opt = $('<option />'); // here we're creating a new select option for each group
+                opt.val('none');
+                opt.text(" ");
+                $('#lessons').prepend(opt); 
+
+                $("#lessons option:first").removeAttr('selected').attr("selected", "selected");
+
             } //end success
           }); //end AJAX
-      
+   
+}
+
+function gettutors(){
+        var classid = $('#classes option:selected').val();
+        var courseid = $('#courses option:selected').val();
+        var lessonid = $('#lessons option:selected').val();
+
+        //clear options from tutors select input
+        document.getElementById('tutors').options.length = 0;
+
+        //the following is ajax post to populate the course dropdown 
+        var postdata = {'jsclassid': classid, 'jscourseid': courseid, 'jslessonid': lessonid};
+        //post_url is the controller function where I want to post the data
+        var post_url = "<?php echo base_url()?>section/tutors";
+        $.ajax({
+          type: "POST",
+          url: post_url,
+          data : postdata,
+          dataType:'json',
+          //lessons is just a name that gets the result of the controller's function I posted the data
+          success: function(tutors) 
+            {
+              $.each(tutors,function(id, tutor) 
+                {
+                  
+                  var opt = $('<option />'); // here we're creating a new select option for each group
+                  opt.val(id);
+                  opt.text(tutor);
+                  $('#tutors').append(opt); 
+                  //console.log(opt);
+                });
+
+                $("#tutors option:first").removeAttr('selected').attr("selected", "selected");
+
+            } //end success
+          }); //end AJAX
+   
 }
 
 </script>
@@ -235,7 +332,6 @@ function getlessons(){
 
     	<div class="col-md-12">
         <form action="<?php echo base_url()?>section/card/<?php echo $section['id']?>" method="post" accept-charset="utf-8" role="form">
-        <!-- <input type="hidden" name="active" value="<?php echo $emplcard['active'];?>">  -->
         
       	<div class="row"> <!-- section data -->
           <div class="col-md-12" id="group1">
@@ -265,7 +361,7 @@ function getlessons(){
                         <select disabled id="classes" class="form-control" name="class_id">
                           <?php $sel=false;?>
                           <?php foreach ($class as $data):?>
-                            <option value="<?php echo $data['id']?>"<?php if ($sectioncard['class_id'] == $data['id']){echo ' selected'; $sel=true;}?>><?php echo $data['class_name'];?></option>
+                            <option value="<?php echo $data['id']?>"<?php if ($sectioncard['class_id'] == $data['id']){echo 'selected="selected"'; $sel=true;}?>><?php echo $data['class_name'];?></option>
                           <?php endforeach;?>
                           <option value="" <?php if($sel==false) echo 'selected';?>></option>
                         </select>
@@ -278,9 +374,8 @@ function getlessons(){
                             <?php if ($course):?>
                               <?php $sel=false;?>
                               <?php foreach ($course as $id=>$value):?>
-                                <option value="<?php echo $id;?>"<?php if ($sectioncard['course_id'] == $id){echo ' selected'; $sel=true;}?>><?php echo $value;?></option>
+                                <option value="<?php echo $id;?>"<?php if ($sectioncard['course_id'] == $id){echo 'selected="selected"'; $sel=true;}?>><?php echo $value;?></option>
                               <?php endforeach;?>
-                              <!-- <option value="none" <?php if($sel==false) echo 'selected';?>></option> -->
                             <?php endif;?>
                           </select>
                         </div>
@@ -292,7 +387,7 @@ function getlessons(){
                             <?php if ($lesson):?>
                               <?php $sel=false;?>
                               <?php foreach ($lesson as $id=>$value):?>
-                                <option value="<?php echo $id;?>"<?php if ($sectioncard['lesson_id'] == $id){echo ' selected'; $sel=true;}?>><?php echo $value;?></option>
+                                <option value="<?php echo $id;?>"<?php if ($sectioncard['lesson_id'] == $id){echo 'selected="selected"'; $sel=true;}?>><?php echo $value;?></option>
                               <?php endforeach;?>
                               <!-- <option value="none" <?php if($sel==false) echo 'selected';?>></option> -->
                             <?php endif;?>
@@ -302,8 +397,18 @@ function getlessons(){
                       </div>
                     	<div class="col-md-3  col-xs-6">
                       		<div class="form-group">
-	        	    	   		    <label>Διδάσκων</label>
-                       			<input disabled class="form-control" id="tutor_id" type="text" placeholder="" name="tutor_id" value="<?php echo $sectioncard['tutor_id'];?>">
+	        	    	   		    <!-- <label>Διδάσκων</label>
+                       			<input disabled class="form-control" id="tutor_id" type="text" placeholder="" name="tutor_id" value="<?php echo $sectioncard['tutor_id'];?>"> -->
+                            <label>Διδάσκων</label>
+                            <select disabled id="tutors" class="form-control" name="tutor_id">
+                              <?php if ($tutor):?>
+                                <?php $sel=false;?>
+                                <?php foreach ($tutor as $id=>$value):?>
+                                  <option value="<?php echo $id;?>"<?php if ($sectioncard['tutor_id'] == $id){echo 'selected="selected"'; $sel=true;}?>><?php echo $value;?></option>
+                                <?php endforeach;?>
+                                <!-- <option value="none" <?php if($sel==false) echo 'selected';?>></option> -->
+                              <?php endif;?>
+                            </select>
 	        	    		      </div>
                     	</div>
 	        	    </div>
@@ -334,26 +439,26 @@ function getlessons(){
                       <div class="col-xs-3">
                         <div class="form-group">  
                                 <label>Ημέρα</label>
-                                <input disabled class="form-control" id="day" type="text" placeholder="" name="day" value="<?php echo $daysectionprog['day'];?>">
+                                <input disabled class="form-control" id="day[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="day[<?php echo $daysectionprog['id'];?>]" value="<?php echo $daysectionprog['day'];?>">
                         </div>
                           </div>
 
                       <div class="col-xs-3">
                           <div class="form-group">
                                 <label>Έναρξη</label>
-                                <input disabled class="form-control" id="start_tm" type="text" placeholder="" name="start_tm" value="<?php echo date('H:i',strtotime($daysectionprog['start_tm']));?>">
+                                <input disabled class="form-control" id="starttm[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="start_tm[<?php echo $daysectionprog['id'];?>]" value="<?php echo date('H:i',strtotime($daysectionprog['start_tm']));?>">
                         </div>
                           </div>
                       <div class="col-xs-3">
                             <div class="form-group">
                           <label>Λήξη</label>
-                                <input disabled class="form-control" id="end_tm" type="text" placeholder="" name="end_tm" value="<?php echo date('H:i',strtotime($daysectionprog['end_tm']));?>">
+                                <input disabled class="form-control" id="endtm[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="end_tm[<?php echo $daysectionprog['id'];?>]" value="<?php echo date('H:i',strtotime($daysectionprog['end_tm']));?>">
                         </div>
                           </div>
                           <div class="col-xs-3">
                               <div class="form-group">
                                 <label>Αίθουσα</label>
-                                <input disabled class="form-control" id="classroom_id" type="text" placeholder="" name="classroom_id" value="<?php echo $daysectionprog['classroom_id'];?>">
+                                <input disabled class="form-control" id="classroomid[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="classroom_id[<?php echo $daysectionprog['id'];?>]" value="<?php echo $daysectionprog['classroom_id'];?>">
                               </div>
                           </div>
 
@@ -362,7 +467,7 @@ function getlessons(){
                 <?php endif;?>
                 <div class="row">
                 <div class="col-md-12">    
-                  <div class="btn-toolbar pull-right" role="toolbar">
+                  <div class="pull-right">
                     <div class="btn-group">
                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         Διαγραφή <span class="caret"></span>
@@ -372,7 +477,10 @@ function getlessons(){
                         <li><a href="#">Τρίτης..</a></li>
                       </ul>
                     </div>
-                    <button id="newdaybtn" type="button" class="btn btn-primary">Προσθήκη μέρας</button>
+                    <div class="btn-group">
+                    <button id="newdaybtn" type="button" class="btn btn-primary">Προσθήκη</button>
+                    <button id="undodaybtn" type="button" class="btn btn-primary"><span class="icon"><i class="icon-undo"></i></span></button>
+                  </div>
                 </div>
               </div>
               </div>

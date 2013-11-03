@@ -161,56 +161,6 @@ body{
     color: #FFFFFF;
 }
 
-/* content boxes from  
-Unicorn - Admin Template http://wrapbootstrap.com/preview/WB0F35928
----------------------------*/
-/*.contentbox {
-    background: none repeat scroll 0 0 #F9F9F9;
-    border-left: 1px solid #CDCDCD;
-    border-right: 1px solid #CDCDCD;
-    border-top: 1px solid #CDCDCD;
-    clear: both;
-    margin-bottom: 16px;
-    margin-top: 16px;
-    position: relative;
-}
-
-.contentbox .title {
-    background-color: #EFEFEF;
-    background-image: -moz-linear-gradient(center top , #FDFDFD 0%, #EAEAEA 100%);
-    border-bottom: 1px solid #CDCDCD;
-    height: 36px;
-}
-
-.contentbox .title span.icon {
-    border-right: 1px solid #CDCDCD;
-    float: left;
-    opacity: 0.7;
-    padding: 9px 10px 6px 11px;
-}
-
-.contentbox .title h5 {
-    color: #666666;
-    float: left;
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 12px;
-    margin: 0;
-    padding: 12px;
-    text-shadow: 0 1px 0 #FFFFFF;
-}
-
-.contentbox .content {
-    border-bottom: 1px solid #CDCDCD;
-    padding: 12px 15px;
-}
-
-
-.contentbox .buttons {
-    float: right;
-    margin: 8px 10px 0 0;
-}*/
-
 
 /*bootstrap panels: add span icon on the left and buttons on the right*/
 
@@ -259,12 +209,6 @@ Unicorn - Admin Template http://wrapbootstrap.com/preview/WB0F35928
         font-weight: bold;
     }
 
-/*    .multiplefieldset-header .selector {
-      float:left;
-      width:15px;
-      padding-top:25px;
-      padding-right:19px;
-    }*/
 }
 
 
@@ -285,19 +229,6 @@ Unicorn - Admin Template http://wrapbootstrap.com/preview/WB0F35928
 .multiplefieldset:nth-child(even) {
    background-color:#EEEEEE;
 }
-
-/*.multiplefieldset .selector {
-  float:left;
-  border-right: 1px solid #CDCDCD;
-  width:30px;
-  margin-left:10px;
-  margin-right:10px;
-  margin-top: -16px;
-  padding-top:16px;
-  padding-right:9px;
-  padding-bottom: 37px;
-  margin-bottom: -10px;
-}*/
 
 
 .paylegend {
@@ -393,45 +324,6 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
 }
 
 
-/*Payments Με τα επιλεγμένα...*/
-
-
-/*@media (max-width: 768px) {
-    .payments-selected {
-      padding:5px 0px 50px 0px;
-      margin-bottom: -20px;
-    }
-
-    .payments-selected span{
-      display: box;
-      float:right;
-      margin: 3px 0px 0px 0px;
-      padding: 0px 15px 10px 15px;
-    }
-
-    .payments-selected p{
-      float:right;
-    }
-}
-
-@media (min-width: 768px) {
-    .payments-selected {
-      padding:5px 0px 50px 0px;
-      margin-bottom: -20px;
-    }
-
-    .payments-selected span{
-      display: box;
-      float:left;
-      margin: 3px 0px 0px 0px;
-      padding: 0px 15px 10px 15px;
-    }
-
-    .payments-selected p{
-      float:left;
-    }
-
-}*/
 
 /*SCROLL TO TOP*/
 /*http://antesarkkinen.com/blog/easy-jquery-scroll-to-top-of-the-page-code-snippet/*/
@@ -467,6 +359,13 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
    .welcome .btn-link:hover {
         color: red;
     }
+
+
+.panel-scroll {
+  overflow: auto;
+  word-wrap: normal;
+  white-space: pre;
+}
 
 
 
