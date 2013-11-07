@@ -23,8 +23,6 @@
    
 
    <!-- Javascript & JQuery libs -->
-   <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>   -->
-   <!-- <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js"></script> -->
    <script src="<?php echo base_url('assets/js/jquery-1.9.1.min.js') ?>"></script>
 
    <script src="<?php echo base_url('assets/js/bootstrap.min.js') ?>"></script>

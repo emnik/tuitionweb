@@ -182,19 +182,19 @@ $(document).ready(function(){
             </div>
 	            <div class="panel-body">
 	        	       <div class="row">	
-	        	    		<div class="col-md-4">
+	        	    		<div class="col-md-4 col-sm-4">
 	        	    			<div class="form-group">  
                         <label>Επώνυμο</label>
                         <input disabled class="form-control" id="surname" type="text" placeholder="" name="surname" value="<?php echo $emplcard['surname'];?>">
 	        	    		  </div>
                     </div>
-	        	    		<div class="col-md-4">
+	        	    		<div class="col-md-4 col-sm-4">
   	        	    		<div class="form-group">
                       	<label>Όνομα</label>
                         <input disabled class="form-control" id="name" type="text" placeholder="" name="name" value="<?php echo $emplcard['name'];?>">
 	        	    		  </div>
                     </div>
-	        	    		<div class="col-md-4">
+	        	    		<div class="col-md-4 col-sm-4">
                       <div class="form-group">
 	        	    			  <label>Σύντομο</label>
                         <input disabled class="form-control" id="nickname" type="text" placeholder="για καθηγητές" name="nickname" value="<?php echo $emplcard['nickname'];?>">
@@ -203,13 +203,13 @@ $(document).ready(function(){
 	        	    	</div>
 
 	           	     <div class="row">	
-	        	    		<div class="col-md-6">
+	        	    		<div class="col-md-6 col-sm-6">
                       <div class="form-group">
 	        	    	   	 <label>Σταθερό τηλ.</label>
                        <input disabled class="form-control" id="home_tel" type="text" placeholder="" name="home_tel" value="<?php echo $emplcard['home_tel'];?>">
 	        	    		  </div>
                     </div>
-	        	    		<div class="col-md-6">
+	        	    		<div class="col-md-6  col-sm-6">
 	        	    			 <div class="form-group">
                           <label>Κινητό τηλ.</label>
                           <input disabled class="form-control" id="mobile" type="text" placeholder="" name="mobile" value="<?php echo $emplcard['mobile'];?>">
@@ -234,7 +234,7 @@ $(document).ready(function(){
 	            </div>
 	            <div class="panel-body">
 	        	       <div class="row">	
-			              <div class="col-md-4">
+			              <div class="col-md-4  col-sm-4">
                       <div class="form-group">
 		                    <label>Καθηγητής</label>
 		                    <select disabled class="form-control" name="is_tutor">
@@ -243,7 +243,7 @@ $(document).ready(function(){
 		                    </select>
 		                  </div>
                     </div>
-		              <div class="col-md-8">
+		              <div class="col-md-8 col-sm-8">
 	        	    	 <div class="form-group">
                   	 <label>Ειδικότητα</label>
                      <input disabled class="form-control" id="speciality" type="text" placeholder="" name="speciality" value="<?php echo $emplcard['speciality'];?>">

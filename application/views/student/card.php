@@ -246,19 +246,19 @@ function paste_name(where,who){
               </div>
             <div class="panel-body">  
               <div class="row">
-                <div class="col-md-3 form-group">
+                <div class="col-md-3 col-sm-6 form-group">
                   <label>Κωδ.μαθητή(id)</label>
                   <input disabled class="form-control" type="text" placeholder="" name="id" value="<?php echo $regcard['id'];?>">
                 </div>
               </div>
               <div class="row">
-                 <div class="col-md-6">
+                 <div class="col-md-6 col-sm-6">
                     <div class="form-group"> 
                       <label>Όνομα</label>
                       <input disabled class="form-control" id="name" type="text" placeholder="" name="name" value="<?php echo $regcard['name'];?>">
                     </div>
                  </div>
-                 <div class="col-md-6">
+                 <div class="col-md-6 col-sm-6">
                     <div class="form-group"> 
                       <label>Επίθετο</label>
                       <input disabled class="form-control" id="surname" type="text" placeholder="" name="surname" value="<?php echo $regcard['surname'];?>">
@@ -266,13 +266,13 @@ function paste_name(where,who){
                  </div>
               </div>  
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-6 col-sm-6">
                     <div class="form-group">  
                       <label>Πατρώνυμο</label>
                       <input disabled class="form-control" id="fathersname" type="text" placeholder="" name="fathers_name" value="<?php echo $regcard['fathers_name'];?>">
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6 col-sm-6">
                     <div class="form-group">
                       <label>Μητρώνυμο</label>
                       <input disabled class="form-control" type="text" placeholder="" name="mothers_name" value="<?php echo $regcard['mothers_name'];?>">
@@ -281,13 +281,13 @@ function paste_name(where,who){
                 </div>
 
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-6 col-sm-6">
                       <div class="form-group">
                         <label>Διεύθυνση</label>
                         <input disabled class="form-control" type="text" placeholder="" name="address" value="<?php echo $regcard['address'];?>">
                       </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6 col-sm-6">
                     <div class="form-group">
                       <label>Πόλη</label>
                       <select disabled class="form-control" name="region">
@@ -302,7 +302,7 @@ function paste_name(where,who){
                 </div>
 
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-6 col-sm-6">
                     <div class="form-group">
                       <label>Τάξη</label>
                       <select disabled id="classes" class="form-control" name="class_id">
@@ -314,7 +314,7 @@ function paste_name(where,who){
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6 col-sm-6">
                     <div class="form-group">
                       <label>Κατεύθυνση</label>
                       <select disabled id="courses" class="form-control" name="course_id">
@@ -333,7 +333,7 @@ function paste_name(where,who){
                   <div class="col-md-12">
                   <div class="form-group">
                     <label>Παρατηρήσεις</label>
-                    <textarea disabled class="form-control" rows="3" name="notes">
+                    <textarea disabled class="form-control" rows="3" cols="10" name="notes">
                       <?php echo $regcard['notes'];?>
                     </textarea>  
                   </div>
@@ -358,15 +358,15 @@ function paste_name(where,who){
                   </div>
                 <div class="panel-body">  
                   <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-6 col-sm-6">
                         <div class="form-group">
                           <label>Αρ. Μαθητολογίου</label>
-                          <div class="col-md-6" style="margin-left:-15px; padding-right:0px; margin-right:30px;">
+                          <div >
                             <input disabled type="text" class="form-control" placeholder="" name="std_book_no" value="<?php echo $regcard['std_book_no'];?>"></input>
                           </div>
                        </div>
                      </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-sm-6">
                       <div class="form-group">
                         <label>Ημ/νία εγγραφής</label>  
                         <input disabled type="text" class="form-control" placeholder="" name="reg_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['reg_dt'])));?>" ></input>
@@ -374,13 +374,13 @@ function paste_name(where,who){
                     </div>
                   </div>                  
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-6 col-sm-6">
                         <div class="form-group">
                           <label>Ημ/νία έναρξης</label>
                           <input disabled  type="text"  class="form-control"  placeholder="" name="start_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['start_lessons_dt'])));?>"></input>
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-6 col-sm-6">
                         <div class="form-group">
                           <label>Ημ/νία διαγραφής</label>
                           <input disabled type="text"  class="form-control"  placeholder="" name="del_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['del_lessons_dt'])));?>"></input>
@@ -406,7 +406,7 @@ function paste_name(where,who){
                   </div>
                 <div class="panel-body">  
                   <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-sm-4">
                       <div class="form-group">
                         <label>Ποσό</label>
                         <div class="input-group">
@@ -415,7 +415,7 @@ function paste_name(where,who){
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-8 col-sm-8">
                       <div class="form-group">
                         <label>Παραλήπτης ΑΠΥ</label>
                         <input disabled id="apy_receiver" type="text" class="form-control" placeholder="" name="apy_receiver" value="<?php echo $regcard['apy_receiver'];?>"></input>
@@ -424,13 +424,13 @@ function paste_name(where,who){
                   </div>
 
                   <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-sm-4">
                       <div class="form-group">
                         <label>Α.Φ.Μ.</label>
                         <input disabled type="text" class="form-control" placeholder="" name="afm" value="<?php echo $regcard['afm'];?>"></input>
                       </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-8 col-sm-8">
                       <div class="form-group">
                         <label>Κάτοχος Α.Φ.Μ.</label>
                         <input disabled id="afm_owner" type="text" class="form-control" name="afm_owner" value="<?php echo $regcard['afm_owner'];?>"></input>

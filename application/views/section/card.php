@@ -1,20 +1,45 @@
+<style type="text/css">
+
+@media (max-width: 400px)
+{    
+  .col-xs-3 {padding-left:5px;padding-right: 5px} 
+  .col-xs-3 .form-control {padding-left:8px;padding-right: 3px}
+}   
+</style>
+
+
 <script type="text/javascript">
+    
+    var newdayc = 0;
+    var newdayindex = - newdayc;
 
 function toggleedit(togglecontrol, id) {
 
   if ($(togglecontrol).hasClass('active')){
     $('#' + id).closest('.mainform').find(':input').each(function(){
       $(this).attr('disabled', 'disabled');
+      $(this).find('btn').attr('disabled','disabled');
       });
     }
   
   else {
       $('#' + id).closest('.mainform').find(':input').removeAttr('disabled');
+      $(this).find('btn').removeAttr('disabled');
+      
+      if(newdayc>0)
+      {
+        $('#undodaybtn').removeAttr('disabled');
+      }
+      else
+      {
+        $('#undodaybtn').attr('disabled', 'disabled');
+      };
     };
 
 }
 
 $(document).ready(function(){
+
 
     $('#cancelbtn').click(function(){
       window.open("<?php echo base_url()?>section/cancel/card/<?php echo $section['id']?>", '_self', false);
@@ -23,6 +48,7 @@ $(document).ready(function(){
     $("body").on('click', '#editform1, #editform2', function(){
       toggleedit(this, this.id);
       $(this).removeAttr('disabled');
+
     });
 
     //we must enable all form fields to submit the form with no errors!
@@ -57,10 +83,10 @@ $(document).ready(function(){
         }); //end change event 
           
         //addind new days in program
-        var newdayc = 0;
-        var newdayindex = - newdayc;
+
         $('#newdaybtn').click(function(){
           
+          $("#undodaybtn").removeAttr('disabled');
           newdayc = newdayc + 1;
           newdayindex = - newdayc;
           var lastdayrow = $(this).closest('.row').prev('.row');
@@ -94,6 +120,30 @@ $(document).ready(function(){
           fields.eq(3).prop('value', '');  
           fields.eq(3).attr('value', '');
           });
+
+
+        $('#undodaybtn').click(function(){
+          if (newdayc > 0) {
+            //var lastfieldset = $(this).parents('form').find('fieldset:last');
+            var lastdayrow = $(this).closest('.row').prev('.row');
+
+            lastdayrow.remove();  
+            newdayc = newdayc - 1;
+            
+            if (newdayc==0){
+              //var fieldsets = $(this).parents('fieldset').length;   
+              $(this).attr('disabled','disabled'); 
+
+              //if I select all payments to be erased or canceled and I already have inserted a new record
+              //then the new record will stay in place BUT if one presses undo, then there will be no payment
+              //and no fieldset to clone so we need a new page load from the server
+              // else if (fieldsets==0) {
+              //   window.location.href=window.location.href;
+              // }
+            }
+          }
+        });
+
 
 }) //end of (document).ready(function())
 
@@ -348,13 +398,13 @@ function gettutors(){
             		</div>
 	            <div class="panel-body">
 	        	    <div class="row">	
-	        	   		<div class="col-md-3 col-xs-3">
+	        	   		<div class="col-md-3 col-xs-6">
 	        	   			<div class="form-group">  
                 		        <label>Όνομα τμήματος</label>
                         		<input disabled class="form-control" id="section" type="text" placeholder="" name="section" value="<?php echo $sectioncard['section'];?>">
 	        	    		</div>
-                    	</div>
-                    </div> <!--end of row-->
+                  </div>
+               </div> <!--end of row-->
                   <div class="row">
 	        	    	<div class="col-md-3 col-xs-6">
                       <label>Τάξη</label>
@@ -434,7 +484,7 @@ function gettutors(){
 	            	<div class="panel-body">
                   <?php if(!empty($sectionprog)):?>
                   <?php foreach ($sectionprog as $daysectionprog):?>
-                    <div class="row"> 
+                    <div class="row programrow"> 
 
                       <div class="col-xs-3">
                         <div class="form-group">  
@@ -469,17 +519,19 @@ function gettutors(){
                 <div class="col-md-12">    
                   <div class="pull-right">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                      <button type="button" class="btn btn-default dropdown-toggle" disabled data-toggle="dropdown">
                         Διαγραφή <span class="caret"></span>
+                        <!-- DELETE SHOULD YOU AJAX AFTER CONFIRMATION -->
                       </button>
                       <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Δευτέρας</a></li>
-                        <li><a href="#">Τρίτης..</a></li>
+                        <?php foreach ($sectionprog as $data):?>
+                        <li><a href="#"><?php echo $data['day'];?></a></li>
+                        <?php endforeach;?>
                       </ul>
                     </div>
                     <div class="btn-group">
-                    <button id="newdaybtn" type="button" class="btn btn-primary">Προσθήκη</button>
-                    <button id="undodaybtn" type="button" class="btn btn-primary"><span class="icon"><i class="icon-undo"></i></span></button>
+                    <button id="newdaybtn" type="button" class="btn btn-primary" disabled >Προσθήκη</button>
+                    <button id="undodaybtn" type="button" class="btn btn-primary" disabled ><span class="icon"><i class="icon-undo"></i></span></button>
                   </div>
                 </div>
               </div>

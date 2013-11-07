@@ -267,16 +267,28 @@ function resizeWindow(e)
             <i class="icon-book"></i>
           </span>
           <h3 class="panel-title">Μαθητολόγιο</h3>
-          <div class="buttons">
+<!--           <div class="buttons">
             <button class="btn btn-sm btn-danger " id="del-reg"><i class="icon-trash"></i></button>
              <div class="btn-group">
               <button class="btn btn-default btn-sm"><i class="icon-refresh"></i></button>
               <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
             </div>
             <button class="btn btn-sm btn-success" id="student-card"><i class="icon-user"> Καρτέλα Μαθητή</i></button>
-          </div>
+          </div> -->
        </div>
     <div class="panel-body">
+      <div class="row" >
+        <div class="col-md-12">
+          <div class="btn-toolbar" role="toolbar" style="margin-bottom:10px;">
+            <button class="btn btn-sm btn-danger pull-left" id="del-reg"><i class="icon-trash"></i></button>
+             <div class="btn-group pull-left">
+              <button class="btn btn-default btn-sm"><i class="icon-refresh"></i></button>
+              <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
+            </div>
+            <button class="btn btn-sm btn-success pull-right" id="student-card"><i class="icon-user"> Καρτέλα Μαθητή</i></button>
+          </div>
+        </div>
+        </div>
       <!--width="100%" option in the table is required when there are hidden columns in the table to resize properly on window change-->
       <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="stdbook" width="100%">
         <thead>

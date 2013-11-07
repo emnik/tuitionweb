@@ -351,7 +351,7 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
     .welcome .btn-link {
         text-decoration: none;
         color: black;
-        font-family: 'Ubuntu';
+        /*font-family: 'Ubuntu';*/
 
     }
 
@@ -371,7 +371,6 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
 
     /*Use everywhere ubuntu font!
 ----------------------------*/
-* {
-    font-family: 'Ubuntu';
-}
-
+html, body, h1,h2,h3,h4, label, input, select,
+textarea, button, leap, breadcrumb, table,
+footer{ font-family: 'Ubuntu'}

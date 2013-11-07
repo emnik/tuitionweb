@@ -86,7 +86,7 @@
 
     <div class="row"> <!--main row-->
 
-      <div class="col-sm-4"> <!-- form container -->
+      <div class="col-md-4"> <!-- form container -->
 
         <form class="form" action="<?php echo base_url()?>welcome/" method="post" accept-charset="utf-8">
            <fieldset>
@@ -117,53 +117,55 @@
 
       </div> <!--end of form container-->
 
-      <div class="col-sm-8"> <!-- submit buttons -->
+      <div class="col-md-8"> <!-- submit buttons -->
 
         <div class="row"> <!--first row-->
-            <div class="col-sm-4 welcome">
+            <div class="col-sm-3 col-xs-6 welcome">
                 <button type="submit" class="btn-link" name="submit" value="submit1">
                   <i class="icon-group icon-4x"></i>
                   <h4>Μαθητολόγιο</h4>
                 </button>
             </div>
 
-            <div class="col-sm-4 welcome">
+            <div class="col-sm-3 col-xs-6 welcome">
                 <button type="submit" class="btn-link" name="submit" value="submit2">
                   <i class="icon-user icon-4x"></i>
                   <h4>Προσωπικό</h4>
                 </button>
             </div>
       
-            <div class="col-sm-4 welcome">
+            <div class="col-sm-3 col-xs-6 welcome">
               <button type="submit" class="btn-link" name="submit" value="submit3">
                 <i class="icon-sitemap icon-4x"></i>
                 <h4>Τμήματα</h4>
               </button>
             </div>
 
+            <div class="col-sm-3 col-xs-6 welcome">
+              <button type="submit" class="btn-link" name="submit" value="submit6">
+                <i class="icon-code-fork icon-4x"></i>
+                <h4>Πολλαπλές ενέργειες</h4>
+              </button>
+            </div>
+
         </div> <!--end of first row-->
 
         <div class="row" > <!--second row-->
-            <div class="col-sm-4 welcome">
+            <div class="col-sm-3 col-xs-6 welcome">
               <button type="submit" class="btn-link" name="submit" value="submit4">
                 <i class="icon-money icon-4x"></i>
                 <h4>Οικονομικά</h4>
               </button>
             </div>
             
-            <div class="col-sm-4 welcome">
+            <div class="col-sm-3 col-xs-6 welcome">
               <button type="submit" class="btn-link" name="submit" value="submit5">
                 <i class="icon-print icon-4x"></i>
                 <h4>Αναφορές</h4>
               </button>
             </div>
 
-            <div class="col-sm-4 welcome">
-              <button type="submit" class="btn-link" name="submit" value="submit6">
-                <i class="icon-code-fork icon-4x"></i>
-                <h4>Πολλαππλές ενέργειες</h4>
-              </button>
-            </div>
+
 
         </div> <!--end of second row-->
 

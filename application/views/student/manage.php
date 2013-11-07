@@ -381,7 +381,7 @@ function noprograminfo(){
             <div class="panel-body">
       			<form id="addform" accept-charset="utf-8" role="form">
   					<div class="row">
-  						<div class="col-md-5">
+  						<div class="col-md-5 col-sm-5">
                 <div class="radio">
 	      					  <label>
 	      						   <input type="radio" id="radioall" name="insertoption" value="all" checked></input>
@@ -389,7 +389,7 @@ function noprograminfo(){
 	      					  </label>
 	      				</div>
               </div>
-	      				<div class="col-md-7">
+	      				<div class="col-md-7 col-sm-7">
 		      				<select id="sectiongroups" class="form-control pull-left" name="section">
                       <?php foreach ($group_sections as $data):?>
                         <option value="<?php echo $data['section']?>"><?php echo $data['section'];?></option>
@@ -398,7 +398,7 @@ function noprograminfo(){
 		      			</div>
 		      		</div>
   					<div class="row">
-  						<div class="col-md-5">
+  						<div class="col-md-5 col-sm-5">
   	      			  <div class="radio">
                 		<label>
   	      						<input type="radio" id="radiomultiple" name="insertoption" value="multiple"></input>
@@ -406,7 +406,7 @@ function noprograminfo(){
   	      					</label>
   	      			  </div>
               	</div>
-	      				<div class="col-md-7">
+	      				<div class="col-md-7 col-sm-7">
 		      				<select multiple id="sectionsmultiple" size="7" class="form-control" name="sections[]">
                       <?php foreach ($all_sections as $data):?>
                         <option value="<?php echo $data['id']?>"><?php echo $data['section_title'];?></option>

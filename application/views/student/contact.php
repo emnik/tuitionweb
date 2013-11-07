@@ -140,11 +140,11 @@ $(document).ready(function(){
             </div>
 
             <div class="panel-body">
-              <div class="form-group">
+              <div class="form-group col-sm-6">
                 <label>Τηλέφωνο σπιτιού</label>
                 <input disabled type="text" class="form-control" placeholder="" name="home_tel" value="<?php echo $contact['home_tel'];?>"></input>
                </div>
-              <div class="form-group">
+              <div class="form-group col-sm-6">
                 <label>Κινητό τηλέφωνο</label>
                 <input disabled  type="text" class="form-control" placeholder="" name="std_mobile" value="<?php echo $contact['std_mobile'];?>"></input>
               </div>
@@ -166,15 +166,15 @@ $(document).ready(function(){
               </div>
             </div>
             <div class="panel-body">
-              <div class="form-group">
+              <div class="form-group col-sm-6">
                 <label>Κινητό πατέρα <?php if(!empty($secondary)) {if (!is_null($secondary['fathers_name'])) echo '('.$secondary['fathers_name'].')';}?></label>
                 <input disabled  type="text" class="form-control" placeholder="" name="fathers_mobile" value="<?php echo $contact['fathers_mobile'];?>"></input>
               </div>
-              <div class="form-group">
+              <div class="form-group col-sm-6">
                 <label>Κινητό μητέρας <?php if(!empty($secondary)) {if (!is_null($secondary['mothers_name'])) echo '('.$secondary['mothers_name'].')';}?></label>
                 <input disabled  type="text" class="form-control" placeholder="" name="mothers_mobile" value="<?php echo $contact['mothers_mobile'];?>"></input>
               </div>
-              <div class="form-group">
+              <div class="form-group col-sm-6">
                 <label>Τηλέφωνο εργασίας</label>
                 <input disabled  type="text" class="form-control" placeholder="" name="work_tel" value="<?php echo $contact['work_tel'];?>"></input>
               </div>
