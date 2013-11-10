@@ -67,7 +67,8 @@ $(document).ready(function() {
 
     /* Init the table */
     oTable = $('#stdbook').dataTable( {
-    "sDom": "<'row'<'col-md-6'l><'col-md-6' f> r>t<'row'<'col-md-6'i><'col-md-6'p>>",
+    //"sDom": "<'row'<'col-md-6'l><'col-md-6' f> r>t<'row'<'col-md-6'i><'col-md-6'p>>",
+    "sDom": "<'row'<'col-xs-6 pull-left' l><'col-xs-6 pull-right' f> r><'row'<'col-md-12't>><'row'<'col-md-6'i><'col-md-6'p>>",
     "sPaginationType": "bootstrap",
     "aoColumnDefs": [
       { "bVisible": false, "aTargets": [0] }, //hide id column
@@ -109,8 +110,9 @@ $(document).ready(function() {
     <?php endif;?>
 
     //bootstrap3 add class="form-control" to inputs"
-    $('#stdbook_filter').find('input').addClass("form-control");
-    $('#stdbook_length').find('select').addClass("form-control");
+     $('#stdbook_filter').find('input').addClass("form-control");
+     $('#stdbook_length').find('select').addClass("form-control");
+    
 
 
 
