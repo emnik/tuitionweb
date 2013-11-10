@@ -64,7 +64,8 @@ $(document).ready(function() {
 
     /* Init the table */
     oTable = $('#stdbook').dataTable( {
-    "sDom": "<'row'<'col-md-6'l><'col-md-6'f>r>t<'row'<'col-md-6'i><'col-md-6'p>>",
+    //"sDom": "<'row'<'col-md-6'l><'col-md-6'f>r>t<'row'<'col-md-6'i><'col-md-6'p>>",
+    "sDom": "<'row'<'col-xs-6 pull-left' l><'col-xs-6 pull-right' f> r><'row'<'col-md-12't>><'row'<'col-md-6'i><'col-md-6'p>>",
     "sPaginationType": "bootstrap",
     "aoColumnDefs": [
       { "bVisible": false, "aTargets": [0] }, //hide id column
@@ -80,10 +81,12 @@ $(document).ready(function() {
               "sInfo": "Εμφανίζονται οι _START_ έως _END_ από τα _TOTAL_ τμήματα",
               "sInfoEmpty": "Εμφάνιζονται 0 εγγραφές",
               "sInfoFiltered": "Φιλτράρισμα από _MAX_ συνολικά τμήματα",
-              "sLengthMenu": "_MENU_ τμήματα ανά σελίδα",
+              //"sLengthMenu": "_MENU_ τμήματα ανά σελίδα",
+              "sLengthMenu": "_MENU_",
               "sLoadingRecords": "Φόρτωση καταλόγου τμημάτων...",
               "sProcessing": "Επεξεργασία...",   
-              "sSearch": "Εύρεση:",
+              //"sSearch": "Αναζήτηση:",
+              "sSearch": "",
               "sZeroRecords": "Δεν βρέθηκαν εγγραφές"
               
               // ΑΛΛΕΣ ΕΠΙΛΟΓΕΣ
@@ -100,9 +103,39 @@ $(document).ready(function() {
 
        } );
 
-    //bootstrap3 add class="form-control" to inputs"
-    $('#stdbook_filter').find('input').addClass("form-control");
-    $('#stdbook_length').find('select').addClass("form-control");
+   //bootstrap3 style fixes until datatables 1.10 is released with bootstrap3 support
+
+   $('#stdbook_filter').find('input').addClass("form-control");
+   $('#stdbook_filter label').contents().unwrap();
+   var fgroupDiv = document.createElement('div');
+   fgroupDiv.id="fgroupDiv"
+   fgroupDiv.className = 'form-group pull-right';
+   $('#stdbook_filter').append(fgroupDiv);
+   $('#stdbook_filter').find('input').prependTo('#fgroupDiv');
+   $('#stdbook_filter').find('input').attr('id','inputid');
+   $('#stdbook_filter').find('input').css({'max-width':'250px','float':'right'});
+   var $searchlabel = $("<label>").attr('for', "#inputid");
+   $searchlabel.text('Αναζήτηση:');
+   $searchlabel.insertBefore('#inputid');
+
+   $('#stdbook_length').find('select').addClass("form-control");
+   $('#stdbook_length label').contents().unwrap();
+   var lgroupDiv = document.createElement('div');
+   lgroupDiv.id="lgroupDiv"
+   lgroupDiv.className = 'form-group pull-left';
+   var innerlgroupDiv = document.createElement('div');
+   innerlgroupDiv.id="innerlgroupDiv"
+   innerlgroupDiv.className = 'clearfix';
+   $('#stdbook_length').append(lgroupDiv);
+   $('#lgroupDiv').append(innerlgroupDiv);
+   $('#stdbook_length').find('select').prependTo('#innerlgroupDiv');
+   $('#stdbook_length').find('select').attr('id','selectid');
+   $('#stdbook_length').find('select').css('max-width','75px');
+   var $sellabel = $("<label>").attr('for', "#selectid");
+   $sellabel.text('Τμήματα/σελ.: ');
+   $sellabel.insertBefore('#selectid');
+
+   $('#stdbook_filter').parent().parent().css({'padding-bottom':'8px'});
     
 // HIDING COLUMNS FOR RESPONSIVE VIEW:
 
@@ -215,15 +248,20 @@ function resizeWindow(e)
             <i class="icon-sitemap"></i>
           </span>
           <h3 class="panel-title">Τμήματα</h3>
-          <div class="buttons">
-            <button class="btn btn-sm btn-danger " id="del-reg"><i class="icon-trash"></i></button>
-             <div class="btn-group">
-              <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
-            </div>
-            <button class="btn btn-sm btn-success" id="section-card"><i class="icon-tag"> Καρτέλα Τμήματος</i></button>
-          </div>
         </div>
       <div class="panel-body">
+       <div class="row" >
+        <div class="col-md-12">
+          <div class="btn-toolbar" role="toolbar" style="margin-bottom:10px;">
+            <button class="btn btn-sm btn-danger pull-left" id="del-reg"><i class="icon-trash"></i></button>
+             <div class="btn-group pull-left">
+              <!-- <button class="btn btn-default btn-sm"><i class="icon-refresh"></i></button> -->
+              <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
+            </div>
+            <button class="btn btn-sm btn-success pull-right" id="section-card"><i class="icon-tag"> Καρτέλα Τμήματος</i></button>
+          </div>
+        </div>
+        </div>
       <!--width="100%" option in the table is required when there are hidden columns in the table to resize properly on window change-->
       <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="stdbook" width="100%">
         <thead>

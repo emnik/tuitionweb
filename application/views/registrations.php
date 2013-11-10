@@ -85,10 +85,12 @@ $(document).ready(function() {
               "sInfo": "Εμφανίζονται οι _START_ έως _END_ από τους _TOTAL_ μαθητές",
               "sInfoEmpty": "Εμφάνιζονται 0 εγγραφές",
               "sInfoFiltered": "Φιλτράρισμα από _MAX_ συνολικούς μαθητές",
-              "sLengthMenu": "_MENU_ μαθητές ανά σελίδα",
+              //"sLengthMenu": "_MENU_ μαθητές ανά σελίδα",
+              "sLengthMenu": "_MENU_",
               "sLoadingRecords": "Φόρτωση μαθητολογίου...",
               "sProcessing": "Επεξεργασία...",   
-              "sSearch": "Εύρεση μαθητή:",
+              //"sSearch": "Εύρεση μαθητή:",
+              "sSearch": "",
               "sZeroRecords": "Δεν βρέθηκαν εγγραφές"
               
               // ΑΛΛΕΣ ΕΠΙΛΟΓΕΣ
@@ -109,11 +111,39 @@ $(document).ready(function() {
       $('#myModal').modal('show');
     <?php endif;?>
 
-    //bootstrap3 add class="form-control" to inputs"
-     $('#stdbook_filter').find('input').addClass("form-control");
-     $('#stdbook_length').find('select').addClass("form-control");
-    
+   //bootstrap3 style fixes until datatables 1.10 is released with bootstrap3 support
 
+   $('#stdbook_filter').find('input').addClass("form-control");
+   $('#stdbook_filter label').contents().unwrap();
+   var fgroupDiv = document.createElement('div');
+   fgroupDiv.id="fgroupDiv"
+   fgroupDiv.className = 'form-group pull-right';
+   $('#stdbook_filter').append(fgroupDiv);
+   $('#stdbook_filter').find('input').prependTo('#fgroupDiv');
+   $('#stdbook_filter').find('input').attr('id','inputid');
+   $('#stdbook_filter').find('input').css({'max-width':'250px','float':'right'});
+   var $searchlabel = $("<label>").attr('for', "#inputid");
+   $searchlabel.text('Αναζήτηση:');
+   $searchlabel.insertBefore('#inputid');
+
+   $('#stdbook_length').find('select').addClass("form-control");
+   $('#stdbook_length label').contents().unwrap();
+   var lgroupDiv = document.createElement('div');
+   lgroupDiv.id="lgroupDiv"
+   lgroupDiv.className = 'form-group pull-left';
+   var innerlgroupDiv = document.createElement('div');
+   innerlgroupDiv.id="innerlgroupDiv"
+   innerlgroupDiv.className = 'clearfix';
+   $('#stdbook_length').append(lgroupDiv);
+   $('#lgroupDiv').append(innerlgroupDiv);
+   $('#stdbook_length').find('select').prependTo('#innerlgroupDiv');
+   $('#stdbook_length').find('select').attr('id','selectid');
+   $('#stdbook_length').find('select').css('max-width','75px');
+   var $sellabel = $("<label>").attr('for', "#selectid");
+   $sellabel.text('Μαθητές/σελ.: ');
+   $sellabel.insertBefore('#selectid');
+
+   $('#stdbook_filter').parent().parent().css({'padding-bottom':'8px'});
 
 
 // HIDING COLUMNS FOR RESPONSIVE VIEW:
@@ -269,14 +299,6 @@ function resizeWindow(e)
             <i class="icon-book"></i>
           </span>
           <h3 class="panel-title">Μαθητολόγιο</h3>
-<!--           <div class="buttons">
-            <button class="btn btn-sm btn-danger " id="del-reg"><i class="icon-trash"></i></button>
-             <div class="btn-group">
-              <button class="btn btn-default btn-sm"><i class="icon-refresh"></i></button>
-              <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
-            </div>
-            <button class="btn btn-sm btn-success" id="student-card"><i class="icon-user"> Καρτέλα Μαθητή</i></button>
-          </div> -->
        </div>
     <div class="panel-body">
       <div class="row" >

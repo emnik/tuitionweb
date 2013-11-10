@@ -4,9 +4,9 @@ div.dataTables_length label {
 	text-align: left;
 }
 
-div.dataTables_length select {
+/*div.dataTables_length select {
 	width: 75px;
-}
+}*/
 
 div.dataTables_filter label {
 	float: right;
