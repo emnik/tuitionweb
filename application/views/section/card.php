@@ -10,7 +10,7 @@
 
 <script type="text/javascript">
     
-    var newdayc = 0;
+    var newdayc = 1;
     var newdayindex = - newdayc;
 
 function toggleedit(togglecontrol, id) {
@@ -26,7 +26,7 @@ function toggleedit(togglecontrol, id) {
       $('#' + id).closest('.mainform').find(':input').removeAttr('disabled');
       $(this).find('btn').removeAttr('disabled');
       
-      if(newdayc>0)
+      if(newdayc>1)
       {
         $('#undodaybtn').removeAttr('disabled');
       }
@@ -98,39 +98,39 @@ $(document).ready(function(){
 
           //-------------set new dayname---------------
           fields.eq(0).attr("name", "day[" + newdayindex +"]");        
-          fields.eq(0).attr('id', "day"+newdayc);
+          fields.eq(0).attr('id', "day["+newdayindex+"]");
           fields.eq(0).prop('value', '');  
           fields.eq(0).attr('value', '');  
 
           //-------------set new start_tm---------------
           fields.eq(1).attr("name", "start_tm[" + newdayindex +"]");        
-          fields.eq(1).attr('id', "starttm"+newdayc);
+          fields.eq(1).attr('id', "starttm["+newdayindex+"]");
           fields.eq(1).prop('value', '');  
           fields.eq(1).attr('value', '');  
 
           //-------------set new end_tm---------------
           fields.eq(2).attr("name", "end_tm[" + newdayindex +"]");        
-          fields.eq(2).attr('id', "endtm"+newdayc);
+          fields.eq(2).attr('id', "endtm["+newdayindex+"]");
           fields.eq(2).prop('value', '');  
           fields.eq(2).attr('value', '');
 
           //-------------set new classroom---------------
           fields.eq(3).attr("name", "classroom_id[" + newdayindex +"]");        
-          fields.eq(3).attr('id', "classroomid"+newdayc);
+          fields.eq(3).attr('id', "classroomid["+newdayindex+"]");
           fields.eq(3).prop('value', '');  
           fields.eq(3).attr('value', '');
           });
 
 
         $('#undodaybtn').click(function(){
-          if (newdayc > 0) {
+          if (newdayc > 1) {
             //var lastfieldset = $(this).parents('form').find('fieldset:last');
             var lastdayrow = $(this).closest('.row').prev('.row');
 
             lastdayrow.remove();  
             newdayc = newdayc - 1;
             
-            if (newdayc==0){
+            if (newdayc==1){
               //var fieldsets = $(this).parents('fieldset').length;   
               $(this).attr('disabled','disabled'); 
 
@@ -514,21 +514,53 @@ function gettutors(){
 
                     </div>
                   <?php endforeach;?>
+                <?php else:?>
+                    <div class="row programrow"> 
+
+                      <div class="col-xs-3">
+                        <div class="form-group">  
+                                <label>Ημέρα</label>
+                                <input disabled class="form-control" id="day[-1]" type="text" placeholder="" name="day[-1]" value="">
+                        </div>
+                          </div>
+
+                      <div class="col-xs-3">
+                          <div class="form-group">
+                                <label>Έναρξη</label>
+                                <input disabled class="form-control" id="starttm[-1]" type="text" placeholder="" name="start_tm[-1]" value="">
+                        </div>
+                          </div>
+                      <div class="col-xs-3">
+                            <div class="form-group">
+                          <label>Λήξη</label>
+                                <input disabled class="form-control" id="endtm[-1]" type="text" placeholder="" name="end_tm[-1]" value="">
+                        </div>
+                          </div>
+                          <div class="col-xs-3">
+                              <div class="form-group">
+                                <label>Αίθουσα</label>
+                                <input disabled class="form-control" id="classroomid[-1]" type="text" placeholder="" name="classroom_id[-1]" value="">
+                              </div>
+                          </div>
+
+                    </div>
                 <?php endif;?>
                 <div class="row">
                 <div class="col-md-12">    
                   <div class="pull-right">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-default dropdown-toggle" disabled data-toggle="dropdown">
-                        Διαγραφή <span class="caret"></span>
-                        <!-- DELETE SHOULD YOU AJAX AFTER CONFIRMATION -->
-                      </button>
-                      <ul class="dropdown-menu" role="menu">
-                        <?php foreach ($sectionprog as $data):?>
-                        <li><a href="#"><?php echo $data['day'];?></a></li>
-                        <?php endforeach;?>
-                      </ul>
-                    </div>
+                    <?php if(!empty($sectionprog)):?>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" disabled data-toggle="dropdown">
+                          Διαγραφή <span class="caret"></span>
+                          <!-- DELETE SHOULD YOU AJAX AFTER CONFIRMATION -->
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                          <?php foreach ($sectionprog as $data):?>
+                          <li><a href="#"><?php echo $data['day'];?></a></li>
+                          <?php endforeach;?>
+                        </ul>
+                      </div>
+                    <?php endif;?>
                     <div class="btn-group">
                     <button id="newdaybtn" type="button" class="btn btn-primary" disabled >Προσθήκη</button>
                     <button id="undodaybtn" type="button" class="btn btn-primary" disabled ><span class="icon"><i class="icon-undo"></i></span></button>

@@ -68,7 +68,7 @@ public function card($id, $subsection=null) {
 
 	if(is_null($id)) redirect('section');
 
-	//get section's main data (name surname id) in an array to use everywhere in employee section
+	//get section's main data (name id ...) in an array to use everywhere in section page
 	$this->load->model('section_model');
 	$section = $this->section_model->get_section_common_data($id);
 	if ($section) {
@@ -109,7 +109,36 @@ public function card($id, $subsection=null) {
 	 	{
 	 		$section_data[$key]=$value;
 	 	};
-	 	//$this->card_model->update_section_data($section_data, $id);
+	 	
+	 	$section_program_update = array();
+	 	
+	 	foreach ($section_data as $key => $value) {
+	 		switch ($key) {
+	 			case 'section':
+	 			case 'class_id':
+	 			case 'course_id':
+	 			case 'lesson_id':
+	 			case 'tutor_id':
+	 				$section_update[$key] = $value;
+	 				break;
+	 			
+	 			case 'day':
+	 			case'start_tm':
+	 			case 'end_tm':
+	 			case 'classroom_id':
+	 				foreach ($value as $programid => $progvalue) {
+	 					$section_program_update[$programid][$key]=$progvalue;
+	 				}
+	 				break;
+	 		}
+	 	}
+	 	
+	 	$this->load->model('welcome_model');
+	 	$section_update['schoolyear'] = $this->welcome_model->get_selected_startschyear();
+
+
+		$this->card_model->update_section_data($section_update, $id, $section_program_update);
+
 	}
 	else
 	{
@@ -132,12 +161,32 @@ public function card($id, $subsection=null) {
 	}
 
 
-public function delreg($id){
-	$this->load->model('section_model');
-	$this->section_model->delreg($id);
-	redirect('section');
-}
+	public function delreg($id){
+		$this->load->model('section_model');
+		$this->section_model->delreg($id);
+		redirect('section');
+	}
 
 
+	public function newreg(){
+		$this->load->model('section_model');
+		$id = $this->section_model->newreg();
+		$this-> card($id);
+	}
+
+	public function cancel($form=null, $id=null){
+	if (is_null($form) || is_null($id)) show_404();
+		if ($form=='card'){
+			$this->load->model('section_model');
+			if($this->section_model->cancelreg($id))
+			{
+				redirect('section');
+			}
+			else
+			{
+				redirect('section/card/'.$id);
+			}
+		}
+	}
 
 }

@@ -154,16 +154,37 @@ class Card_model extends CI_Model {
    }
 
 
-   // public function update_section_data($section_data, $id){
+   public function update_section_data($section_update, $id, $section_program_update=null){
 
-   //    //replacing empty array values with NULL
-   //    foreach ($employee_data as $i => $value) {
-   //       if ($value === "") $employee_data[$i] = null;
-   //    };
+      //replacing empty array values with NULL
+      foreach ($section_update as $i => $value) {
+         if ($value === "") $section_update[$i] = null;
+      };
 
-   //    $this->db->where('employee.id',$id);
-   //    $this->db->update('employee', $employee_data);
-   // }
+      $this->db->where('section.id',$id);
+      $this->db->update('section', $section_update);
+   
 
+      if (!empty($section_program_update)){
+         //replacing empty array values with NULL
+         foreach ($section_program_update as $key=> $value) {
+            foreach ($value as $subkey => $subvalue) {
+               if ($subvalue === "") $section_program_update[$key][$subkey] = null;
+            };
+            
+         };
+
+         foreach ($section_program_update as $i => $data) {
+            $data['section_id']=$id;
+            if ($i>0){
+               $this->db->where('section_program.id',$i);
+               $this->db->update('section_program', $data);
+            }
+            else {
+               $this->db->insert('section_program', $data);  
+            }
+         }
+      }
+   }
 
 }

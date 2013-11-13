@@ -47,8 +47,8 @@ class Section_model extends CI_Model {
          ->db
          ->select(array('section.section','section.id', 'catalog_lesson.title'))
          ->from('section')
-         ->join('lesson','section.lesson_id=lesson.id')
-         ->join('catalog_lesson','lesson.cataloglesson_id=catalog_lesson.id')
+         ->join('lesson','section.lesson_id=lesson.id','left')
+         ->join('catalog_lesson','lesson.cataloglesson_id=catalog_lesson.id','left')
          ->where('section.id',$id)
          ->limit(1)
          ->get();
@@ -66,9 +66,15 @@ class Section_model extends CI_Model {
    }
 
 
+   public function newreg()
+   {
+      //insert new record in section table
+      $data = array('id' => 'null' );
+      $this->db->insert('section', $data);
+      $sectionid = $this->db->insert_id();
 
-
-
+      return $sectionid;
+   }
 
 
    public function delreg($id)
@@ -77,5 +83,27 @@ class Section_model extends CI_Model {
    }
 
 
+   public function cancelreg($id)
+   {      
+      $query = $this->db->select('section')
+               ->where('id',$id)
+               ->get('section');
+      
+      if ($query->num_rows() > 0)
+      {
+         $row = $query->row();
+
+         if (is_null($row->section))
+         {
+            $this->db->delete('section', array('id'=>$id));
+            return true;
+         }
+         else
+         {
+            return false;
+         };
+
+      };
+   }
 
 }
