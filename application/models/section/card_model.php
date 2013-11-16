@@ -34,7 +34,10 @@ class Card_model extends CI_Model {
          ->db
          ->select(array('section_program.id', 'section_program.day', 'section_program.classroom_id', 'section_program.start_tm', 'section_program.end_tm', 'section_program.duration'))
          ->from('section_program')
+         ->join('weekday','section_program.day = weekday.name')
          ->where('section_id',$id)
+         ->order_by('weekday.priority','asc')
+         ->order_by('section_program.start_tm', 'asc')
          ->get();
 
       if ($query->num_rows() > 0) 
@@ -186,5 +189,46 @@ class Card_model extends CI_Model {
          }
       }
    }
+
+
+   public function delprogramday($id){
+      $this->db->delete('section_program', array('id'=>$id));
+      return true;
+   }
+
+
+   public function getsectionstudents($id){
+
+      $query=$this
+         ->db
+         ->select(array('std_lesson.id','registration.surname', 'registration.name', 'contact.home_tel', 'contact.std_mobile', 'registration.mothers_name', 'contact.mothers_mobile', 'registration.fathers_name', 'contact.fathers_mobile','contact.work_tel'))
+         ->from('std_lesson')
+         ->join('registration', 'std_lesson.reg_id=registration.id')
+         ->join('contact', 'registration.id = contact.reg_id')
+         ->where('std_lesson.section_id',$id)
+         ->get();
+
+      if ($query->num_rows() > 0) 
+      {
+         foreach($query->result_array() as $row) 
+         {
+            $section_students[] = $row;
+         }
+         return $section_students; 
+      }
+      else 
+      {
+         return false;
+      }
+
+   }
+
+
+   public function removefromsection($data){
+      foreach ($data as $key => $value) {
+         $this->db->delete('std_lesson',array('id'=>$key));
+      }
+   }
+
 
 }

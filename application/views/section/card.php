@@ -1,10 +1,12 @@
+
 <style type="text/css">
 
-@media (max-width: 400px)
-{    
-  .col-xs-3 {padding-left:5px;padding-right: 5px} 
-  .col-xs-3 .form-control {padding-left:8px;padding-right: 3px}
-}   
+  @media (max-width: 400px)
+  {    
+    .col-xs-3 {padding-left:5px;padding-right: 5px} 
+    .col-xs-3 .form-control {padding-left:8px;padding-right: 3px}
+  }   
+
 </style>
 
 
@@ -39,7 +41,6 @@ function toggleedit(togglecontrol, id) {
 }
 
 $(document).ready(function(){
-
 
     $('#cancelbtn').click(function(){
       window.open("<?php echo base_url()?>section/cancel/card/<?php echo $section['id']?>", '_self', false);
@@ -92,54 +93,47 @@ $(document).ready(function(){
           var lastdayrow = $(this).closest('.row').prev('.row');
           var newday = lastdayrow.clone();
           newday.insertAfter(lastdayrow);
-          var fields = newday.find('input[type="text"]');
+          var inputfields = newday.find('input[type="text"]');
+          var selfields = newday.find('select');
 
-          //Reset values for the cloned fields
+          //Reset values for the cloned inputfields
 
           //-------------set new dayname---------------
-          fields.eq(0).attr("name", "day[" + newdayindex +"]");        
-          fields.eq(0).attr('id', "day["+newdayindex+"]");
-          fields.eq(0).prop('value', '');  
-          fields.eq(0).attr('value', '');  
+          selfields.eq(0).attr("name", "day[" + newdayindex +"]");        
+          selfields.eq(0).attr('id', "day["+newdayindex+"]");
+          selfields.eq(0).find('option:selected').removeAttr("selected");
+          selfields.eq(0).find('option:first-child').attr('selected', 'selected');
+          
 
           //-------------set new start_tm---------------
-          fields.eq(1).attr("name", "start_tm[" + newdayindex +"]");        
-          fields.eq(1).attr('id', "starttm["+newdayindex+"]");
-          fields.eq(1).prop('value', '');  
-          fields.eq(1).attr('value', '');  
+          inputfields.eq(0).attr("name", "start_tm[" + newdayindex +"]");        
+          inputfields.eq(0).attr('id', "starttm["+newdayindex+"]");
+          inputfields.eq(0).prop('value', '');  
+          inputfields.eq(0).attr('value', '');  
 
           //-------------set new end_tm---------------
-          fields.eq(2).attr("name", "end_tm[" + newdayindex +"]");        
-          fields.eq(2).attr('id', "endtm["+newdayindex+"]");
-          fields.eq(2).prop('value', '');  
-          fields.eq(2).attr('value', '');
+          inputfields.eq(1).attr("name", "end_tm[" + newdayindex +"]");        
+          inputfields.eq(1).attr('id', "endtm["+newdayindex+"]");
+          inputfields.eq(1).prop('value', '');  
+          inputfields.eq(1).attr('value', '');
 
           //-------------set new classroom---------------
-          fields.eq(3).attr("name", "classroom_id[" + newdayindex +"]");        
-          fields.eq(3).attr('id', "classroomid["+newdayindex+"]");
-          fields.eq(3).prop('value', '');  
-          fields.eq(3).attr('value', '');
+          inputfields.eq(2).attr("name", "classroom_id[" + newdayindex +"]");        
+          inputfields.eq(2).attr('id', "classroomid["+newdayindex+"]");
+          inputfields.eq(2).prop('value', '');  
+          inputfields.eq(2).attr('value', '');
           });
 
 
         $('#undodaybtn').click(function(){
           if (newdayc > 1) {
-            //var lastfieldset = $(this).parents('form').find('fieldset:last');
             var lastdayrow = $(this).closest('.row').prev('.row');
 
             lastdayrow.remove();  
             newdayc = newdayc - 1;
             
             if (newdayc==1){
-              //var fieldsets = $(this).parents('fieldset').length;   
               $(this).attr('disabled','disabled'); 
-
-              //if I select all payments to be erased or canceled and I already have inserted a new record
-              //then the new record will stay in place BUT if one presses undo, then there will be no payment
-              //and no fieldset to clone so we need a new page load from the server
-              // else if (fieldsets==0) {
-              //   window.location.href=window.location.href;
-              // }
             }
           }
         });
@@ -277,6 +271,32 @@ function gettutors(){
    
 }
 
+
+//delete a specific change
+  function delprogamday(id, day){
+    var sData = {'jsprogramid': id};
+    var days = $('.programrow').length;
+
+    var res = confirm("Πρόκειται να διαγράψετε μία ημέρα προγράμματος: "+day+". Σίγουρα Θέλετε να συνεχίσετε;");
+    var post_url = "<?php echo base_url();?>section/delprogramday/";
+
+      if (res==true){
+          $.ajax({
+            type: "post",
+            url: post_url,
+            data : sData,
+            dataType:'json', 
+            success: function(){
+              if (days==1){
+                  window.location.href = window.location.href;  
+              }
+            }
+          }); //end of ajax
+          $('select[name="day['+id+']"]').closest('.row').remove();  
+          $('#deldaylist'+id).remove();
+      }
+  }
+
 </script>
 
 </head>
@@ -360,7 +380,7 @@ function gettutors(){
       <ul class="nav nav-tabs">
         <li class="active"><a href="<?php echo base_url()?>section/card/<?php echo $section['id']?>">Στοιχεία</a></li>
         <?php if(!empty($section['section'])):?>
-        	<li><a href="<?php echo base_url()?>section/card/<?php echo $section['id']?>/students">Μαθητές</a></li>
+        	<li><a href="<?php echo base_url()?>section/card/<?php echo $section['id']?>/sectionstudents">Μαθητές</a></li>
       	<?php endif;?>
       </ul>
 
@@ -486,10 +506,18 @@ function gettutors(){
                   <?php foreach ($sectionprog as $daysectionprog):?>
                     <div class="row programrow"> 
 
+                      <?php $days=array("Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο", "Κυριακή");?>
+
                       <div class="col-xs-3">
                         <div class="form-group">  
                                 <label>Ημέρα</label>
-                                <input disabled class="form-control" id="day[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="day[<?php echo $daysectionprog['id'];?>]" value="<?php echo $daysectionprog['day'];?>">
+                                <!-- <input disabled class="form-control" id="day[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="day[<?php echo $daysectionprog['id'];?>]" value="<?php echo $daysectionprog['day'];?>"> -->
+                                <select disabled class="form-control" id="day[<?php echo $daysectionprog['id'];?>]" name="day[<?php echo $daysectionprog['id'];?>]">
+                                    <option value=""></option>
+                                    <?php foreach ($days as $day):?> 
+                                      <option value="<?php echo $day;?>" <?php if($daysectionprog['day']==$day) echo " selected='selected'";?>><?php echo $day;?></option>
+                                    <?php endforeach;?>
+                                </select>
                         </div>
                           </div>
 
@@ -520,7 +548,17 @@ function gettutors(){
                       <div class="col-xs-3">
                         <div class="form-group">  
                                 <label>Ημέρα</label>
-                                <input disabled class="form-control" id="day[-1]" type="text" placeholder="" name="day[-1]" value="">
+                                <!-- <input disabled class="form-control" id="day[-1]" type="text" placeholder="" name="day[-1]" value=""> -->
+                                <select disabled class="form-control" id="day[-1]" name="day[-1]">
+                                    <option selected = 'selected' value=""></option>
+                                    <option value="Δευτέρα">Δευτέρα</option>
+                                    <option value="Τρίτη">Τρίτη</option>
+                                    <option value="Τετάρτη">Τετάρτη</option>
+                                    <option value="Πέμπτη">Πέμπτη</option>
+                                    <option value="Παρασκευή">Παρασκευή</option>
+                                    <option value="Σάββατο">Σάββατο</option>
+                                    <option value="Κυριακή">Κυριακή</option>
+                                </select>
                         </div>
                           </div>
 
@@ -552,11 +590,10 @@ function gettutors(){
                       <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" disabled data-toggle="dropdown">
                           Διαγραφή <span class="caret"></span>
-                          <!-- DELETE SHOULD YOU AJAX AFTER CONFIRMATION -->
                         </button>
                         <ul class="dropdown-menu" role="menu">
                           <?php foreach ($sectionprog as $data):?>
-                          <li><a href="#"><?php echo $data['day'];?></a></li>
+                          <li id="deldaylist<?php echo $data['id'];?>"><a href="#" onclick="delprogamday(<?php echo $data['id'];?>,'<?php echo $data['day'].' ('.date('H:i',strtotime($data['start_tm'])).'-'.date('H:i',strtotime($data['end_tm'])).')';?>');return false;"><?php echo $data['day'].' ('.date('H:i',strtotime($data['start_tm'])).'-'.date('H:i',strtotime($data['end_tm'])).')';?></a></li>
                           <?php endforeach;?>
                         </ul>
                       </div>

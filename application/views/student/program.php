@@ -42,7 +42,7 @@ function toggledays(togglecontrol) {
         container:'body',
         html:'true',       
         title:'<h4>Συνήθεις επεξεργασίες</h4>',
-        content:"<ul><li>Για προσθήκη ή διαγραφή μαθημάτων πηγαίνετε στην καρτέλα <a href='<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/manage'> Φοίτηση / Διαχείριση προγράμματος σπουδών.</a></li><li>Για επεξεργασία ώρας και αίθουσας ενός μαθήματος πατήστε την επιλογή 'Eπεξεργασία' δεξιά του μαθήματος αυτού.</li></ul>"
+        content:"<ul><li>Για προσθήκη ή διαγραφή μαθημάτων πηγαίνετε στην καρτέλα <a href='<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/manage'> Φοίτηση / Διαχείριση προγράμματος σπουδών.</a></li><li>Για επεξεργασία ώρας και αίθουσας ή διδάσκοντος ενός μαθήματος πατήστε το κουμπί δεξιά του μαθήματος αυτού.</li></ul>"
      });
 
      $('#toggledays').tooltip({
@@ -62,8 +62,7 @@ function toggledays(togglecontrol) {
 
      $('.footable').footable();
 
-   });
-
+   }); //end of $(document).ready(function())
 
 </script>
 
@@ -231,7 +230,7 @@ function toggledays(togglecontrol) {
     				      						<td><?php echo $program[$k]['nickname'];?></td>
     				      						<td><?php echo $program[$k]['section'];?></td>
     				      						<td><?php echo $program[$k]['classroom'];?></td>
-                              <td><button class="btn btn-default btn-sm pull-right"><i class="icon-edit"></i><small></small></button></td>
+                              <td><a class="btn btn-default btn-sm pull-right" href="<?php echo base_url()?>section/card/<?php echo $program[$k]['section_id'];?>"><i class="icon-edit"></i><small></small></a></td>
     				      					</tr>
   				      					  <?php $k++;?>
                           <?php else:?>

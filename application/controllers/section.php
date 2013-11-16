@@ -91,8 +91,8 @@ public function card($id, $subsection=null) {
 	
 
 	switch ($subsection) {
-	 	case 'studentgroup':
-	 		$this->studentgroup($id, $section);
+	 	case 'sectionstudents':
+	 		$this->sectionstudents($id, $section);
 	 		return 0;
 	 		break;
 
@@ -149,6 +149,7 @@ public function card($id, $subsection=null) {
 
 	$data['sectioncard'] = $section_data;
 	$data['sectionprog'] = $section_program;
+
 	$data['class'] = $this->card_model->get_classes();
 	$data['course'] = $this->card_model->get_courses($section_data['class_id']);
 	$data['lesson'] = $this->card_model->get_lessons($section_data['class_id'], $section_data['course_id']);
@@ -188,5 +189,38 @@ public function card($id, $subsection=null) {
 			}
 		}
 	}
+
+	public function delprogramday(){
+		$this->load->model('section/card_model','', TRUE);    
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this
+						->card_model
+						->delprogramday($this->input->post('jsprogramid'))
+						)
+			);
+	}
+
+
+	public function sectionstudents($id, $section){
+		
+		$this->load->model('section/card_model');
+
+		if(!empty($_POST)) {
+			$this->card_model->removefromsection($this->input->post('select'));
+		};
+		
+		$students = $this->card_model->getsectionstudents($id);
+		if ($students){
+			$data['students']=$students;
+		}
+
+		$data['section']=$section;
+
+		$this->load->view('include/header');
+		$this->load->view('section/sectionstudents', $data);
+		$this->load->view('include/footer');
+
+	}	
+
 
 }
