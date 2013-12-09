@@ -30,12 +30,12 @@ class Login extends CI_Controller {
 					case 'admin':
 						redirect('welcome');
 						break;
-					case 'tutor':
-						redirect('tutor');
-						break;
-					case 'parent':
-						redirect('parent');
-						break;
+					// case 'tutor':
+					// 	redirect('tutor');
+					// 	break;
+					// case 'parent':
+					// 	redirect('parent');
+					// 	break;
 				}
 		}
 		
@@ -79,12 +79,12 @@ class Login extends CI_Controller {
 					case 'admin':
 						redirect('welcome');
 						break;
-					case 'tutor':
-						redirect('tutor');
-						break;
-					case 'parent':
-						redirect('parent');
-						break;
+					// case 'tutor':
+					// 	redirect('tutor');
+					// 	break;
+					// case 'parent':
+					// 	redirect('parent');
+					// 	break;
 				}
 				
 			}

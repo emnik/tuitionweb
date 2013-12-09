@@ -88,4 +88,17 @@ public function index() {
 
 	}
 
+	public function logout()
+	{
+
+		$this->session->unset_userdata('is_logged_in');
+		$this->session->unset_userdata('user_id');
+		$this->session->sess_destroy();
+
+		$this->load->view('include/header');		
+		$this->load->view('login');
+		$this->load->view('include/footer');
+	}
+
+
 }

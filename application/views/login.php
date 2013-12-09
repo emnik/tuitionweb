@@ -18,19 +18,6 @@
         <ul class="nav navbar-nav">
           <li><a href="#about">Περί</a></li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header">Νικηφορακης Μανος</li>
-                <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="#admin">Διαχείριση</a></li>
-                <li class="divider"></li>
-                <!-- <li class="dropdown-header">Nav header</li> -->
-                <li><a href="#">Αποσύνδεση</a></li>
-              </ul>
-            </li>
-        </ul>
       </div><!--/.navbar-collapse -->
     </div>
   </div>
@@ -53,48 +40,44 @@
 
     <div class="row"> <!--main row-->
 
-      <div class="col-md-4"> <!-- form container -->
+        <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <span class="icon">
+                <i class="icon-unlock-alt"></i>
+              </span>
+              <h3 class="panel-title">Συνδεση χρήστη</h3>
+<!--               <div class="buttons">
+              </div> -->
+            </div>
 
-        <!-- <form class="form" action="<?php echo base_url()?>welcome/" method="post" accept-charset="utf-8"> -->
-           <fieldset>
-             <legend>Διαχειριστική Περίοδος</legend>
-                <div class="control-group">
-                  <label  class="control-label">Επιλέξτε σχολικό έτος: </label>
-                  <div>  <!-- class="input-group"> -->
-                    <select class="form-control input-lg" name="startschoolyear" id="schoolyearcombo">
-                      <?php foreach($schoolyears as $data):?>
-                       <option value="<?php {$return=explode('-', $data['schoolyear']); echo $return[0];}?>" 
-                        <?php if($return[0] == $selected_schstart){ echo "selected = 'selected'";}?> >
-                        <?php echo $data['schoolyear'];?>
-                      </option>
-                      <?php endforeach;?>
-                      <option value="addnextschoolyear">Προσθήκη επόμενου σχ. έτους</option>
-                    </select>
-<!-- 
-                    <div class="input-group-btn">
-                      <button type="button" class="input-lg btn btn-default dropdown-toggle" data-toggle="dropdown">Ενέργειες <span class="caret"></span></button>
-                      <ul class="dropdown-menu pull-right">
-                        <li><a href="#">Προσθηκη επόμενου σχολ. έτους</a></li>
-                        <li><a href="#">Διαγραφή σχολ. έτους</a></li>
-                     </div> -->
-
-                  </div>
+            <div class="panel-body">
+              <form action="<?php echo base_url()?>/login" method="post" accept-charset="utf-8">
+                <div class="form-group col-sm-12">
+                  <!-- <label>Όνομα χρήστη</label> -->
+                  <input type="text" class="form-control input-lg" placeholder="Όνομα χρήστη" name="username"></input>
+                 </div>
+                <div class="form-group col-sm-12">
+                  <!-- <label>Κωδικός χρήστη</label> -->
+                  <input type="password" class="form-control input-lg" placeholder="Κωδικός χρήστη" name="password"></input>
                 </div>
-          </fieldset>
-
-      </div> <!--end of form container-->
-
-
-
-      </div> <!-- end of submit buttons -->
-    <!-- </form> -->
-
-  </div> <!--end of main row-->
+                <div class="form-group col-sm-12">
+                    <button type="submit" class="btn btn-primary">Είσοδος</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
 
 
 
+      </div>
 
-  </div> <!--end of container -->
+      </div>
+
+      </div>
+
+
 <div class="push"></div>  
 </div>
 
