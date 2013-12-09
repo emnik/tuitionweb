@@ -5,12 +5,7 @@ Class Welcome extends CI_Controller {
 public function __construct() {
 		
 		parent::__construct();
-		// $this->load->library('session');
-	}
-
-public function index() {
-	//$this->output->enable_profiler(TRUE);
-	
+		
 		$session_user = $this->session->userdata('is_logged_in');
 		if(!empty($session_user))
 		{
@@ -37,7 +32,11 @@ public function index() {
 		{
 			redirect('login');
 		}
+	}
 
+public function index() {
+	//$this->output->enable_profiler(TRUE);
+	
 	$this->load->model('welcome_model');
 
 	$regs = $this->welcome_model->get_student_names_ids();

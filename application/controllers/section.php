@@ -5,11 +5,7 @@ Class Section extends CI_Controller {
 public function __construct() {
 		
 		parent::__construct();
-	}
 
-public function index() {
-	//$this->output->enable_profiler(TRUE);
-	
 		$session_user = $this->session->userdata('is_logged_in');
 		if(!empty($session_user))
 		{
@@ -36,7 +32,11 @@ public function index() {
 		{
 			redirect('login');
 		}
+	}
 
+public function index() {
+	//$this->output->enable_profiler(TRUE);
+	
 	$this->load->model('section_model');
 	$sections=$this->section_model->get_sections_data();
 

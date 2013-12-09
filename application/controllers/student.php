@@ -5,17 +5,8 @@ Class Student extends CI_Controller {
 public function __construct() {
 		
 		parent::__construct();
-	}
 
-
-public function index(){
-	/*
-	If I want to pass a parameter to index through a uri segment then I would have to use
-	a url such as: http://domain/tuitionweb/student/index/id
-	It must have the index method specified!!! 
-	*/
-
-			$session_user = $this->session->userdata('is_logged_in');
+		$session_user = $this->session->userdata('is_logged_in');
 		if(!empty($session_user))
 		{
 			// get the group and redirect to appropriate controller
@@ -41,6 +32,15 @@ public function index(){
 		{
 			redirect('login');
 		}
+	}
+
+
+public function index(){
+	/*
+	If I want to pass a parameter to index through a uri segment then I would have to use
+	a url such as: http://domain/tuitionweb/student/index/id
+	It must have the index method specified!!! 
+	*/
 
 	$this->load->model('registrations_model');
 	$registration=$this->registrations_model->get_registration_data();
