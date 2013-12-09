@@ -15,6 +15,33 @@ public function index(){
 	It must have the index method specified!!! 
 	*/
 
+			$session_user = $this->session->userdata('is_logged_in');
+		if(!empty($session_user))
+		{
+			// get the group and redirect to appropriate controller
+				$this->load->model('login_model');
+				$grp = $this
+					->login_model
+					->get_user_group($this->session->userdata('user_id'));
+				
+				switch ($grp->name)
+				{
+					case 'admin':
+						// redirect('welcome');
+						break;
+					// case 'tutor':
+					// 	redirect('tutor');
+					// 	break;
+					// case 'parent':
+					// 	redirect('parent');
+					// 	break;
+				}
+		}
+		else
+		{
+			redirect('login');
+		}
+
 	$this->load->model('registrations_model');
 	$registration=$this->registrations_model->get_registration_data();
 
@@ -749,6 +776,14 @@ public function finance($id, $innersubsection=null, $student) {
 //----------------------------END OF PAYMENT CHANGES--------------------------
 
 
+	public function logout()
+	{
 
+		$this->session->destroy();
+
+		$this->load->view('include/header');		
+		$this->load->view('login');
+		$this->load->view('include/footer');
+	}
 
 }

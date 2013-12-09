@@ -5,11 +5,39 @@ Class Welcome extends CI_Controller {
 public function __construct() {
 		
 		parent::__construct();
+		// $this->load->library('session');
 	}
 
 public function index() {
 	//$this->output->enable_profiler(TRUE);
 	
+		$session_user = $this->session->userdata('is_logged_in');
+		if(!empty($session_user))
+		{
+			// get the group and redirect to appropriate controller
+				$this->load->model('login_model');
+				$grp = $this
+					->login_model
+					->get_user_group($this->session->userdata('user_id'));
+				
+				switch ($grp->name)
+				{
+					case 'admin':
+						// redirect('welcome');
+						break;
+					// case 'tutor':
+					// 	redirect('tutor');
+					// 	break;
+					// case 'parent':
+					// 	redirect('parent');
+					// 	break;
+				}
+		}
+		else
+		{
+			redirect('login');
+		}
+
 	$this->load->model('welcome_model');
 
 	$regs = $this->welcome_model->get_student_names_ids();
@@ -91,9 +119,7 @@ public function index() {
 	public function logout()
 	{
 
-		$this->session->unset_userdata('is_logged_in');
-		$this->session->unset_userdata('user_id');
-		$this->session->sess_destroy();
+		$this->session->destroy();
 
 		$this->load->view('include/header');		
 		$this->load->view('login');

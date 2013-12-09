@@ -98,7 +98,7 @@ function toggledays(togglecontrol) {
                 <li><a href="#">Αλλαγή κωδικού</a></li>
                 <li><a href="#admin">Διαχείριση</a></li>
                 <li class="divider"></li>
-                <li><a href="#">Αποσύνδεση</a></li>
+                <li><a href="<?php echo base_url()?>student/logout">Αποσύνδεση</a></li>
               </ul>
             </li>
         </ul>

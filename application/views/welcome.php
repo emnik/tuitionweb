@@ -60,7 +60,7 @@
                 <li><a href="#admin">Διαχείριση</a></li>
                 <li class="divider"></li>
                 <!-- <li class="dropdown-header">Nav header</li> -->
-                <li><a href="#">Αποσύνδεση</a></li>
+                <li><a href="<?php echo base_url()?>welcome/logout">Αποσύνδεση</a></li>
               </ul>
             </li>
         </ul>

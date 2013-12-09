@@ -10,6 +10,33 @@ public function __construct() {
 public function index() {
 	//$this->output->enable_profiler(TRUE);
 	
+		$session_user = $this->session->userdata('is_logged_in');
+		if(!empty($session_user))
+		{
+			// get the group and redirect to appropriate controller
+				$this->load->model('login_model');
+				$grp = $this
+					->login_model
+					->get_user_group($this->session->userdata('user_id'));
+				
+				switch ($grp->name)
+				{
+					case 'admin':
+						// redirect('welcome');
+						break;
+					// case 'tutor':
+					// 	redirect('tutor');
+					// 	break;
+					// case 'parent':
+					// 	redirect('parent');
+					// 	break;
+				}
+		}
+		else
+		{
+			redirect('login');
+		}
+
 	$this->load->model('staff_model');
 	$staff=$this->staff_model->get_staff_data();
 
@@ -172,7 +199,15 @@ public function teachingplan($id, $innersubsection=null, $employee){
 	$this->load->view('include/footer');
 }
 
+	public function logout()
+	{
 
+		$this->session->destroy();
+
+		$this->load->view('include/header');		
+		$this->load->view('login');
+		$this->load->view('include/footer');
+	}
 
 
 }

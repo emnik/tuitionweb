@@ -7,7 +7,7 @@ class Login extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->library('session');
+		// $this->load->library('session');
 	}
 	
 
@@ -107,10 +107,7 @@ class Login extends CI_Controller {
 
 	public function logout()
 	{
-
-		//$this->session->unset_userdata('is_logged_in');
-		//$this->session->unset_userdata('user_id');
-		$this->session->sess_destroy();
+		$this->session->destroy();
 
 		$this->load->view('include/header');		
 		$this->load->view('login');
