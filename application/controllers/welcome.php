@@ -37,6 +37,9 @@ public function __construct() {
 public function index() {
 	//$this->output->enable_profiler(TRUE);
 	
+	$this->load->model('login_model');
+	$data['user']=$this->login_model->get_user_name($this->session->userdata('user_id'));
+
 	$this->load->model('welcome_model');
 
 	$regs = $this->welcome_model->get_student_names_ids();

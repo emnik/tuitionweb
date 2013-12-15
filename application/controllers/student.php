@@ -42,6 +42,10 @@ public function index(){
 	It must have the index method specified!!! 
 	*/
 
+	$this->load->model('login_model');
+	$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
+	$data['user']=$user;
+
 	$this->load->model('registrations_model');
 	$registration=$this->registrations_model->get_registration_data();
 
@@ -110,6 +114,10 @@ public function card($id, $subsection=null, $innersubsection=null) {
 
 	if(is_null($id)) redirect('student');
 
+	$this->load->model('login_model');
+	$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
+	$data['user']=$user;
+
 	//get student's main data (name surname id) in an array to use everywhere in student section
 	$this->load->model('student_model');
 	$student = $this->student_model->get_student_data($id);
@@ -134,19 +142,19 @@ public function card($id, $subsection=null, $innersubsection=null) {
 
 	switch ($subsection) {
 	 	case 'contact':
-	 		$this->contact($id, $student);
+	 		$this->contact($id, $student, $user);
 	 		return 0;
 	 		# code...
 	 		break;
 
 	 	case 'attendance':
-	 		$this->attendance($id, $innersubsection, $student);
+	 		$this->attendance($id, $innersubsection, $student, $user);
 	 		# code...
 	 		return 0;
 	 		break;
 	 	
 	 	case 'finance':
-	 		$this->finance($id, $innersubsection, $student);
+	 		$this->finance($id, $innersubsection, $student, $user);
 	 		return 0;
 	 		# code...
 	 		break;
@@ -190,7 +198,7 @@ public function card($id, $subsection=null, $innersubsection=null) {
 
 	}
 
-public function contact($id, $student) {
+public function contact($id, $student, $user) {
 	//$this->output->enable_profiler(TRUE);
 	$this->load->model('student/contact_model');
 	$secondary = $this->contact_model->get_secondary_data($id);
@@ -209,6 +217,7 @@ public function contact($id, $student) {
 	}
 
 	$data['student'] = $student;
+	$data['user']=$user;
 
 	if($contact){
 		$data['contact'] = $contact;
@@ -226,9 +235,10 @@ public function contact($id, $student) {
 
 
 
-public function attendance($id, $innersubsection=null, $student) {
+public function attendance($id, $innersubsection=null, $student, $user) {
 
 	$data['student']=$student;
+	$data['user']=$user;
 
 	$this->load->model('student/attendance_model');
 	$program = $this->attendance_model->get_program_data($id);
@@ -340,7 +350,7 @@ public function attendance($id, $innersubsection=null, $student) {
 //--------------------------PAYMENTS----------------------------
 
 
-public function finance($id, $innersubsection=null, $student) {
+public function finance($id, $innersubsection=null, $student, $user) {
 	
 	if (!empty($_POST)) {
 		$sortedformdata=array();
@@ -410,6 +420,7 @@ public function finance($id, $innersubsection=null, $student) {
 	};
 
 	$data['student']=$student;
+	$data['user']=$user;
 
 	$this->load->model('student/finance_model');
 	

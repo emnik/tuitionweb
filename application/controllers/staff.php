@@ -37,6 +37,10 @@ public function __construct() {
 public function index() {
 	//$this->output->enable_profiler(TRUE);
 	
+	$this->load->model('login_model');
+	$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
+	$data['user']=$user;
+
 	$this->load->model('staff_model');
 	$staff=$this->staff_model->get_staff_data();
 
@@ -58,6 +62,10 @@ public function index() {
 public function card($id, $subsection=null, $innersubsection=null) {
 
 	if(is_null($id)) redirect('staff');
+
+	$this->load->model('login_model');
+	$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
+	$data['user']=$user;
 
 	// //get employee's main data (name surname id) in an array to use everywhere in employee section
 	$this->load->model('staff_model');
@@ -83,7 +91,7 @@ public function card($id, $subsection=null, $innersubsection=null) {
 
 	switch ($subsection) {
 	 	case 'teachingplan':
-	 		$this->teachingplan($id, $innersubsection, $employee);
+	 		$this->teachingplan($id, $innersubsection, $employee, $user);
 	 		return 0;
 	 		break;
 
@@ -145,9 +153,10 @@ public function cancel($form=null, $id=null){
 }
 
 
-public function teachingplan($id, $innersubsection=null, $employee){
+public function teachingplan($id, $innersubsection=null, $employee, $user){
 	
 	$data['employee']=$employee;
+	$data['user']=$user;
 
 	$this->load->model('staff/teachingplan_model');
 	$program = $this->teachingplan_model->get_tutor_program($id);

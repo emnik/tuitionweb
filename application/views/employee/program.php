@@ -95,7 +95,7 @@ function toggledays(togglecontrol) {
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li class="dropdown-header">Νικηφορακης Μανος</li>
+                <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
                 <li><a href="#admin">Διαχείριση</a></li>
                 <li class="divider"></li>

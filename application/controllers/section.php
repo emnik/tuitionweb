@@ -37,6 +37,10 @@ public function __construct() {
 public function index() {
 	//$this->output->enable_profiler(TRUE);
 	
+	$this->load->model('login_model');
+	$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
+	$data['user']=$user;
+
 	$this->load->model('section_model');
 	$sections=$this->section_model->get_sections_data();
 
@@ -95,6 +99,10 @@ public function card($id, $subsection=null) {
 
 	if(is_null($id)) redirect('section');
 
+	$this->load->model('login_model');
+	$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
+	$data['user']=$user;
+
 	//get section's main data (name id ...) in an array to use everywhere in section page
 	$this->load->model('section_model');
 	$section = $this->section_model->get_section_common_data($id);
@@ -119,7 +127,7 @@ public function card($id, $subsection=null) {
 
 	switch ($subsection) {
 	 	case 'sectionstudents':
-	 		$this->sectionstudents($id, $section);
+	 		$this->sectionstudents($id, $section, $user);
 	 		return 0;
 	 		break;
 
@@ -228,8 +236,9 @@ public function card($id, $subsection=null) {
 	}
 
 
-	public function sectionstudents($id, $section){
+	public function sectionstudents($id, $section, $user){
 		
+		$data['user']=$user;
 		$this->load->model('section/card_model');
 
 		if(!empty($_POST)) {
