@@ -97,7 +97,7 @@ public function index() {
 				break;
 
 			case 'submit4': // Οικονομικά
-				#code...
+				redirect('finance');
 				break;
 
 			case 'submit5': // Αναφορές

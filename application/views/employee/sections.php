@@ -29,7 +29,7 @@
             <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
             <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
             <li><a href="<?php echo base_url()?>section">Τμήματα</a></li>
-            <li><a href="#finance">Οικονομικά</a></li>
+            <li><a href="<?php echo base_url()?>finance">Οικονομικά</a></li>
             <li><a href="#reports">Αναφορές</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
