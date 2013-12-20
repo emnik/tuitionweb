@@ -75,16 +75,15 @@ public function index() {
 
 	$startsch = $this->input->post('startschoolyear');
 	if (!empty($startsch) and $startsch!="addnextschoolyear") {
-		switch ($this->input->post('submit')) {
-			case 'submit1': //Μαθητολόγιο
 				if ($selected_schstart!=$startsch){
 					$this->welcome_model->set_schoolyear($startsch);	
 				};
 			
 				if (in_array($startsch.'-'.($startsch+1), $justyears)==false){
 					$this->welcome_model->insert_schoolyear($startsch);
-				}
-//				redirect('registrations');
+				}		
+		switch ($this->input->post('submit')) {
+			case 'submit1': //Μαθητολόγιο
 				redirect('student');
 				break;
 			

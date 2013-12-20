@@ -8,27 +8,37 @@
 
 $(document).ready(function(){ 
 
+  var oTable1;
+  var oTable2;
+
   $('#btnschoolyearupdate').click(function(){
-    $(this).button('loading');
 
-    // $.ajax({  
-    //           type: "POST",  
-    //           url: "<?php echo base_url()?>student/updatedayabsencedata",  
-    //           data: '',
-    //           success: function(result) {  
-    //               if (result!=false){
-    //                   oTable.fnReloadAjax();
-    //               };
-    //           }
-    //       });
+    $.ajaxSetup({
+        beforeSend:function(){
+            $('#btnschoolyearupdate').button('loading');
+            $('#schmessage').html('Παρακαλώ περιμένετε. Οι υπολογισμοί μπορεί να διαρκέσουν λίγη ώρα...');
+        },
+        complete:function(){
+            $('#btnschoolyearupdate').button('reset');
+            $('#schmessage').html('Τα οικονομικά στοιχεία για το σχολικό έτος ενημερώθηκαν με τα τελευταία δεδομένα!');
+        }
+    });
 
-    setTimeout(function(){
-       $('#btnschoolyearupdate').button('reset');},3000);
+    $.ajax({  
+              type: "POST",  
+              url: "<?php echo base_url()?>finance/update_schfinance_data",  
+              success: function(result) {  
+                  if (result!=false){
+                      oTable1.fnReloadAjax();
+                  };
+              }
+          });
+    
     });
 
     /* Init the schoolyear finance table */
     
-    $('#schfinancetable').dataTable( {
+    oTable1 = $('#schfinancetable').dataTable( {
         "bProcessing": true,
         "bServerSide": true, 
         "sAjaxSource": "<?php echo base_url();?>finance/getschfinancedata",
@@ -85,7 +95,7 @@ $(document).ready(function(){
 
 
     /* Init the economic year finance table */
-    $('#ecofinancetable').dataTable( {
+    oTable2 = $('#ecofinancetable').dataTable( {
         "bProcessing": true,
         "sAjaxSource": "<?php echo base_url();?>finance/getecofinancedata",
         //"aoColumnDefs": [/*stdlesson_id*/{ "bVisible": false, "aTargets": [5] }],
@@ -105,7 +115,23 @@ $(document).ready(function(){
         "bSort": false,
         "bFilter": false,
         "bPaginate": false,
-        "oLanguage": {"sZeroRecords": "Δεν βρέθηκαν εγγραφές"}
+        "oLanguage": {"sZeroRecords": "Δεν βρέθηκαν εγγραφές"},
+        "fnFooterCallback": function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
+            /*
+             * Calculate the total market share for all browsers in this table (ie inc. outside
+             * the pagination)
+             * if Sort and/or Filter is enabled see http://www.datatables.net/examples/advanced_init/footer_callback.html
+             */
+            var iTotal = 0;
+            for ( var i=0 ; i<aaData.length ; i++ )
+            {
+                iTotal += parseInt(aaData[i]['Ποσό']);
+            }
+
+            /* Modify the footer row to match what we want */
+            var nCells = nRow.getElementsByTagName('th');
+            nCells[1].innerHTML = iTotal+'€';
+            }
      } );
 
 }) //end of (document).ready(function())
@@ -284,7 +310,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
                           </tr>
                         </tfoot>
                       </table>
-                      <p class="text-info">H τελευταία ενημέρωση των οικονομικών δεδομένων για το σχολικό έτος έγινε τον: <?php echo $schoolyear_update['value_1'];?></p>
+                      <p id="schmessage" class="text-info">Tελευταία ενημέρωση των οικονομικών δεδομένων για το σχολικό έτος: <?php $m=(!isset($schoolyear_update)) ? "Δεν υπάρχει!" : $schoolyear_update; echo '<strong>'.$m.'</strong>';?></p>
                       <p><button id="btnschoolyearupdate" type="button" data-loading-text="Ανανέωση..." class="btn btn-primary">Ανανέωση τώρα</button></p>
                     </div>
 	        	    	</div>
@@ -317,8 +343,16 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
                         </thead>
                         <tbody>
                         </tbody>
+                        <tfoot>
+                          <tr>
+                              <th>Σύνολο:</th> 
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                          </tr>
+                        </tfoot>
                       </table>
-                      <p class="text-info">H τελευταία ενημέρωση των οικονομικών δεδομένων για το οικονομικό έτος έγινε τον: <strong>TODO</strong></p>
+                      <p class="text-info">Tελευταία ενημέρωση των οικονομικών δεδομένων για το σχολικό έτος: <?php $m=(!isset($economicyear_update)) ? "Δεν υπάρχει!" : $economicyear_update; echo '<strong>'.$m.'</strong>';?>
                       <p><button id="btnecoyearupdate" type="button" data-loading-text="Ανανέωση..." class="btn btn-primary">Ανανέωση τώρα</button></p>
                     </div>
 
