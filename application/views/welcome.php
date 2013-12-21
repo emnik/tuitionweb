@@ -142,7 +142,7 @@
             </div>
 
             <div class="col-sm-3 col-xs-6 welcome">
-              <button type="submit" class="btn-link" name="submit" value="submit6">
+              <button disabled type="submit" class="btn-link" name="submit" value="submit6">
                 <i class="icon-code-fork icon-4x"></i>
                 <h4>Πολλαπλές ενέργειες</h4>
               </button>
@@ -159,7 +159,7 @@
             </div>
             
             <div class="col-sm-3 col-xs-6 welcome">
-              <button type="submit" class="btn-link" name="submit" value="submit5">
+              <button disabled type="submit" class="btn-link" name="submit" value="submit5">
                 <i class="icon-print icon-4x"></i>
                 <h4>Αναφορές</h4>
               </button>

@@ -352,20 +352,26 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
         text-decoration: none;
         color: black;
         /*font-family: 'Ubuntu';*/
+        text-shadow: 5px 4px 2px #cfcfcf;
+
 
     }
 
-
-   .welcome .btn-link:hover {
+   .welcome .btn-link:enabled:hover {
         color: red;
+        transform: scale(1.1);
+    }
+   
+   .welcome .btn-link:disabled {
+        color: grey;
     }
 
 
-.panel-scroll {
-  overflow: auto;
-  word-wrap: normal;
-  white-space: pre;
-}
+    .panel-scroll {
+      overflow: auto;
+      word-wrap: normal;
+      white-space: pre;
+    }
 
 
 
