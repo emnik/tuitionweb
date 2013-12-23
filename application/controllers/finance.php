@@ -156,7 +156,7 @@ class Finance extends CI_Controller {
 		//4. Empty (reset) existing tables dept & post_payment
 		// ----------------------------------------------------------//
 		$this->load->model('finance_model');
-		$this->finance_model->resetTables();
+		$this->finance_model->resetSchFinanceTables();
 
 		//5. Insert single months' payments in the post_payment table
 		$this->finance_model->insertSinglePays($startsch);
@@ -193,4 +193,68 @@ class Finance extends CI_Controller {
 		echo json_encode($r);
 	}
 
+
+
+	public function update_ecofinance_data(){
+		//To recalculate the economic year's financial data
+		header('Content-Type: application/x-json; charset=utf-8');
+
+		$this->load->model('welcome_model');
+		$startsch = $this->welcome_model->get_selected_startschyear(); 
+
+		//1. reset finance_year_debt and finance_year_pays
+		$this->load->model('finance_model');
+		$this->finance_model->resetEcoFinanceTables();
+
+		//2. Insert single payments
+		$this->finance_model->insertEcoSinglePays($startsch);
+		
+		//3. Get multiple payments, seperate them and insert them in the finance_year_pay table
+		$multipleDataPays = array();
+		$c=0;
+		$multiplePays = $this->finance_model->multiEcoPaysSelect($startsch);
+		if ($multiplePays){
+			foreach ($multiplePays as $data) {
+				$months = explode(',', $data['month_range']);
+				for ($m=0; $m<=count($months)-1; $m++){
+					$multipleDataPays[$c]=$data;
+					$multipleDataPays[$c]['paid_month']=$months[$m];
+					$multipleDataPays[$c]['amount']=$data['amount']/count($months); //the total amount for multiple months is divided equally to each month...
+					unset($multipleDataPays[$c]['month_range']);
+					unset($multipleDataPays[$c]['month_price']);
+					$c++;
+				}
+			}
+			$this->finance_model->insertMultipleEcoPays($multipleDataPays);
+		}
+
+		//4. Insert Single debts
+		$this->finance_model->insertEcoSingleDebt($startsch);
+
+
+		//5. Get multiple payments, seperate them and insert them in the finance_year_debt table
+		$multipleDataDebts = array();
+		$c=0;
+		$multiplePays = $this->finance_model->multiEcoPaysSelect($startsch);
+		if ($multiplePays){
+			foreach ($multiplePays as $data) {
+				$months = explode(',', $data['month_range']);
+				for ($m=0; $m<=count($months)-1; $m++){
+					$multipleDataDebts[$c]=$data;
+					$multipleDataDebts[$c]['credit_month']=$months[$m];
+					$multipleDataDebts[$c]['amount']=$data['amount']/count($months); //the total amount for multiple months is divided equally to each month...
+					unset($multipleDataDebts[$c]['month_range']);
+					unset($multipleDataDebts[$c]['month_price']);
+					$c++;
+				}
+			}
+			$this->finance_model->insertMultipleEcoDebts($multipleDataDebts);
+		}
+
+		//9. Set the update date
+		$this->finance_model->schEcoFinanceUpdateDate($startsch);
+
+		//return results
+		echo json_encode(true);
+	}
 }

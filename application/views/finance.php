@@ -11,6 +11,33 @@ $(document).ready(function(){
   var oTable1;
   var oTable2;
 
+  $('#btnecoyearupdate').click(function(){
+
+    $.ajaxSetup({
+        beforeSend:function(){
+            $('#btnecoyearupdate').button('loading');
+            $('#ecomessage').html('Παρακαλώ περιμένετε. Οι υπολογισμοί μπορεί να διαρκέσουν λίγη ώρα...');
+        },
+        complete:function(){
+            $('#btnecoyearupdate').button('reset');
+            $('#ecomessage').html('Τα οικονομικά στοιχεία για το οικονομικό έτος ενημερώθηκαν με τα τελευταία δεδομένα!');
+        }
+    });
+
+    $.ajax({  
+              type: "POST",  
+              url: "<?php echo base_url()?>finance/update_ecofinance_data",  
+              success: function(result) {  
+                  if (result!=false){
+                      oTable2.fnReloadAjax();
+                  };
+              }
+          });
+    
+    });
+
+
+
   $('#btnschoolyearupdate').click(function(){
 
     $.ajaxSetup({
@@ -105,6 +132,7 @@ $(document).ready(function(){
             { "mData": "Ποσό",
               "sClass":"col-md-4",
               "mRender": function (data, type, full) {
+                if (data == null) {data=0};
                 return data+'€';
               }
             },
@@ -125,7 +153,10 @@ $(document).ready(function(){
             var iTotal = 0;
             for ( var i=0 ; i<aaData.length ; i++ )
             {
-                iTotal += parseInt(aaData[i]['Ποσό']);
+                if (aaData[i]['Ποσό'] != null) {
+                    iTotal += parseInt(aaData[i]['Ποσό']);  
+                }
+                
             }
 
             /* Modify the footer row to match what we want */
@@ -290,7 +321,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 	            <div class="panel-body">
 	        	       <div class="row">	
 	        	    		<div class="col-md-12 col-sm-12">
-                        <table id="schfinancetable" class="table table-striped table-condensed table-responsive" width="100%">
+                        <table id="schfinancetable" class="table table-striped table-condensed" width="100%">
                         <thead>
                           <tr>
                             <th>Μήνας</th>
@@ -348,11 +379,10 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
                               <th>Σύνολο:</th> 
                               <th></th>
                               <th></th>
-                              <th></th>
                           </tr>
                         </tfoot>
                       </table>
-                      <p class="text-info">Tελευταία ενημέρωση των οικονομικών δεδομένων για το σχολικό έτος: <?php $m=(!isset($economicyear_update)) ? "Δεν υπάρχει!" : $economicyear_update; echo '<strong>'.$m.'</strong>';?>
+                      <p id="ecomessage" class="text-info">Tελευταία ενημέρωση των οικονομικών δεδομένων για το οικονομικό έτος: <?php $m=(!isset($economicyear_update)) ? "Δεν υπάρχει!" : $economicyear_update; echo '<strong>'.$m.'</strong>';?>
                       <p><button id="btnecoyearupdate" type="button" data-loading-text="Ανανέωση..." class="btn btn-primary">Ανανέωση τώρα</button></p>
                     </div>
 

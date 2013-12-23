@@ -10,8 +10,13 @@ class Finance_model extends CI_Model
     }
 
 
-    public function get_dept_update_date($startsch){
 
+    //---------------------------------------------------------------------//
+    //-------------------FUNCTIONS FOR SCHOOLYEAR FINANCE------------------//
+    //---------------------------------------------------------------------//
+
+
+    public function get_dept_update_date($startsch){
 		$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',3)->get();
     	$row = $existingdata->row();
 
@@ -53,57 +58,8 @@ class Finance_model extends CI_Model
     	}
     }
 
-    public function get_economicyear_update_date($startsch){
 
-		$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',4)->get();
-    	$row = $existingdata->row();
-
-	    if ($row->value_2 == $startsch) 
-	    {
-	       return $row->value_1; 
-	    }
-	    else 
-	    {
-	       return false;
-	    }
-    }
-
-
-    function get_economicyear_finance($startsch){
-    	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',4)->get();
-    	$row = $existingdata->row();
-    	if ($row->value_2 == $startsch ){
-	    	$query=$this->db->select(array('Μήνες', 'Ποσό', 'Κατηγορία'))
-	    			->from('vw_finance_year')
-	    			->order_by('Μήνες')
-	    			->order_by('Κατηγορία', 'desc')
-	    			->get();
-
-	    	if ($query->num_rows() > 0) 
-			{
-				foreach($query->result_array() as $row) 
-				{
-					$ecofinance[] = $row;
-				}
-				return $ecofinance;
-			}
-			else 
-			{
-				return false;
-			}
-		}
-		else
-		{
-			return false;
-		}
-    }
-
-    //---------------------------------------------------------------------//
-    //------------FUNCTIONS FOR SCHOOLYEAR FINANCE RECALCULATION-----------//
-    //---------------------------------------------------------------------//
-
-
-    public function resetTables(){
+    public function resetSchFinanceTables(){
     	$this->db->truncate('debt');
     	$this->db->truncate('post_payment');
     }
@@ -224,6 +180,7 @@ class Finance_model extends CI_Model
 
 
     public function UpdateDebtChanges($monthset)
+    //Update table debt with payment changes
     {
     	foreach ($monthset as $monthnum) {
 	
@@ -277,9 +234,246 @@ class Finance_model extends CI_Model
 
 
     public function schFinanceUpdateDate($startsch)
+    //store date of this update and the schoolyear it refers
     {
     	$data=array('value_1'=>date('d-m-Y'), 'value_2'=>$startsch);
     	$this->db->where('id', 3);
+		$this->db->update('lookup', $data);
+
+    }
+
+
+    //---------------------------------------------------------------------//
+    //-----------------FUNCTIONS FOR ECONOMIC YEAR FINANCE-----------------//
+    //---------------------------------------------------------------------//
+
+
+    public function get_economicyear_update_date($startsch){
+		$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',4)->get();
+    	$row = $existingdata->row();
+
+	    if ($row->value_2 == $startsch) 
+	    {
+	       return $row->value_1; 
+	    }
+	    else 
+	    {
+	       return false;
+	    }
+    }
+
+
+    function get_economicyear_finance($startsch){
+    	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',4)->get();
+    	$row = $existingdata->row();
+    	if ($row->value_2 == $startsch ){
+	    	$query=$this->db->select(array('Μήνες', 'Ποσό', 'Κατηγορία'))
+	    			->from('vw_finance_year')
+	    			->order_by('Μήνες')
+	    			->order_by('Κατηγορία', 'desc')
+	    			->get();
+
+	    	if ($query->num_rows() > 0) 
+			{
+				foreach($query->result_array() as $row) 
+				{
+					$ecofinance[] = $row;
+				}
+				return $ecofinance;
+			}
+			else 
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+    }
+
+
+    public function resetEcoFinanceTables()
+    {
+    	//reset finance_year_pays table
+    	$this->db->truncate('finance_year_debt');
+    	$this->db->truncate('finance_year_pays');
+    }
+
+
+    public function insertEcoSinglePays($startsch)
+    {
+    	//Εισάγω στον πίνακα finance_year_pays όλες τις πληρωμές που αφορούν ένα μόνο μήνα
+		$SinglePaysIns = "INSERT INTO `finance_year_pays` (`reg_id`, `paid_month`, `amount`) ";
+		$SinglePaysIns = $SinglePaysIns."SELECT `payment`.`reg_id`, `payment`.`month_range`,`payment`.`amount` ";
+		$SinglePaysIns = $SinglePaysIns."FROM `payment`, `registration` ";
+		$SinglePaysIns = $SinglePaysIns."WHERE `payment`.`reg_id` = `registration`.`id` AND ";
+		$SinglePaysIns = $SinglePaysIns."LENGTH(`payment`.`month_range`)<=2 AND ";
+		$SinglePaysIns = $SinglePaysIns."`payment`.`is_credit` = 0 AND ";
+
+		//Όσοι γράφτηκαν το τρέχων σχολικό έτος από τον αύγουστο και μετά και οι οφειλές τους μέχρι το τέλος του ημερολογιακού έτους (Δεκέμβριος)
+		$SinglePaysIns = $SinglePaysIns."((YEAR(`registration`.`start_lessons_dt`)=".$this->db->escape($startsch)." AND MONTH(`registration`.`start_lessons_dt`)>=8 AND `payment`.`month_range`>=8 AND `payment`.`month_range`<=12 ) ";
+		
+		//Όσοι γράφτηκαν το προηγούμενο σχολικό έτος από τον Ιανουάριο και μετά και οι οφειλές τους μέχρι το τέλος του Ιουλίου
+		$SinglePaysIns = $SinglePaysIns."OR (YEAR(`registration`.`start_lessons_dt`)=".$this->db->escape($startsch)." AND MONTH(`registration`.`start_lessons_dt`)<=7 AND `payment`.`month_range`>=1 AND `payment`.`month_range`<=7 ) ";
+		
+		//Όσοι γράφτηκαν το τρέχων προηγούμενο σχολικό έτος από τον αύγουστο και μετά και οι οφειλές τους από τον Ιανουάριο μέχρι τον Ιούλιο
+		$SinglePaysIns = $SinglePaysIns."OR (YEAR(`registration`.`start_lessons_dt`)=".$this->db->escape($startsch-1)." AND MONTH(`registration`.`start_lessons_dt`)>=8 AND `payment`.`month_range`>=1 AND `payment`.`month_range`<=7 ) ) ";
+		
+		$this->db->query($SinglePaysIns);
+    }
+
+
+    public function insertEcoSingleDebt($startsch)
+    {
+		//Εισάγω στον πίνακα finance_year_debt όλες τις πληρωμές που αφορούν ένα μόνο μήνα
+		$SingleDebtIns = "INSERT INTO `finance_year_debt` (`reg_id`, `credit_month`, `amount`) ";
+		$SingleDebtIns = $SingleDebtIns."SELECT `payment`.`reg_id`,`payment`.`month_range`, `payment`.`amount` ";
+		$SingleDebtIns = $SingleDebtIns."FROM `payment`, `registration` ";
+		$SingleDebtIns = $SingleDebtIns."WHERE `payment`.`reg_id` = `registration`.`id` AND ";
+		$SingleDebtIns = $SingleDebtIns."LENGTH(`payment`.`month_range`)<=2 AND ";
+		$SingleDebtIns = $SingleDebtIns."`payment`.`is_credit` = 1 AND ";
+	
+		//Όσοι γράφτηκαν το τρέχων σχολικό έτος από τον αύγουστο και μετά και οι οφειλές τους μέχρι το τέλος του ημερολογιακού έτους (Δεκέμβριος)
+		$SingleDebtIns = $SingleDebtIns."((YEAR(`registration`.`start_lessons_dt`)=".$this->db->escape($startsch)." AND MONTH(`registration`.`start_lessons_dt`)>=8 AND `payment`.`month_range`>=8 AND `payment`.`month_range`<=12 ) ";
+	
+		//Όσοι γράφτηκαν το προηγούμενο σχολικό έτος από τον Ιανουάριο και μετά και οι οφειλές τους μέχρι το τέλος του Ιουλίου
+		$SingleDebtIns = $SingleDebtIns."OR (YEAR(`registration`.`start_lessons_dt`)=".$this->db->escape($startsch)." AND MONTH(`registration`.`start_lessons_dt`)<=7 AND `payment`.`month_range`>=1 AND `payment`.`month_range`<=7 ) ";
+
+		//Όσοι γράφτηκαν το τρέχων προηγούμενο σχολικό έτος από τον αύγουστο και μετά και οι οφειλές τους από τον Ιανουάριο μέχρι τον Ιούλιο
+		$SingleDebtIns = $SingleDebtIns."OR (YEAR(`registration`.`start_lessons_dt`)=".$this->db->escape($startsch-1)." AND MONTH(`registration`.`start_lessons_dt`)>=8 AND `payment`.`month_range`>=1 AND `payment`.`month_range`<=7 ) ) ";
+		
+		$this->db->query($SingleDebtIns);
+    }
+
+
+
+    public function multiEcoPaysSelect($startsch)
+    {
+    	//Επιλέγω τις πληρωμές που αφορούν περισσότερους του ενός μήνα
+		$multiPaysSelect = "SELECT  `payment`.`reg_id`,  `payment`.`month_range` ,  `registration`.`month_price`, `payment`.`amount`  FROM `payment`, `registration` ";
+		$multiPaysSelect = $multiPaysSelect."WHERE  `payment`.`reg_id` = `registration`.`id` AND ";
+		$multiPaysSelect = $multiPaysSelect."length(`month_range`)>2 AND";
+		$multiPaysSelect = $multiPaysSelect."(";
+		$multiPaysSelect = $multiPaysSelect."	(";
+		//Όσοι γράφτηκαν το τρέχων σχολικό έτος από τον αύγουστο και μετά και οι οφειλές τους μέχρι το τέλος του ημερολογιακού έτους (Δεκέμβριος)
+		$multiPaysSelect = $multiPaysSelect."		(".$this->db->escape($startsch)."= year(registration.`start_lessons_dt`)) ";
+		$multiPaysSelect = $multiPaysSelect."		and (month(registration.`start_lessons_dt`) >= 8) ";
+		$multiPaysSelect = $multiPaysSelect."		and (payment.`is_credit` = 0) ";
+		$multiPaysSelect = $multiPaysSelect."		and (payment.`month_range` >= 8) ";
+		$multiPaysSelect = $multiPaysSelect."		and (payment.`month_range` <= 12) ";
+		$multiPaysSelect = $multiPaysSelect."	)";
+		$multiPaysSelect = $multiPaysSelect."		or ";
+		$multiPaysSelect = $multiPaysSelect."	(";
+		//Όσοι γράφτηκαν το τρέχων προηγούμενο σχολικό έτος από τον αύγουστο και μετά και οι οφειλές τους από τον Ιανουάριο μέχρι τον Ιούλιο
+		$multiPaysSelect = $multiPaysSelect."		(month(registration.`start_lessons_dt`) >= 8) ";
+		$multiPaysSelect = $multiPaysSelect."		and (payment.`is_credit` = 0) ";
+		$multiPaysSelect = $multiPaysSelect."		and (payment.`month_range` >= 1) ";
+		$multiPaysSelect = $multiPaysSelect."		and (payment.`month_range` <= 7) ";
+		$multiPaysSelect = $multiPaysSelect."		and (year(registration.`start_lessons_dt`) = (".$this->db->escape($startsch-1).")) ";
+		$multiPaysSelect = $multiPaysSelect."	)";
+		$multiPaysSelect = $multiPaysSelect."		or";
+		$multiPaysSelect = $multiPaysSelect."	(";
+		//Όσοι γράφτηκαν το προηγούμενο σχολικό έτος από τον Ιανουάριο και μετά και οι οφειλές τους μέχρι το τέλος του Ιουλίου
+		$multiPaysSelect = $multiPaysSelect."		(month(registration.`start_lessons_dt`) <= 7) ";
+		$multiPaysSelect = $multiPaysSelect."		and (payment.`is_credit` = 0) ";
+		$multiPaysSelect = $multiPaysSelect."		and (payment.`month_range` >= 1) ";
+		$multiPaysSelect = $multiPaysSelect."		and (payment.`month_range` <= 7) ";
+		$multiPaysSelect = $multiPaysSelect."		and (".$this->db->escape($startsch)."= year(registration.`start_lessons_dt`)) ";
+		$multiPaysSelect = $multiPaysSelect."	)";
+		$multiPaysSelect = $multiPaysSelect.")";
+		
+
+		$query = $this->db->query($multiPaysSelect);
+
+		if ($query->num_rows() > 0) 
+		{
+			foreach($query->result_array() as $row) 
+			{
+				$multiEcoPays[] = $row;
+			}
+			return $multiEcoPays;
+		}
+		else 
+		{
+			return false;
+		}
+    }
+
+
+    public function multiEcoDebtSelect($startsch)
+    {
+		//Επιλέγω τις πληρωμές που αφορούν περισσότερους του ενός μήνα
+
+		$multiDebtSelect = "SELECT  `payment`.`reg_id`,  `payment`.`month_range` ,  `registration`.`month_price`, `payment`.`amount`   FROM `payment`, `registration` ";
+		$multiDebtSelect = $multiDebtSelect."WHERE  `payment`.`reg_id` = `registration`.`id` AND ";
+		$multiDebtSelect = $multiDebtSelect."length(`month_range`)>2 AND";
+		$multiDebtSelect = $multiDebtSelect."(";
+		$multiDebtSelect = $multiDebtSelect."	(";
+		
+		//Όσοι γράφτηκαν το τρέχων σχολικό έτος από τον αύγουστο και μετά και οι οφειλές τους μέχρι το τέλος του ημερολογιακού έτους (Δεκέμβριος)
+		$multiDebtSelect = $multiDebtSelect."		(".$this->db->escape($startsch)."= year(registration.`start_lessons_dt`)) ";
+		$multiDebtSelect = $multiDebtSelect."		and (month(registration.`start_lessons_dt`) >= 8) ";
+		$multiDebtSelect = $multiDebtSelect."		and (payment.`month_range` >= 8) ";
+		$multiDebtSelect = $multiDebtSelect."		and (payment.`month_range` <= 12) ";
+		$multiDebtSelect = $multiDebtSelect."		and (payment.`is_credit` = 1) ";
+		$multiDebtSelect = $multiDebtSelect."	)";
+		$multiDebtSelect = $multiDebtSelect."		or ";
+		$multiDebtSelect = $multiDebtSelect."	(";
+		
+		//Όσοι γράφτηκαν το τρέχων προηγούμενο σχολικό έτος από τον αύγουστο και μετά και οι οφειλές τους από τον Ιανουάριο μέχρι τον Ιούλιο
+		$multiDebtSelect = $multiDebtSelect."		(month(registration.`start_lessons_dt`) >= 8) ";
+		$multiDebtSelect = $multiDebtSelect."		and (payment.`month_range` >= 1) ";
+		$multiDebtSelect = $multiDebtSelect."		and (payment.`month_range` <= 7) ";
+		$multiDebtSelect = $multiDebtSelect."		and (payment.`is_credit` = 1) ";
+		$multiDebtSelect = $multiDebtSelect."		and (year(registration.`start_lessons_dt`) = (".$this->db->escape($startsch-1).")) ";
+		$multiDebtSelect = $multiDebtSelect."	)";
+		$multiDebtSelect = $multiDebtSelect."		or";
+		$multiDebtSelect = $multiDebtSelect."	(";
+		
+		//Όσοι γράφτηκαν το προηγούμενο σχολικό έτος από τον Ιανουάριο και μετά και οι οφειλές τους μέχρι το τέλος του Ιουλίου
+		$multiDebtSelect = $multiDebtSelect."		(month(registration.`start_lessons_dt`) <= 7) ";
+		$multiDebtSelect = $multiDebtSelect."		and (payment.`month_range` >= 1) ";
+		$multiDebtSelect = $multiDebtSelect."		and (payment.`month_range` <= 7) ";
+		$multiDebtSelect = $multiDebtSelect."		and (payment.`is_credit` = 1) ";
+		$multiDebtSelect = $multiDebtSelect."		and (".$this->db->escape($startsch)."= year(registration.`start_lessons_dt`)) ";
+		$multiDebtSelect = $multiDebtSelect."	)";
+		$multiDebtSelect = $multiDebtSelect.")";
+		
+
+		$query = $this->db->query($multiDebtSelect);
+
+		if ($query->num_rows() > 0) 
+		{
+			foreach($query->result_array() as $row) 
+			{
+				$multiEcoDebt[] = $row;
+			}
+			return $multiEcoDebt;
+		}
+		else 
+		{
+			return false;
+		}
+    }
+
+
+    public function insertMultipleEcoPays($multiEcoData)
+    {
+    	$this->db->insert_batch('finance_year_pays', $multiEcoData);
+    }
+
+
+    public function insertMultipleEcoDebts($multiEcoData)
+    {
+    	$this->db->insert_batch('finance_year_debt', $multiEcoData);
+    }
+
+    public function schEcoFinanceUpdateDate($startsch)
+    //store date of this update and the schoolyear it refers
+    {
+    	$data=array('value_1'=>date('d-m-Y'), 'value_2'=>$startsch);
+    	$this->db->where('id', 4);
 		$this->db->update('lookup', $data);
 
     }
