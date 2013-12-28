@@ -257,4 +257,41 @@ class Finance extends CI_Controller {
 		//return results
 		echo json_encode(true);
 	}
+
+	//----------------------schoolyear view----------------------------------//
+	public function schoolyear()
+	{
+		$this->load->model('login_model');
+		$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
+		$data['user']=$user;
+
+		$this->load->view('include/header');
+		$this->load->view('finance/schoolyear', $data);
+		$this->load->view('include/footer');
+	}
+
+
+	public function getreport1data()
+	{
+		header('Content-Type: application/x-json; charset=utf-8');
+
+		$this->load->model('finance_model');
+		$res = $this->finance_model->getreport1data();
+		
+		//return results
+		echo json_encode($res);
+	}
+
+
+	public function getreport2data()
+	{
+		header('Content-Type: application/x-json; charset=utf-8');
+
+		$this->load->model('finance_model');
+		$res = $this->finance_model->getreport2data();
+		
+		//return results
+		echo json_encode($res);
+	}
+
 }

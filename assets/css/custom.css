@@ -379,7 +379,15 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
 
 
 
-    /*Use everywhere ubuntu font!
+/* RowGrouping addon for datatables custom css 
+---------------------------------------------------------------------*/
+    .group {
+      background-color: #E5E5E5;
+      font-weight: bold;
+    }
+
+
+/*Use everywhere ubuntu font!
 ----------------------------*/
 html, body, h1,h2,h3,h4, label, input, select,
 textarea, button, leap, breadcrumb, table,

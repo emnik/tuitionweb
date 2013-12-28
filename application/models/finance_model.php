@@ -478,4 +478,58 @@ class Finance_model extends CI_Model
 
     }
 
+//===================================================================================//
+    public function getreport1data()
+    {
+    	$query = $this->db->select(array('CONCAT_WS(" ",registration.surname, registration.name) as student', 'debt.amount', 'month.name', 'month.priority'))
+    					->from('debt')
+    					->join('registration', 'registration.id=debt.reg_id')
+    					->join('month','debt.month_num = month.num')
+    					->order_by('month.priority')
+    					->order_by('student')
+    					->get();
+
+		if ($query->num_rows() > 0) 
+		{
+			foreach($query->result_array() as $row) 
+			{
+				$output['aaData'][] = $row;
+			}
+			
+			return $output;
+		}
+		else 
+		{
+			return false;
+		}
+    }
+
+
+    public function getreport2data()
+    {
+    	$query = $this->db->select(array('CONCAT_WS(" ",registration.surname, registration.name) as student', 'SUM(debt.amount) AS totaldebt', "CONCAT_WS(' ', 'Οφειλόμενοι Μήνες:',COUNT(debt.month_num)) AS months"))
+    					->from('debt')
+    					->join('registration', 'registration.id=debt.reg_id')
+    					// ->join('month','debt.month_num = month.num')
+    					->group_by('student')
+    					//->order_by('months','desc')
+    					->order_by('student')
+    					->get();
+
+		if ($query->num_rows() > 0) 
+		{
+			foreach($query->result_array() as $row) 
+			{
+				$output['aaData'][] = $row;
+			}
+			
+			return $output;
+		}
+		else 
+		{
+			return false;
+		}
+    }
+
+
 }

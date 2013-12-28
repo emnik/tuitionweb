@@ -283,7 +283,8 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 
       <ul class="nav nav-tabs">
         <li class="active"><a href="<?php echo base_url()?>finance">Σύνοψη</a></li>
-        <li><a href="<?php echo base_url()?>finance">Ανάλυση</a></li>
+        <li><a href="<?php echo base_url()?>finance/schoolyear">Σχολικό έτος</a></li>
+        <li><a href="<?php echo base_url()?>finance/economicyear">Οικονομικό έτος</a></li>
       </ul>
 
       <p></p>
