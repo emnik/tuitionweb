@@ -31,33 +31,6 @@ class Finance_model extends CI_Model
     }
 
 
-    function get_schoolyear_finance($startsch){
-    	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',3)->get();
-    	$row = $existingdata->row();
-    	if ($row->value_2 == $startsch ){
-	    	$query=$this->db->select(array('Μήνας', 'Οφειλές', 'Εισπράξεις', 'Τζίρος'))
-	    			->from('vw_finance_schoolyear')
-	    			->get();
-
-	    	if ($query->num_rows() > 0) 
-			{
-				foreach($query->result_array() as $row) 
-				{
-					$schfinance[] = $row;
-				}
-				return $schfinance;
-			}
-			else 
-			{
-				return false;
-			}
-    	}
-    	else
-    	{
-    		return false;
-    	}
-    }
-
 
     public function resetSchFinanceTables(){
     	$this->db->truncate('debt');
@@ -262,33 +235,9 @@ class Finance_model extends CI_Model
     }
 
 
-    function get_economicyear_finance($startsch){
-    	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',4)->get();
-    	$row = $existingdata->row();
-    	if ($row->value_2 == $startsch ){
-	    	$query=$this->db->select(array('Μήνες', 'Ποσό', 'Κατηγορία'))
-	    			->from('vw_finance_year')
-	    			->order_by('Μήνες')
-	    			->order_by('Κατηγορία', 'desc')
-	    			->get();
-
-	    	if ($query->num_rows() > 0) 
-			{
-				foreach($query->result_array() as $row) 
-				{
-					$ecofinance[] = $row;
-				}
-				return $ecofinance;
-			}
-			else 
-			{
-				return false;
-			}
-		}
-		else
-		{
-			return false;
-		}
+    public function delzeroyeardebts(){
+    	//delete debts with zero amount!
+    	$this->db->delete('finance_year_debt',array('amount'=>'0'));
     }
 
 
@@ -477,8 +426,8 @@ class Finance_model extends CI_Model
 
     }
 
-//===================================================================================//
-    public function getreport1data($startsch)
+//=============================SCHOOLYEAR REPORTS' DATA=======================//
+    public function getschoolreport1data($startsch)
     {
     	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',3)->get();
     	$row = $existingdata->row();
@@ -512,7 +461,7 @@ class Finance_model extends CI_Model
     }
 
 
-    public function getreport2data($startsch)
+    public function getschoolreport2data($startsch)
     {
     	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',3)->get();
     	$row = $existingdata->row();
@@ -545,5 +494,120 @@ class Finance_model extends CI_Model
 	    	return false;
 	    }
 	}
+
+    function get_schoolyear_finance($startsch){
+    	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',3)->get();
+    	$row = $existingdata->row();
+    	if ($row->value_2 == $startsch ){
+	    	$query=$this->db->select(array('Μήνας', 'Οφειλές', 'Εισπράξεις', 'Τζίρος'))
+	    			->from('vw_finance_schoolyear')
+	    			->get();
+
+	    	if ($query->num_rows() > 0) 
+			{
+				foreach($query->result_array() as $row) 
+				{
+					$schfinance[] = $row;
+				}
+				return $schfinance;
+			}
+			else 
+			{
+				return false;
+			}
+    	}
+    	else
+    	{
+    		return false;
+    	}
+    }
+//=========================ECONOMIC YEARS' REPORT DATA=====================//
+
+    function get_economicyear_finance($startsch){
+    	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',4)->get();
+    	$row = $existingdata->row();
+    	if ($row->value_2 == $startsch ){
+	    	$query=$this->db->select(array('Μήνες', 'Ποσό', 'Κατηγορία'))
+	    			->from('vw_finance_year')
+	    			->order_by('Μήνες', 'desc')
+	    			->order_by('Κατηγορία', 'desc')
+	    			->get();
+
+	    	if ($query->num_rows() > 0) 
+			{
+				foreach($query->result_array() as $row) 
+				{
+					$ecofinance[] = $row;
+				}
+				return $ecofinance;
+			}
+			else 
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+    }
+
+    function getecoreport2data($startsch){
+    	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',4)->get();
+    	$row = $existingdata->row();
+    	if ($row->value_2 == $startsch ){
+	    	$query=$this->db->select(array('CONCAT_WS(" ",registration.surname, registration.name) as student', 'amount', 'month.name', 'month.priority'))
+	    			->from('finance_year_debt')
+	    			->join('registration', 'finance_year_debt.reg_id = registration.id')
+	    			->join('month', 'finance_year_debt.credit_month = month.num')
+	    			->get();
+
+	    	if ($query->num_rows() > 0) 
+			{
+				foreach($query->result_array() as $row) 
+				{
+					$ecofinance['aaData'][] = $row;
+				}
+				return $ecofinance;
+			}
+			else 
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+    }
+
+    function getecoreport3data($startsch){
+    	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',4)->get();
+    	$row = $existingdata->row();
+    	if ($row->value_2 == $startsch ){
+	    	$query=$this->db->select(array('CONCAT_WS(" ",registration.surname, registration.name) as student', 'SUM(amount) AS Ποσό', 'CONCAT_WS(" ", "Μήνες:", COUNT(credit_month)) AS Μήνες'))
+	    			->from('finance_year_debt')
+	    			->join('registration', 'finance_year_debt.reg_id = registration.id')
+	    			->group_by('student') //group by name as when a students has debts in 2 schoolyears he will have different reg ids
+	    			->get();
+
+	    	if ($query->num_rows() > 0) 
+			{
+				foreach($query->result_array() as $row) 
+				{
+					$ecofinance['aaData'][] = $row;
+				}
+				return $ecofinance;
+			}
+			else 
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+    }
 
 }

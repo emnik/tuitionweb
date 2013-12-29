@@ -84,13 +84,16 @@ $(document).ready(function() {
 
 
           //----------set new month num-------------
-          var prevmonth=parseInt(fields.eq(3).val(),10);
+          var prevmonthsetstr = fields.eq(3).val();
+          var prevmonthsetarr = prevmonthsetstr.split(',');
+          var prevmonth = parseInt(prevmonthsetarr[prevmonthsetarr.length-1],10);
+          //var prevmonth=parseInt(fields.eq(3).val(),10);
           var newmonth;
           if(prevmonth==12){
             newmonth=1;  
           } 
           else {
-            newmonth=parseInt(fields.eq(3).val(),10)+1;  
+            newmonth=prevmonth+1;  
           };
           
           newfieldset.find('legend').empty();
@@ -583,7 +586,17 @@ $(document).ready(function() {
                   <fieldset class="multiplefieldset collapsible"> <!--start of fieldset-->
                     <legend class="paylegend">
                       <div class='legend-text'>
-                        Πληρωμή <?php echo $monthnames[$data['month_range']];?>
+                        Πληρωμή 
+                        <?php 
+                        $monthrange = explode(',', $data['month_range']);
+                        if (count($monthrange)>1){
+                          $startmonth = $monthrange[0];
+                          $endmonth = $monthrange[count($monthrange)-1];
+                          echo mb_substr($monthnames[$startmonth], 0, 7, 'utf-8').'. - '.mb_substr($monthnames[$endmonth], 0, 7, 'utf-8').'.';
+                        }
+                        else{
+                          echo $monthnames[$startmonth];  
+                        };?>
                       </div>
                       <div class='col-md-1 col-sm-1 legend-selector'>
                           <input type="checkbox" name="select[<?php echo $data['id'];?>]" value="0">
@@ -654,8 +667,10 @@ $(document).ready(function() {
 
 
               <div style="margin-top:30px;">
-                <button type="button" class="btn btn-primary pull-right" name="add_payment" id="add_payment">Πληρωμή</button>
-                <button type="button" class="btn btn-default" name="undo_payment" id="undo_payment">Αναίρεση</button>
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-primary" name="add_payment" id="add_payment">Πληρωμή</button>
+                    <button type="button" class="btn btn-primary" name="undo_payment" id="undo_payment"><span class="icon"><i class="icon-undo"></i></span></button>
+                </div>
                 <button type="submit" class="btn btn-danger" name="submit">Αποθήκευση</button>
               </div>
 
@@ -727,8 +742,10 @@ $(document).ready(function() {
                 </fieldset> <!--end of fieldset-->
 
                 <div id="actions" class="hidden">
-                  <button type="button" class="btn btn-primary pull-right" name="add_payment" id="add_payment">Πληρωμή</button>
-                  <button type="button" class="btn btn-default" name="undo_payment" id="undo_payment">Αναίρεση</button>
+                  <div class="btn-group pull-right">
+                      <button type="button" class="btn btn-primary" name="add_payment" id="add_payment">Πληρωμή</button>
+                      <button type="button" class="btn btn-primary" name="undo_payment" id="undo_payment"><span class="icon"><i class="icon-undo"></i></span></button>
+                  </div>
                   <button type="submit" class="btn btn-danger" id="submit1" name="submit">Αποθήκευση</button>
                 </div>
 

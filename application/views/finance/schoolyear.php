@@ -53,7 +53,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
                   $('#link3').off('click');
                   $('#link3').prop('disabled', true);
                   $('#btnschoolyearupdate').button('loading');
-                  $('#schmessage').html('Παρακαλώ περιμένετε. Οι υπολογισμοί μπορεί να διαρκέσουν λίγη ώρα...');  
+                  $('#schmessage').html('<span class="icon"><i class="icon-spinner icon-spin"> </i> Παρακαλώ περιμένετε. Οι υπολογισμοί μπορεί να διαρκέσουν λίγη ώρα.</span>');  
               },
               success: function(result) {  
                   if (result!=false){
@@ -67,7 +67,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
               },
               complete: function(){
                 $('#btnschoolyearupdate').button('reset');
-                $('#schmessage').html('Τα οικονομικά στοιχεία για το σχολικό έτος ενημερώθηκαν με τα τελευταία δεδομένα!');  
+                $('#schmessage').html('<span class="icon"><i class="icon-info-sign"> </i> Τα οικονομικά στοιχεία για το σχολικό έτος ενημερώθηκαν με τα τελευταία δεδομένα!</span>');  
               }
           });
     
@@ -341,7 +341,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
 function clicklink1(){
     $.ajax({  
               type: "POST", 
-              url: "<?php echo base_url()?>finance/getreport1data",  
+              url: "<?php echo base_url()?>finance/getschoolreport1data",  
               success: function(data) {  
                    if (data!=false){
                       oTable1.fnClearTable();
@@ -358,7 +358,7 @@ function clicklink1(){
 function clicklink2(){
     $.ajax({  
               type: "POST",  
-              url: "<?php echo base_url()?>finance/getreport2data",  
+              url: "<?php echo base_url()?>finance/getschoolreport2data",  
               success: function(data) {  
                    if (data!=false){
                       oTable2.fnClearTable();
@@ -512,7 +512,7 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
 	<div class="row">
 
     	<div class="col-xs-12">
-        <div id="schmessage" class="alert  alert-warning fade in">Tελευταία ενημέρωση των οικονομικών δεδομένων για το σχολικό έτος: <?php $m=(!isset($schoolyear_update)) ? "Δεν υπάρχει!" : $schoolyear_update; echo '<strong>'.$m.'</strong>';?></div>
+        <div id="schmessage" class="alert  alert-warning fade in"><span class="icon"><i class="icon-info-sign"> </i> Tελευταία ενημέρωση των οικονομικών δεδομένων για το σχολικό έτος : <?php $m=(!isset($schoolyear_update)) ? " Δεν υπάρχει!" : $schoolyear_update; echo '<strong>'.' '.$m.'</strong>';?></span></div>
         <form>
         <div class="row">
           <div class="col-xs-12">

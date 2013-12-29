@@ -548,8 +548,10 @@ $(document).ready(function() {
               </div>
 
               <div style="margin-top:30px;">
-                <button type="button" class="btn btn-primary pull-right" name="add_change" id="add_change">Μεταβολή</button>
-                <button type="button" class="btn btn-default" name="undo_change" id="undo_change">Αναίρεση</button>
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-primary" name="add_change" id="add_change">Μεταβολή</button>
+                    <button type="button" class="btn btn-primary" name="undo_change" id="undo_change"><span class="icon"><i class="icon-undo"></i></span></button>
+                </div>
                 <button type="submit" class="btn btn-danger" name="submit">Αποθήκευση</button>
               </div>
 
@@ -610,8 +612,10 @@ $(document).ready(function() {
                 </fieldset> <!--end of fieldset-->
 
                 <div style="margin-top:30px;" id="actions" class="hidden">
-                  <button type="button" class="btn btn-primary pull-right" name="add_change" id="add_change">Μεταβολή</button>
-                  <button type="button" class="btn btn-default" name="undo_change" id="undo_change">Αναίρεση</button>
+                  <div class="btn-group  pull-right">
+                      <button type="button" class="btn btn-primary" name="add_change" id="add_change">Μεταβολή</button>
+                      <button type="button" class="btn btn-primary" name="undo_change" id="undo_change"><span class="icon"><i class="icon-undo"></i></span></button>
+                  </div>
                   <button type="submit" class="btn btn-danger" id="submit1" name="submit">Αποθήκευση</button>
                 </div>
 
