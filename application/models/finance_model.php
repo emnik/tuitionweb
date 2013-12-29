@@ -169,13 +169,12 @@ class Finance_model extends CI_Model
 
 		//Διαγραφή όσων διαγράφηκαν το προηγούμενο έτος (μήνες 8-12) και έχουν εγγραφές στο πίνακα οφειλών για το νέο έτος (μήνες >=1)
 		$this->db->query("DELETE FROM `debt` WHERE `id` IN (SELECT `debt`.`id` FROM (SELECT * FROM `debt`) AS `temp`, `registration` WHERE `debt`.`reg_id` = `registration`.`id` AND (MONTH(`registration`.`del_lessons_dt`)>=8 AND `debt`.`month_num`<=7))");
+    }
 
 
-		// if ($chk0PayState==1) {
-		// 	//ΓΙΑ ΔΙΑΓΡΑΦΗ ΜΗΔΕΝΙΚΩΝ ΟΦΕΙΛΩΝ (ΔΩΡΕΑΝ ΠΟΥ ΔΕΝ ΕΧΟΥΜΕ ΚΟΨΕΙ ΑΠΟΔΕΙΞΗ...)	
-		// 	$this->db->query("DELETE FROM `debt` WHERE `amount` = 0");
-		// }
-
+    public function delzerodebts(){
+    	//delete debts with zero amount!
+    	$this->db->delete('debt',array('amount'=>'0'));
     }
 
 

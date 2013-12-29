@@ -72,7 +72,15 @@ class Finance extends CI_Controller {
 		header('Content-Type: application/x-json; charset=utf-8');
 		
 		//DEBUGGING
-		//$this->load->library('firephp');
+		// $this->load->library('firephp');
+		// $this->firephp->info($_POST);
+
+
+		//options
+		$chkCurMonthState=0;
+		$chk0PayState=0;
+		if (!empty($_POST['chkCurMonthState'])) $chkCurMonthState=1;
+		if (!empty($_POST['chk0PayState'])) $chk0PayState=1;
 		// ----------------------------------------------------------//
 		
 
@@ -92,7 +100,7 @@ class Finance extends CI_Controller {
 		// ----------------------------------------------------------//
 
 		//Να λαμβάνεται ο τρέχων μήνας;
-		$chkCurMonthState = 0; //false
+		//$chkCurMonthState = 0; //false
 
 		if ($PrevSchoolYearSelected == 0) {
 			if ($chkCurMonthState==1) 
@@ -182,6 +190,11 @@ class Finance extends CI_Controller {
 
 		//7. Get data in table debt
 		$this->finance_model->populateDebt($monthset, $endmonth, $startsch);
+
+	 	//ΓΙΑ ΔΙΑΓΡΑΦΗ ΜΗΔΕΝΙΚΩΝ ΟΦΕΙΛΩΝ (ΔΩΡΕΑΝ ΠΟΥ ΔΕΝ ΕΧΟΥΜΕ ΚΟΨΕΙ ΑΠΟΔΕΙΞΗ...)
+		if ($chk0PayState==1){
+			$this->finance_model->delzerodebts();		
+		}
 
 		//8. Update table debt with month payment changes
 		$r = $this->finance_model->UpdateDebtChanges($monthset);

@@ -36,8 +36,11 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
 
 
   $('#btnschoolyearupdate').click(function(){
-    $.ajax({  
+        var selected_chkboxes = $('form').find(':input[type="checkbox"]:checked');
+        var sData = selected_chkboxes.serialize();
+        $.ajax({  
               type: "POST",  
+              data: sData,
               url: "<?php echo base_url()?>finance/update_schfinance_data",
               beforeSend : function(){
               //Να κλείνουν όλα τα accordions και να απενεργοποιούνται τα clicks σε αυτά
@@ -155,7 +158,6 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
     "sPaginationType": "bootstrap",
     "bProcessing": true,
     "aaData":[],
-    //"aaSorting": [[ 2, "desc" ]],
     "aoColumns": [
     { "mData": "student" },
     { "mData": "totaldebt",
@@ -195,9 +197,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
 
     oTable3 = $('#tbl3').dataTable( {
         "bProcessing": true,
-        //"bServerSide": true,
         "aaData":[], 
-        //"sAjaxSource": "<?php echo base_url();?>finance/getschfinancedata",
         "aoColumns": [
             { "mData": "Μήνας",
               "sClass":"col-md-3"},
@@ -346,17 +346,7 @@ function clicklink1(){
                    if (data!=false){
                       oTable1.fnClearTable();
                       oTable1.fnAddData(data.aaData);
-                      //the following is needed when the table is hidden on load!
-                      //see http://stackoverflow.com/questions/11848593/datatables-tabletools-multiple-tables-on-the-same-page/18588847#18588847
-                      var tableInstances = TableTools.fnGetMasters(), instances = tableInstances.length;
-                      while (instances--)
-                      {
-                          var dataTable = tableInstances[instances];
-                          if (dataTable.fnResizeRequired())
-                          {
-                              dataTable.fnResizeButtons();
-                          }
-                      }
+                      resizeFlashTableToolsBtn();
               $('#link1').off('click');
               }
               }
@@ -373,17 +363,7 @@ function clicklink2(){
                    if (data!=false){
                       oTable2.fnClearTable();
                       oTable2.fnAddData(data.aaData);
-                      //the following is needed when the table is hidden on load!
-                      //see http://stackoverflow.com/questions/11848593/datatables-tabletools-multiple-tables-on-the-same-page/18588847#18588847
-                      var tableInstances = TableTools.fnGetMasters(), instances = tableInstances.length;
-                      while (instances--)
-                      {
-                          var dataTable = tableInstances[instances];
-                          if (dataTable.fnResizeRequired())
-                          {
-                              dataTable.fnResizeButtons();
-                          }
-                      }
+                      resizeFlashTableToolsBtn();
               $('#link2').off('click');
             }
               }
@@ -399,22 +379,27 @@ function clicklink3(){
                    if (data!=false){
                       oTable3.fnClearTable();
                       oTable3.fnAddData(data.aaData);
-                       //the following is needed when the table is hidden on load!
-                      //see http://stackoverflow.com/questions/11848593/datatables-tabletools-multiple-tables-on-the-same-page/18588847#18588847
-                      var tableInstances = TableTools.fnGetMasters(), instances = tableInstances.length;
-                      while (instances--)
-                      {
-                          var dataTable = tableInstances[instances];
-                          if (dataTable.fnResizeRequired())
-                          {
-                              dataTable.fnResizeButtons();
-                          }
-                      }
+                      resizeFlashTableToolsBtn();
               $('#link3').off('click');
             }
               }
           });
   };
+
+
+function resizeFlashTableToolsBtn(){
+       //the following is needed when the table is hidden on load!
+      //see http://stackoverflow.com/questions/11848593/datatables-tabletools-multiple-tables-on-the-same-page/18588847#18588847
+      var tableInstances = TableTools.fnGetMasters(), instances = tableInstances.length;
+      while (instances--)
+      {
+          var dataTable = tableInstances[instances];
+          if (dataTable.fnResizeRequired())
+          {
+              dataTable.fnResizeButtons();
+          }
+      }
+}
 
 // Set the classes that TableTools uses to something suitable for Bootstrap
 $.extend( true, $.fn.DataTable.TableTools.classes, {
@@ -527,15 +512,28 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
 	<div class="row">
 
     	<div class="col-xs-12">
-        <div class="row" style="padding-bottom:15px;">
-          <div class="col-xs-6">
-            <span id="schmessage" class="text-info">Tελευταία ενημέρωση των οικονομικών δεδομένων για το σχολικό έτος: <?php $m=(!isset($schoolyear_update)) ? "Δεν υπάρχει!" : $schoolyear_update; echo '<strong>'.$m.'</strong>';?></span>
-          </div>
-          <div class="col-xs-6">
-            <button id="btnschoolyearupdate" type="button" data-loading-text="Ανανέωση..." class="btn btn-primary btn-lg pull-right">Ανανέωση</button>
+        <div id="schmessage" class="alert  alert-warning fade in">Tελευταία ενημέρωση των οικονομικών δεδομένων για το σχολικό έτος: <?php $m=(!isset($schoolyear_update)) ? "Δεν υπάρχει!" : $schoolyear_update; echo '<strong>'.$m.'</strong>';?></div>
+        <form>
+        <div class="row">
+          <div class="col-xs-12">
+            <h4>Επιλογές</h4>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="1" name='chk0PayState'>
+                  Να εξαιρεθούν οι 'μηδενικές οφειλές' (δωρεάν στο μαθητολόγιο) από τις αναφορές
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="1" name="chkCurMonthState">
+                  Να συμπεριληφθεί και ο τρέχων μήνας στον υπολογισμό οφειλών
+                </label>
+              </div>
+            <button id="btnschoolyearupdate" type="button" data-loading-text="Ανανέωση..." class="btn btn-primary btn-lg pull-right">Ανανέωση Τώρα</button>
           </div>
         </div>
-
+        </form>
+        <h4>Αναφορές</h4>
 <div class="panel-group" id="accordion">
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -607,7 +605,8 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
     </div>
     <div id="collapseThree" class="panel-collapse collapse">
       <div class="panel-body">
-        <table id="tbl3" class="table datatable">
+        <!-- <div class="table-responsive"> -->
+        <table id="tbl3" class="table datatable table-condensed">
           <thead>
                 <tr>
                   <th>Μήνας</th>
@@ -627,6 +626,7 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
               </tr>
             </tfoot>
           </table>
+        <!-- </div> -->
       </div>
     </div>
   </div>
