@@ -595,6 +595,7 @@ $(document).ready(function() {
                           echo mb_substr($monthnames[$startmonth], 0, 7, 'utf-8').'. - '.mb_substr($monthnames[$endmonth], 0, 7, 'utf-8').'.';
                         }
                         else{
+                          $startmonth = $monthrange[0];
                           echo $monthnames[$startmonth];  
                         };?>
                       </div>
