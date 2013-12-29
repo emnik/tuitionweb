@@ -1,27 +1,24 @@
 <link href="<?php echo base_url('assets/css/dataTables.bootstrap.css') ?>" rel="stylesheet">
-<!-- <link href="<?php echo base_url('assets/tabletools/css/TableTools_JUI.css') ?>" rel="stylesheet"> -->
 <link href="<?php echo base_url('assets/tabletools/css/TableTools.css') ?>" rel="stylesheet">
-
 
 <script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/js/jquery.dataTables.min.js') ?>"></script>
 <script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/js/dataTables.bootstrap.js') ?>"></script>
 <script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/js/jquery.dataTables.rowGrouping.js') ?>"></script>
 
-
 <script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/tabletools/js/ZeroClipboard.js') ?>"></script> 
 <script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/tabletools/js/TableTools.min.js') ?>"></script>
 
 <style type="text/css">
-.dataTables_processing{padding-left: 16px;}
+  .dataTables_processing{padding-left: 16px;}
 </style>
 
 <script type="text/javascript">
 
 var oTable1;
 var oTable2;
+var oTable3;
 
 $(document).ready(function(){ 
-
 
 // add sorting methods for currency columns
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
@@ -36,6 +33,42 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         return b - a;
     }
 });
+
+
+  $('#btnschoolyearupdate').click(function(){
+    $.ajax({  
+              type: "POST",  
+              url: "<?php echo base_url()?>finance/update_schfinance_data",
+              beforeSend : function(){
+              //Να κλείνουν όλα τα accordions και να απενεργοποιούνται τα clicks σε αυτά
+              //μέχρι να τελειώσει η ανανέωση
+                  $('#accordion .in').collapse('hide');
+                  $('#link1').off('click');
+                  $('#link1').prop('disabled', true);
+                  $('#link2').off('click');
+                  $('#link2').prop('disabled', true);
+                  $('#link3').off('click');
+                  $('#link3').prop('disabled', true);
+                  $('#btnschoolyearupdate').button('loading');
+                  $('#schmessage').html('Παρακαλώ περιμένετε. Οι υπολογισμοί μπορεί να διαρκέσουν λίγη ώρα...');  
+              },
+              success: function(result) {  
+                  if (result!=false){
+                       $('#link1').on('click', clicklink1);
+                       $('#link2').on('click', clicklink2);
+                       $('#link3').on('click', clicklink3);
+                       $('#link1').prop('disabled', false);
+                       $('#link2').prop('disabled', false);
+                       $('#link3').prop('disabled', false);
+                  };
+              },
+              complete: function(){
+                $('#btnschoolyearupdate').button('reset');
+                $('#schmessage').html('Τα οικονομικά στοιχεία για το σχολικό έτος ενημερώθηκαν με τα τελευταία δεδομένα!');  
+              }
+          });
+    
+    });
 
 
   oTable1 = $('#tbl1').dataTable({
@@ -94,31 +127,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
 							sGroupBy: "name"});
 
 
-  $('#link1').one('click', function(){
-
-    $.ajax({  
-              type: "POST",  
-              url: "<?php echo base_url()?>finance/getreport1data",  
-              success: function(data) {  
-                   if (data!=false){
-                  		oTable1.fnReloadAjax("<?php echo base_url();?>finance/getreport1data");
-
-                      //the following is needed when the table is hidden on load!
-                      //see http://stackoverflow.com/questions/11848593/datatables-tabletools-multiple-tables-on-the-same-page/18588847#18588847
-                      var tableInstances = TableTools.fnGetMasters(), instances = tableInstances.length;
-                      while (instances--)
-                      {
-                          var dataTable = tableInstances[instances];
-                          if (dataTable.fnResizeRequired())
-                          {
-                              dataTable.fnResizeButtons();
-                          }
-                      }
-                  }
-              }
-          });
-    
-    });
+ $('#link1').on('click', clicklink1);
 
 //------------------------------------------------------------------------------------
 
@@ -164,10 +173,10 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
               "sLast":     "Τελευταία"
           },
           "sInfo": "Εμφανίζονται οι _START_ έως _END_ από τις _TOTAL_ εγγραφές",
-          "sInfoEmpty": "Εμφάνιζονται 0 οφειλές",
+          "sInfoEmpty": "Εμφάνιζονται 0 εγγραφές",
           "sInfoFiltered": "Φιλτράρισμα από _MAX_ συνολικά εγγραφές",
           "sLengthMenu": "_MENU_",
-          "sLoadingRecords": "Φόρτωση καταλόγου οφειλών...",
+          "sLoadingRecords": "Φόρτωση καταλόγου ...",
           "sProcessing": "Επεξεργασία...",   
           "sSearch": "",
           "sZeroRecords": "Δεν βρέθηκαν οφειλές"
@@ -180,32 +189,84 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
               sGroupBy: "name"});
 
 
-  $('#link2').one('click', function(){
+  $('#link2').on('click', clicklink2);
 
-    $.ajax({  
-              type: "POST",  
-              url: "<?php echo base_url()?>finance/getreport2data",  
-              success: function(data) {  
-                   if (data!=false){
-                      oTable2.fnReloadAjax("<?php echo base_url();?>finance/getreport2data");
+//------------------------------------------------------------------------------------
 
-                      //the following is needed when the table is hidden on load!
-                      //see http://stackoverflow.com/questions/11848593/datatables-tabletools-multiple-tables-on-the-same-page/18588847#18588847
-                      var tableInstances = TableTools.fnGetMasters(), instances = tableInstances.length;
-                      while (instances--)
-                      {
-                          var dataTable = tableInstances[instances];
-                          if (dataTable.fnResizeRequired())
-                          {
-                              dataTable.fnResizeButtons();
-                          }
-                      }
-                  }
+    oTable3 = $('#tbl3').dataTable( {
+        "bProcessing": true,
+        //"bServerSide": true,
+        "aaData":[], 
+        //"sAjaxSource": "<?php echo base_url();?>finance/getschfinancedata",
+        "aoColumns": [
+            { "mData": "Μήνας",
+              "sClass":"col-md-3"},
+            { "mData": "Εισπράξεις",
+              "sClass":"col-md-3",
+              "mRender": function (data, type, full) {
+                return data+'€';
               }
-          });
-    
-    });
+            },
+            { "mData": "Οφειλές",
+            "sClass":"col-md-3",
+             "mRender": function (data, type, full) {
+                return data+'€';
+              }
+            },
+            { "mData": "Τζίρος",
+            "sClass":"col-md-3",
+             "mRender": function (data, type, full) {
+                return data+'€';
+             }},
+             ],
+        "sDom": "<'row'<'col-md-12'rTt>>",
+        "oTableTools": {"sSwfPath": "../assets/tabletools/swf/copy_csv_xls_pdf.swf",
+                "aButtons": [ 
+                            { "sExtends" : "copy",
+                              "mColumns": [ 0, 1, 2, 3]
+                            },
+                            { "sExtends" : "xls",
+                              "sCharSet": "utf16le",
+                              "mColumns": [ 0, 1, 2, 3],
+                              "sFileName": "Σύνοψη ανα μήνα.xls"
+                            },
+                            // { //tabletools use AlivePDF library and does not support greek or unicode characters!!!
+                            //   "sExtends" : "pdf",
+                            //   "sCharSet": "utf8"
+                            // },
+                            { "sExtends" : "print"
+                            }
+                            ]
+                 },
+        "bSort": false,
+        "bFilter": false,
+        "bPaginate": false,
+        "oLanguage": {"sZeroRecords": "Δεν βρέθηκαν εγγραφές"},
+        "fnFooterCallback": function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
+            /*
+             * Calculate the total market share for all browsers in this table (ie inc. outside
+             * the pagination)
+             * if Sort and/or Filter is enabled see http://www.datatables.net/examples/advanced_init/footer_callback.html
+             */
+            var iTotalAvenues = 0;
+            var iTotalDepts = 0;
+            var iTotal = 0;
+            for ( var i=0 ; i<aaData.length ; i++ )
+            {
+                iTotalAvenues += parseInt(aaData[i]['Εισπράξεις']);
+                iTotalDepts += parseInt(aaData[i]['Οφειλές']);
+                iTotal += parseInt(aaData[i]['Τζίρος']);
+            }
 
+            /* Modify the footer row to match what we want */
+            var nCells = nRow.getElementsByTagName('th');
+            nCells[1].innerHTML = iTotalAvenues+'€';
+            nCells[2].innerHTML = iTotalDepts+'€';
+            nCells[3].innerHTML = iTotal+'€';
+            }
+     } );
+
+    $('#link3').on('click', clicklink3);
 //------------------------------------------------------------------------------------
 
    //bootstrap3 style fixes until datatables 1.10 is released with bootstrap3 support
@@ -269,7 +330,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
    $('#tbl2_length').find('select').attr('id','selectid2');
    $('#tbl2_length').find('select').css('max-width','75px');
    var $sellabel = $("<label>").attr('for', "#selectid2");
-   $sellabel.text('Οφειλές/σελ.: ');
+   $sellabel.text('Εγγραφές/σελ.: ');
    $sellabel.insertBefore('#selectid2');
 
    $('#tbl2_filter').parent().parent().css({'padding-bottom':'8px'});
@@ -277,45 +338,83 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
      
 }) //end of (document).ready(function())
 
-//fnReloadAjax is not part of DataTables core. As a plug-in, we need to add the following code
-$.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallback, bStandingRedraw )
-{
-    if ( typeof sNewSource != 'undefined' && sNewSource != null )
-    {
-        oSettings.sAjaxSource = sNewSource;
-    }
-    this.oApi._fnProcessingDisplay( oSettings, true );
-    var that = this;
-    var iStart = oSettings._iDisplayStart;
-     
-    oSettings.fnServerData( oSettings.sAjaxSource, [], function(json) {
-        /* Clear the old information from the table */
-        that.oApi._fnClearTable( oSettings );
-         
-        /* Got the data - add it to the table */
-        for ( var i=0 ; i<json.aaData.length ; i++ )
-        {
-            that.oApi._fnAddData( oSettings, json.aaData[i] );
-        }
-         
-        oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
-        that.fnDraw();
-         
-        if ( typeof bStandingRedraw != 'undefined' && bStandingRedraw === true )
-        {
-            oSettings._iDisplayStart = iStart;
-            that.fnDraw( false );
-        }
-         
-        that.oApi._fnProcessingDisplay( oSettings, false );
-         
-        /* Callback user function - for event handlers etc */
-        if ( typeof fnCallback == 'function' && fnCallback != null )
-        {
-            fnCallback( oSettings );
-        }
-    }, oSettings );
-};
+function clicklink1(){
+    $.ajax({  
+              type: "POST", 
+              url: "<?php echo base_url()?>finance/getreport1data",  
+              success: function(data) {  
+                   if (data!=false){
+                      oTable1.fnClearTable();
+                      oTable1.fnAddData(data.aaData);
+                      //the following is needed when the table is hidden on load!
+                      //see http://stackoverflow.com/questions/11848593/datatables-tabletools-multiple-tables-on-the-same-page/18588847#18588847
+                      var tableInstances = TableTools.fnGetMasters(), instances = tableInstances.length;
+                      while (instances--)
+                      {
+                          var dataTable = tableInstances[instances];
+                          if (dataTable.fnResizeRequired())
+                          {
+                              dataTable.fnResizeButtons();
+                          }
+                      }
+              $('#link1').off('click');
+              }
+              }
+          });
+    
+    };
+
+
+function clicklink2(){
+    $.ajax({  
+              type: "POST",  
+              url: "<?php echo base_url()?>finance/getreport2data",  
+              success: function(data) {  
+                   if (data!=false){
+                      oTable2.fnClearTable();
+                      oTable2.fnAddData(data.aaData);
+                      //the following is needed when the table is hidden on load!
+                      //see http://stackoverflow.com/questions/11848593/datatables-tabletools-multiple-tables-on-the-same-page/18588847#18588847
+                      var tableInstances = TableTools.fnGetMasters(), instances = tableInstances.length;
+                      while (instances--)
+                      {
+                          var dataTable = tableInstances[instances];
+                          if (dataTable.fnResizeRequired())
+                          {
+                              dataTable.fnResizeButtons();
+                          }
+                      }
+              $('#link2').off('click');
+            }
+              }
+          });
+  };
+
+
+function clicklink3(){
+    $.ajax({  
+              type: "POST",  
+              url: "<?php echo base_url();?>finance/getschfinancedata",  
+              success: function(data) {  
+                   if (data!=false){
+                      oTable3.fnClearTable();
+                      oTable3.fnAddData(data.aaData);
+                       //the following is needed when the table is hidden on load!
+                      //see http://stackoverflow.com/questions/11848593/datatables-tabletools-multiple-tables-on-the-same-page/18588847#18588847
+                      var tableInstances = TableTools.fnGetMasters(), instances = tableInstances.length;
+                      while (instances--)
+                      {
+                          var dataTable = tableInstances[instances];
+                          if (dataTable.fnResizeRequired())
+                          {
+                              dataTable.fnResizeButtons();
+                          }
+                      }
+              $('#link3').off('click');
+            }
+              }
+          });
+  };
 
 // Set the classes that TableTools uses to something suitable for Bootstrap
 $.extend( true, $.fn.DataTable.TableTools.classes, {
@@ -405,6 +504,7 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
 	      <ul class="breadcrumb">
 	        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
 	        <li class="active">Οικονομικά</li>
+          <li class="active">Σχολικό έτος</li>
 	      </ul>
       </div>
       
@@ -416,7 +516,7 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
         
 
       <ul class="nav nav-tabs">
-        <li><a href="<?php echo base_url()?>finance">Σύνοψη</a></li>
+        <!-- <li><a href="<?php echo base_url()?>finance">Σύνοψη</a></li> -->
         <li class="active"><a href="<?php echo base_url()?>finance/schoolyear">Σχολικό έτος</a></li>
         <li><a href="<?php echo base_url()?>finance/economicyear">Οικονομικό έτος</a></li>
       </ul>
@@ -427,10 +527,21 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
 	<div class="row">
 
     	<div class="col-xs-12">
-        
+        <div class="row" style="padding-bottom:15px;">
+          <div class="col-xs-6">
+            <span id="schmessage" class="text-info">Tελευταία ενημέρωση των οικονομικών δεδομένων για το σχολικό έτος: <?php $m=(!isset($schoolyear_update)) ? "Δεν υπάρχει!" : $schoolyear_update; echo '<strong>'.$m.'</strong>';?></span>
+          </div>
+          <div class="col-xs-6">
+            <button id="btnschoolyearupdate" type="button" data-loading-text="Ανανέωση..." class="btn btn-primary btn-lg pull-right">Ανανέωση</button>
+          </div>
+        </div>
+
 <div class="panel-group" id="accordion">
   <div class="panel panel-default">
     <div class="panel-heading">
+        <span class="icon">
+          <i class="icon-file-text"></i>
+        </span>
       <h4 class="panel-title">
         <a id="link1" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
           Οφειλές μαθητών ανα μήνα
@@ -457,9 +568,12 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
   </div>
   <div class="panel panel-default">
     <div class="panel-heading">
+        <span class="icon">
+          <i class="icon-file-text"></i>
+        </span>
       <h4 class="panel-title">
         <a id="link2"  data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-          Οφειλές στο σύνολο των μηνών ανα μαθητή
+          Οφειλές ανα σύνολο μηνών
         </a>
       </h4>
     </div>
@@ -480,20 +594,42 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
       </div>
     </div>
   </div>
-<!--   <div class="panel panel-default">
+  <div class="panel panel-default">
     <div class="panel-heading">
+        <span class="icon">
+          <i class="icon-file-text"></i>
+        </span>
       <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-          Collapsible Group Item #3
+        <a id="link3" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+          Σύνοψη ανα μήνα
         </a>
       </h4>
     </div>
     <div id="collapseThree" class="panel-collapse collapse">
       <div class="panel-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+        <table id="tbl3" class="table datatable">
+          <thead>
+                <tr>
+                  <th>Μήνας</th>
+                  <th>Εισπράξεις</th>
+                  <th>Οφειλές</th>
+                  <th>Τζίρος</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+              <tr>
+                  <th>Σύνολο:</th> 
+                  <th></th>
+                  <th></th>
+                  <th></th>
+              </tr>
+            </tfoot>
+          </table>
       </div>
     </div>
-  </div> -->
+  </div>
 </div>
 
 

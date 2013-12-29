@@ -11,6 +11,7 @@ $(document).ready(function(){
   var oTable1;
   var oTable2;
 
+
   $('#btnecoyearupdate').click(function(){
 
     $.ajaxSetup({
@@ -289,17 +290,6 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 
       <p></p>
 
-<!--       <div class="visible-sm visible-xs">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="btn-group pull-left">  
-              <a class="btn btn-default btn-sm" href="#group1">Εργαζομένου</a>
-              <a class="btn btn-default btn-sm" href="#group2">Πρόσληψης</a>
-            </div>
-          </div>      
-        </div>
-      </div> -->
-     
 
 	<div class="row">
 

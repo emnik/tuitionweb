@@ -12,23 +12,23 @@ class Finance extends CI_Controller {
 
 	public function index()
 	{
-
-		$this->load->model('login_model');
-		$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
-		$data['user']=$user;
+		redirect('finance/schoolyear');
+		// $this->load->model('login_model');
+		// $user=$this->login_model->get_user_name($this->session->userdata('user_id'));
+		// $data['user']=$user;
 
 				
-		$this->load->model('welcome_model');
-		$startsch = $this->welcome_model->get_selected_startschyear(); 
-		$this->load->model('finance_model');
-		$schoolyear_update=$this->finance_model->get_dept_update_date($startsch);
-		$economicyear_update=$this->finance_model->get_economicyear_update_date($startsch);
-		if ($schoolyear_update) $data['schoolyear_update'] = $schoolyear_update;
-		if ($economicyear_update) $data['economicyear_update'] = $economicyear_update;
+		// $this->load->model('welcome_model');
+		// $startsch = $this->welcome_model->get_selected_startschyear(); 
+		// $this->load->model('finance_model');
+		// $schoolyear_update=$this->finance_model->get_dept_update_date($startsch);
+		// $economicyear_update=$this->finance_model->get_economicyear_update_date($startsch);
+		// if ($schoolyear_update) $data['schoolyear_update'] = $schoolyear_update;
+		// if ($economicyear_update) $data['economicyear_update'] = $economicyear_update;
 
-		$this->load->view("include/header");
-		$this->load->view("finance", $data);
-		$this->load->view("include/footer");
+		// $this->load->view("include/header");
+		// $this->load->view("finance", $data);
+		// $this->load->view("include/footer");
 	}
 
 
@@ -265,6 +265,16 @@ class Finance extends CI_Controller {
 		$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
 		$data['user']=$user;
 
+		//the following are from summary...
+		$this->load->model('welcome_model');
+		$startsch = $this->welcome_model->get_selected_startschyear(); 
+		$this->load->model('finance_model');
+		$schoolyear_update=$this->finance_model->get_dept_update_date($startsch);
+		$economicyear_update=$this->finance_model->get_economicyear_update_date($startsch);
+		if ($schoolyear_update) $data['schoolyear_update'] = $schoolyear_update;
+		if ($economicyear_update) $data['economicyear_update'] = $economicyear_update;
+		//until here
+
 		$this->load->view('include/header');
 		$this->load->view('finance/schoolyear', $data);
 		$this->load->view('include/footer');
@@ -275,8 +285,11 @@ class Finance extends CI_Controller {
 	{
 		header('Content-Type: application/x-json; charset=utf-8');
 
+		$this->load->model('welcome_model');
+		$startsch = $this->welcome_model->get_selected_startschyear(); 
+
 		$this->load->model('finance_model');
-		$res = $this->finance_model->getreport1data();
+		$res = $this->finance_model->getreport1data($startsch);
 		
 		//return results
 		echo json_encode($res);
@@ -287,8 +300,11 @@ class Finance extends CI_Controller {
 	{
 		header('Content-Type: application/x-json; charset=utf-8');
 
+		$this->load->model('welcome_model');
+		$startsch = $this->welcome_model->get_selected_startschyear();
+
 		$this->load->model('finance_model');
-		$res = $this->finance_model->getreport2data();
+		$res = $this->finance_model->getreport2data($startsch);
 		
 		//return results
 		echo json_encode($res);
