@@ -243,16 +243,16 @@ public function attendance($id, $innersubsection=null, $student, $user) {
 	$this->load->model('student/attendance_model');
 	$program = $this->attendance_model->get_program_data($id);
 	$attendance_general = $this->attendance_model->get_attendance_general_data($id);
-	$progress = $this->attendance_model->get_progress_data($id);
+	//$progress = $this->attendance_model->get_progress_data($id);
 	$absences_count = $this->attendance_model->count_absences($id);
 
 	$data['absences_count']=$absences_count;
 	// $this->load->library('firephp');
 	// $this->firephp->info($absences_count);
 	
-	if ($progress){
-		$data['progress']=$progress;
-	}
+	// if ($progress){
+	// 	$data['progress']=$progress;
+	// }
 
 	if ($attendance_general){
 		$data['attendance_general'] = $attendance_general;	

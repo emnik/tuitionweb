@@ -19,10 +19,13 @@
 
 <?php if(!empty($regs)):?>
 
-<!-- I will use select2 from http://fk.github.io/select2-bootstrap-css/ -->
-<!-- <link href="<?php echo base_url('assets/css/bootstrap-combobox.css')?>" rel="stylesheet">
-<script src="<?php echo base_url('assets/js/bootstrap-combobox.js')?>"></script>
- -->
+<!-- Using https://github.com/ivaynberg/select2 -->
+<!-- with https://github.com/t0m/select2-bootstrap-css -->
+<link href="<?php echo base_url('assets/select2/select2.css')?>" rel="stylesheet">
+<link href="<?php echo base_url('assets/select2/select2-bootstrap.css')?>" rel="stylesheet">
+<script src="<?php echo base_url('assets/select2/select2.js')?>"></script>
+<script src="<?php echo base_url('assets/select2/select2_locale_el.js')?>"></script>
+
 <script type="text/javascript">
 $(document).keydown(function(event) {
         if (event.ctrlKey==true && (event.which == '39')) { //ctrl + right arrow
@@ -32,14 +35,17 @@ $(document).keydown(function(event) {
     });
 
 $(document).ready(function(){
-	//$('.combobox').combobox();
-	// $('#footerModal').on('shown', function(){
-	// 	$(this).find(".modal-body > #combo").focus()
+    $('.select2').select2();
+	// $('#footerModal').on('shown.bs.modal', function(){
+	// 	$(this).find("#s2id_single").addClass('select2-container-active select2-dropdown-open');
+	// 	$(this).find(".select2-focusser").removeAttr('disabled');
+	// 	$(this).find(".select2-focusser").prop('disabled',false);
+	// 	$(this).find(".select2-focusser").focus();
 	// });
 });
 
 function fastgo(section){
-	var combobox = document.getElementById('combo');
+	var combobox = document.getElementById('single');
 	id = combobox.value;
 	switch(section)
 		{
@@ -66,8 +72,8 @@ function fastgo(section){
 	}
 </style>
 
-
-<div id="footerModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="footerModalLabel" aria-hidden="true">
+<!-- I removed tabindex=-1 from the modal to make the select2 work!!!  -->
+<div id="footerModal" class="modal"  role="dialog" aria-labelledby="footerModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
       <div class="modal-content">	
 		<div class="modal-header">
@@ -75,14 +81,15 @@ function fastgo(section){
 				<h3 id="footerModalLabel">Γρήγορη εναλλαγή μαθητή</h3>
 		</div>
 		<div class="modal-body">
-			<p>Επιλέξτε μαθητή:</p>
-			<p>
-				<select class="combobox form-control" id="combo">
+			 <div class="form-group">
+			 <label for="single" class="control-label">Επιλέξτε μαθητή:</label>
+				<select id="single" class="form-control select2">
+					<option></option>
 					<?php foreach ($regs as $key => $value):?>
 						<option value="<?php echo $key;?>"><?php echo $value;?></option>
 					<?php endforeach;?>
 				</select>
-			</p>
+			</div>
 			<div class="btn-toolbar">
 			    <a class="btn btn-default" href="#" onclick="fastgo('card');">Στοιχεία</a>
 			    <a class="btn btn-default" href="#" onclick="fastgo('contact');">Επικοινωνία</a>

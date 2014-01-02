@@ -108,20 +108,22 @@ $(document).ready(function() {
    $('#stdbook_filter').find('input').addClass("form-control");
    $('#stdbook_filter label').contents().unwrap();
    var fgroupDiv = document.createElement('div');
-   fgroupDiv.id="fgroupDiv"
+   fgroupDiv.id="fgroupDiv";
    fgroupDiv.className = 'form-group pull-right';
    $('#stdbook_filter').append(fgroupDiv);
    $('#stdbook_filter').find('input').prependTo('#fgroupDiv');
    $('#stdbook_filter').find('input').attr('id','inputid');
-   $('#stdbook_filter').find('input').css({'max-width':'250px','float':'right'});
+   $('#stdbook_filter').find('input').css({'max-width':'200px'});
    var $searchlabel = $("<label>").attr('for', "#inputid");
+   $searchlabel.css({'margin-top':'5px','margin-bottom':'5px','margin-left':'0px', 'margin-right':'10px'})
+   $searchlabel.addClass('pull-left');
    $searchlabel.text('Αναζήτηση:');
    $searchlabel.insertBefore('#inputid');
 
    $('#stdbook_length').find('select').addClass("form-control");
    $('#stdbook_length label').contents().unwrap();
    var lgroupDiv = document.createElement('div');
-   lgroupDiv.id="lgroupDiv"
+   lgroupDiv.id="lgroupDiv";
    lgroupDiv.className = 'form-group pull-left';
    var innerlgroupDiv = document.createElement('div');
    innerlgroupDiv.id="innerlgroupDiv"
@@ -132,6 +134,7 @@ $(document).ready(function() {
    $('#stdbook_length').find('select').attr('id','selectid');
    $('#stdbook_length').find('select').css('max-width','75px');
    var $sellabel = $("<label>").attr('for', "#selectid");
+   $sellabel.css({'min-width':'110px', 'margin-top':'5px'});
    $sellabel.text('Τμήματα/σελ.: ');
    $sellabel.insertBefore('#selectid');
 

@@ -48,12 +48,19 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '127.0.0.1';
-// $db['default']['hostname'] = '10.185.9.101';
+// $db['default']['hostname'] = '10.185.9.101'; //for lan access without ssh (using tcpip)
+
+$db['default']['hostname'] = '127.0.0.1'; //for remote server access with ssh (using unix socket)
+//$db['default']['database'] = 'emnik_tuition'; 
+//$db['default']['port'] = '3307'; //for ssh port forwarding
+
+$db['default']['database'] = 'tuition_management';
+$db['default']['port'] = '3306';
+
 $db['default']['username'] = 'emnik_tuition';
 $db['default']['password'] = 'chalkidiki';
-$db['default']['database'] = 'emnik_tuition';
-$db['default']['port'] = '3307';
+
+
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

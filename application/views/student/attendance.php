@@ -31,12 +31,12 @@ $(document).ready(function(){
                   if (result!=false){
                       oTable.fnReloadAjax();
                   };
+              },
+              complete: function(){
+                get_absences_count();
               }
+
           });
-    
-    $(document).ajaxStop(function () {
-        get_absences_count(); 
-    });
     
 	});
 
