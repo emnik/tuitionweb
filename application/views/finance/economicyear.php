@@ -171,7 +171,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
                 return data+'€';},
        "sType": "currency"},
     { "mData": "name" },
-    { "mData": "priority" }
+    { "mData": "report_priority" }
     ],
     "oLanguage": {
           "oPaginate": {
@@ -191,7 +191,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         }
   }).rowGrouping({iGroupingColumnIndex:2,
               bHideGroupingColumn:true,
-              sGroupingColumnSortDirection: "desc",
+              sGroupingColumnSortDirection: "asc",
               iGroupingOrderByColumnIndex:3,
               bHideGroupingOrderByColumn:true,//default:true 
               sGroupBy: "name"});
@@ -265,20 +265,22 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
    $('#tbl3_filter').find('input').addClass("form-control");
    $('#tbl3_filter label').contents().unwrap();
    var fgroupDiv3 = document.createElement('div');
-   fgroupDiv3.id="fgroupDiv3"
+   fgroupDiv3.id="fgroupDiv3";
    fgroupDiv3.className = 'form-group pull-right';
    $('#tbl3_filter').append(fgroupDiv3);
    $('#tbl3_filter').find('input').prependTo('#fgroupDiv3');
    $('#tbl3_filter').find('input').attr('id','inputid3');
-   $('#tbl3_filter').find('input').css({'max-width':'250px','float':'right'});
+   $('#tbl3_filter').find('input').css({'max-width':'200px'});
    var $searchlabel3 = $("<label>").attr('for', "#inputid3");
+   $searchlabel3.css({'margin-top':'5px','margin-bottom':'5px','margin-left':'0px', 'margin-right':'10px'})
+   $searchlabel3.addClass('pull-left');
    $searchlabel3.text('Αναζήτηση:');
    $searchlabel3.insertBefore('#inputid3');
 
    $('#tbl3_length').find('select').addClass("form-control");
    $('#tbl3_length label').contents().unwrap();
    var lgroupDiv3 = document.createElement('div');
-   lgroupDiv3.id="lgroupDiv3"
+   lgroupDiv3.id="lgroupDiv3";
    lgroupDiv3.className = 'form-group pull-left';
    var innerlgroupDiv3 = document.createElement('div');
    innerlgroupDiv3.id="innerlgroupDiv3"
@@ -289,6 +291,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
    $('#tbl3_length').find('select').attr('id','selectid3');
    $('#tbl3_length').find('select').css('max-width','75px');
    var $sellabel3 = $("<label>").attr('for', "#selectid3");
+   $sellabel3.css({'min-width':'110px', 'margin-top':'5px'});
    $sellabel3.text('Εγγραφές/σελ.: ');
    $sellabel3.insertBefore('#selectid3');
 
@@ -297,13 +300,15 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
    $('#tbl2_filter').find('input').addClass("form-control");
    $('#tbl2_filter label').contents().unwrap();
    var fgroupDiv2= document.createElement('div');
-   fgroupDiv2.id="fgroupDiv2"
+   fgroupDiv2.id="fgroupDiv2";
    fgroupDiv2.className = 'form-group pull-right';
    $('#tbl2_filter').append(fgroupDiv2);
    $('#tbl2_filter').find('input').prependTo('#fgroupDiv2');
    $('#tbl2_filter').find('input').attr('id','inputid2');
-   $('#tbl2_filter').find('input').css({'max-width':'250px','float':'right'});
+   $('#tbl2_filter').find('input').css({'max-width':'200px'});
    var $searchlabel = $("<label>").attr('for', "#inputid2");
+   $searchlabel.css({'margin-top':'5px','margin-bottom':'5px','margin-left':'0px', 'margin-right':'10px'})
+   $searchlabel.addClass('pull-left');
    $searchlabel.text('Αναζήτηση:');
    $searchlabel.insertBefore('#inputid2');
 
@@ -321,6 +326,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
    $('#tbl2_length').find('select').attr('id','selectid2');
    $('#tbl2_length').find('select').css('max-width','75px');
    var $sellabel = $("<label>").attr('for', "#selectid2");
+   $sellabel.css({'min-width':'110px', 'margin-top':'5px'});
    $sellabel.text('Οφειλές/σελ.: ');
    $sellabel.insertBefore('#selectid2');
 

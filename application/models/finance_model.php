@@ -556,7 +556,7 @@ class Finance_model extends CI_Model
     	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',4)->get();
     	$row = $existingdata->row();
     	if ($row->value_2 == $startsch ){
-	    	$query=$this->db->select(array('CONCAT_WS(" ",registration.surname, registration.name) as student', 'amount', 'month.name', 'month.priority'))
+	    	$query=$this->db->select(array('CONCAT_WS(" ",registration.surname, registration.name) as student', 'amount', 'month.name', 'credit_month as report_priority'))
 	    			->from('finance_year_debt')
 	    			->join('registration', 'finance_year_debt.reg_id = registration.id')
 	    			->join('month', 'finance_year_debt.credit_month = month.num')

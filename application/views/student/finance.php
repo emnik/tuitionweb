@@ -1,3 +1,9 @@
+<style type="text/css">
+  input.checkall {
+      margin-right: 7px; 
+  }
+</style>
+
 <script type="text/javascript">
 
 function my_curr_date() {      

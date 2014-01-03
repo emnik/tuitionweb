@@ -15,7 +15,7 @@
 
 $(document).ready(function(){
     
-  $('#dayprogram').footable();
+  $('.footable').footable();
 
 	var oTable;
   get_absences_count();
@@ -44,7 +44,7 @@ $(document).ready(function(){
     /* Init the table */
     var absid=0;
     oTable = $('#absencestable').dataTable( {
-    "bProcessing": true,
+    "bProcessing": false,
     //"aaData": sData,
     "sAjaxSource": "<?php echo base_url();?>student/getabsencesdata/<?php echo $student['id']?>/",
     //"aoColumnDefs": [/*stdlesson_id*/{ "bVisible": false, "aTargets": [5] }],
@@ -134,6 +134,27 @@ $(document).ready(function(){
         $(this).attr("checked", 'checked'); 
       };
   });
+
+  // HIDING COLUMNS FOR RESPONSIVE VIEW:
+
+  $(window).on("load", resizeWindow);
+  //If the User resizes the window, adjust the #container height
+  $(window).on("resize", resizeWindow);
+
+  function resizeWindow(e)
+  {
+      var newWindowWidth = $(window).width();
+
+      if(newWindowWidth > 360)
+      {
+        oTable.fnSetColumnVis( 1, true );
+      }
+      else
+      {
+        oTable.fnSetColumnVis( 1, false );
+      }
+
+  };
 
 });
 
@@ -358,7 +379,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 				        </div>
 				    <?php else:?>
 				    	<!-- I don't check if $attendance_general exists as it will be if $program exists! -->
-				    	<h5>Αρ. μαθημάτων που παρακολουθεί : <span class="badge"><?php echo count($attendance_general);?></span></h5>
+				    	<h6>Αρ. μαθημάτων που παρακολουθεί : <span class="badge"><?php echo count($attendance_general);?></span></h6>
 				    	<p><span class="label label-success">Ανάλυση:</span></p>
 				    	<table class = "table table-striped table-condensed table-hover" width="100%">
 				    		<thead>
@@ -409,7 +430,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 							   			</div>
 							   		</div>
 					      		<?php else:?>
-					      			<h5>Δικαιολογημένες: <span id="excusedbadged" class="badge">-</span> &nbsp Αδικαιολόγητες: <span id="unexcusedbadged" class="badge">-</span></h5>
+					      			<h6>Δικαιολογημένες: <span id="excusedbadged" class="badge">-</span> &nbsp Αδικαιολόγητες: <span id="unexcusedbadged" class="badge">-</span></h6>
 					      			<p><span class="label label-warning">Σήμερα:</span></p>
 					      			<p class="text-info">
 					      				Σήμερα δεν έχει κανένα μάθημα!
@@ -421,7 +442,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 							   		</div>
 					      		<?php endif;?>
 				      		<?php else:?>
-				      			<h5>Δικαιολογημένες: <span id="excusedbadged" class="badge">-</span> &nbsp Αδικαιολόγητες: <span id="unexcusedbadged" class="badge">-</span></h5>
+				      			<h6>Δικαιολογημένες: <span id="excusedbadged" class="badge">-</span> &nbsp Αδικαιολόγητες: <span id="unexcusedbadged" class="badge">-</span></h6>
 					      		<p><span class="label label-warning">Σήμερα:</span></p>
                     <form id="absencesform">
 					      		<table id="absencestable" class="table table-striped table-condensed" width="100%">

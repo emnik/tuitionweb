@@ -274,20 +274,22 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
    $('#tbl1_filter').find('input').addClass("form-control");
    $('#tbl1_filter label').contents().unwrap();
    var fgroupDiv1 = document.createElement('div');
-   fgroupDiv1.id="fgroupDiv1"
+   fgroupDiv1.id="fgroupDiv1";
    fgroupDiv1.className = 'form-group pull-right';
    $('#tbl1_filter').append(fgroupDiv1);
    $('#tbl1_filter').find('input').prependTo('#fgroupDiv1');
    $('#tbl1_filter').find('input').attr('id','inputid1');
-   $('#tbl1_filter').find('input').css({'max-width':'250px','float':'right'});
+   $('#tbl1_filter').find('input').css({'max-width':'200px'});
    var $searchlabel = $("<label>").attr('for', "#inputid1");
+   $searchlabel.css({'margin-top':'5px','margin-bottom':'5px','margin-left':'0px', 'margin-right':'10px'})
+   $searchlabel.addClass('pull-left');
    $searchlabel.text('Αναζήτηση:');
    $searchlabel.insertBefore('#inputid1');
 
    $('#tbl1_length').find('select').addClass("form-control");
    $('#tbl1_length label').contents().unwrap();
    var lgroupDiv1 = document.createElement('div');
-   lgroupDiv1.id="lgroupDiv1"
+   lgroupDiv1.id="lgroupDiv1";
    lgroupDiv1.className = 'form-group pull-left';
    var innerlgroupDiv1 = document.createElement('div');
    innerlgroupDiv1.id="innerlgroupDiv1"
@@ -298,6 +300,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
    $('#tbl1_length').find('select').attr('id','selectid1');
    $('#tbl1_length').find('select').css('max-width','75px');
    var $sellabel = $("<label>").attr('for', "#selectid1");
+   $sellabel.css({'min-width':'110px', 'margin-top':'5px'});
    $sellabel.text('Οφειλές/σελ.: ');
    $sellabel.insertBefore('#selectid1');
 
@@ -306,13 +309,15 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
    $('#tbl2_filter').find('input').addClass("form-control");
    $('#tbl2_filter label').contents().unwrap();
    var fgroupDiv2= document.createElement('div');
-   fgroupDiv2.id="fgroupDiv2"
+   fgroupDiv2.id="fgroupDiv2";
    fgroupDiv2.className = 'form-group pull-right';
    $('#tbl2_filter').append(fgroupDiv2);
    $('#tbl2_filter').find('input').prependTo('#fgroupDiv2');
    $('#tbl2_filter').find('input').attr('id','inputid2');
-   $('#tbl2_filter').find('input').css({'max-width':'250px','float':'right'});
+   $('#tbl2_filter').find('input').css({'max-width':'200px'});
    var $searchlabel = $("<label>").attr('for', "#inputid2");
+   $searchlabel.css({'margin-top':'5px','margin-bottom':'5px','margin-left':'0px', 'margin-right':'10px'})
+   $searchlabel.addClass('pull-left');   
    $searchlabel.text('Αναζήτηση:');
    $searchlabel.insertBefore('#inputid2');
 
@@ -330,6 +335,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
    $('#tbl2_length').find('select').attr('id','selectid2');
    $('#tbl2_length').find('select').css('max-width','75px');
    var $sellabel = $("<label>").attr('for', "#selectid2");
+   $sellabel.css({'min-width':'110px', 'margin-top':'5px'});
    $sellabel.text('Εγγραφές/σελ.: ');
    $sellabel.insertBefore('#selectid2');
 
@@ -535,6 +541,44 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
         </form>
         <h4>Αναφορές</h4>
 <div class="panel-group" id="accordion">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="icon">
+          <i class="icon-file-text"></i>
+        </span>
+      <h4 class="panel-title">
+        <a id="link3" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+          Σύνοψη σχολικού έτους
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse">
+      <div class="panel-body">
+        <table id="tbl3" class="table datatable table-condensed">
+          <thead>
+                <tr>
+                  <th>Μήνας</th>
+                  <th>Εισπράξεις</th>
+                  <th>Οφειλές</th>
+                  <th>Τζίρος</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+              <tr>
+                  <th>Σύνολο:</th> 
+                  <th></th>
+                  <th></th>
+                  <th></th>
+              </tr>
+            </tfoot>
+          </table>
+      </div>
+    </div>
+  </div>
+
   <div class="panel panel-default">
     <div class="panel-heading">
         <span class="icon">
@@ -592,44 +636,7 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-        <span class="icon">
-          <i class="icon-file-text"></i>
-        </span>
-      <h4 class="panel-title">
-        <a id="link3" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-          Σύνοψη ανα μήνα
-        </a>
-      </h4>
-    </div>
-    <div id="collapseThree" class="panel-collapse collapse">
-      <div class="panel-body">
-        <!-- <div class="table-responsive"> -->
-        <table id="tbl3" class="table datatable table-condensed">
-          <thead>
-                <tr>
-                  <th>Μήνας</th>
-                  <th>Εισπράξεις</th>
-                  <th>Οφειλές</th>
-                  <th>Τζίρος</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-              <tr>
-                  <th>Σύνολο:</th> 
-                  <th></th>
-                  <th></th>
-                  <th></th>
-              </tr>
-            </tfoot>
-          </table>
-        <!-- </div> -->
-      </div>
-    </div>
-  </div>
+
 </div>
 
 
