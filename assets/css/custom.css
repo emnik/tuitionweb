@@ -33,29 +33,6 @@ body {
 }
 
 
-
-/* Don't use Pattern overlay
-------------------------- */
-
-/*.jumbotron .container {
-  position: relative;
-  z-index: 2;
-}
-*/
-
-/*.jumbotron:after {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background:none;
-}*/
-
-
-
 /* Sticky footer based on from http://ryanfait.com/sticky-footer/ 
 --------------------------------------------------------------*/
 
@@ -390,10 +367,5 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
 
 /*Use everywhere ubuntu font!
 ----------------------------*/
-/*html, body, h1,h2,h3,h4, label, input, select,
-textarea, button, leap, breadcrumb, table, i, 
-footer{ font-family: 'Ubuntu'}*/
-
-
 body { font-family: 'Ubuntu'}
 
