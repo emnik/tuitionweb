@@ -158,9 +158,14 @@ $(document).ready(function(){
 		      			<?php if (empty($program)):?>
       					<div class="alert alert-block alert-error fade in">
 				            <!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
-				            <h4 class="alert-heading"><i class="icon-exclamation-sign"></i> Δεν έχει εισαχθεί πρόγραμμα τμημάτων!</h4>
-				            <p>Για την εισαγωγή τμημάτων ή/και προγράμματος αυτών επιλέξτε "Διαχείριση" από την αρχική καρτέλα.</p>
+				            <!-- <h5 class="alert-heading"><i class="icon-exclamation-sign"></i> Δεν έχει εισαχθεί πρόγραμμα τμημάτων!</h5> -->
+				            <p class="text-info">Δεν έχει εισαχθεί πρόγραμμα τμημάτων! Για την εισαγωγή τμημάτων επιλέξτε "Τμήματα" από το μενού ή την αρχική σελίδα.</p>
 				        </div>
+                <div class="row">
+                  <div class="col-md-12"> 
+                    <a href="#" class="btn btn-default btn-sm pull-right" onclick="return false;" disabled>Περισσότερα</a>
+                </div>
+              </div>
 				    <?php else:?>
                   <?php $stdsum=0; $sectionsnum=0; $hourssum=0;?>
                   <table class="footable table table-striped table-condensed">
@@ -198,12 +203,13 @@ $(document).ready(function(){
                       </tr>
                     </tfoot>
                   </table>
+                  <div class="row">
+                  <div class="col-md-12"> 
+                    <a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan/sections" class="btn btn-default btn-sm pull-right">Περισσότερα</a>
+                </div>
+              </div>
 		      		<?php endif;?>
-				      	<div class="row">
-			      			<div class="col-md-12">	
-			      				<a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan/sections" class="btn btn-default btn-sm pull-right">Περισσότερα</a>
-				   			</div>
-				   		</div>
+
   				    </div>
 		      	</div>
           </div>

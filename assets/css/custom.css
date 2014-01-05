@@ -390,6 +390,10 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
 
 /*Use everywhere ubuntu font!
 ----------------------------*/
-html, body, h1,h2,h3,h4, label, input, select,
-textarea, button, leap, breadcrumb, table,
-footer{ font-family: 'Ubuntu'}
+/*html, body, h1,h2,h3,h4, label, input, select,
+textarea, button, leap, breadcrumb, table, i, 
+footer{ font-family: 'Ubuntu'}*/
+
+
+body { font-family: 'Ubuntu'}
+

@@ -261,7 +261,7 @@ function resizeWindow(e)
               <!-- <button class="btn btn-default btn-sm"><i class="icon-refresh"></i></button> -->
               <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
             </div>
-            <button class="btn btn-sm btn-success pull-right" id="section-card"><i class="icon-tag"> Καρτέλα Τμήματος</i></button>
+            <button class="btn btn-sm btn-success pull-right" id="section-card"><i class="icon-tag"> </i> Καρτέλα Τμήματος</button>
           </div>
         </div>
         </div>

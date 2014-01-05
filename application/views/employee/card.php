@@ -44,7 +44,13 @@ $(document).ready(function(){
         $("input[name=active]").val($(this).find('input').attr('value'));
         });
     });
- 
+    
+
+    if($('#active').val()==0){
+      // $('ul.nav.nav-tabs li:last').addClass('hidden');
+      $('ul.nav.nav-tabs li:last').hide();
+    };
+
 }) //end of (document).ready(function())
 
 </script>
@@ -77,6 +83,7 @@ $(document).ready(function(){
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
+              <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $user->surname.' '.$user->name;?><b class="caret"></b></a> -->
               <ul class="dropdown-menu">
                 <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
@@ -164,7 +171,7 @@ $(document).ready(function(){
 
     	<div class="col-md-12">
         <form action="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>" method="post" accept-charset="utf-8" role="form">
-        <input type="hidden" name="active" value="<?php echo $emplcard['active'];?>"> 
+        <input type="hidden" id="active" name="active" value="<?php echo $emplcard['active'];?>"> 
         
       	<div class="row">
           <div class="col-md-6" id="group1">

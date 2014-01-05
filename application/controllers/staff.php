@@ -170,9 +170,8 @@ public function teachingplan($id, $innersubsection=null, $employee, $user){
 			$students = $this->teachingplan_model->get_section_students($tmpdata['id']);
 			$section_data[$tmpdata['id']]=$students;
 		}
-	};
-	
 	$data['section_data'] = $section_data;
+	};
 
 	 // $this->load->library('firephp');
 	 // $this->firephp->info($section_data); 

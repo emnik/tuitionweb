@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/tuitionweb/';
+$config['base_url']	= 'http://localhost:8080/tuitionweb/';
 // $config['base_url']	= 'http://10.185.9.101/tuitionweb/';
 
 /*

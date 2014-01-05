@@ -251,13 +251,6 @@ function resizeWindow(e)
             <i class="icon-book"></i>
           </span>
           <h3 class="panel-title">Προσωπικό</h3>
-<!--           <div class="buttons">
-            <button class="btn btn-sm btn-danger " id="del-reg"><i class="icon-trash"></i></button>
-             <div class="btn-group">
-              <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
-            </div>
-            <button class="btn btn-sm btn-success" id="employee-card"><i class="icon-user"> Καρτέλα Εργαζομένου</i></button>
-          </div> -->
         </div>
       <div class="panel-body">
        <div class="row" >
@@ -268,7 +261,7 @@ function resizeWindow(e)
               <!-- <button class="btn btn-default btn-sm"><i class="icon-refresh"></i></button> -->
               <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
             </div>
-            <button class="btn btn-sm btn-success pull-right" id="employee-card"><i class="icon-user"> Καρτέλα Εργαζομένου</i></button>
+            <button class="btn btn-sm btn-success pull-right" id="employee-card"><i class="icon-user"> </i> Καρτέλα Εργαζομένου</button>
           </div>
         </div>
         </div>
