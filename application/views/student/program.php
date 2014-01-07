@@ -212,7 +212,7 @@ function toggledays(togglecontrol) {
                     <table class="footable table table-striped table-condensed" >
   				      			<thead>
                         <tr>
-    				      				<th data-class="expand">Ώρα</th>
+    				      				<th data-toggle="true">Ώρα</th>
     				      				<th>Μάθημα</th>
     				      				<th data-hide="phone">Διδάσκων</th>
     				      				<th data-hide="phone">Τμήμα</th>

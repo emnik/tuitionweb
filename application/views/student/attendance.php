@@ -17,6 +17,11 @@ $(document).ready(function(){
     
   $('.footable').footable();
 
+  $('.toggle').click(function() {
+          $('.toggle').toggle();
+          $('table').trigger($(this).data('trigger')).trigger('footable_redraw');
+      });
+
 	var oTable;
   get_absences_count();
 
@@ -312,6 +317,10 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
                   <i class="icon-time"></i>
                 </span>
                 <h3 class="panel-title">Πρόγραμμα ημέρας</h3>
+                <div class="buttons">
+                    <a enabled data-trigger="footable_expand_all" class="toggle btn btn-default btn-sm" href="#expandall"><i class="icon-angle-down"></i></a>
+                    <a enabled data-trigger="footable_collapse_all" style="display: none" class="toggle btn btn-default btn-sm" href="#collapseall"><i class="icon-angle-up"></i></a>
+                </div>
               </div>
             <div class="panel-body">
 			      		<?php if(empty($dayprogram)):?>
@@ -328,7 +337,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 				      		<table id="dayprogram" class="footable table table-striped table-condensed " >
 				      			<thead>
                       <tr>
-  				      				<th data-class="expand">Ώρα</th>
+  				      				<th data-toggle="true">Ώρα</th>
   				      				<th>Μάθημα</th>
   				      				<th data-hide="phone">Διδάσκων</th>
   				      				<th data-hide="phone">Τμήμα</th>

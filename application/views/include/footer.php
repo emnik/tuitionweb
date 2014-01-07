@@ -1,13 +1,14 @@
     <footer class="footer">
         <div class="container">
 			<div class="row">
-				<div class="col-md-12"> 
-					<small><i class="icon-code"></i> Designed and build by <a href="mailto:nikiforakis.m@gmail.com">Nikiforakis Manos</a></small>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12"> 
-					<small>Build with <a href="http://ellislab.com/codeigniter">CodeIgniter</a> and <a href="http://getbootstrap.com/">Bootstrap</a>. Icons by <a href="http://fortawesome.github.io/Font-Awesome/"><i class="icon-flag"> </i>Font Awesome Icons</a></small>
+				<div class="col-xs-12">
+					<small><i class="icon-code"></i> 
+						Designed and build by <a href="mailto:nikiforakis.m@gmail.com">Nikiforakis Manos</a><br>
+						Build with <a href="http://ellislab.com/codeigniter">CodeIgniter</a> 
+						and <a href="http://getbootstrap.com/">Bootstrap</a>. 
+						Icons by <a href="http://fortawesome.github.io/Font-Awesome/">
+						<i class="icon-flag"> </i>Font Awesome Icons</a>
+					</small>
 				</div>
 			</div>
 		</div>
@@ -72,8 +73,8 @@ function fastgo(section){
 	}
 </style>
 
-<!-- I removed tabindex=-1 from the modal to make the select2 work!!!  -->
-<div id="footerModal" class="modal"  role="dialog" aria-labelledby="footerModalLabel" aria-hidden="true">
+<!-- I removed tabindex="-1" from the modal to make the select2 work!!! but now pressing esc doesn't close the modal!-->
+<div id="footerModal" class="modal" role="dialog" aria-labelledby="footerModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
       <div class="modal-content">	
 		<div class="modal-header">
@@ -91,10 +92,10 @@ function fastgo(section){
 				</select>
 			</div>
 			<div class="btn-toolbar">
-			    <a class="btn btn-default" href="#" onclick="fastgo('card');">Στοιχεία</a>
-			    <a class="btn btn-default" href="#" onclick="fastgo('contact');">Επικοινωνία</a>
-			    <a class="btn btn-default" href="#" onclick="fastgo('attendance');">Φοίτηση</a>
-			    <a class="btn btn-default" href="#" onclick="fastgo('finance');">Οικονομικά</a>
+			    <a class="btn btn-sm btn-default" href="#" onclick="fastgo('card');">Στοιχεία</a>
+			    <a class="btn btn-sm btn-default" href="#" onclick="fastgo('contact');">Επικοινωνία</a>
+			    <a class="btn btn-sm btn-default" href="#" onclick="fastgo('attendance');">Φοίτηση</a>
+			    <a class="btn btn-sm btn-default" href="#" onclick="fastgo('finance');">Οικονομικά</a>
 			</div>
 		</div>
 		<div class="modal-footer">

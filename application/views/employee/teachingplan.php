@@ -3,6 +3,17 @@
 $(document).ready(function(){
    
   $('.footable').footable();
+
+ $('.toggle1').click(function() {
+                $('.toggle1').toggle();
+                $('table:first').trigger($(this).data('trigger')).trigger('footable_redraw');
+            });
+
+ $('.toggle2').click(function() {
+                $('.toggle2').toggle();
+                $('table:last').trigger($(this).data('trigger')).trigger('footable_redraw');
+            });
+
 })
 </script>
 
@@ -98,6 +109,10 @@ $(document).ready(function(){
                   <i class="icon-time"></i>
                 </span>
                 <h3 class="panel-title">Πρόγραμμα ημέρας</h3>
+                  <div class="buttons">
+                    <a enabled data-trigger="footable_expand_all" class="toggle1 btn btn-default btn-sm" href="#expandall"><i class="icon-angle-down"></i></a>
+                    <a enabled data-trigger="footable_collapse_all" style="display: none" class="toggle1 btn btn-default btn-sm" href="#collapseall"><i class="icon-angle-up"></i></a>
+                  </div>
               </div>
             <div class="panel-body">
 			      		<?php if(empty($dayprogram)):?>
@@ -114,7 +129,7 @@ $(document).ready(function(){
 				      		<table class="footable table table-striped table-condensed " >
 				      			<thead>
                       <tr>
-  				      				<th data-class="expand">Ώρα</th>
+  				      				<th data-toggle="true">Ώρα</th>
   				      				<th>Μάθημα</th>
   				      				<th data-hide="phone">Διδάσκων</th>
   				      				<th data-hide="phone">Τμήμα</th>
@@ -153,6 +168,10 @@ $(document).ready(function(){
                   <i class=" icon-cog"></i>
                 </span>
                 <h3 class="panel-title">Τμήματα</h3>
+                   <div class="buttons">
+                    <a enabled data-trigger="footable_expand_all" class="toggle2 btn btn-default btn-sm" href="#expandall"><i class="icon-angle-down"></i></a>
+                    <a enabled data-trigger="footable_collapse_all" style="display: none" class="toggle2 btn btn-default btn-sm" href="#collapseall"><i class="icon-angle-up"></i></a>
+                  </div>
               </div>
             <div class="panel-body">
 		      			<?php if (empty($program)):?>

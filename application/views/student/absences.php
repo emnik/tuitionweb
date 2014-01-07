@@ -3,6 +3,11 @@
 $(document).ready(function(){
     $('.footable').footable();
 
+    $('.toggle').click(function() {
+            $('.toggle').toggle();
+            $('table').trigger($(this).data('trigger')).trigger('footable_redraw');
+        });
+
 //delete multiple absences using the select checkboxes and the combobox below (the action fires through ajax)
   $('#select_action').change(function(){
       var act=$(this).val();
@@ -176,6 +181,11 @@ $(document).ready(function(){
           				<i class="icon-flag"></i>
         			</span>
     				<h3 class="panel-title">Απουσιολόγιο</h3>
+            <div class="buttons">
+                <!-- <button enabled id="editform1" type="button" class="btn btn-default btn-sm" data-toggle="button"><i class="icon-edit"></i></button> -->
+                <a enabled data-trigger="footable_expand_all" class="toggle btn btn-default btn-sm" href="#expandall"><i class="icon-angle-down"></i></a>
+                <a enabled data-trigger="footable_collapse_all" style="display: none" class="toggle btn btn-default btn-sm" href="#collapseall"><i class="icon-angle-up"></i></a>
+            </div>
       			</div>
     			<div class="panel-body">
   					<?php if (!empty($absences)):?>
@@ -184,7 +194,7 @@ $(document).ready(function(){
     						<thead>
     							<tr>
                     <th><input type="checkbox" class="checkbox" id="checkall"></th>
-    								<th data-class="expand">Ημερομηνία</th>
+    								<th data-toggle="true">Ημερομηνία</th>
     								<th data-hide="phone">Μάθημα</th>
                     <th data-hide="phone,tablet">Διδάσκων</th>
     								<th data-hide="phone">Ώρα</th>

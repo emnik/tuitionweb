@@ -12,8 +12,8 @@
    <!--the css file ordering is important to work everything as intented. Do not change! -->
    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
 
-   <link href="<?php echo base_url('assets/css/footable/footable-0.1.css') ?>" rel="stylesheet">
-   
+   <link href="<?php echo base_url('assets/FooTable-2/css/footable.core.css') ?>" rel="stylesheet">
+
    <link href="<?php echo base_url('assets/css/custom.css') ?>" rel="stylesheet">
 
    <!-- Fonts -->
@@ -25,11 +25,11 @@
 
    <!-- Javascript & JQuery libs -->
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>   
+   <!--<script> if (!window.jQuery) { document.write('<script src="js/jquery-1.10.2.min.js"><\/script>'); }</script>-->
 
    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
    
-   <script src="<?php echo base_url('assets/js/footable/footable.js') ?>"></script>
-
+   <script src="<?php echo base_url('assets/FooTable-2/js/footable.js') ?>"></script>
 	
 
 

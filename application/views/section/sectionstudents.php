@@ -19,7 +19,12 @@ function toggleedit(togglecontrol, id) {
 
 $(document).ready(function(){
 
-	$('.footable').footable();
+	  $('.footable').footable();
+
+    $('.toggle').click(function() {
+                $('.toggle').toggle();
+                $('table').trigger($(this).data('trigger')).trigger('footable_redraw');
+            });
 
     $("body").on('click', '#editform1, #editform2', function(){
       toggleedit(this, this.id);
@@ -179,14 +184,16 @@ $(document).ready(function(){
               			<h3 class="panel-title">Μαθητές τμήματος</h3>
               			<div class="buttons">
                   			<button enabled id="editform1" type="button" class="btn btn-default btn-sm" data-toggle="button"><i class="icon-edit"></i></button>
-              			</div>
+		                    <a enabled data-trigger="footable_expand_all" class="toggle btn btn-default btn-sm" href="#expandall"><i class="icon-angle-down"></i></a>
+                        <a enabled data-trigger="footable_collapse_all" style="display: none" class="toggle btn btn-default btn-sm" href="#collapseall"><i class="icon-angle-up"></i></a>
+                    </div>
             		</div>
 	            <div class="panel-body">
 	            	<table class="table footable table-striped table-hover">
 	            		<thead>
 	            			<tr>
 	            				<th><input disabled type="checkbox" class="checkbox" id="checkall"></th>
-		            			<th data-class="expand">Ονοματεπώνυμο</th>
+		            			<th data-toggle="true">Ονοματεπώνυμο</th>
 		            			<th data-hide="phone">Σταθερό</th>
 		            			<th>Κινητό</th>
 		            			<th data-hide="phone,tablet">Μητρώνυμο</th>

@@ -302,12 +302,12 @@ $(document).ready(function() {
     /* Collaplsible fieldsets jquery based on
     https://github.com/malteo/bootstrap-collapsible-fieldset*/
 
-   $('fieldset.collapsible > legend').prepend('<span><i class=" icon-plus-sign"></i></span> ');
+   $('fieldset.collapsible > legend').prepend('<span><i class=" icon-plus-sign-alt"></i></span> ');
         $('body').on('click', 'fieldset.collapsible .legend-text', function () {
           var $divs = $(this).parent().siblings();
           $divs.toggle();
           if (!$(this).parent().find('span > i').hasClass('icon-certificate')) {
-            $(this).parent().find('span').html(($divs.is(":visible")) ? '<i class="icon-minus-sign"></i>' : '<i class=" icon-plus-sign"></i>');            
+            $(this).parent().find('span').html(($divs.is(":visible")) ? '<i class="icon-minus-sign-alt"></i>' : '<i class=" icon-plus-sign-alt"></i>');            
           };
     });
 

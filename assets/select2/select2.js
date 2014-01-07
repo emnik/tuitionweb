@@ -676,7 +676,7 @@ the specific language governing permissions and limitations under the Apache Lic
             // cache the body so future lookups are cheap
             this.body = thunk(function() { return opts.element.closest("body"); });
 
-            syncCssClasses(this.container, this.opts.element, this.opts.adaptContainerCssClass);
+			syncCssClasses(this.container, this.opts.element, this.opts.adaptContainerCssClass);
 
             this.container.attr("style", opts.element.attr("style"));
             this.container.css(evaluate(opts.containerCss));
