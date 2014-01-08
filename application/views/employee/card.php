@@ -1,4 +1,8 @@
+<!-- https://github.com/hgoebl/mobile-detect.js -->
+<script src="<?php echo base_url('assets/mobile-detect.js/mobile-detect.min.js')?>"></script>
+
 <script type="text/javascript">
+var md = new MobileDetect(window.navigator.userAgent);
 
 function toggleedit(togglecontrol, id) {
 
@@ -51,7 +55,28 @@ $(document).ready(function(){
       $('ul.nav.nav-tabs li:last').hide();
     };
 
+    //if not on phone the makecall buttons become just decorative!
+    if(md.phone()==null){
+        $('.phonecall').attr('disabled', 'disabled');
+     }
+
+     //if the phone input is empty the button should be disabled (decorative)
+     $('.phonecall').each(function(){
+         if($(this).parent().next('input').val()==""){
+           $(this).attr('disabled', 'disabled');
+        }
+     })
+
 }) //end of (document).ready(function())
+
+
+function makephonecall(phonenum){
+  if(md.phone()!=null && phonenum!=""){
+    if(md.os()=='AndroidOS' || md.os()=='iOS'){
+       window.location = 'tel:'+phonenum;
+    }
+  }
+}
 
 </script>
 
@@ -213,14 +238,24 @@ $(document).ready(function(){
 	        	    		<div class="col-md-6 col-sm-6">
                       <div class="form-group">
 	        	    	   	 <label>Σταθερό τηλ.</label>
-                       <input disabled class="form-control" id="home_tel" type="text" placeholder="" name="home_tel" value="<?php echo $emplcard['home_tel'];?>">
-	        	    		  </div>
+                       <div class="input-group">
+                          <span class="input-group-btn">
+                            <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php echo $emplcard['home_tel'];?>);"><span class="icon"><i class="icon-phone"></i></span></button>
+                          </span>
+                          <input disabled class="form-control" id="home_tel" type="text" placeholder="" name="home_tel" value="<?php echo $emplcard['home_tel'];?>">
+	        	    		    </div>
+                      </div>
                     </div>
 	        	    		<div class="col-md-6  col-sm-6">
 	        	    			 <div class="form-group">
                           <label>Κινητό τηλ.</label>
-                          <input disabled class="form-control" id="mobile" type="text" placeholder="" name="mobile" value="<?php echo $emplcard['mobile'];?>">
-	        	    		   </div>
+                          <div class="input-group">
+                            <span class="input-group-btn">
+                              <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php echo $emplcard['mobile'];?>);"><span class="icon"><i class="icon-mobile-phone"></i></span></button>
+                            </span>
+                            <input disabled class="form-control" id="mobile" type="text" placeholder="" name="mobile" value="<?php echo $emplcard['mobile'];?>">
+	        	    		    </div>
+                       </div>
                     </div>
 	        	    	</div>
 		        	   </div> <!-- end of content row -->

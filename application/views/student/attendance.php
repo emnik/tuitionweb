@@ -161,6 +161,11 @@ $(document).ready(function(){
 
   };
 
+  $('li.dash').click(function(){
+    $('#footerModal').modal();
+  });
+
+
 });
 
 //fnReloadAjax is not part of DataTables core. As a plug-in, we need to add the following code
@@ -286,6 +291,8 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
           <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> </li>
           <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> </li>
           <li class="active">Φοίτηση</li>
+          <li class="dash"><i class="icon-dashboard icon-small"></i></li>
+          </span>
         </ul>
       </div>
       

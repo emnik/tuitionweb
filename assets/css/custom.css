@@ -3,6 +3,22 @@
  */
 
 
+/*Change default divider for breadcrumb*/
+.breadcrumb > li + li:before {
+    content: "> ";
+}
+
+.breadcrumb > li.dash {
+  cursor: pointer;
+  float: right;
+  color:gray;
+  margin-right: 0px;
+}
+.breadcrumb > li.dash:before {
+    content: "";
+}
+
+
 /* Main title for my pages based on jumbotron from bootstrap docs.css 
 ---------------------------------------------------------------------*/
 body {

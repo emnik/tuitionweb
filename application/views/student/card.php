@@ -110,6 +110,10 @@ $(document).ready(function(){
       content:"<div style=\"text-align:center;\"><button type=\"button\" class=\"btn btn-default btn-sm\" onclick=\"paste_name('afm_owner','name');\">Μαθητή</button><button type=\"button\" class=\"btn btn-default btn-sm\" onclick=\"paste_name('afm_owner','fathersname');\">Πατέρα</button><button type=\"button\" class=\"btn btn-default btn-sm\" onclick=\"paste_name('afm_owner','');\"><i class=\"icon-remove-circle\"></i></button></div>"
   });
 
+    $('li.dash').click(function(){
+      $('#footerModal').modal();
+    });
+
 }); //end of (document).ready
 
 function paste_name(where,who){
@@ -189,6 +193,7 @@ function paste_name(where,who){
             <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
             <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
             <li class="active">Καρτέλα μαθητή</li>
+            <li class="dash"><i class="icon-dashboard icon-small"></i></span>
           </ul>
         </div>
         
@@ -333,7 +338,7 @@ function paste_name(where,who){
                   <div class="col-md-12">
                   <div class="form-group">
                     <label>Παρατηρήσεις</label>
-                    <textarea disabled class="form-control" rows="3" cols="10" name="notes">
+                    <textarea disabled class="form-control" rows="3" name="notes">
                       <?php echo $regcard['notes'];?>
                     </textarea>  
                   </div>

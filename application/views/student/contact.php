@@ -1,4 +1,8 @@
+<!-- https://github.com/hgoebl/mobile-detect.js -->
+<script src="<?php echo base_url('assets/mobile-detect.js/mobile-detect.min.js')?>"></script>
+
 <script type="text/javascript">
+var md = new MobileDetect(window.navigator.userAgent);
 
 function toggleedit(togglecontrol, id) {
 
@@ -37,7 +41,31 @@ $(document).ready(function(){
         $('.mainform').find('input:disabled').removeAttr('disabled');
         $('form').submit();
     });
+
+    $('li.dash').click(function(){
+      $('#footerModal').modal();
+    });
+
+    //if not on phone the makecall buttons become just decorative!
+    if(md.phone()==null){
+        $('.phonecall').attr('disabled', 'disabled');
+     }
+
+     //if the phone input is empty the button should be disabled (decorative)
+     $('.phonecall').each(function(){
+         if($(this).parent().next('input').val()==""){
+           $(this).attr('disabled', 'disabled');
+        }
+     })
 });
+
+function makephonecall(phonenum){
+  if(md.phone()!=null && phonenum!=""){
+    if(md.os()=='AndroidOS' || md.os()=='iOS'){
+       window.location = 'tel:'+phonenum;
+    }
+  }
+}
 
 </script>
 
@@ -105,6 +133,7 @@ $(document).ready(function(){
           <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
           <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a></li>
           <li class="active">Επικοινωνία</li>
+          <li class="dash"><i class="icon-dashboard icon-small"></i></li>
         </ul>
       </div>
       
@@ -133,7 +162,7 @@ $(document).ready(function(){
               <span class="icon">
                 <i class="icon-tag"></i>
               </span>
-              <h3 class="panel-title">Στοιχεία επικοινωνίας μαθητή</h3>
+              <h3 class="panel-title">Στοιχεία μαθητή</h3>
               <div class="buttons">
                   <button enabled id="editform1" type="button" class="btn btn-default btn-sm" data-toggle="button"><i class="icon-edit"></i></button>
               </div>
@@ -142,11 +171,22 @@ $(document).ready(function(){
             <div class="panel-body">
               <div class="form-group col-sm-6">
                 <label>Τηλέφωνο σπιτιού</label>
-                <input disabled type="text" class="form-control" placeholder="" name="home_tel" value="<?php echo $contact['home_tel'];?>"></input>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                      <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php echo $contact['home_tel'];?>);"><span class="icon"><i class="icon-phone"></i></span></button>
+                    </span>
+                    <input disabled type="text" class="form-control" placeholder="" name="home_tel" value="<?php echo $contact['home_tel'];?>">
                </div>
-              <div class="form-group col-sm-6">
+             </div>
+             
+             <div class="form-group col-sm-6">
                 <label>Κινητό τηλέφωνο</label>
-                <input disabled  type="text" class="form-control" placeholder="" name="std_mobile" value="<?php echo $contact['std_mobile'];?>"></input>
+                <div class="input-group">
+                  <span class="input-group-btn">
+                     <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php echo $contact['std_mobile'];?>);"><span class="icon"><i class="icon-mobile-phone"></i></span></button>
+                  </span>
+                  <input disabled  type="text" class="form-control" placeholder="" name="std_mobile" value="<?php echo $contact['std_mobile'];?>">
+                </div>
               </div>
           </div>
         </div>
@@ -160,7 +200,7 @@ $(document).ready(function(){
               <span class="icon">
                 <i class="icon-tag"></i>
               </span>
-              <h3 class="panel-title">Στοιχεία επικοινωνίας γονέων</h3>
+              <h3 class="panel-title">Στοιχεία γονέων</h3>
               <div class="buttons">
                   <button enabled id="editform2" type="button" class="btn btn-default btn-sm" data-toggle="button"><i class="icon-edit"></i></button>
               </div>
@@ -168,15 +208,30 @@ $(document).ready(function(){
             <div class="panel-body">
               <div class="form-group col-sm-6">
                 <label>Κινητό πατέρα <?php if(!empty($secondary)) {if (!is_null($secondary['fathers_name'])) echo '('.$secondary['fathers_name'].')';}?></label>
-                <input disabled  type="text" class="form-control" placeholder="" name="fathers_mobile" value="<?php echo $contact['fathers_mobile'];?>"></input>
+                  <div class="input-group">
+                    <span class="input-group-btn">
+                       <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php echo $contact['fathers_mobile'];?>);"><span class="icon"><i class="icon-mobile-phone"></i></span></button>
+                    </span>
+                    <input disabled  type="text" class="form-control" placeholder="" name="fathers_mobile" value="<?php echo $contact['fathers_mobile'];?>">
+                  </div>
               </div>
               <div class="form-group col-sm-6">
                 <label>Κινητό μητέρας <?php if(!empty($secondary)) {if (!is_null($secondary['mothers_name'])) echo '('.$secondary['mothers_name'].')';}?></label>
-                <input disabled  type="text" class="form-control" placeholder="" name="mothers_mobile" value="<?php echo $contact['mothers_mobile'];?>"></input>
-              </div>
+                <div class="input-group">
+                  <span class="input-group-btn">
+                     <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php echo $contact['mothers_mobile'];?>);"><span class="icon"><i class="icon-mobile-phone"></i></span></button>
+                  </span>
+                  <input disabled  type="text" class="form-control" placeholder="" name="mothers_mobile" value="<?php echo $contact['mothers_mobile'];?>">
+                </div>
+                </div>
               <div class="form-group col-sm-6">
                 <label>Τηλέφωνο εργασίας</label>
-                <input disabled  type="text" class="form-control" placeholder="" name="work_tel" value="<?php echo $contact['work_tel'];?>"></input>
+                <div class="input-group">
+                  <span class="input-group-btn">
+                     <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php echo $contact['work_tel'];?>);"><span class="icon"><i class="icon-phone"></i></span></button>
+                  </span>
+                  <input disabled  type="text" class="form-control" placeholder="" name="work_tel" value="<?php echo $contact['work_tel'];?>">
+                </div>
               </div>
             </div>
           </div>

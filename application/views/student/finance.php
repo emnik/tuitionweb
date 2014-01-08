@@ -347,6 +347,9 @@ $(document).ready(function() {
       };
   });
 
+  $('li.dash').click(function(){
+    $('#footerModal').modal();
+  });
 
 }) //end of (document).ready()
 
@@ -536,6 +539,7 @@ $(document).ready(function() {
           <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> </li>
           <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> </li>
           <li class="active">Οικονομικά</li>
+          <li class="dash"><i class="icon-dashboard icon-small"></i></li>
         </ul>
       </div>
       

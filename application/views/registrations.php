@@ -218,7 +218,7 @@ function resizeWindow(e)
     }
   } );
 
-  $('#go').click(function(){
+  $('li.dash').click(function(){
     $('#footerModal').modal();
   });
 
@@ -295,9 +295,7 @@ function resizeWindow(e)
       <ul class="breadcrumb">
         <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
         <li class="active">Μαθητολόγιο</li>
-        <span class="pull-right" style="cursor:pointer; color:gray;">
-          <span id="go" class="icon" style><i class="icon-dashboard icon-small"></i></span>
-        </span>
+        <li class="dash" style><i class="icon-dashboard icon-small"></i></li>
       </ul>
       </div>
 
