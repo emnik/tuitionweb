@@ -25,7 +25,7 @@ $(document).ready(function(){
 	var oTable;
   get_absences_count();
 
-	$('#savedayabsence').click(function(){
+	$('#savedayabsence').on('click', function(){
 		var sData = oTable.$('input').serialize();
 		sData = sData+'&'+'stdid='+<?php echo $student['id'];?>;
     $.ajax({  
@@ -143,22 +143,26 @@ $(document).ready(function(){
   // HIDING COLUMNS FOR RESPONSIVE VIEW:
 
   $(window).on("load", resizeWindow);
+
   //If the User resizes the window, adjust the #container height
   $(window).on("resize", resizeWindow);
 
+  
+
   function resizeWindow(e)
   {
+    if (oTable!=null){ //αν δεν υπάρχουν δεδομένα στον πίνακα να μη γίνεται τίποτα!
       var newWindowWidth = $(window).width();
 
       if(newWindowWidth > 360)
       {
-        oTable.fnSetColumnVis( 1, true );
+        oTable.fnSetColumnVis( 1, true);
       }
       else
       {
-        oTable.fnSetColumnVis( 1, false );
-      }
-
+        oTable.fnSetColumnVis( 1, false);
+      };
+    }
   };
 
   $('li.dash').click(function(){

@@ -37,9 +37,7 @@ class Finance extends CI_Controller {
 
 		//1. get Start School Year from table lookup stored value
 		// ----------------------------------------------------------//
-		$this->load->model('welcome_model');
-		$startsch = $this->welcome_model->get_selected_startschyear(); 
-
+		$startsch=$this->session->userdata('startsch');
 		
 		//2. check if we are in the selected year or a next one
 		$PrevSchoolYearSelected = 0; //false
@@ -161,9 +159,8 @@ class Finance extends CI_Controller {
 		//To recalculate the economic year's financial data
 		header('Content-Type: application/x-json; charset=utf-8');
 
-		$this->load->model('welcome_model');
-		$startsch = $this->welcome_model->get_selected_startschyear(); 
 
+		$startsch=$this->session->userdata('startsch');
 
 		//options
 		$chk0PayState=0;
@@ -237,8 +234,8 @@ class Finance extends CI_Controller {
 		$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
 		$data['user']=$user;
 
-		$this->load->model('welcome_model');
-		$startsch = $this->welcome_model->get_selected_startschyear(); 
+
+		$startsch=$this->session->userdata('startsch');
 
 		$this->load->model('finance_model');
 		$schoolyear_update=$this->finance_model->get_dept_update_date($startsch);
@@ -254,8 +251,7 @@ class Finance extends CI_Controller {
 	{
 		header('Content-Type: application/x-json; charset=utf-8');
 
-		$this->load->model('welcome_model');
-		$startsch = $this->welcome_model->get_selected_startschyear(); 
+		$startsch=$this->session->userdata('startsch');
 
 		$this->load->model('finance_model');
 		$res = $this->finance_model->getschoolreport1data($startsch);
@@ -269,8 +265,7 @@ class Finance extends CI_Controller {
 	{
 		header('Content-Type: application/x-json; charset=utf-8');
 
-		$this->load->model('welcome_model');
-		$startsch = $this->welcome_model->get_selected_startschyear();
+		$startsch=$this->session->userdata('startsch');
 
 		$this->load->model('finance_model');
 		$res = $this->finance_model->getschoolreport2data($startsch);
@@ -285,8 +280,7 @@ class Finance extends CI_Controller {
 	//report #3
 		header('Content-Type: application/x-json; charset=utf-8');
 		
-		$this->load->model('welcome_model');
-		$startsch = $this->welcome_model->get_selected_startschyear(); 
+		$startsch=$this->session->userdata('startsch');
 
 		$this->load->model('finance_model','', TRUE);
 		$schyearfinance = $this->finance_model->get_schoolyear_finance($startsch);
@@ -305,8 +299,7 @@ class Finance extends CI_Controller {
 		$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
 		$data['user']=$user;
 
-		$this->load->model('welcome_model');
-		$startsch = $this->welcome_model->get_selected_startschyear(); 
+		$startsch=$this->session->userdata('startsch');
 
 		$this->load->model('finance_model');
 		$economicyear_update=$this->finance_model->get_economicyear_update_date($startsch);
@@ -321,8 +314,7 @@ class Finance extends CI_Controller {
 		//report #1
 		header('Content-Type: application/x-json; charset=utf-8');
 
-		$this->load->model('welcome_model');
-		$startsch = $this->welcome_model->get_selected_startschyear(); 
+		$startsch=$this->session->userdata('startsch');
 		
 		$this->load->model('finance_model','', TRUE);
 		$ecoyearfinance = $this->finance_model->get_economicyear_finance($startsch);
@@ -336,8 +328,7 @@ class Finance extends CI_Controller {
 	{
 		header('Content-Type: application/x-json; charset=utf-8');
 
-		$this->load->model('welcome_model');
-		$startsch = $this->welcome_model->get_selected_startschyear(); 
+		$startsch=$this->session->userdata('startsch');
 
 		$this->load->model('finance_model');
 		$res = $this->finance_model->getecoreport2data($startsch);
@@ -350,8 +341,7 @@ class Finance extends CI_Controller {
 	{
 		header('Content-Type: application/x-json; charset=utf-8');
 
-		$this->load->model('welcome_model');
-		$startsch = $this->welcome_model->get_selected_startschyear(); 
+		$startsch=$this->session->userdata('startsch');
 
 		$this->load->model('finance_model');
 		$res = $this->finance_model->getecoreport3data($startsch);

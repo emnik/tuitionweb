@@ -75,12 +75,16 @@ class Welcome_model extends CI_Model {
    }
 
 
-   public function get_student_names_ids(){
+   public function get_student_names_ids($filter=null){
       $this->db
             ->select(array('registration.id', 'CONCAT_WS(" ",registration.surname, registration.name) as stdname'))
             ->from('vw_schoolyear_reg_ids')
-            ->join('registration', 'vw_schoolyear_reg_ids.id = registration.id', 'left')
-            ->order_by('stdname', 'ASC');
+            ->join('registration', 'vw_schoolyear_reg_ids.id = registration.id', 'left');
+            if (!is_null($filter)){
+               $this->db->like('registration.surname', $filter);
+               $this->db->or_like('registration.name', $filter);
+            };
+            $this->db->order_by('stdname', 'ASC');
       
       $query=$this->db->get();
 

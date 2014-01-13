@@ -34,6 +34,23 @@ public function __construct() {
 		}
 	}
 
+public function user_list(){
+	header('Content-Type: application/x-json; charset=utf-8');
+	$this->load->model('welcome_model');
+	$list=$this->welcome_model->get_student_names_ids($this->input->get('q'));
+	if ($list) {
+		foreach ($list as $stud) {
+			$data[]=array("id"=>$stud['id'],"text"=>$stud['stdname']);
+		}
+	}
+	else
+	{
+		$data=array("id"=>"0","text"=>"Κανένα αποτέλεσμα...");
+	}
+	echo(json_encode($data));
+}
+
+
 public function index() {
 	//$this->output->enable_profiler(TRUE);
 	
@@ -41,21 +58,6 @@ public function index() {
 	$data['user']=$this->login_model->get_user_name($this->session->userdata('user_id'));
 
 	$this->load->model('welcome_model');
-
-	$regs = $this->welcome_model->get_student_names_ids();
-	$regsdata= array();
-	if($regs) 
-		{
-			foreach ($regs as $key => $value) {
-				$regsdata[$value['id']]=$value['stdname'];
-			};
-			$this->session->set_userdata(array('fastgo_data' => $regsdata));
-		};
-	//$this->load->library('firephp');
-	//$this->firephp->error($this->session->userdata('fastgo_data'));
-	//$this->firephp->error($regsdata);
-
-
 
 	$schoolyears=$this->welcome_model->get_schoolyears();
 	if ($schoolyears) {
@@ -81,7 +83,9 @@ public function index() {
 			
 				if (in_array($startsch.'-'.($startsch+1), $justyears)==false){
 					$this->welcome_model->insert_schoolyear($startsch);
-				}		
+				};
+		$this->session->set_userdata(array('startsch' => $startsch));
+
 		switch ($this->input->post('submit')) {
 			case 'submit1': //Μαθητολόγιο
 				redirect('student');
@@ -112,7 +116,7 @@ public function index() {
 	
 	$this->load->view('include/header');
 	$this->load->view('welcome', $data);
-	$footer_data['regs']=$this->session->userdata('fastgo_data');
+	$footer_data['regs']=true;
 	$this->load->view('include/footer', $footer_data);
 
 	}

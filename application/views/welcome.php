@@ -55,11 +55,14 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
               <ul class="dropdown-menu">
+                <li class="dropdown-header">
+                    <?php 
+                    $s=$this->session->userdata('startsch');
+                    echo 'Περίοδος: '.$s.'-'.($s + 1);
+                    ?>
+                </li>
                 <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="#admin">Διαχείριση</a></li>
-                <li class="divider"></li>
-                <!-- <li class="dropdown-header">Nav header</li> -->
                 <li><a href="<?php echo base_url()?>welcome/logout">Αποσύνδεση</a></li>
               </ul>
             </li>
@@ -103,14 +106,6 @@
                       <?php endforeach;?>
                       <option value="addnextschoolyear">Προσθήκη επόμενου σχ. έτους</option>
                     </select>
-<!-- 
-                    <div class="input-group-btn">
-                      <button type="button" class="input-lg btn btn-default dropdown-toggle" data-toggle="dropdown">Ενέργειες <span class="caret"></span></button>
-                      <ul class="dropdown-menu pull-right">
-                        <li><a href="#">Προσθηκη επόμενου σχολ. έτους</a></li>
-                        <li><a href="#">Διαγραφή σχολ. έτους</a></li>
-                     </div> -->
-
                   </div>
                 </div>
           </fieldset>

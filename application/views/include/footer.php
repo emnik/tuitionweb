@@ -18,7 +18,7 @@
 
 
 
-<?php if(!empty($regs)):?>
+<?php if(!empty($regs) and $regs===true):?>
 
 <!-- Using https://github.com/ivaynberg/select2 -->
 <!-- with https://github.com/t0m/select2-bootstrap-css -->
@@ -35,19 +35,32 @@ $(document).keydown(function(event) {
         }
     });
 
+
 $(document).ready(function(){
-    $('.select2').select2();
-	// $('#footerModal').on('shown.bs.modal', function(){
-	// 	$(this).find("#s2id_single").addClass('select2-container-active select2-dropdown-open');
-	// 	$(this).find(".select2-focusser").removeAttr('disabled');
-	// 	$(this).find(".select2-focusser").prop('disabled',false);
-	// 	$(this).find(".select2-focusser").focus();
-	// });
+	   $('#selectbox').select2({
+	    minimumInputLength: 2,
+	    ajax: {
+	      url: "<?php echo base_url()?>welcome/user_list",
+	      dataType: 'json',
+	      data: function (term, page) {
+	        return {
+	          q: term //sends the typed letters to the controller
+	        };
+	      },
+	      results: function (data, page) {
+	        return { results: data }; //data needs to be {{id:"",text:""},{id:"",text:""}}...
+	      }
+	    }
+	  });
+
+	   $('#footerModal').on('shown.bs.modal', function(){
+			$('#selectbox').select2("open");
+	   });
 });
 
+
 function fastgo(section){
-	var combobox = document.getElementById('single');
-	id = combobox.value;
+	id=$('#selectbox').val();
 	switch(section)
 		{
 		case 'card':
@@ -83,15 +96,10 @@ function fastgo(section){
 		</div>
 		<div class="modal-body">
 			 <div class="form-group">
-			 <label for="single" class="control-label">Επιλέξτε μαθητή:</label>
-				<select id="single" class="form-control select2">
-					<option></option>
-					<?php foreach ($regs as $key => $value):?>
-						<option value="<?php echo $key;?>"><?php echo $value;?></option>
-					<?php endforeach;?>
-				</select>
-			</div>
-			<div class="btn-toolbar">
+			 	<label for="single" class="control-label">Επιλέξτε μαθητή/μαθήτρια:</label>
+ 			 	<input class="form-control" id="selectbox" type="hidden" name="optionvalue" />
+			 </div>
+			<div class="btn-group">
 			    <a class="btn btn-sm btn-default" href="#" onclick="fastgo('card');">Στοιχεία</a>
 			    <a class="btn btn-sm btn-default" href="#" onclick="fastgo('contact');">Επικοινωνία</a>
 			    <a class="btn btn-sm btn-default" href="#" onclick="fastgo('attendance');">Φοίτηση</a>
@@ -109,9 +117,9 @@ function fastgo(section){
 <?php endif;?>
 
 
+<script type="text/javascript">
 
-
-
+</script>
 
 
 </body>
