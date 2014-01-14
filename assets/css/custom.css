@@ -2,6 +2,9 @@
  * My custom CSS rules go into this file
  */
 
+li.dropdown-header{
+  font-style: italic;
+}
 
 /*Change default divider for breadcrumb*/
 .breadcrumb > li + li:before {
@@ -21,13 +24,17 @@
 
 /* Main title for my pages based on jumbotron from bootstrap docs.css 
 ---------------------------------------------------------------------*/
-body {
+/*body {
     padding-top: 0px;
+}*/
+
+.navbar.navbar-inverse.navbar-top{
+  margin-bottom: 0px;
 }
 
 .jumbotron {
   /*position: relative;*/
-  padding-top: 70px;
+  padding-top: 10px;
   text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
   background: #423B3C;
 }

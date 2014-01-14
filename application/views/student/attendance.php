@@ -141,29 +141,30 @@ $(document).ready(function(){
   });
 
   // HIDING COLUMNS FOR RESPONSIVE VIEW:
+  <?php if(!empty($dayprogram)):?>
+    $(window).on("load", resizeWindow);
 
-  $(window).on("load", resizeWindow);
+    //If the User resizes the window, adjust the #container height
+    $(window).on("resize", resizeWindow);
 
-  //If the User resizes the window, adjust the #container height
-  $(window).on("resize", resizeWindow);
+    
 
-  
+    function resizeWindow(e)
+    {
+      if (oTable!=null){ //αν δεν υπάρχουν δεδομένα στον πίνακα να μη γίνεται τίποτα!
+        var newWindowWidth = $(window).width();
 
-  function resizeWindow(e)
-  {
-    if (oTable!=null){ //αν δεν υπάρχουν δεδομένα στον πίνακα να μη γίνεται τίποτα!
-      var newWindowWidth = $(window).width();
-
-      if(newWindowWidth > 360)
-      {
-        oTable.fnSetColumnVis( 1, true);
+        if(newWindowWidth > 360)
+        {
+          oTable.fnSetColumnVis( 1, true);
+        }
+        else
+        {
+          oTable.fnSetColumnVis( 1, false);
+        };
       }
-      else
-      {
-        oTable.fnSetColumnVis( 1, false);
-      };
-    }
-  };
+    };
+  <?php endif;?>
 
   $('li.dash').click(function(){
     $('#footerModal').modal();
@@ -237,7 +238,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-top">
       <div class="container">
       <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -250,7 +251,6 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 
       <div class="navbar-collapse collapse" role="navigation">
         <ul class="nav navbar-nav">
-            <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
             <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
             <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
             <li><a href="<?php echo base_url()?>section">Τμήματα</a></li>
@@ -263,8 +263,6 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
               <ul class="dropdown-menu">
                 <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="#admin">Διαχείριση</a></li>
-                <li class="divider"></li>
                 <li><a href="<?php echo base_url()?>student/logout">Αποσύνδεση</a></li>
               </ul>
             </li>
@@ -280,6 +278,12 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
   <div class="container">
     <h1>Καρτέλα Μαθητή</h1>
     <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
+    <p style="font-size:13px; margin-top:15px; margin-bottom:-15px;">
+      <?php 
+      $s=$this->session->userdata('startsch');
+      echo 'Διαχειριστική Περίοδος: '.$s.'-'.($s + 1);
+      ?>
+    </p>    
   </div>
 </div>
 

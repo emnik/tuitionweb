@@ -36,7 +36,7 @@
 
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
-  <div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar navbar-inverse navbar-top">
     <div class="container">
       <div class="navbar-header">
           <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
@@ -55,12 +55,6 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li class="dropdown-header">
-                    <?php 
-                    $s=$this->session->userdata('startsch');
-                    echo 'Περίοδος: '.$s.'-'.($s + 1);
-                    ?>
-                </li>
                 <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
                 <li><a href="<?php echo base_url()?>welcome/logout">Αποσύνδεση</a></li>

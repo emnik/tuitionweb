@@ -439,7 +439,7 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-top">
       <div class="container">
       <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -452,7 +452,6 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
 
       <div class="navbar-collapse collapse" role="navigation">
         <ul class="nav navbar-nav">
-            <!-- <li><a href="<?php echo base_url()?>">Αρχική</a></li>  -->
             <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
             <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
             <li><a href="<?php echo base_url()?>section">Τμήματα</a></li>
@@ -465,8 +464,6 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
               <ul class="dropdown-menu">
                 <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="#admin">Διαχείριση</a></li>
-                <li class="divider"></li>
                 <li><a href="<?php echo base_url()?>staff/logout">Αποσύνδεση</a></li>
               </ul>
             </li>
@@ -482,6 +479,12 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
   <div class="container">
     <h1>Οικονομικά</h1>
     <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
+    <p style="font-size:13px; margin-top:15px; margin-bottom:-15px;">
+      <?php 
+      $s=$this->session->userdata('startsch');
+      echo 'Διαχειριστική Περίοδος: '.$s.'-'.($s + 1);
+      ?>
+    </p>
   </div>
 </div>
 
