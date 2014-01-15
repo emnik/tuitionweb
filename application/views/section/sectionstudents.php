@@ -17,9 +17,40 @@ function toggleedit(togglecontrol, id) {
 
 }
 
+
+function hideFootableExpandButtons(){
+      if($('.footable').hasClass('default'))
+      {
+        $('.buttons > a').addClass('hidden');
+      }
+      else
+      {
+        $('.buttons > a').removeClass('hidden');
+      }
+}
+
+
 $(document).ready(function(){
 
 	  $('.footable').footable();
+
+   $(window).resize(function() {
+          if(this.resizeTO) clearTimeout(this.resizeTO);
+          this.resizeTO = setTimeout(function() {
+              $(this).trigger('resizeEnd');
+          }, 100);
+      });
+
+
+    $(window).on('resizeEnd', function() {
+        //do something, window hasn't changed size in 100ms
+        hideFootableExpandButtons();
+    });
+
+    $(window).on('load', function() {
+         hideFootableExpandButtons();
+    });
+
 
     $('.toggle').click(function() {
                 $('.toggle').toggle();

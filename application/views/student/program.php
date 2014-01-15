@@ -1,3 +1,9 @@
+<style type="text/css">
+  .buttons a {
+    margin-right: 14px;
+  }
+</style>
+
 <script type="text/javascript">
 var nodays = new Array(7);
 
@@ -62,7 +68,40 @@ function toggledays(togglecontrol) {
 
      $('.footable').footable();
 
+     $(window).resize(function() {
+            if(this.resizeTO) clearTimeout(this.resizeTO);
+            this.resizeTO = setTimeout(function() {
+                $(this).trigger('resizeEnd');
+            }, 100);
+        });
+
+
+      $(window).on('resizeEnd', function() {
+          //do something, window hasn't changed size in 100ms
+          hideFootableExpandButtons();
+      });
+
+      $(window).on('load', function() {
+           hideFootableExpandButtons();
+      });
+
    }); //end of $(document).ready(function())
+
+    function togglebuttons(id,which){
+         $('.toggle'+id).toggle();
+         $('#table'+id).trigger($('.toggle'+id+':'+which).data('trigger')).trigger('footable_redraw');
+    }
+
+    function hideFootableExpandButtons(){
+        if($('.footable').hasClass('default'))
+        {
+          $('.buttons').hide();
+        }
+        else
+        {
+          $('.buttons').show();
+        }
+  }
 
 </script>
 
@@ -211,9 +250,13 @@ function toggledays(togglecontrol) {
                           <i class="icon-calendar"></i>
                         </span>
                         <h3 class="panel-title"><?php echo $day[$j];?></h3>
+                        <div class="buttons">
+                            <a enabled data-trigger="footable_expand_all" onclick="togglebuttons(<?php echo $j;?>,'first');" class="toggle<?php echo $j;?> btn btn-default btn-sm" href="#expandall"><i class="icon-angle-down"></i></a>
+                            <a enabled data-trigger="footable_collapse_all" onclick="togglebuttons(<?php echo $j;?>,'last');" style="display: none" class="toggle<?php echo $j;?> btn btn-default btn-sm" href="#collapseall"><i class="icon-angle-up"></i></a>
+                        </div>                        
                       </div>
                     <div class="panel-body">
-                    <table class="footable table table-striped table-condensed" >
+                    <table id="table<?php echo $j;?>" class="footable table table-striped table-condensed" >
   				      			<thead>
                         <tr>
     				      				<th data-toggle="true">Ώρα</th>

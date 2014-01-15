@@ -472,7 +472,7 @@ $(document).ready(function() {
               </span>
               <h3 class="panel-title">Μεταβολές διδάκτρων</h3>
               <div class="buttons visible-xs" style="padding-top:3px;">
-                <input type="checkbox" class="checkall">
+                <input type="checkbox" class="checkall <?php if(empty($change)) echo 'hidden';?>" >
               </div>
               <div class="buttons">
                   <!-- <button enabled id="editform1" type="button" class="btn btn-mini" data-toggle="button"><i class="icon-edit"></i></button> -->

@@ -140,17 +140,46 @@ $(document).ready(function(){
       };
   });
 
-  // HIDING COLUMNS FOR RESPONSIVE VIEW:
-  <?php if(!empty($dayprogram)):?>
-    $(window).on("load", resizeWindow);
 
-    //If the User resizes the window, adjust the #container height
-    $(window).on("resize", resizeWindow);
 
-    
+ $(window).resize(function() {
+        if(this.resizeTO) clearTimeout(this.resizeTO);
+        this.resizeTO = setTimeout(function() {
+            $(this).trigger('resizeEnd');
+        }, 100);
+    });
 
-    function resizeWindow(e)
-    {
+
+  $(window).on('resizeEnd', function() {
+      //do something, window hasn't changed size in 100ms
+      hideFootableExpandButtons();
+      
+       <?php if(!empty($dayprogram)):?>
+           hideAbsencesTime();
+       <?php endif;?>
+  });
+
+  $(window).on('load', function() {
+       hideFootableExpandButtons();
+      
+       <?php if(!empty($dayprogram)):?>
+           hideAbsencesTime();
+       <?php endif;?>
+  });
+
+function hideFootableExpandButtons(){
+      if($('.footable').hasClass('default'))
+      {
+        $('.buttons').hide();
+      }
+      else
+      {
+        $('.buttons').show();
+      }
+}
+
+function hideAbsencesTime(){
+      // HIDING COLUMNS FOR RESPONSIVE VIEW:
       if (oTable!=null){ //αν δεν υπάρχουν δεδομένα στον πίνακα να μη γίνεται τίποτα!
         var newWindowWidth = $(window).width();
 
@@ -163,8 +192,7 @@ $(document).ready(function(){
           oTable.fnSetColumnVis( 1, false);
         };
       }
-    };
-  <?php endif;?>
+}
 
   $('li.dash').click(function(){
     $('#footerModal').modal();

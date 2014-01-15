@@ -3,7 +3,7 @@
 
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
-  <div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar navbar-inverse navbar-top">
     <div class="container">
       <div class="navbar-header">
           <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>

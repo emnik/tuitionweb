@@ -2,7 +2,7 @@
 
 $(document).ready(function(){
    
-  $('.footable').footable();
+ $('.footable').footable();
 
  $('.toggle1').click(function() {
                 $('.toggle1').toggle();
@@ -14,7 +14,39 @@ $(document).ready(function(){
                 $('table:last').trigger($(this).data('trigger')).trigger('footable_redraw');
             });
 
+ $(window).resize(function() {
+        if(this.resizeTO) clearTimeout(this.resizeTO);
+        this.resizeTO = setTimeout(function() {
+            $(this).trigger('resizeEnd');
+        }, 100);
+    });
+
+
+  $(window).on('resizeEnd', function() {
+      //do something, window hasn't changed size in 100ms
+      hideFootableExpandButtons();
+  });
+
+  $(window).on('load', function() {
+       hideFootableExpandButtons();
+  });
+
+
 })
+
+  function hideFootableExpandButtons(){
+      $('.footable').each(function(){
+        if($(this).hasClass('phone'))
+        {
+          $(this).parent().prev().children('.buttons').show();
+        }
+        else
+        {
+          $(this).parent().prev().children('.buttons').hide();
+        }
+      });
+  }
+
 </script>
 
 </head>
@@ -134,9 +166,9 @@ $(document).ready(function(){
                       <tr>
   				      				<th data-toggle="true">Ώρα</th>
   				      				<th>Μάθημα</th>
-  				      				<th data-hide="phone">Διδάσκων</th>
+  				      				<!-- <th data-hide="phone">Διδάσκων</th> -->
   				      				<th data-hide="phone">Τμήμα</th>
-  				      				<th data-hide="phone,tablet">Αίθουσα</th>
+  				      				<th data-hide="phone">Αίθουσα</th>
                       </tr>
 				      			</thead>
 				      			<tbody>
@@ -144,7 +176,7 @@ $(document).ready(function(){
 				      					<tr>
 				      						<td><?php echo date('H:i',strtotime($data['start_tm'])).'-'.date('H:i',strtotime($data['end_tm']))?></td>
 				      						<td><?php echo $data['title']?></td>
-				      						<td><?php echo $data['nickname']?></td>
+				      						<!-- <td><?php echo $data['nickname']?></td> -->
 				      						<td><?php echo $data['section']?></td>
 				      						<td><?php echo $data['classroom']?></td>
 				      					</tr>
@@ -193,7 +225,7 @@ $(document).ready(function(){
                   <table class="footable table table-striped table-condensed">
                     <thead>
                       <tr>
-                        <th data-class="expand">Τμήμα</th>
+                        <th data-toggle="true">Τμήμα</th>
                         <th data-hide="phone">Αρ. Ατόμων</th>
                         <th>Μάθημα</th>
                         <th>Ώρες</th>

@@ -8,6 +8,34 @@ $(document).ready(function(){
             $('table').trigger($(this).data('trigger')).trigger('footable_redraw');
         });
 
+$(window).resize(function() {
+      if(this.resizeTO) clearTimeout(this.resizeTO);
+      this.resizeTO = setTimeout(function() {
+          $(this).trigger('resizeEnd');
+      }, 100);
+  });
+
+
+$(window).on('resizeEnd', function() {
+    //do something, window hasn't changed size in 100ms
+    hideFootableExpandButtons();
+});
+
+$(window).on('load', function() {
+     hideFootableExpandButtons();
+});
+
+function hideFootableExpandButtons(){
+    if($('.footable').hasClass('default'))
+    {
+      $('.buttons').hide();
+    }
+    else
+    {
+      $('.buttons').show();
+    }
+}
+
 //delete multiple absences using the select checkboxes and the combobox below (the action fires through ajax)
   $('#select_action').change(function(){
       var act=$(this).val();
@@ -185,11 +213,13 @@ $(document).ready(function(){
           				<i class="icon-flag"></i>
         			</span>
     				<h3 class="panel-title">Απουσιολόγιο</h3>
+            <?php if (!empty($absences)):?>
             <div class="buttons">
                 <!-- <button enabled id="editform1" type="button" class="btn btn-default btn-sm" data-toggle="button"><i class="icon-edit"></i></button> -->
                 <a enabled data-trigger="footable_expand_all" class="toggle btn btn-default btn-sm" href="#expandall"><i class="icon-angle-down"></i></a>
                 <a enabled data-trigger="footable_collapse_all" style="display: none" class="toggle btn btn-default btn-sm" href="#collapseall"><i class="icon-angle-up"></i></a>
             </div>
+          <?php endif;?>
       			</div>
     			<div class="panel-body">
   					<?php if (!empty($absences)):?>
