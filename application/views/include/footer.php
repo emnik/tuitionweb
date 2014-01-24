@@ -1,15 +1,22 @@
     <footer class="footer">
         <div class="container">
 			<div class="row">
-				<div class="col-xs-12">
-					<small><i class="icon-code"></i> 
+				<div class="col-lg-9 col-sm-8 col-xs-12 pull-left">
+					<small>
+						<i class="icon-code"></i> 
 						Designed and build by <a href="mailto:nikiforakis.m@gmail.com">Nikiforakis Manos</a><br>
-						Build with <a href="http://ellislab.com/codeigniter">CodeIgniter</a> 
-						and <a href="http://getbootstrap.com/">Bootstrap</a>. 
-						Icons by <a href="http://fortawesome.github.io/Font-Awesome/">
+						<!-- Build with <a href="http://ellislab.com/codeigniter">CodeIgniter</a> 
+						and <a href="http://getbootstrap.com/">Bootstrap</a>. -->
+						Icons by <a href="http://fortawesome.github.io/Font-Awesome/3.2.1/">
 						<i class="icon-flag"> </i>Font Awesome Icons</a>
 					</small>
 				</div>
+				<div class="col-lg-3 col-sm-4 col-xs-12">
+					<div class="social">
+						<span><i class="icon-facebook-sign icon-2x"></i> facebook</span>
+						<span><i class="icon-twitter-sign icon-2x"></i> twitter</span>
+					</div>
+				</div>			
 			</div>
 		</div>
 	</footer>
@@ -115,12 +122,6 @@ function fastgo(section){
 </div>
 
 <?php endif;?>
-
-
-<script type="text/javascript">
-
-</script>
-
 
 </body>
 

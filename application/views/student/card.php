@@ -1,3 +1,6 @@
+<link href="<?php echo base_url('assets/bootstrap-datepicker-1.3.0/css/datepicker3.css') ?>" rel="stylesheet">
+<script src="<?php echo base_url('assets/bootstrap-datepicker-1.3.0/js/bootstrap-datepicker.js') ?>" ></script>
+<script src="<?php echo base_url('assets/bootstrap-datepicker-1.3.0/js/locales/bootstrap-datepicker.el.js') ?>" charset="UTF-8"></script>
 <script type="text/javascript">
 
 function toggleedit(togglecontrol, id) {
@@ -113,6 +116,23 @@ $(document).ready(function(){
     $('li.dash').click(function(){
       $('#footerModal').modal();
     });
+
+
+    $('.datecontainer input')
+    .datepicker({
+        format: "dd-mm-yyyy",
+        language: "el",
+        autoclose: true,
+        todayHighlight: true
+    })
+    .on('focus click tap vclick', function (event) {
+    //stop keyboard events and focus on the datepicker widget to get the date.
+    //this is most usefull in android where the android's keyboard was getting in the way...
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        $(this).blur();
+    });
+    
 
 }); //end of (document).ready
 
@@ -375,7 +395,7 @@ function paste_name(where,who){
                        </div>
                      </div>
                     <div class="col-md-6 col-sm-6">
-                      <div class="form-group">
+                      <div class="form-group datecontainer">
                         <label>Ημ/νία εγγραφής</label>  
                         <input disabled type="text" class="form-control" placeholder="" name="reg_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['reg_dt'])));?>" ></input>
                       </div>
@@ -383,13 +403,13 @@ function paste_name(where,who){
                   </div>                  
                     <div class="row">
                       <div class="col-md-6 col-sm-6">
-                        <div class="form-group">
+                        <div class="form-group datecontainer">
                           <label>Ημ/νία έναρξης</label>
                           <input disabled  type="text"  class="form-control"  placeholder="" name="start_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['start_lessons_dt'])));?>"></input>
                         </div>
                       </div>
                       <div class="col-md-6 col-sm-6">
-                        <div class="form-group">
+                        <div class="form-group datecontainer">
                           <label>Ημ/νία διαγραφής</label>
                           <input disabled type="text"  class="form-control"  placeholder="" name="del_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['del_lessons_dt'])));?>"></input>
                         </div>

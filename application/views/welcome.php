@@ -29,6 +29,12 @@
         }
         
     });
+
+  $('.welcome-title').click(function(){
+    $(this).find('.icon').toggle();
+    $(this).parent().siblings().toggle();
+  });
+
   });
 </script>
 
@@ -109,45 +115,128 @@
       <div class="col-md-8"> <!-- submit buttons -->
 
         <div class="row"> <!--first row-->
+            <div class="col-xs-12">
+              <div class="welcome-title">
+                <span class="icon"><i class="icon-minus"></i></span>
+                <span class="icon" style="display:none"><i class="icon-plus"></i></span>
+                Διαχείριση μαθητών
+              </div>
+            </div>
             <div class="col-sm-3 col-xs-6 welcome">
                 <button type="submit" class="btn-link" name="submit" value="submit1">
                   <i class="icon-group icon-4x"></i>
                   <h4>Μαθητολόγιο</h4>
                 </button>
-            </div>
-
-            <div class="col-sm-3 col-xs-6 welcome">
-                <button type="submit" class="btn-link" name="submit" value="submit2">
-                  <i class="icon-user icon-4x"></i>
-                  <h4>Προσωπικό</h4>
-                </button>
-            </div>
-      
-            <div class="col-sm-3 col-xs-6 welcome">
-              <button type="submit" class="btn-link" name="submit" value="submit3">
-                <i class="icon-sitemap icon-4x"></i>
-                <h4>Τμήματα</h4>
-              </button>
+                <div class="small">
+                    Στοιχεία /
+                    Επικοινωνία /
+                    Φοίτηση /
+                    Οικονομικά
+                </div>
             </div>
 
             <div class="col-sm-3 col-xs-6 welcome">
               <button disabled type="submit" class="btn-link" name="submit" value="submit6">
-                <i class="icon-code-fork icon-4x"></i>
-                <h4>Πολλαπλές ενέργειες</h4>
+                <i class="icon-pencil icon-4x"></i>
+                <h4>Διαγωνίσματα</h4>
               </button>
+              <div class="small">
+                    Εισαγωγή /
+                    Βαθμολογίες
+              </div>
+            </div>
+            
+            <div class="clearfix visible-xs"></div>
+            
+            <div class="col-sm-3 col-xs-6 welcome">
+              <button disabled type="submit" class="btn-link" name="submit" value="submit7">
+                <i class="icon-bookmark-empty icon-4x"></i>
+                <h4>Απουσίες</h4>
+              </button>
+              <div class="small">
+                    Εισαγωγή απουσιών
+              </div>
+            </div>
+            
+            <div class="col-sm-3 col-xs-6 welcome ">
+              <button disabled type="submit" class="btn-link" name="submit" value="submit8">
+                <i class="icon-paper-clip icon-4x"></i>
+                <h4>Αρχεία</h4>
+              </button>
+              <div class="small">
+                    Διαχείριση αρχείων
+              </div>
             </div>
 
-        </div> <!--end of first row-->
+        </div><!--end of first row-->
 
-        <div class="row" > <!--second row-->
-            <div class="col-sm-3 col-xs-6 welcome">
+        <div class="row"><!--second row-->
+
+            <div class="col-xs-12">
+              <div class="welcome-title">
+                <span class="icon"><i class="icon-plus"></i></span>
+                <span class="icon" style="display:none"><i class="icon-minus"></i></span>
+                Διαχείριση φροντιστηρίου
+              </div>
+            </div>
+
+            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
+                <button type="submit" class="btn-link" name="submit" value="submit2">
+                  <i class="icon-user icon-4x"></i>
+                  <h4>Προσωπικό</h4>
+                </button>
+                <div class="small">
+                    Στοιχεία /
+                    Πλάνο διδασκαλίας
+                </div>
+            </div>
+      
+            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
+              <button type="submit" class="btn-link" name="submit" value="submit3">
+                <i class="icon-sitemap icon-4x"></i>
+                <h4>Τμήματα</h4>
+              </button>
+              <div class="small">
+                    Στοιχεία /
+                    Μαθητές
+              </div>
+            </div>
+
+            <div class="clearfix visible-xs"></div>
+
+            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
+              <button disabled type="submit" class="btn-link" name="submit" value="submit9">
+                <i class="icon-eur icon-4x"></i>
+                <h4>Ταμείο</h4>
+              </button>
+              <div class="small">
+                    Έξοδα /
+                    Μισθοδοσία
+              </div>
+            </div>
+
+            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
               <button type="submit" class="btn-link" name="submit" value="submit4">
                 <i class="icon-money icon-4x"></i>
                 <h4>Οικονομικά</h4>
               </button>
+              <div class="small">
+                    Σχολικό έτος /
+                    Οικονομικό έτος
+              </div>
             </div>
-            
-            <div class="col-sm-3 col-xs-6 welcome">
+
+        </div> <!--end of second row-->
+
+        <div class="row" style="margin-bottom:20px;"> <!--third row-->
+            <div class="col-xs-12">
+              <div class="welcome-title">
+                <span class="icon"><i class="icon-plus"></i></span>
+                <span class="icon" style="display:none"><i class="icon-minus"></i></span>
+                Ενημέρωση
+              </div>
+            </div>
+            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
               <button disabled type="submit" class="btn-link" name="submit" value="submit5">
                 <i class="icon-print icon-4x"></i>
                 <h4>Αναφορές</h4>
@@ -156,7 +245,7 @@
 
 
 
-        </div> <!--end of second row-->
+        </div> <!--end of third row-->
 
       </div> <!-- end of submit buttons -->
     </form>

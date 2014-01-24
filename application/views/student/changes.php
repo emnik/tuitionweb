@@ -1,3 +1,7 @@
+<link href="<?php echo base_url('assets/bootstrap-datepicker-1.3.0/css/datepicker3.css') ?>" rel="stylesheet">
+<script src="<?php echo base_url('assets/bootstrap-datepicker-1.3.0/js/bootstrap-datepicker.js') ?>" ></script>
+<script src="<?php echo base_url('assets/bootstrap-datepicker-1.3.0/js/locales/bootstrap-datepicker.el.js') ?>" charset="UTF-8"></script>
+
 <script type="text/javascript">
 
 function my_curr_date() {      
@@ -55,8 +59,22 @@ $(document).ready(function() {
           fields.eq(0).attr("name", "change_dt[" + newindex +"]");  
           if (newchange==1 && firstchange==false){
             fields.eq(0).attr('value', my_curr_date());
-          };      
-          
+            fields.eq(0).val(my_curr_date());
+          };
+            $(fields.eq(0)).
+            datepicker({
+                format: "dd-mm-yyyy",
+                language: "el",
+                autoclose: true,
+                todayHighlight: true
+            })
+            .on('focus click tap vclick', function (event) {
+            //stop keyboard events and focus on the datepicker widget to get the date.
+            //this is most usefull in android where the android's keyboard was getting in the way...
+                event.stopImmediatePropagation();
+                event.preventDefault();
+                $(this).blur();
+            });
 
           //----------set prev month price----------
           var prevnew;
@@ -306,6 +324,22 @@ $(document).ready(function() {
     $('#footerModal').modal();
   });
 
+
+    $('.datecontainer input')
+    .datepicker({
+        format: "dd-mm-yyyy",
+        language: "el",
+        autoclose: true,
+        todayHighlight: true
+    })
+    .on('focus click tap vclick', function (event) {
+    //stop keyboard events and focus on the datepicker widget to get the date.
+    //this is most usefull in android where the android's keyboard was getting in the way...
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        $(this).blur();
+    });
+
 }); //end of $(document).ready()
 
 //ajax to get current price
@@ -512,7 +546,7 @@ $(document).ready(function() {
                     <input type="checkbox" name="select[<?php echo $data['id'];?>]" value="0"></input>
                   </div>
                   
-                  <div class="col-md-2 col-sm-2">
+                  <div class="col-md-2 col-sm-2 datecontainer">
                     <input type="text" class="form-control" placeholder="Ημερομηνία μεταβολής" name="change_dt[<?php echo $data['id'];?>]" value="<?php echo implode('-', array_reverse(explode('-', $data['change_dt'])));?>"></input>
                   </div>
 
@@ -594,7 +628,7 @@ $(document).ready(function() {
                     <legend class="paylegend"></legend>  
                     <div class="clearfix"></div>   
                          <div class="row"> <!--main form row-->
-                            <div class="col-md-2 col-sm-2">
+                            <div class="col-md-2 col-sm-2 datecontainer">
                               <input type="text" id="changedt1" class="form-control" placeholder="Ημερομηνία μεταβολής" name="change_dt[-1]" value="">
                             </div>
 

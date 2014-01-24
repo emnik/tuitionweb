@@ -1,3 +1,7 @@
+<link href="<?php echo base_url('assets/bootstrap-datepicker-1.3.0/css/datepicker3.css') ?>" rel="stylesheet">
+<script src="<?php echo base_url('assets/bootstrap-datepicker-1.3.0/js/bootstrap-datepicker.js') ?>" ></script>
+<script src="<?php echo base_url('assets/bootstrap-datepicker-1.3.0/js/locales/bootstrap-datepicker.el.js') ?>" charset="UTF-8"></script>
+
 <style type="text/css">
   input.checkall {
       margin-right: 7px; 
@@ -78,12 +82,30 @@ $(document).ready(function() {
           };
 
           //-------------set new date---------------
-          //I use attr to set the new value because the input is "dirty". If I use val() then 
-          //it changes the visible value but not the value property of the field!!!
           fields.eq(1).attr("name", "apy_dt[" + newindex +"]");  
           if (newpay==1 && firstpay==false){
+            //I use attr to set the new value because the input is "dirty". If I use val() then 
+            //it changes the visible value but not the value property of the field!!!
             fields.eq(1).attr('value', my_curr_date());
-          };      
+            //when I use the datepicker in the last field (the one it gets cloned) then the attr
+            //changes the value property but not the visible value!!! (exact the opposite of above)
+            //so I also use val and in both cases it works as expected
+            fields.eq(1).val(my_curr_date());
+          };
+          $(fields.eq(1)).
+          datepicker({
+              format: "dd-mm-yyyy",
+              language: "el",
+              autoclose: true,
+              todayHighlight: true
+          })
+          .on('focus click tap vclick', function (event) {
+          //stop keyboard events and focus on the datepicker widget to get the date.
+          //this is most usefull in android where the android's keyboard was getting in the way...
+              event.stopImmediatePropagation();
+              event.preventDefault();
+              $(this).blur();
+          });
           
           //----------set new month ammount----------
           fields.eq(2).attr("name", "amount[" + newindex +"]");  
@@ -314,7 +336,6 @@ $(document).ready(function() {
    //color red the credit payments
    $('input[name^="is_credit"]').each(function(){
     if($(this).val()==1){
-      console.log('found');
       $(this).parent().parent().parent().parent().find('.paylegend').css('color','red');
     }
    });
@@ -350,6 +371,23 @@ $(document).ready(function() {
   $('li.dash').click(function(){
     $('#footerModal').modal();
   });
+
+
+    $('.datecontainer input')
+    .datepicker({
+        format: "dd-mm-yyyy",
+        language: "el",
+        autoclose: true,
+        todayHighlight: true
+    })
+    .on('focus click tap vclick', function (event) {
+    //stop keyboard events and focus on the datepicker widget to get the date.
+    //this is most usefull in android where the android's keyboard was getting in the way...
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        $(this).blur();
+    });
+
 
 }) //end of (document).ready()
 
@@ -626,7 +664,7 @@ $(document).ready(function() {
                               <input type="text" class="form-control" placeholder="Αριθμός ΑΠΥ" name="apy_no[<?php echo $data['id'];?>]" value="<?php echo $data['apy_no'];?>">
                             </div>
 
-                            <div class="col-md-2 col-sm-2">
+                            <div class="col-md-2 col-sm-2 datecontainer">
                               <input type="text" class="form-control" placeholder="Ημερομηνια ΑΠΥ" name="apy_dt[<?php echo $data['id'];?>]" value="<?php echo implode('-', array_reverse(explode('-', $data['apy_dt'])));?>">
                             </div>
 
@@ -722,7 +760,7 @@ $(document).ready(function() {
                               <input type="text" id="apyno1" class="form-control" name="apy_no[-1]" value="">
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-2 datecontainer">
                               <input type="text" id="apydate1" class="form-control" name="apy_dt[-1]" value="">
                             </div>
 

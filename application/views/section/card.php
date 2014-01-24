@@ -1,3 +1,5 @@
+<link href="<?php echo base_url('assets/bootstrap3-timepicker-0.2.6/css/bootstrap-timepicker.min.css') ?>" rel="stylesheet">
+<script src="<?php echo base_url('assets/bootstrap3-timepicker-0.2.6/js/bootstrap-timepicker.min.js') ?>" ></script>
 
 <style type="text/css">
 
@@ -110,12 +112,32 @@ $(document).ready(function(){
           inputfields.eq(0).attr('id', "starttm["+newdayindex+"]");
           inputfields.eq(0).prop('value', '');  
           inputfields.eq(0).attr('value', '');  
+          $(inputfields.eq(0))
+          .timepicker({
+            showMeridian:false,
+            showSeconds:false,
+            defaultTime:false,
+            disableFocus:false, 
+            showInputs:false,           
+            minuteStep:15
+          })
+          .timepicker('setTime', '15:00');
 
           //-------------set new end_tm---------------
           inputfields.eq(1).attr("name", "end_tm[" + newdayindex +"]");        
           inputfields.eq(1).attr('id', "endtm["+newdayindex+"]");
           inputfields.eq(1).prop('value', '');  
           inputfields.eq(1).attr('value', '');
+          $(inputfields.eq(1))
+          .timepicker({
+            showMeridian:false,
+            showSeconds:false,
+            defaultTime:false,
+            disableFocus:false,
+            showInputs:false,
+            minuteStep:15
+          })
+          .timepicker('setTime', '15:00');
 
           //-------------set new classroom---------------
           inputfields.eq(2).attr("name", "classroom_id[" + newdayindex +"]");        
@@ -138,6 +160,14 @@ $(document).ready(function(){
           }
         });
 
+        $('.timecontainer input').timepicker({
+          showMeridian:false,
+          showSeconds:false,
+          minuteStep:15,
+          defaultTime:false,
+          disableFocus:false,
+          showInputs:false,
+        });
 
 }) //end of (document).ready(function())
 
@@ -525,16 +555,16 @@ function gettutors(){
                           </div>
 
                       <div class="col-xs-3">
-                          <div class="form-group">
-                                <label>Έναρξη</label>
-                                <input disabled class="form-control" id="starttm[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="start_tm[<?php echo $daysectionprog['id'];?>]" value="<?php echo date('H:i',strtotime($daysectionprog['start_tm']));?>">
-                        </div>
-                          </div>
-                      <div class="col-xs-3">
+                            <div class="form-group timecontainer">
+                                  <label>Έναρξη</label>
+                                  <input disabled class="form-control" id="starttm[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="start_tm[<?php echo $daysectionprog['id'];?>]" value="<?php echo date('H:i',strtotime($daysectionprog['start_tm']));?>">
+                            </div>
+                            </div>
+                          <div class="col-xs-3 timecontainer">
                             <div class="form-group">
-                          <label>Λήξη</label>
+                                <label>Λήξη</label>
                                 <input disabled class="form-control" id="endtm[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="end_tm[<?php echo $daysectionprog['id'];?>]" value="<?php echo date('H:i',strtotime($daysectionprog['end_tm']));?>">
-                        </div>
+                            </div>
                           </div>
                           <div class="col-xs-3">
                               <div class="form-group">
@@ -564,19 +594,18 @@ function gettutors(){
                                 </select>
                         </div>
                           </div>
-
                       <div class="col-xs-3">
-                          <div class="form-group">
+                          <div class="form-group timecontainer">
                                 <label>Έναρξη</label>
                                 <input disabled class="form-control" id="starttm[-1]" type="text" placeholder="" name="start_tm[-1]" value="">
-                        </div>
                           </div>
+                      </div>
                       <div class="col-xs-3">
-                            <div class="form-group">
-                          <label>Λήξη</label>
+                            <div class="form-group timecontainer">
+                                <label>Λήξη</label>
                                 <input disabled class="form-control" id="endtm[-1]" type="text" placeholder="" name="end_tm[-1]" value="">
-                        </div>
-                          </div>
+                            </div>
+                      </div>
                           <div class="col-xs-3">
                               <div class="form-group">
                                 <label>Αίθουσα</label>
