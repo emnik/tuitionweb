@@ -3,8 +3,7 @@
 <link href="<?php echo base_url('assets/bootstrap-datepicker-1.3.0/css/datepicker3.css') ?>" rel="stylesheet">
 <script src="<?php echo base_url('assets/bootstrap-datepicker-1.3.0/js/bootstrap-datepicker.js') ?>" ></script>
 <script src="<?php echo base_url('assets/bootstrap-datepicker-1.3.0/js/locales/bootstrap-datepicker.el.js') ?>" charset="UTF-8"></script>
-<!-- Using https://github.com/ivaynberg/select2 -->
-<!-- with https://github.com/t0m/select2-bootstrap-css -->
+<!-- Using https://github.com/ivaynberg/select2 with https://github.com/t0m/select2-bootstrap-css -->
 <link href="<?php echo base_url('assets/select2/select2.css')?>" rel="stylesheet">
 <link href="<?php echo base_url('assets/select2/select2-bootstrap.css')?>" rel="stylesheet">
 <script src="<?php echo base_url('assets/select2/select2.js')?>"></script>
@@ -19,6 +18,8 @@ function toggleedit(togglecontrol, id) {
       $(this).attr('disabled', 'disabled');
       $(this).find('btn').attr('disabled','disabled');
       });
+      $('#submitbtn').attr('disabled', 'disabled');
+      $('#cancelbtn').attr('disabled', 'disabled');
     }
   
   else {
@@ -26,6 +27,8 @@ function toggleedit(togglecontrol, id) {
       $(this).removeAttr('disabled');
       });
       $(this).find('btn').removeAttr('disabled');
+      $('#submitbtn').removeAttr('disabled');
+      $('#cancelbtn').removeAttr('disabled');
     }
 
 }
@@ -84,12 +87,6 @@ $(document).ready(function(){
           getlessons();
         }); //end change event 
 
-
-        // $('#lessons').change(function(){
-        //   gettutors();
-        // }); //end change event 
-          
- 
         $('.timecontainer input').timepicker({
           showMeridian:false,
           showSeconds:false,
@@ -220,11 +217,35 @@ function getlessons(){
 
       <div class="navbar-collapse collapse" role="navigation">
         <ul class="nav navbar-nav">
-            <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-            <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-            <li><a href="<?php echo base_url()?>section">Τμήματα</a></li>
-            <li><a href="<?php echo base_url()?>finance">Οικονομικά</a></li>
-            <li><a href="#reports">Αναφορές</a></li>
+           <li class="dropdown">
+              <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
+                <li class="active"><a href="<?php echo base_url()?>exams">Διαγωνίσματα</a></li>
+                <li><a href="<?php echo base_url()?>files">Αρχεία</a></li>
+                <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li>
+                <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li>
+              </ul>
+            </li>
+           <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Οργάνωση/Διαχείριση<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
+                <li><a href="<?php echo base_url()?>section">Τμήματα</a></li>
+                <li><a href="<?php echo base_url()?>">Πρόγραμμα Σπουδών</a></li>
+                <li><a href="<?php echo base_url()?>">Μαθήματα-Διδάσκωντες</a></li>
+                <li><a href="<?php echo base_url()?>">Στοιχεία Φροντιστηρίου</a></li>
+              </ul>
+            </li>
+           <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Συγκεντρωτικές Αναφορές<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="<?php echo base_url()?>">Αναφορές</a></li>
+                <li><a href="<?php echo base_url()?>">Ιστορικό</a></li>
+                <li><a href="<?php echo base_url()?>">Τηλ. Κατάλογοι</a></li>
+                <li><a href="<?php echo base_url()?>finance">Οικονομικά</a></li>
+              </ul>
+            </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
@@ -402,8 +423,8 @@ function getlessons(){
 
     <div class="row">
     	<div class="col-md-12">    
-        	<button id="submitbtn" type="submit" class="btn btn-primary">Αποθήκευση</button>
-        	<button id="cancelbtn" type="button" class="btn btn-default">Ακύρωση</button>
+        	<button disabled id="submitbtn" type="submit" class="btn btn-primary">Αποθήκευση</button>
+        	<button disabled id="cancelbtn" type="button" class="btn btn-default">Ακύρωση</button>
     	</div>
     </div>
 

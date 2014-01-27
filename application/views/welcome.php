@@ -119,7 +119,7 @@
               <div class="welcome-title">
                 <span class="icon"><i class="icon-minus"></i></span>
                 <span class="icon" style="display:none"><i class="icon-plus"></i></span>
-                Διαχείριση μαθητών
+                Λειτουργία Φροντιστηρίου
               </div>
             </div>
             <div class="col-sm-3 col-xs-6 welcome">
@@ -149,7 +149,7 @@
             <div class="clearfix visible-xs"></div>
             
            
-            <div class="col-sm-3 col-xs-6 welcome ">
+            <div class="col-sm-3 col-xs-6 welcome">
               <button disabled type="submit" class="btn-link" name="submit" value="submit8">
                 <i class="icon-paper-clip icon-4x"></i>
                 <h4>Αρχεία</h4>
@@ -159,6 +159,28 @@
               </div>
             </div>
 
+            <div class="col-sm-3 col-xs-6 welcome">
+              <button disabled type="submit" class="btn-link" name="submit" value="submit9">
+                <i class="icon-eur icon-4x"></i>
+                <h4>Ταμείο</h4>
+              </button>
+              <div class="small">
+                    Έξοδα /
+                    Μισθοδοσία
+              </div>
+            </div>
+
+              <div class="col-sm-3 col-sm-pull-6 col-xs-6 welcome">
+                <button disabled type="submit" class="btn-link" name="submit" value="submit9">
+                  <i class="icon-bullhorn icon-4x"></i>
+                  <h4>Ανακοινώσεις</h4>
+                </button>
+                <div class="small">
+                      Προς Μαθητές /
+                      Καθηγητές /
+                      Γονείς
+                </div>
+              </div>
         </div><!--end of first row-->
 
         <div class="row"><!--second row-->
@@ -167,7 +189,7 @@
               <div class="welcome-title">
                 <span class="icon"><i class="icon-plus"></i></span>
                 <span class="icon" style="display:none"><i class="icon-minus"></i></span>
-                Διαχείριση φροντιστηρίου
+                Οργάνωση / Διαχείριση φροντιστηρίου
               </div>
             </div>
 
@@ -184,7 +206,7 @@
       
             <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
               <button type="submit" class="btn-link" name="submit" value="submit3">
-                <i class="icon-sitemap icon-4x"></i>
+                <i class="icon-tags icon-4x"></i>
                 <h4>Τμήματα</h4>
               </button>
               <div class="small">
@@ -197,13 +219,85 @@
             <div class="clearfix visible-xs"></div>
 
             <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
-              <button disabled type="submit" class="btn-link" name="submit" value="submit9">
-                <i class="icon-eur icon-4x"></i>
-                <h4>Ταμείο</h4>
+              <button disabled type="submit" class="btn-link" name="submit" value="submit4">
+                <i class="icon-sitemap icon-4x"></i>
+                <h4>Πρόγραμμα σπουδών</h4>
               </button>
               <div class="small">
-                    Έξοδα /
-                    Μισθοδοσία
+                    Τάξεις / 
+                    Κατευθύνσεις /
+                    Μαθήματα
+              </div>
+            </div>
+
+            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
+              <button disabled type="submit" class="btn-link" name="submit" value="submit4">
+                <i class="icon-th-list icon-4x"></i>
+                <h4>Μαθήματα-Διδασκοντες</h4>
+              </button>
+              <div class="small">
+                    Αντιστοίχιση μαθημάτων - διδασκώντων
+              </div>
+            </div>
+
+
+            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
+              <button disabled type="submit" class="btn-link" name="submit" value="submit4">
+                <i class="icon-building icon-4x"></i>
+                <h4>Στοιχεία Φροντιστηρίου</h4>
+              </button>
+              <div class="small">
+                    Επωνυμία / Διεύθυνση / ΑΦΜ...
+              </div>
+            </div>
+
+        </div> <!--end of second row-->
+
+        <div class="row" style="margin-bottom:20px;"> <!--third row-->
+            <div class="col-xs-12">
+              <div class="welcome-title">
+                <span class="icon"><i class="icon-plus"></i></span>
+                <span class="icon" style="display:none"><i class="icon-minus"></i></span>
+                Συγκεντρωτικές αναφορές
+              </div>
+            </div>
+
+            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
+              <button disabled type="submit" class="btn-link" name="submit" value="submit5">
+                <i class="icon-bookmark-empty icon-4x"></i>
+                <h4>Αναφορές</h4>
+              </button>
+              <div class="small">
+                    Αρ.μαθητών ανά τάξη /
+                    ανα μάθημα / 
+                    Καθηγητές ανά μαθητή-τάξη/ 
+                    Μαθητές με διακοπή / 
+                    xωρίς στοιχεία φοίτησης ...
+              </div>
+            </div>
+
+
+            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
+              <button disabled type="submit" class="btn-link" name="submit" value="submit7">
+                <i class="icon-time icon-4x"></i>
+                <h4>Ιστορικό</h4>
+              </button>
+              <div class="small">
+                    Απουσιών /
+                    ΑΠΥ
+              </div>
+            </div>
+
+            <div class="clearfix visible-xs"></div>
+
+            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
+              <button disabled type="submit" class="btn-link" name="submit" value="submit7">
+                <i class="icon-phone icon-4x"></i>
+                <h4>Τηλ. Κατάλογοι</h4>
+              </button>
+              <div class="small">
+                    Μαθητών /
+                    Προσωπικού
               </div>
             </div>
 
@@ -217,35 +311,6 @@
                     Οικονομικό έτος
               </div>
             </div>
-
-        </div> <!--end of second row-->
-
-        <div class="row" style="margin-bottom:20px;"> <!--third row-->
-            <div class="col-xs-12">
-              <div class="welcome-title">
-                <span class="icon"><i class="icon-plus"></i></span>
-                <span class="icon" style="display:none"><i class="icon-minus"></i></span>
-                Ενημέρωση
-              </div>
-            </div>
-            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
-              <button disabled type="submit" class="btn-link" name="submit" value="submit5">
-                <i class="icon-print icon-4x"></i>
-                <h4>Αναφορές</h4>
-              </button>
-            </div>
-
-            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
-              <button disabled type="submit" class="btn-link" name="submit" value="submit7">
-                <i class="icon-bookmark-empty icon-4x"></i>
-                <h4>Απουσίες</h4>
-              </button>
-              <div class="small">
-                    Ιστορικό απουσιών
-              </div>
-            </div>
-
-
 
         </div> <!--end of third row-->
 

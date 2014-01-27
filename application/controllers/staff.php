@@ -102,6 +102,7 @@ public function card($id, $subsection=null, $innersubsection=null) {
 	 }
 
 	$this->load->model('staff/card_model');
+
 	$data['emplcard']=array();
 	if (!empty($_POST)) {
 	 	foreach ($_POST as $key => $value) 
