@@ -421,7 +421,7 @@ function noprograminfo(){
       			<div class="row">
       				<div class="col-md-12">
                 <div class="form-group"> <!--needed for margins... -->
-      					   <button type="button" class="btn btn-primary pull-right" id="addsubmit" name="addsubmit">Εισαγωγή</button>
+      					   <button style="margin-top:10px;" type="button" class="btn btn-primary pull-right" id="addsubmit" name="addsubmit">Εισαγωγή</button>
       				  </div>
               </div>
       			</div>

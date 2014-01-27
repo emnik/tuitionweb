@@ -136,28 +136,19 @@
             </div>
 
             <div class="col-sm-3 col-xs-6 welcome">
-              <button disabled type="submit" class="btn-link" name="submit" value="submit6">
+              <button type="submit" class="btn-link" name="submit" value="submit6">
                 <i class="icon-pencil icon-4x"></i>
                 <h4>Διαγωνίσματα</h4>
               </button>
               <div class="small">
-                    Εισαγωγή /
-                    Βαθμολογίες
+                    Προγραμματισμός /
+                    Συμμετέχοντες
               </div>
             </div>
             
             <div class="clearfix visible-xs"></div>
             
-            <div class="col-sm-3 col-xs-6 welcome">
-              <button disabled type="submit" class="btn-link" name="submit" value="submit7">
-                <i class="icon-bookmark-empty icon-4x"></i>
-                <h4>Απουσίες</h4>
-              </button>
-              <div class="small">
-                    Εισαγωγή απουσιών
-              </div>
-            </div>
-            
+           
             <div class="col-sm-3 col-xs-6 welcome ">
               <button disabled type="submit" class="btn-link" name="submit" value="submit8">
                 <i class="icon-paper-clip icon-4x"></i>
@@ -198,6 +189,7 @@
               </button>
               <div class="small">
                     Στοιχεία /
+                    Πρόγραμμα /
                     Μαθητές
               </div>
             </div>
@@ -241,6 +233,16 @@
                 <i class="icon-print icon-4x"></i>
                 <h4>Αναφορές</h4>
               </button>
+            </div>
+
+            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
+              <button disabled type="submit" class="btn-link" name="submit" value="submit7">
+                <i class="icon-bookmark-empty icon-4x"></i>
+                <h4>Απουσίες</h4>
+              </button>
+              <div class="small">
+                    Ιστορικό απουσιών
+              </div>
             </div>
 
 

@@ -107,8 +107,8 @@ public function index() {
 				#code...
 				break;
 
-			case 'submit6': // Διαχείριση
-				#code...
+			case 'submit6': // Διαγωνίσματα
+				redirect('exams');
 				break;
 		}
 		

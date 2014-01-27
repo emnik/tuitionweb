@@ -359,12 +359,12 @@ function paste_name(where,who){
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                  <div class="form-group">
+                  <!-- <div class="form-group"> -->
                     <label>Παρατηρήσεις</label>
                     <textarea disabled class="form-control" rows="3" name="notes">
                       <?php echo $regcard['notes'];?>
                     </textarea>  
-                  </div>
+                  <!-- </div> -->
                 </div>
                 </div>
             </div> <!-- end of panel-body -->
