@@ -320,8 +320,7 @@ function resizeWindow(e)
       
       <div>
       <ul class="breadcrumb">
-        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
-        <li class="active">Λειτουργία</li>
+        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική</a></li>
         <li class="active">Μαθητολόγιο</li>
         <li class="dash" style><i class="icon-dashboard icon-small"></i></li>
       </ul>

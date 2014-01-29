@@ -21,6 +21,7 @@ ul.nav > li.dropdown> ul.dropdown-menu>li.active>a{
   background-color: red;
 }
 
+
 /*Change default divider for breadcrumb*/
 .breadcrumb > li + li:before {
     content: "> ";

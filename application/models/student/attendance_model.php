@@ -61,11 +61,7 @@ public function get_attendance_general_data($id){
 	
 	if ($query->num_rows() > 0) 
 		{
-			foreach($query->result_array() as $row) 
-				{
-					$students_program[] = $row;
-				}
-			return $students_program;
+			return $query->result_array();
 		}
 	else 
 		{

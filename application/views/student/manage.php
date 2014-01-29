@@ -79,7 +79,7 @@ $(document).ready(function(){
           $(this).removeAttr('checked');
         });
         $('#delsubmit').attr("disabled", "disabled");
-        $('#selectall').html('<a href="#" onclick="selectall();return false;"><i class="icon-edit"> Eπιλογή όλων</i><a>');
+        $('#selectall').html('<a href="#" class="btn btn-xs btn-default" onclick="selectall();return false;"><i class="icon-edit"></i> Eπιλογή όλων<a>');
     } );
 
 
@@ -208,12 +208,12 @@ $(document).ready(function(){
       }
       else if (count==Nodes){
         $('#delsubmit').removeAttr("disabled");  
-        $('#selectall').html('<a href="#" onclick="deselectall();return false;"><i class="icon-share"> Αποεπιλογή όλων</i><a>');
+        $('#selectall').html('<a href="#" class="btn btn-xs btn-default" onclick="deselectall();return false;"><i class="icon-share"></i> Αποεπιλογή όλων<a>');
       }
       else
       {
         $('#delsubmit').attr("disabled", "disabled");
-        $('#selectall').html('<a href="#" onclick="selectall();return false;"><i class="icon-check"> Eπιλογή όλων</i><a>');
+        $('#selectall').html('<a href="#" class="btn btn-xs btn-default" onclick="selectall();return false;"><i class="icon-check"></i> Eπιλογή όλων<a>');
       }
     });
     
@@ -228,7 +228,7 @@ $(document).ready(function(){
       }
     });
 
-    $('#sectionsmultiple').on("mouseup", function(){
+    $('#sectionsmultiple').on("mouseup click", function(){
       //I use mouse up to catch items even if the user used dragging to select multiple items
       var count = $('#sectionsmultiple option:selected').length;
       if (count>0){
@@ -267,7 +267,7 @@ function selectall(){
         $(this).prop('checked', true);
     });
     $('#delsubmit').removeAttr('disabled');
-    $('#selectall').html('<a href="#" onclick="deselectall();return false;"><i class="icon-share"> Αποεπιλογή όλων</i><a>');
+    $('#selectall').html('<a href="#" class="btn btn-xs btn-default" onclick="deselectall();return false;"><i class="icon-share"></i> Αποεπιλογή όλων<a>');
 };
 
 function deselectall(){
@@ -275,7 +275,7 @@ function deselectall(){
         $(this).prop('checked', false);
     });
     $('#delsubmit').attr('disabled','disabled');
-    $('#selectall').html('<a href="#" onclick="selectall();return false;"><i class="icon-check"> Eπιλογή όλων</i><a>');
+    $('#selectall').html('<a href="#" class="btn btn-xs btn-default" onclick="selectall();return false;"><i class="icon-check"></i> Eπιλογή όλων<a>');
 };
 
 function noprograminfo(){
@@ -484,7 +484,7 @@ function noprograminfo(){
         			<div class="row">
         				<div class="col-md-12">
                   <div id="selectall">
-                    <a href="#" onclick="selectall();return false;"><i class="icon-check"> Επιλογή όλων</i><a>
+                    <a href="#" class="btn btn-xs btn-default" onclick="selectall();return false;"><i class="icon-check"></i> Επιλογή όλων<a>
                   </div>
         					<button type="button" class="btn btn-danger pull-right" id="delsubmit" name="delsubmit">Διαγραφή επιλεγμένων</button>
         				</div>
