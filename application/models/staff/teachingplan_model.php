@@ -105,5 +105,83 @@ function get_section_students($section_id){
 }
 
 
+	public function get_exams_by_employeeid($id, $startsch)
+	{
+
+		$query = $this->db->distinct()
+						  ->select(array('exam_schedule.id','exam_schedule.date','catalog_lesson.title', 'class.class_name' ,'course.course'))
+						  ->from('section')
+						  ->join('lesson_tutor', 'section.tutor_id = lesson_tutor.id')
+						  ->join('employee', 'lesson_tutor.employee_id = employee.id')
+						  ->join('catalog_lesson', 'lesson_tutor.cataloglesson_id = catalog_lesson.id')
+						  ->join('lesson', 'section.lesson_id = lesson.id')
+						  ->join('course', 'lesson.course_id = course.id')
+						  ->join('class', 'course.class_id = class.id')
+						  ->join('exam_schedule', 'exam_schedule.lesson_id=section.lesson_id')
+						  ->where('employee.id', $id)
+						  ->where('section.schoolyear', $startsch)
+						  ->get();
+
+		if ($query->num_rows()>0)
+		{
+			foreach ($query->result_array() as $row) {
+				$data[]=$row;
+			}
+			return $data;
+		}
+		return false;
+
+	}
+
+	public function get_participants($examids, $id)
+	{
+		$query = $this->db->select(array('exam_id', 'section.section'))
+						  ->from('exam_participant')
+						  ->join('section', 'exam_participant.section_id = section.id')
+						  ->join('lesson_tutor', 'section.tutor_id = lesson_tutor.id')
+						  ->join('employee', 'lesson_tutor.employee_id = employee.id')
+						  ->where_in('exam_participant.exam_id', $examids)
+						  ->where('employee.id', $id)
+						  ->get();
+		if($query->num_rows()>0)
+		{
+			foreach ($query->result_array() as $row) {
+				$data[$row['exam_id']][]=$row['section'];
+			}
+			return $data;
+		}
+		return false;
+	}
+
+	public function get_supervisor_dates($startsch, $id)
+	{
+
+		$dates = $this->db->distinct()
+						  ->select('exam_schedule.date')
+						  ->from('exam_schedule')
+						  ->where_in('startschyear', $startsch)
+						  ->get();
+		
+		if($dates->num_rows()>0)
+		{
+			foreach ($dates->result_array() as $row) {
+				$datesarr[]=$row['date'];
+			}
+
+			$supervisor_dates = $this->db->select('exam_supervisor.date')
+										 ->where_in('date', $datesarr)
+										 ->where('employee_id', $id)
+										 ->get('exam_supervisor');
+			
+			if ($supervisor_dates->num_rows()>0)
+			{
+				foreach ($supervisor_dates->result_array() as $row) {
+					$data[]=$row['date'];
+				}
+				return $data;
+			}
+		}
+		return false;
+	}
 
 }

@@ -14,6 +14,20 @@ $(document).ready(function(){
                 $('table:last').trigger($(this).data('trigger')).trigger('footable_redraw');
             });
 
+  $('.toggle3').click(function() {
+                $('.toggle3').toggle();
+                $('#examtable').trigger($(this).data('trigger')).trigger('footable_redraw');
+            });
+
+  $('input[type=radio]').click(function(){
+    $('#examdetails').removeAttr('disabled');
+  });
+
+  $('#examdetails').click(function(){
+    var examid = $('input[type=radio]:checked').val();
+    window.open("<?php echo base_url('/exam/details');?>/"+examid,'_self', false)
+  });
+
  $(window).resize(function() {
         if(this.resizeTO) clearTimeout(this.resizeTO);
         this.resizeTO = setTimeout(function() {
@@ -38,11 +52,11 @@ $(document).ready(function(){
       $('.footable').each(function(){
         if($(this).hasClass('phone'))
         {
-          $(this).parent().prev().children('.buttons').show();
+          $(this).parents('.panel-body').prev().children('.buttons').show();
         }
         else
         {
-          $(this).parent().prev().children('.buttons').hide();
+          $(this).parents('.panel-body').prev().children('.buttons').hide();
         }
       });
   }
@@ -150,7 +164,7 @@ $(document).ready(function(){
       <ul class="nav nav-tabs">
         <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Στοιχεία</a></li>
         <li class="active"><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan">Πλάνο Διδασκαλίας</a></li>
-        <li><a href="#" >Βαθμολόγιο</a></li>
+        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/gradebook" >Βαθμολόγιο</a></li>
       </ul>
      
       <div class="row">
@@ -169,10 +183,12 @@ $(document).ready(function(){
                   <i class="icon-time"></i>
                 </span>
                 <h3 class="panel-title">Πρόγραμμα ημέρας</h3>
+                <?php if(!empty($dayprogram) && !empty($program)):?>
                   <div class="buttons">
                     <a enabled data-trigger="footable_expand_all" class="toggle1 btn btn-default btn-sm" href="#expandall"><i class="icon-angle-down"></i></a>
                     <a enabled data-trigger="footable_collapse_all" style="display: none" class="toggle1 btn btn-default btn-sm" href="#collapseall"><i class="icon-angle-up"></i></a>
                   </div>
+                <?php endif;?>
               </div>
             <div class="panel-body">
 			      		<?php if(empty($dayprogram)):?>
@@ -221,40 +237,82 @@ $(document).ready(function(){
 		      </div> <!--τέλος ημερησίου προγράμματος-->
 
 		      <div class="row">
-		      	<div class="col-md-6"> <!--απουσίες & πρόοδος-->
+		      	<div class="col-md-7"> <!--Διαγωνίσματα-->
 			      	<div class="row">
-				      	<div class="col-md-12"> <!--Βαθμολογία τελευταίου διαγωνίσματος - Μέσος όρος βαθμολογίας (στο τέλος Περισότερα...) -->
-				      		<div class="panel panel-default">
+				      	<div class="col-md-12"> 
+                	<div class="panel panel-default">
               <div class="panel-heading">
                 <span class="icon">
                   <i class="icon-pencil"></i>
                 </span>
                 <h3 class="panel-title">Διαγωνίσματα</h3>
+                  <?php if(!empty($exam)):?>
+                   <div class="buttons">
+                    <a enabled data-trigger="footable_expand_all" class="toggle1 btn btn-default btn-sm" href="#expandall"><i class="icon-angle-down"></i></a>
+                    <a enabled data-trigger="footable_collapse_all" style="display: none" class="toggle1 btn btn-default btn-sm" href="#collapseall"><i class="icon-angle-up"></i></a>
+                  </div>
+                  <?php endif;?>
               </div>
             <div class="panel-body">
-              <?php if(empty($progress)):?>
                 <div class="row">
                   <div class="col-md-12">  
-                    <p class="text-info">
-                      Δεν υπάρχουν προγραμματισμένα διαγωνίσματα!
-                    </p>
-                    <!-- <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right disabled" onclick="return false;" >Βαθμολόγιο</a> -->
-                  </div>
-                </div>
-              <?php else:?>
-               <div class="row">
-                <div class="col-md-12">  
-                  <!-- <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right" >Βαθμολόγιο</a> -->
+                    <?php if(!empty($supervisor)):?>
+                        <div class="alert alert-warning">
+                           <strong>Eπιτήρηση</strong> στις ακόλουθες ημερομηνίες: <?php echo $supervisor;?>
+                        </div>
+                    <?php endif;?>
+                    <?php if(empty($exam)):?>
+                          <p class="text-info">
+                            Δεν υπάρχουν προγραμματισμένα διαγωνίσματα!
+                          </p>
+                          <a href="<?php echo base_url('/exam')?>" class="btn btn-default btn-sm pull-right">Διαγωνίσματα</a>
+                    <?php else:?>
+                    <label class="label label-warning">Προγραμματισμένα:</label>
+                    <table id="examtable" class="table footable table-striped table-condensed">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th data-toggle="true">Ημερ/νία</th>
+                            <th>Μάθημα</th>
+                            <th>Τάξη</th>
+                            <th data-hide="phone">Κατεύθυνση</th>
+                            <th data-hide="phone">Τμήματα</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php foreach ($exam as $data):?>
+                              <tr>
+                                <td><input class="checkbox" type="radio" name="select" value="<?php echo $data['id'];?>"></td>
+                                <td><?php echo implode('-', array_reverse(explode('-', $data['date'])));?></td>
+                                <td><?php echo $data['title'];?></td>
+                                <td><?php echo $data['class_name'];?></td>
+                                <td><?php echo $data['course'];?></td>
+                                <td><?php if(!empty($data['sections']))
+                                          {
+                                            echo $data['sections'];
+                                          }
+                                          else
+                                          {
+                                            echo '-';
+                                            
+                                          }?>
+                                </td>
+                              </tr>
+                          <?php endforeach;?>
+                        </tbody>
+                    </table>
+                    <button disabled id="examdetails" class="btn btn-warning btn-sm pull-left">Λεπτομέρειες</button>
+                    <a href="<?php echo base_url('/exam')?>" class="btn btn-default btn-sm pull-right">Διαγωνίσματα</a>
+              <?php endif;?>
                 </div>
               </div>
-              <?php endif;?>
 	      		</div>
 	      	</div>
 		    </div>
       </div>
 
    	</div>
-            <div class="col-md-6"> <!--Αριθμός/Ονομασία Τμημάτων - Ίσως και αρ. ατόμων ανα τμήμα-->
+            <div class="col-md-5"> <!--Αριθμός/Ονομασία Τμημάτων - Ίσως και αρ. ατόμων ανα τμήμα-->
               <div class="panel panel-default">
               <div class="panel-heading">
                 <span class="icon">

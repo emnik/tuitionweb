@@ -126,7 +126,7 @@ function toggledays(togglecontrol) {
               <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url()?>exams">Διαγωνίσματα</a></li>
+                <li><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a></li>
                 <li><a href="<?php echo base_url()?>files">Αρχεία</a></li>
                 <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li>
                 <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li>

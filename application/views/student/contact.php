@@ -91,7 +91,7 @@ function makephonecall(phonenum){
               <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url()?>exams">Διαγωνίσματα</a></li>
+                <li><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a></li>
                 <li><a href="<?php echo base_url()?>files">Αρχεία</a></li>
                 <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li>
                 <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li>
@@ -265,7 +265,7 @@ function makephonecall(phonenum){
         </div><!--end of mainform-->
         </div> 
       </div>
-      <div>
+      <div class="btn-group">
         <button disabled id="submitbtn" type="button" class="btn btn-primary">Αποθήκευση</button>
         <button disabled id="cancelbtn" type="button" class="btn btn-default">Ακύρωση</button>
       </div>

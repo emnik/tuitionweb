@@ -49,10 +49,9 @@ $(document).ready(function(){
         });
     });
     
-
-    if($('#active').val()==0){
-      // $('ul.nav.nav-tabs li:last').addClass('hidden');
-      $('ul.nav.nav-tabs li:last').hide();
+    if($('#active').val()==0 || $('select[name=is_tutor]').val()==0){
+      $('ul.nav.nav-tabs li').hide();
+      $('ul.nav.nav-tabs li:first').show();
     };
 
     //if not on phone the makecall buttons become just decorative!
@@ -102,7 +101,7 @@ function makephonecall(phonenum){
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url()?>exams">Διαγωνίσματα</a></li>
+                <li><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a></li>
                 <li><a href="<?php echo base_url()?>files">Αρχεία</a></li>
                 <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li>
                 <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li>
@@ -188,6 +187,7 @@ function makephonecall(phonenum){
       <ul class="nav nav-tabs">
         <li class="active"><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Στοιχεία</a></li>
         <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan">Πλάνο Διδασκαλίας</a></li>
+        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/gradebook" >Βαθμολόγιο</a></li>
       </ul>
 
       <p></p>
@@ -306,8 +306,8 @@ function makephonecall(phonenum){
                       <div class="form-group">
 		                    <label>Καθηγητής</label>
 		                    <select disabled class="form-control" name="is_tutor">
-		                        <option value=1 <?php if($emplcard["is_tutor"] === 1) echo "selected"; ?> >Ναι </option>
-   		                      <option value=0 <?php if($emplcard["is_tutor"] === 0) echo "selected"; ?> >Όχι </option>
+		                        <option value=1 <?php if($emplcard["is_tutor"] == 1) echo "selected"; ?> >Ναι </option>
+   		                      <option value=0 <?php if($emplcard["is_tutor"] == 0) echo "selected"; ?> >Όχι </option>
 		                    </select>
 		                  </div>
                     </div>

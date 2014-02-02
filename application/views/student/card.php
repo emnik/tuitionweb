@@ -173,7 +173,7 @@ function paste_name(where,who){
               <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url()?>exams">Διαγωνίσματα</a></li>
+                <li><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a></li>
                 <li><a href="<?php echo base_url()?>files">Αρχεία</a></li>
                 <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li>
                 <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li>
@@ -414,14 +414,14 @@ function paste_name(where,who){
                         <div class="form-group">
                           <label>Αρ. Μαθητολογίου</label>
                           <div >
-                            <input disabled type="text" class="form-control" placeholder="" name="std_book_no" value="<?php echo $regcard['std_book_no'];?>"></input>
+                            <input disabled type="text" class="form-control" placeholder="" name="std_book_no" value="<?php echo $regcard['std_book_no'];?>">
                           </div>
                        </div>
                      </div>
                     <div class="col-md-6 col-sm-6">
                       <div class="form-group datecontainer">
                         <label>Ημ/νία εγγραφής</label>  
-                        <input disabled type="text" class="form-control" placeholder="" name="reg_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['reg_dt'])));?>" ></input>
+                        <input disabled type="text" class="form-control" placeholder="" name="reg_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['reg_dt'])));?>" >
                       </div>
                     </div>
                   </div>                  
@@ -429,13 +429,13 @@ function paste_name(where,who){
                       <div class="col-md-6 col-sm-6">
                         <div class="form-group datecontainer">
                           <label>Ημ/νία έναρξης</label>
-                          <input disabled  type="text"  class="form-control"  placeholder="" name="start_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['start_lessons_dt'])));?>"></input>
+                          <input disabled  type="text"  class="form-control"  placeholder="" name="start_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['start_lessons_dt'])));?>">
                         </div>
                       </div>
                       <div class="col-md-6 col-sm-6">
                         <div class="form-group datecontainer">
                           <label>Ημ/νία διαγραφής</label>
-                          <input disabled type="text"  class="form-control"  placeholder="" name="del_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['del_lessons_dt'])));?>"></input>
+                          <input disabled type="text"  class="form-control"  placeholder="" name="del_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['del_lessons_dt'])));?>">
                         </div>
                       </div>
                     </div>
@@ -463,14 +463,14 @@ function paste_name(where,who){
                         <label>Ποσό</label>
                         <div class="input-group">
                           <span class="input-group-addon">€</span>
-                          <input disabled type="text" class="form-control" placeholder="" name="month_price" value="<?php echo $regcard['month_price'];?>"></input>
+                          <input disabled type="text" class="form-control" placeholder="" name="month_price" value="<?php echo $regcard['month_price'];?>">
                         </div>
                       </div>
                     </div>
                     <div class="col-md-8 col-sm-8">
                       <div class="form-group">
                         <label>Παραλήπτης ΑΠΥ</label>
-                        <input disabled id="apy_receiver" type="text" class="form-control" placeholder="" name="apy_receiver" value="<?php echo $regcard['apy_receiver'];?>"></input>
+                        <input disabled id="apy_receiver" type="text" class="form-control" placeholder="" name="apy_receiver" value="<?php echo $regcard['apy_receiver'];?>">
                       </div>
                     </div>
                   </div>
@@ -479,13 +479,13 @@ function paste_name(where,who){
                     <div class="col-md-4 col-sm-4">
                       <div class="form-group">
                         <label>Α.Φ.Μ.</label>
-                        <input disabled type="text" class="form-control" placeholder="" name="afm" value="<?php echo $regcard['afm'];?>"></input>
+                        <input disabled type="text" class="form-control" placeholder="" name="afm" value="<?php echo $regcard['afm'];?>">
                       </div>
                     </div>
                     <div class="col-md-8 col-sm-8">
                       <div class="form-group">
                         <label>Κάτοχος Α.Φ.Μ.</label>
-                        <input disabled id="afm_owner" type="text" class="form-control" name="afm_owner" value="<?php echo $regcard['afm_owner'];?>"></input>
+                        <input disabled id="afm_owner" type="text" class="form-control" name="afm_owner" value="<?php echo $regcard['afm_owner'];?>">
                       </div>
                     </div>
                   </div>
@@ -498,7 +498,7 @@ function paste_name(where,who){
         </div> <!-- end of right side -->
       </div> <!-- end of first row -->
 
-      <div>
+      <div class="btn-group">
         <button disabled id="submitbtn" type="submit" class="btn btn-primary">Αποθήκευση</button>
         <button disabled id="cancelbtn" type="button" class="btn btn-default">Ακύρωση</button>
       </div>

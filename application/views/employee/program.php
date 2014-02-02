@@ -130,7 +130,7 @@ function toggledays(togglecontrol) {
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url()?>exams">Διαγωνίσματα</a></li>
+                <li><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a></li>
                 <li><a href="<?php echo base_url()?>files">Αρχεία</a></li>
                 <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li>
                 <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li>
@@ -210,6 +210,7 @@ function toggledays(togglecontrol) {
       <ul class="nav nav-tabs">
         <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Στοιχεία</a></li>
         <li class="active"><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan">Πλάνο Διδασκαλίας</a></li>
+        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/gradebook" >Βαθμολόγιο</a></li>
       </ul>
 
       <?php $day=array(1 => 'Δευτέρα', 2 => 'Τρίτη', 3 => 'Τετάρτη', 4 => 'Πέμπτη',

@@ -175,7 +175,7 @@ $(document).ready(function() {
    $('#examstbl_length').find('select').css({'max-width':'75px'});
    var $sellabel = $("<label>").attr('for', "#selectid");
    $sellabel.css({'min-width':'110px', 'margin-top':'5px'});
-   $sellabel.text('Μαθητές/σελ.: ');
+   $sellabel.text('Διαγωνίσματα/σελ.: ');
    $sellabel.insertBefore('#selectid');
 
    $('#examstbl_filter').parent().parent().css({'padding-bottom':'8px'});
