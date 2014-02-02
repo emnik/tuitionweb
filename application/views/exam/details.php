@@ -44,7 +44,7 @@ $(document).ready(function(){
         autoclose: true,
         todayHighlight: true
     })
-    .on('focus click tap vclick', function (event) {
+    .on('focus click', function (event) {
     //stop keyboard events and focus on the datepicker widget to get the date.
     //this is most usefull in android where the android's keyboard was getting in the way...
         event.stopImmediatePropagation();
@@ -54,7 +54,7 @@ $(document).ready(function(){
 
 
     $('#cancelbtn').click(function(){
-      window.open("<?php echo base_url();?>exams/cancel/exam/<?php echo $exam['id'];?>", '_self', false);
+      window.open("<?php echo base_url();?>exam/cancel/exam/<?php echo $exam['id'];?>", '_self', false);
     });
 
     $("body").on('click', '#editform1, #editform2', function(){
@@ -74,6 +74,8 @@ $(document).ready(function(){
         $('#editform1').addClass('active');
         $('#editform2').addClass('active');
         $('.mainform').find(':input:disabled').removeAttr('disabled');
+        $('#submitbtn').removeAttr('disabled');
+        $('#cancelbtn').removeAttr('disabled');
     <?php endif;?>
 
     
@@ -85,6 +87,10 @@ $(document).ready(function(){
 
         $('#courses').change(function(){
           getlessons();
+        }); //end change event 
+
+        $('#lessons').change(function(){
+          check_sections_exist();
         }); //end change event 
 
         $('.timecontainer input').timepicker({
@@ -102,6 +108,17 @@ $(document).ready(function(){
         }
         <?php endif;?>
 
+
+    $('#delexam').click(function(){
+        var r=confirm("Το παρών διαγώνισμα πρόκειται να διαγραφεί. Παρακαλώ επιβεβαιώστε.");
+          if (r==true)
+          {
+              window.open ("<?php echo base_url();?>exam/delexam/<?php echo $exam['id'];?>",'_self',false);  
+          }
+          return false;
+    });
+
+
 }) //end of (document).ready(function())
 
 function getcourses(){
@@ -114,7 +131,7 @@ function getcourses(){
         //the following is ajax post to populate the course dropdown 
         var postdata = {'jsclassid': classid};
         //post_url is the controller function where I want to post the data
-        var post_url = "<?php echo base_url()?>exams/courses";
+        var post_url = "<?php echo base_url()?>exam/courses";
         $.ajax({
           type: "POST",
           url: post_url,
@@ -164,7 +181,7 @@ function getlessons(){
         //the following is ajax post to populate the course dropdown 
         var postdata = {'jsclassid': classid, 'jscourseid': courseid};
         //post_url is the controller function where I want to post the data
-        var post_url = "<?php echo base_url()?>exams/lessons";
+        var post_url = "<?php echo base_url()?>exam/lessons";
         $.ajax({
           type: "POST",
           url: post_url,
@@ -197,6 +214,30 @@ function getlessons(){
    
 }
 
+function check_sections_exist(){
+        var lessonid = $('#lessons option:selected').val();
+
+        //the following is ajax post to populate the course dropdown 
+        var postdata = {'jslessonid': lessonid};
+        //post_url is the controller function where I want to post the data
+        var post_url = "<?php echo base_url()?>exam/sections";
+        $.ajax({
+          type: "POST",
+          url: post_url,
+          data : postdata,
+          dataType:'json',
+          async: false,
+          //courses is just a name that gets the result of the controller's function I posted the data
+          success: function(sections) //we're calling the response json array 'courses data'
+            {
+              if(sections == false){
+                alert('Δεν υπάρχουν καταχωρημένα τμήματα για το μάθημα που επιλέξατε.\nΠαρόλα αυτά αν επιθυμείτε μπορείτε να αποθηκεύσετε το διαγώνισμα.');
+              }
+            } //end success
+          }); //end AJAX
+  
+}
+
 </script>
 
 </head>
@@ -221,7 +262,7 @@ function getlessons(){
               <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-                <li class="active"><a href="<?php echo base_url()?>exams">Διαγωνίσματα</a></li>
+                <li class="active"><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a></li>
                 <li><a href="<?php echo base_url()?>files">Αρχεία</a></li>
                 <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li>
                 <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li>
@@ -253,7 +294,7 @@ function getlessons(){
               <ul class="dropdown-menu">
                 <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url()?>section/logout">Αποσύνδεση</a></li>
+                <li><a href="<?php echo base_url()?>exam/logout">Αποσύνδεση</a></li>
               </ul>
             </li>
         </ul>
@@ -286,11 +327,11 @@ function getlessons(){
       <div>
 	      <ul class="breadcrumb">
 	        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
-	        <li><a href="<?php echo base_url()?>exams">Διαγωνίσματα</a> </li>
+	        <li><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a> </li>
 	        <li class="active">Λεπτομέρειες</li>
 	      </ul>
       </div>
-      
+
      <p> 
       <h3>
         <?php
@@ -303,21 +344,26 @@ function getlessons(){
         };?>
       </h3>
     </p>
-        
-
+      
       <ul class="nav nav-tabs">
-        <li class="active"><a href="<?php echo base_url()?>exams/details/<?php echo $exam['id']?>">Λεπτομέρειες</a></li>
+        <li class="active"><a href="<?php echo base_url()?>exam/">Προγραμματισμός</a></li>
+        <li><a href="<?php echo base_url()?>exam/supervisors">Επιτηρητές</a></li>
+      </ul>
+
+      <ul class="nav nav-pills" style="margin:15px 0px;">
+        <li class="active"><a href="<?php echo base_url()?>exam/details/<?php echo $exam['id']?>">Λεπτομέρειες</a></li>
         <?php if(!empty($exam['lesson_id'])):?>
-        	<li><a href="<?php echo base_url()?>exams/details/<?php echo $exam['id']?>/participants">Συμμετέχοντες</a></li>
+        	<li><a href="<?php echo base_url()?>exam/details/<?php echo $exam['id']?>/participants">Συμμετέχοντες</a></li>
       	<?php endif;?>
       </ul>
 
-      <p></p>
 
+
+    
 	<div class="row">
 
     	<div class="col-md-12">
-        <form action="<?php echo base_url()?>exams/details/<?php echo $exam['id']?>" method="post" accept-charset="utf-8" role="form">
+        <form action="<?php echo base_url()?>exam/details/<?php echo $exam['id']?>" method="post" accept-charset="utf-8" role="form">
         
       	<div class="row"> <!-- section data -->
           <div class="col-md-12" id="group1">
@@ -393,21 +439,10 @@ function getlessons(){
                                 <input disabled class="form-control" id="endtm" type="text" placeholder="" name="end_tm" value="<?php echo $exam['end_tm'];?>">
                             </div>
                           </div>
-                          <div class="col-md-8 col-xs-12">
-                              <div class="form-group">
-                                <label>Επιτηρητές</label>
-                                <select multiple disabled class="form-control" id="supervisorids" placeholder="" name="supervisor_ids[]">
-                                  <?php $sel=explode(",",$exam['supervisor_ids']);?>
-                                  <?php foreach($employee as $key => $value):?>
-                                    <option value="<?php echo $key;?>"<?php if(in_array($key,$sel)){echo 'selected="selected"';};?>><?php echo $value;?></option>
-                                  <?php endforeach;?>
-                                </select>
-                              </div>
-                          </div>
                             <div class="col-md-12 col-xs-12">
                               <div class="form-group">
-                                <label>Παρατηρήσεις</label>
-                                <textarea disabled class="form-control" id="notes" placeholder="" cols="3" name="notes"><?php echo $exam['notes'];?></textarea>
+                                <label>Περιγραφή</label>
+                                <textarea disabled class="form-control" id="description" placeholder="" cols="3" name="description"><?php echo $exam['description'];?></textarea>
                               </div>
                           </div>
                 </div>
@@ -423,15 +458,31 @@ function getlessons(){
 
     <div class="row">
     	<div class="col-md-12">    
-        	<button disabled id="submitbtn" type="submit" class="btn btn-primary">Αποθήκευση</button>
-        	<button disabled id="cancelbtn" type="button" class="btn btn-default">Ακύρωση</button>
-    	</div>
+        <div class="btn-toolbar">
+          <div class="btn-group">
+          	<button disabled id="submitbtn" type="submit" class="btn btn-primary">Αποθήκευση</button>
+          	<button disabled id="cancelbtn" type="button" class="btn btn-default">Ακύρωση</button>
+          </div>
+          <div class="btn-group pull-right">
+            <a id="delexam" href="#" class="btn btn-default" ><i class="icon-trash"></i></a>
+            <a id="newexambtn" href="<?php echo base_url();?>exam/newexam" class="btn btn-default"><i class="icon-plus"></i></a>
+          </div>
+      	</div>
+      </div>
     </div>
 
     </form>
-
+      <div class="row">
+        <div class="col-md-12">   
+        <ul class="pager">
+            <li class="previous <?php if(empty($prevnext['prev'])){echo 'disabled';};?>"  <?php if(empty($prevnext['prev'])){echo "onclick='return false;'";};?>><a href="<?php echo base_url().'exam/details/'.$prevnext['prev'];?>"><i class="icon-chevron-left"></i> Προηγούμενο</a></li>
+            <li class="next <?php if(empty($prevnext['next'])){echo 'disabled';};?>"  <?php if(empty($prevnext['next'])){echo "onclick='return false;'";};?> ><a href="<?php echo base_url().'exam/details/'.$prevnext['next'];?>">Επόμενο <i class="icon-chevron-right"></i></a></li>
+            </ul>
+         </div>
+      </div>
     </div> 
   </div>
+
 </div><!--end of main container-->
 
 <div class="push"></div>

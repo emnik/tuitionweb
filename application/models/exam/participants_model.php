@@ -11,13 +11,13 @@ class Participants_model extends CI_Model {
     public function get_participants_data($id)
     {
 		$query = $this->db
-			   ->select(array('exam_participants.id','section.section','employee.nickname','COUNT(std_lesson.id) as stdcount'))
+			   ->select(array('exam_participant.id','section.section','employee.nickname','COUNT(std_lesson.id) as stdcount'))
 			   ->from('section')
-			   ->join('exam_participants', 'exam_participants.section_id=section.id')
+			   ->join('exam_participant', 'exam_participant.section_id=section.id')
 			   ->join('lesson_tutor', 'section.tutor_id = lesson_tutor.id')
-			   ->join('employee','lesson_tutor.employee_id=employee.id' )
+			   ->join('employee','lesson_tutor.employee_id=employee.id')
 			   ->join('std_lesson', 'section.id=std_lesson.section_id')
-			   ->where('exam_participants.exam_id', $id)
+			   ->where('exam_participant.exam_id', $id)
 			   ->group_by('std_lesson.section_id')
 			   ->get();
 
@@ -103,12 +103,12 @@ class Participants_model extends CI_Model {
 					);
 		}
 		
-		$this->db->insert_batch('exam_participants', $data);
+		$this->db->insert_batch('exam_participant', $data);
 		return true;
 	}
 
 	public function delexamparticipant($examid, $id)
 	{
-		$this->db->where('exam_id',$examid)->where('id',$id)->delete('exam_participants');
+		$this->db->where('exam_id',$examid)->where('id',$id)->delete('exam_participant');
 	}
 }

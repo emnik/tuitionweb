@@ -417,7 +417,6 @@ class CI_DB_active_record extends CI_DB_driver {
 				// value appears not to have been set, assign the test to IS NULL
 				$k .= ' IS NULL';
 			}
-
 			if ( ! is_null($v))
 			{
 				if ($escape === TRUE)

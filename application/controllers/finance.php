@@ -350,4 +350,14 @@ class Finance extends CI_Controller {
 		echo json_encode($res);
 	}
 
+	public function logout()
+	{
+
+		$this->session->destroy();
+
+		$this->load->view('include/header');		
+		$this->load->view('login');
+		$this->load->view('include/footer');
+	}
+
 }

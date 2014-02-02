@@ -22,7 +22,7 @@ $(document).ready(function(){
     $('#delsubmit').attr("disabled", "disabled");
     $('#sectionsmultiple').attr("disabled", "disabled");
     $('#sectiongroups').attr("disabled", "disabled");
-    //$('#addsubmit').attr("disabled", "disabled");
+
 
     $('#radioall').click(function(){
         $('#sectionsmultiple option:selected').removeAttr('selected');
@@ -46,6 +46,14 @@ $(document).ready(function(){
         $('#addsubmit').attr("disabled", "disabled");
     });
 
+    $('#delexam').click(function(){
+        var r=confirm("Το παρών διαγώνισμα πρόκειται να διαγραφεί. Παρακαλώ επιβεβαιώστε.");
+          if (r==true)
+          {
+              window.open ("<?php echo base_url();?>exam/delexam/<?php echo $exam['id'];?>",'_self',false);  
+          }
+          return false;
+    });
 
     $('#delsubmit').click( function() {
       var count = oTable.$('input:checked').length;
@@ -56,7 +64,7 @@ $(document).ready(function(){
         //console.log(sData);
         $.ajax({  
                   type: "POST",  
-                  url: "<?php echo base_url()?>exams/removeparticipants",  
+                  url: "<?php echo base_url()?>exam/removeparticipants",  
                   data: sData,
                   // beforeSend: function(){
                   //     $('#image').show();
@@ -127,6 +135,7 @@ $(document).ready(function(){
 
 
     $('#addsubmit').click( function() {
+      <?php if(!empty($section)):?>
       var sRadio = $('#addform input[type=radio][name="insertoption"]:checked').val();
       if (sRadio=="all"){
         sectionNames = <?php echo json_encode($section);?>;
@@ -138,7 +147,7 @@ $(document).ready(function(){
         if (c==true){
             $.ajax({  
                       type: "POST",  
-                      url: "<?php echo base_url()?>exams/insertallsections",  
+                      url: "<?php echo base_url()?>exam/insertallsections",  
                       data: sData,
                       success: function(result) {  
                           if(result!=false){
@@ -171,7 +180,7 @@ $(document).ready(function(){
         if (c==true){
             $.ajax({  
                       type: "POST",  
-                      url: "<?php echo base_url()?>exams/insertmultiplesections",  
+                      url: "<?php echo base_url()?>exam/insertmultiplesections",  
                       data: sData,
                       success: function(result) {  
                           if(result!=false){
@@ -206,7 +215,7 @@ $(document).ready(function(){
         if (c==true){
             $.ajax({  
                       type: "POST",  
-                      url: "<?php echo base_url()?>exams/insertbytutors",  
+                      url: "<?php echo base_url()?>exam/insertbytutors",  
                       data: sData,
                       success: function(result) {  
                           if(result!=false){
@@ -227,7 +236,9 @@ $(document).ready(function(){
         $('#sectiongroups option:selected').removeAttr('selected');
         $('#addsubmit').attr("disabled", "disabled");
       }
-    
+      <?php else:?>
+        return false;
+      <?php endif;?>    
     });
 
 
@@ -339,7 +350,7 @@ function noprograminfo(){
               <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-                <li class="active"><a href="<?php echo base_url()?>exams">Διαγωνίσματα</a></li>
+                <li class="active"><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a></li>
                 <li><a href="<?php echo base_url()?>files">Αρχεία</a></li>
                 <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li>
                 <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li>
@@ -371,7 +382,7 @@ function noprograminfo(){
               <ul class="dropdown-menu">
                 <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url()?>exams/logout">Αποσύνδεση</a></li>
+                <li><a href="<?php echo base_url()?>exam/logout">Αποσύνδεση</a></li>
               </ul>
             </li>
         </ul>
@@ -404,19 +415,23 @@ function noprograminfo(){
       <div>
         <ul class="breadcrumb">
           <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
-          <li><a href="<?php echo base_url()?>exams">Διαγωνίσματα</a> </li>
+          <li><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a> </li>
           <li class="active">Συμμετέχοντες</li>
         </ul>
       </div>
       
       <p>
-        <h3>Συμμετέχοντες</h3>
+        <h3>Επεξεργασία διαγωνίσματος</h3>
       </p>
       
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="<?php echo base_url()?>exam/">Διαγωνίσματα</a></li>
+        <li><a href="<?php echo base_url()?>exam/supervisors">Επιτηρητές</a></li>
+      </ul>
 
-      <ul class="nav nav-tabs" style="margin-bottom:15px;">
-        <li><a href="<?php echo base_url()?>exams/details/<?php echo $exam['id']?>">Λεπτομέρειες</a></li>
-        <li class="active"><a href="<?php echo base_url()?>exams/details/<?php echo $exam['id']?>/participants">Συμμετέχοντες</a></li>
+      <ul class="nav nav-pills" style="margin:15px 0px;">
+        <li><a href="<?php echo base_url()?>exam/details/<?php echo $exam['id']?>">Λεπτομέρειες</a></li>
+        <li class="active"><a href="<?php echo base_url()?>exam/details/<?php echo $exam['id']?>/participants">Συμμετέχοντες</a></li>
       </ul>
      
       <div class="row"> <!--Προσθήκη μαθήματος-->
@@ -426,7 +441,7 @@ function noprograminfo(){
                 <span class="icon">
                   <i class="icon-chevron-down"></i>
                 </span>
-                <h3 class="panel-title">Αντιστοίχιση τμημάτων στο διαγώνισμα</h3>
+                <h3 class="panel-title">Αντιστοίχιση τμημάτων</h3>
               </div>
             <div class="panel-body">
       			<form id="addform" accept-charset="utf-8" role="form">
@@ -506,7 +521,7 @@ function noprograminfo(){
       			<div class="row">
       				<div class="col-md-12">
                 <div class="form-group"> <!--needed for margins... -->
-      					   <button style="margin-top:10px;" type="button" class="btn btn-primary pull-right" id="addsubmit" name="addsubmit">Αντιστοίχιση</button>
+      					   <button <?php if(empty($section)){echo 'disabled';};?> style="margin-top:10px;" type="button" class="btn btn-primary pull-right" id="addsubmit" name="addsubmit">Αντιστοίχιση</button>
       				  </div>
               </div>
       			</div>
@@ -545,7 +560,7 @@ function noprograminfo(){
         			<div class="row">
         				<div class="col-md-12">
                   <div id="selectall">
-                    <a href="#" class="btn btn-xs btn-default" onclick="selectall();return false;"><i class="icon-check"></i> Επιλογή όλων<a>
+                    <a href="#" style="margin-bottom:20px;" class="btn btn-xs btn-default" onclick="selectall();return false;"><i class="icon-check"></i> Επιλογή όλων<a>
                   </div>
         					<button type="button" class="btn btn-danger pull-right" id="delsubmit" name="delsubmit">Αφαίρεση επιλεγμένων</button>
         				</div>
@@ -556,7 +571,22 @@ function noprograminfo(){
 			</div>
 		</div>
   </div>
-
+    <div class="row">
+      <div class="col-xs-12">    
+          <div class="btn-group pull-right">
+            <a id="delexam" href="<?php echo base_url();?>exam/delexam/<?php echo $exam['id'];?>" class="btn btn-default" ><i class="icon-trash"></i></a>
+            <a id="newexambtn" href="<?php echo base_url();?>exam/newexam" class="btn btn-default"><i class="icon-plus"></i></a>
+          </div>
+      </div>
+    </div>
+      <div class="row">
+        <div class="col-md-12">   
+        <ul class="pager">
+            <li class="previous <?php if(empty($prevnext['prev'])){echo 'disabled';};?>"  <?php if(empty($prevnext['prev'])){echo "onclick='return false;'";};?>><a href="<?php echo base_url().'exam/details/'.$prevnext['prev'];?>"><i class="icon-chevron-left"></i> Προηγούμενο</a></li>
+            <li class="next <?php if(empty($prevnext['next'])){echo 'disabled';};?>"  <?php if(empty($prevnext['next'])){echo "onclick='return false;'";};?> ><a href="<?php echo base_url().'exam/details/'.$prevnext['next'];?>">Επόμενο <i class="icon-chevron-right"></i></a></li>
+            </ul>
+         </div>
+      </div>
   </div> <!--end of main container-->
 
 <div class="push"></div>

@@ -2,7 +2,7 @@
 
 <script src="<?php echo base_url('assets/js/jquery.dataTables.min.js') ?>"></script>
 <script src="<?php echo base_url('assets/js/dataTables.bootstrap.js') ?>"></script>
-
+<script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/js/jquery.dataTables.rowGrouping.js') ?>"></script>
 
 <script type="text/javascript">
 
@@ -32,7 +32,7 @@ $(document).ready(function() {
         if ( anSelected.length !== 0 ) {
             var aRow=anSelected[0];
             var id=oTable.fnGetData( aRow, 0 );
-            window.open ('exams/details/'+id,'_self',false);
+            window.open ('<?php echo base_url("exam/details");?>/'+id,'_self',false);
             //alert(id);
         }
         else
@@ -43,7 +43,7 @@ $(document).ready(function() {
 
     /* Add a click handler for the newexam btn */
     $('#newexam').click(function(){
-      window.open ('exams/newexam','_self',false);
+      window.open ('<?php echo base_url("exam/newexam");?>','_self',false);
     });
 
     /* Add a click handler for the delexam btn */
@@ -55,7 +55,7 @@ $(document).ready(function() {
             {
                 var aRow=anSelected[0];
                 var id=oTable.fnGetData( aRow, 0 );
-                window.open ('exams/delexam/'+id,'_self',false);  
+                window.open ('<?php echo base_url("exam/delexam");?>/'+id,'_self',false);  
             }
          }
          else
@@ -63,6 +63,46 @@ $(document).ready(function() {
           alert("Δεν έχετε επιλέξει κανένα διαγώνισμα.");
          }
     });
+    
+  jQuery.fn.dataTableExt.oSort['uk_date-asc']  = function(a,b) {
+       
+      var ukDatea = a.split('-');
+      var ukDateb = b.split('-');
+       
+      //Treat blank/non date formats as highest sort                 
+      if (isNaN(parseInt(ukDatea[0]))) {
+          return 1;
+      }
+       
+      if (isNaN(parseInt(ukDateb[0]))) {
+          return -1;
+      }
+       
+      var x = (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+      var y = (ukDateb[2] + ukDateb[1] + ukDateb[0]) * 1;
+       
+      return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+  };
+   
+  jQuery.fn.dataTableExt.oSort['uk_date-desc'] = function(a,b) {
+      var ukDatea = a.split('-');
+      var ukDateb = b.split('-');
+       
+      //Treat blank/non date formats as highest sort                 
+      if (isNaN(parseInt(ukDatea[0]))) {
+          return -1;
+      }
+       
+      if (isNaN(parseInt(ukDateb[0]))) {
+          return 1;
+      }
+       
+      var x = (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+      var y = (ukDateb[2] + ukDateb[1] + ukDateb[0]) * 1;
+       
+      return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
+  };
+    
 
     /* Init the table */
     oTable = $('#examstbl').dataTable( {
@@ -70,8 +110,10 @@ $(document).ready(function() {
     "sPaginationType": "bootstrap",
     "aoColumnDefs": [
       { "bVisible": false, "aTargets": [0] }, //hide id column
-      { "bSearchable": false, "aTargets": [5,6] }  //don't filter time
+      { "sType": "uk_date", "aTargets": [ 1 ] }
+      // { "bSearchable": false, "aTargets": [2] }  //don't filter time
     ],
+    "aaSorting": [[ 1, "asc" ]],
     "oLanguage": {
               "oPaginate": {
                   "sFirst":    "Πρώτη",
@@ -89,7 +131,13 @@ $(document).ready(function() {
               "sZeroRecords": "Δεν βρέθηκαν διαγωνίσματα"
             }
 
-       } );
+       } )
+       .rowGrouping({
+                          iGroupingColumnIndex: 1,
+                          sGroupingColumnSortDirection: "asc",
+                          iGroupingOrderByColumnIndex: 1
+                          // bExpandableGrouping: true
+                });
   
     <?php if(!$exams):?>
       $('#myModal').modal('show');
@@ -148,14 +196,14 @@ function resizeWindow(e)
       oTable.fnSetColumnVis( 3, true );
       oTable.fnSetColumnVis( 5, true );
       oTable.fnSetColumnVis( 6, true );
-      oTable.fnSetColumnVis( 7, true );
+      // oTable.fnSetColumnVis( 7, true );
     }
     else if((newWindowWidth >= 600) & (newWindowWidth < 1024) )
     {
       oTable.fnSetColumnVis( 3, true );
       oTable.fnSetColumnVis( 5, true );
       oTable.fnSetColumnVis( 6, true );
-      oTable.fnSetColumnVis( 7, false );
+      // oTable.fnSetColumnVis( 7, false );
 
     }
     else if((newWindowWidth >= 440) && (newWindowWidth < 600))
@@ -163,20 +211,20 @@ function resizeWindow(e)
       oTable.fnSetColumnVis( 3, true );
       oTable.fnSetColumnVis( 5, false );
       oTable.fnSetColumnVis( 6, false );
-      oTable.fnSetColumnVis( 7, false );
+      // oTable.fnSetColumnVis( 7, false );
     }
     else if(newWindowWidth < 440)
     {
       oTable.fnSetColumnVis( 3, false );
       oTable.fnSetColumnVis( 5, false );
       oTable.fnSetColumnVis( 6, false );
-      oTable.fnSetColumnVis( 7, false );
+      // oTable.fnSetColumnVis( 7, false );
     }
 
 };
 
 
-} ); //end of document(ready) function
+}); //end of document(ready) function
  
 
  
@@ -208,7 +256,7 @@ function resizeWindow(e)
               <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-                <li class="active"><a href="<?php echo base_url()?>exams">Διαγωνίσματα</a></li>
+                <li class="active"><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a></li>
                 <li><a href="<?php echo base_url()?>files">Αρχεία</a></li>
                 <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li>
                 <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li>
@@ -240,7 +288,7 @@ function resizeWindow(e)
               <ul class="dropdown-menu">
                 <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url()?>student/logout">Αποσύνδεση</a></li>
+                <li><a href="<?php echo base_url()?>exam/logout">Αποσύνδεση</a></li>
               </ul>
             </li>
         </ul>
@@ -279,11 +327,17 @@ function resizeWindow(e)
       </ul>
       </div>
 
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="<?php echo base_url()?>exam/">Προγραμματισμός</a></li>
+        <li><a href="<?php echo base_url()?>exam/supervisors">Επιτηρητές</a></li>
+      </ul>
+
+      <p></p>
 
     <div class="panel panel-default">
        <div class="panel-heading">
           <span class="icon">
-            <i class="icon-pencil"></i>
+            <i class="icon-calendar"></i>
           </span>
           <h3 class="panel-title">Διαγωνίσματα</h3>
        </div>
@@ -301,7 +355,7 @@ function resizeWindow(e)
         </div>
         </div>
       <!--width="100%" option in the table is required when there are hidden columns in the table to resize properly on window change-->
-      <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="examstbl" width="100%">
+      <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered" id="examstbl" width="100%">
         <thead>
           <tr>
             <th>id</th>
@@ -309,9 +363,8 @@ function resizeWindow(e)
             <th>Τάξη</th>
             <th>Κατεύθυνση</th>
             <th>Μάθημα</th>
-            <th>Έναρξη</th>
-            <th>Λήξη</th>
-            <th>Παρατηρήσεις</th>
+            <th>Αρ.ατόμων</th>
+            <th>Περιγραφή</th>
           </tr>
         </thead>
         <tbody>
@@ -320,12 +373,14 @@ function resizeWindow(e)
               <tr>
                 <td><?php echo $data["id"];?></td>
                 <td><?php echo implode('-', array_reverse(explode('-', $data['date'])));?></td>
+                <!-- <td><?php echo $data["date"];?></td> -->
                 <td><?php echo $data["class_name"];?></td>
                 <td><?php echo $data["course"];?></td>
                 <td><?php echo $data["title"];?></td>
-                <td><?php echo date('H:i',strtotime($data["start_tm"]));?></td>
-                <td><?php echo date('H:i',strtotime($data["end_tm"]));?></td>
-                <td><?php echo $data["notes"];?></td>
+<!--                 <td><?php echo date('H:i',strtotime($data["start_tm"]));?></td>
+                <td><?php echo date('H:i',strtotime($data["end_tm"]));?></td> -->
+                <td><?php echo $data['participantsnum'];?></td>
+                <td><?php echo $data["description"];?></td>
               </tr>            
             <?php endforeach;?>
           <?php endif;?>
@@ -353,7 +408,7 @@ function resizeWindow(e)
         <div class="modal-footer">
           <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Κλείσιμο</button>
           <a href="<?php echo base_url();?>" class="btn btn-default">Επιστροφή στην αρχ. σελίδα</a>
-          <a href="<?php echo base_url();?>exams/newexam" class="btn btn-primary">Νέα καταχώριση</a>
+          <a href="<?php echo base_url();?>exam/newexam" class="btn btn-primary">Νέα καταχώριση</a>
         </div>
       </div>
     </div>

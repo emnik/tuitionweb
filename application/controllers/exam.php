@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) die();
 
-Class Exams extends CI_Controller {
+Class Exam extends CI_Controller {
 	
 public function __construct() {
 		
@@ -57,6 +57,7 @@ public function index(){
 	$this->load->view('include/footer', $footer_data);
 	}
 
+
 public function courses()
 {
 		$this->load->model('exam/details_model','', TRUE);    
@@ -82,12 +83,26 @@ public function lessons()
 }
 
 
+public function sections()
+{
+		$this->load->model('exam/participants_model','', TRUE);    
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this
+						->participants_model
+						->get_all_sections_by_lesson($this->input->post('jslessonid'), $this->session->userdata('startsch'))
+						)
+			);
+
+}
+
 public function details($id, $subsection=null){
-	if(is_null($id)) redirect('exams');
+	if(is_null($id)) redirect('exam');
 
 	$this->load->model('login_model');
 	$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
+
 	$data['user']=$user;
+
 
 	//get student's main data (name surname id) in an array to use everywhere in student section
 	$this->load->model('exam/details_model');
@@ -106,7 +121,10 @@ public function details($id, $subsection=null){
 
 		die($msg);
 	}
-	
+
+
+	// $this->load->library('firephp');
+	// $this->firephp->info($prevnext);
 
 	switch ($subsection) {
 	 	case 'participants':
@@ -114,14 +132,13 @@ public function details($id, $subsection=null){
 	 		return 0;
 	 		# code...
 	 		break;
-	 	
+
 	 	default:
 	 		# code...
 	 		break;
 	 }
 
 	$data['class'] = $this->details_model->get_classes();
-	$data['employee'] = $this->details_model->get_employees();
 
 	$examupdate=array('id'=>$id);
 	if(!empty($_POST)){
@@ -135,39 +152,47 @@ public function details($id, $subsection=null){
 				case 'lesson_id':
 				case 'start_tm':
 				case 'end_tm':
-				case 'notes':
+				case 'description':
 					$examupdate[$key]=$value;
 					break;
-				case 'supervisor_ids':
-					foreach ($value as $data1) {
-						 if ($tmp==='')
-						    {
-						        $tmp = $data1;
-						    }
-						    else
-						    {
-						        $tmp .= ',' . $data1;
-						    }
-					}
-					$examupdate[$key]=$tmp;
-					break;
-						
 			}
 		}
+			$this->details_model->update_exam($id, $examupdate);	
+		
 
-		// $this->load->library('firephp');
-		// $this->firephp->info($examupdate);
-		$this->details_model->update_exam($id, $examupdate);
+		//after we post the data from view to controller if there is a lesson_id and the participants table is empty we map ALL the
+		//available sections to the participants. If one wants can change the participants from the corresponting view!
+		if(!empty($examupdate['lesson_id']))
+		{
+			$this->load->model('exam/participants_model');
+			$getparticipants = $this->participants_model->get_participants_data($id);
+				if ($getparticipants==false)
+				{
+					$sections = $this->participants_model->get_all_sections_by_lesson($examupdate['lesson_id'], $this->session->userdata('startsch'));	
+					if($sections)
+					{
+						// $this->firephp->info($sections);
+						foreach ($sections as $key => $value) 
+						{
+							$sectionids[]=$key;
+						}
+						// $this->firephp->info($sectionids);
+						$this->participants_model->insertexamsectionids($id, $sectionids);
+					}
+
+				}
+		}
 		
 		$exam = $examupdate;
+		if (!isset($exam['description']))
+		{
+			$exam['description']="";	
+		}
 	}
 	else
 	{
 		$exam = $this->details_model->get_exam_data($id); //check again why I dont use  $examdata?
 	}
-
-	// $this->load->library('firephp');
-	// $this->firephp->info($exam);
 
 	$data['exam']=$exam;	
 	
@@ -176,7 +201,16 @@ public function details($id, $subsection=null){
 		$data['course'] = $this->details_model->get_courses($exam['class_id']);
 		$data['lesson'] = $this->details_model->get_lessons($exam['class_id'], $exam['course_id']);
 	}
-
+	
+	if (is_null($exam['lesson_id'])) //if it is a new exam ...
+	{
+		$prevnext=array('prev'=>'', 'next'=>'');
+	}
+	else
+	{
+		$prevnext = $this->details_model->get_prevnext_exam_bydate($id, $this->session->userdata('startsch'));	
+	}
+	$data['prevnext']=$prevnext;
 	
 	$this->load->view('include/header');
 	$this->load->view('exam/details', $data);
@@ -195,14 +229,26 @@ public function newexam(){
 public function delexam($id){
 	$this->load->model('exams_model');
 	$this->exams_model->delexam($id);
-	redirect('exams');
+	redirect('exam');
 	}
 
 public function participants($id, $user, $examdata){
 	$data['user']=$user;
 	$data['exam']=$examdata;
+
+	if (is_null($examdata['lesson_id'])) //if it is a new exam ...
+	{
+		$prevnext=array('prev'=>'', 'next'=>'');
+	}
+	else
+	{
+		$this->load->model('details_model');
+		$prevnext = $this->details_model->get_prevnext_exam_bydate($id, $this->session->userdata('startsch'));	
+	}
+	$data['prevnext']=$prevnext;
+
 	$this->load->model('exam/participants_model');
-	$participants = $this->participants_model->	get_participants_data($examdata['id']);
+	$participants = $this->participants_model->	get_participants_data($id);
 	if($participants)
 	{
 		$data['participants']=$participants;
@@ -221,6 +267,65 @@ public function participants($id, $user, $examdata){
 	$footer_data['regs']=false;
 	$this->load->view('include/footer', $footer_data);
 	}
+
+
+public function supervisors(){
+	$this->load->model('login_model');
+	$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
+	$data['user']=$user;
+
+	$this->load->model('exam/supervisors_model');
+	$employees = $this->supervisors_model->get_employees();
+	if($employees) $data['employee']=$employees;
+
+
+	if(!empty($_POST))
+	{
+		foreach ($_POST as $key => $value) {
+			switch ($key) {
+				case 'date':
+					foreach ($value as $datekey => $date) {
+						$datenewdata[]=implode('-', array_reverse(explode('-', $date)));
+					}
+					break;
+				
+				case 'supervisor_ids':
+					foreach ($value as $datekey => $idsarray) {
+						foreach ($idsarray as $key => $id) {
+							$insertdata[]=array('date'=>implode('-', array_reverse(explode('-', $_POST['date'][$datekey]))), 'employee_id'=>$id);
+						}
+					}
+				break;
+
+				default:
+					# code...
+					break;
+			}
+		}
+
+		if(!empty($insertdata))
+		{
+			$this->supervisors_model->insert_supervisors($insertdata, $datenewdata);	
+		}
+	}
+
+	$dates = $this->supervisors_model->get_exam_dates();
+	if($dates)
+	{
+		$data['date'] = $dates;
+		$supervisors = $this->supervisors_model->get_supervisors($dates);
+		if($supervisors)
+		{
+			$data['supervisor']=$supervisors;
+		}	
+	}
+
+
+	$this->load->view('include/header');
+	$this->load->view('exam/supervisors', $data);
+	$footer_data['regs']=false;
+	$this->load->view('include/footer', $footer_data);
+}
 
 public function insertallsections()
 {
@@ -297,22 +402,33 @@ public function removeparticipants()
 }
 
 public function cancel($form=null, $id=null){
-	if (is_null($form) || is_null($id)) show_404();
+	if (is_null($form) && is_null($id)) show_404();
 	if ($form=='exam'){
-		$this->load->model('exams_model');
-		if($this->exams_model->cancelexam($id))
-		{
-			redirect('exams');
+		if(!is_null($id)){
+			$this->load->model('exams_model');
+			if($this->exams_model->cancelexam($id))
+			{
+				redirect('exam');
+			}
+			else
+			{
+				redirect('exam/details/'.$id);
+			}	
 		}
-		else
-		{
-			redirect('exams/details/'.$id);
-		};
 	}
-	// else if ($form=='contact'){
-	// 	redirect('student/card/'.$id.'/contact');
-	// };	
-	
+	elseif ($form=='supervisors') 
+	{
+		redirect('exam/supervisors');
+	}
 }
 
+	public function logout()
+	{
+
+		$this->session->destroy();
+
+		$this->load->view('include/header');		
+		$this->load->view('login');
+		$this->load->view('include/footer');
+	}
 }

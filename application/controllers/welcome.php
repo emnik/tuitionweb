@@ -108,7 +108,7 @@ public function index() {
 				break;
 
 			case 'submit6': // Διαγωνίσματα
-				redirect('exams');
+				redirect('exam');
 				break;
 		}
 		

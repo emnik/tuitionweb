@@ -93,37 +93,48 @@ class Details_model extends CI_Model {
       };
       
    }
+
+
+   public function get_prevnext_exam_bydate($examid, $year)
+   {
+      $data=array('next'=>'', 'prev'=>'');
+      $ids = $this->db->select('id')->where('startschyear', $year)->order_by('date, id')->get('exam_schedule');
+      if($ids->num_rows()>0)
+         {
+            foreach ($ids->result_array() as $row) {
+               $tmp[]=$row['id'];
+            }
+            $c=0;
+            while ($tmp[$c] != $examid) {
+               $c++;
+            };
+
+            if ($c+1<count($tmp))
+            {
+               $data['next']=$tmp[$c+1];
+            }
+            if ($c-1>=0)
+            {
+               $data['prev']=$tmp[$c-1];     
+            }
+         }
+      return $data;
+   }
  
 
-   public function get_employees() {
-      $query=$this
-         ->db
-         ->select(array('id', 'CONCAT_WS(" ",`surname`,`name`) as employee'))
-         ->where('active','1')
-         ->get('employee');
 
-      if ($query->num_rows() > 0) 
-      {
-        //return $query->result_array(); 
-        foreach ($query->result_array() as $row) {
-        	$data[$row['id']]=$row['employee'];
-        }
-         // foreach ($query->result_array() as $row) {
-         // 	$data[]=array('id'=>$row['id'],'text'=>$row['employee']);
-         // }
-         return $data;
-      }
-      else 
-      {
-         return false;
-      }
-
-   }
-
-   public function update_exam($id, $data)
+   public function update_exam($id, $examdata, $supervisordata=null)
    {
-   		$this->db->where('id', $id);
-		$this->db->update('exam_schedule', $data); 
+  		$this->db->where('id', $id);
+		$this->db->update('exam_schedule', $examdata); 
+
+      // if(!empty($supervisordata))
+      // {
+      //    //delete every record there is for this exam 
+      //    $this->db->where('exam_id', $id)->delete('exam_supervisor');
+      //    //insert the new data
+      //    $this->db->insert_batch('exam_supervisor', $supervisordata);          
+      // }
    }
 
 }

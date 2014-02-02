@@ -479,7 +479,7 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
               <ul class="dropdown-menu">
                 <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url()?>staff/logout">Αποσύνδεση</a></li>
+                <li><a href="<?php echo base_url()?>finance/logout">Αποσύνδεση</a></li>
               </ul>
             </li>
         </ul>

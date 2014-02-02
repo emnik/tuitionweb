@@ -70,7 +70,7 @@ $(document).ready(function(){
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url()?>exams">Διαγωνίσματα</a></li>
+                <li><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a></li>
                 <li><a href="<?php echo base_url()?>files">Αρχεία</a></li>
                 <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li>
                 <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li>
@@ -150,6 +150,7 @@ $(document).ready(function(){
       <ul class="nav nav-tabs">
         <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Στοιχεία</a></li>
         <li class="active"><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan">Πλάνο Διδασκαλίας</a></li>
+        <li><a href="#" >Βαθμολόγιο</a></li>
       </ul>
      
       <div class="row">
@@ -220,11 +221,44 @@ $(document).ready(function(){
 		      </div> <!--τέλος ημερησίου προγράμματος-->
 
 		      <div class="row">
-		      	<div class="col-md-6"> <!--Αριθμός/Ονομασία Τμημάτων - Ίσως και αρ. ατόμων ανα τμήμα-->
-		      		<div class="panel panel-default">
+		      	<div class="col-md-6"> <!--απουσίες & πρόοδος-->
+			      	<div class="row">
+				      	<div class="col-md-12"> <!--Βαθμολογία τελευταίου διαγωνίσματος - Μέσος όρος βαθμολογίας (στο τέλος Περισότερα...) -->
+				      		<div class="panel panel-default">
               <div class="panel-heading">
                 <span class="icon">
-                  <i class=" icon-cog"></i>
+                  <i class="icon-pencil"></i>
+                </span>
+                <h3 class="panel-title">Διαγωνίσματα</h3>
+              </div>
+            <div class="panel-body">
+              <?php if(empty($progress)):?>
+                <div class="row">
+                  <div class="col-md-12">  
+                    <p class="text-info">
+                      Δεν υπάρχουν προγραμματισμένα διαγωνίσματα!
+                    </p>
+                    <!-- <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right disabled" onclick="return false;" >Βαθμολόγιο</a> -->
+                  </div>
+                </div>
+              <?php else:?>
+               <div class="row">
+                <div class="col-md-12">  
+                  <!-- <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right" >Βαθμολόγιο</a> -->
+                </div>
+              </div>
+              <?php endif;?>
+	      		</div>
+	      	</div>
+		    </div>
+      </div>
+
+   	</div>
+            <div class="col-md-6"> <!--Αριθμός/Ονομασία Τμημάτων - Ίσως και αρ. ατόμων ανα τμήμα-->
+              <div class="panel panel-default">
+              <div class="panel-heading">
+                <span class="icon">
+                  <i class=" icon-tags"></i>
                 </span>
                 <h3 class="panel-title">Τμήματα</h3>
                    <div class="buttons">
@@ -233,18 +267,18 @@ $(document).ready(function(){
                   </div>
               </div>
             <div class="panel-body">
-		      			<?php if (empty($program)):?>
-      					<div class="alert alert-block alert-error fade in">
-				            <!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
-				            <!-- <h5 class="alert-heading"><i class="icon-exclamation-sign"></i> Δεν έχει εισαχθεί πρόγραμμα τμημάτων!</h5> -->
-				            <p class="text-info">Δεν έχει εισαχθεί πρόγραμμα τμημάτων! Για την εισαγωγή τμημάτων επιλέξτε "Τμήματα" από το μενού ή την αρχική σελίδα.</p>
-				        </div>
+                <?php if (empty($program)):?>
+                <div class="alert alert-block alert-error fade in">
+                    <!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
+                    <!-- <h5 class="alert-heading"><i class="icon-exclamation-sign"></i> Δεν έχει εισαχθεί πρόγραμμα τμημάτων!</h5> -->
+                    <p class="text-info">Δεν έχει εισαχθεί πρόγραμμα τμημάτων! Για την εισαγωγή τμημάτων επιλέξτε "Τμήματα" από το μενού ή την αρχική σελίδα.</p>
+                </div>
                 <div class="row">
                   <div class="col-md-12"> 
                     <a href="#" class="btn btn-default btn-sm pull-right" onclick="return false;" disabled>Περισσότερα</a>
                 </div>
               </div>
-				    <?php else:?>
+            <?php else:?>
                   <?php $stdsum=0; $sectionsnum=0; $hourssum=0;?>
                   <table class="footable table table-striped table-condensed">
                     <thead>
@@ -286,47 +320,11 @@ $(document).ready(function(){
                     <a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan/sections" class="btn btn-default btn-sm pull-right">Περισσότερα</a>
                 </div>
               </div>
-		      		<?php endif;?>
-
-  				    </div>
-		      	</div>
-          </div>
-
-		      	<div class="col-md-6"> <!--απουσίες & πρόοδος-->
-
-			      	<div class="row">
-				      	<div class="col-md-12"> <!--Βαθμολογία τελευταίου διαγωνίσματος - Μέσος όρος βαθμολογίας (στο τέλος Περισότερα...) -->
-				      		<div class="panel panel-default">
-              <div class="panel-heading">
-                <span class="icon">
-                  <i class="icon-random"></i>
-                </span>
-                <h3 class="panel-title">Καταγραφή προόδου</h3>
-              </div>
-            <div class="panel-body">
-              <?php if(empty($progress)):?>
-                <div class="row">
-                  <div class="col-md-12">  
-                    <p class="text-info">
-                      Δεν υπάρχουν δεδομένα για την πρόοδο του μαθητή!
-                    </p>
-                    <!-- <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right disabled" onclick="return false;" >Βαθμολόγιο</a> -->
-                  </div>
-                </div>
-              <?php else:?>
-               <div class="row">
-                <div class="col-md-12">  
-                  <!-- <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right" >Βαθμολόγιο</a> -->
-                </div>
-              </div>
               <?php endif;?>
-	      		</div>
-	      	</div>
-		    </div>
-      </div>
 
-   	</div>
-
+              </div>
+            </div>
+          </div>
   </div>
 </div>
 
