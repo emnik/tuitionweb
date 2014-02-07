@@ -97,7 +97,7 @@ $(document).ready(function() {
         if ( anSelected.length !== 0 ) {
             var aRow=anSelected[0];
             var id=oTable.fnGetData( aRow, 0 );
-            window.open ('section/card/'+id,'_self',false);
+            window.open ('<?php echo base_url("section/card");?>/'+id,'_self',false);
             //alert(id);
         }
         else
@@ -108,7 +108,7 @@ $(document).ready(function() {
 
     /* Add a click handler for the new-reg btn */
     $('#new-reg').click(function(){
-      window.open ('section/newreg','_self',false);
+      window.open ('<?php echo base_url("section/newreg");?>','_self',false);
     });
 
     /* Add a click handler for the del-reg btn */
@@ -120,7 +120,7 @@ $(document).ready(function() {
             {
                 var aRow=anSelected[0];
                 var id=oTable.fnGetData( aRow, 0 );
-                window.open ('section/delreg/'+id,'_self',false);  
+                window.open ('<?php echo base_url("section/delreg");?>/'+id,'_self',false);  
             }
          }
          else
@@ -367,7 +367,7 @@ function resizeWindow(e)
               <!-- <button class="btn btn-default btn-sm"><i class="icon-refresh"></i></button> -->
               <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
             </div>
-            <button class="btn btn-sm btn-success pull-right" id="section-card"><i class="icon-tag"> </i> Καρτέλα Τμήματος</button>
+            <button class="btn btn-sm btn-openpage pull-right" id="section-card"><i class="icon-tag"> </i> Καρτέλα Τμήματος</button>
           </div>
         </div>
         </div>

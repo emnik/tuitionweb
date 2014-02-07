@@ -3,12 +3,12 @@
 
 <style type="text/css">
 
-  @media (max-width: 400px)
+/*  @media (max-width: 400px)
   {    
     .col-xs-3 {padding-left:5px;padding-right: 5px} 
     .col-xs-3 .form-control {padding-left:8px;padding-right: 3px}
   }   
-
+*/
 </style>
 
 
@@ -45,7 +45,7 @@ function toggleedit(togglecontrol, id) {
 $(document).ready(function(){
 
     $('#cancelbtn').click(function(){
-      window.open("<?php echo base_url()?>section/cancel/card/<?php echo $section['id']?>", '_self', false);
+      window.open("<?php echo base_url('section/cancel/card/'.$section['id'])?>", '_self', false);
     });
 
     $("body").on('click', '#editform1, #editform2', function(){
@@ -169,6 +169,16 @@ $(document).ready(function(){
           showInputs:false,
         });
 
+
+        $('#delsectionbtn').click(function(){
+        var r=confirm("Το παρών τμήμα πρόκειται να διαγραφεί. Παρακαλώ επιβεβαιώστε.");
+          if (r==true)
+          {
+              window.open ("<?php echo base_url('section/delreg/'.$section['id']);?>",'_self',false);  
+          }
+          return false;
+        });
+
 }) //end of (document).ready(function())
 
 function getcourses(){
@@ -181,7 +191,7 @@ function getcourses(){
         //the following is ajax post to populate the course dropdown 
         var postdata = {'jsclassid': classid};
         //post_url is the controller function where I want to post the data
-        var post_url = "<?php echo base_url()?>section/courses";
+        var post_url = "<?php echo base_url('section/courses')?>";
         $.ajax({
           type: "POST",
           url: post_url,
@@ -231,7 +241,7 @@ function getlessons(){
         //the following is ajax post to populate the course dropdown 
         var postdata = {'jsclassid': classid, 'jscourseid': courseid};
         //post_url is the controller function where I want to post the data
-        var post_url = "<?php echo base_url()?>section/lessons";
+        var post_url = "<?php echo base_url('section/lessons')?>";
         $.ajax({
           type: "POST",
           url: post_url,
@@ -275,7 +285,7 @@ function gettutors(){
         //the following is ajax post to populate the course dropdown 
         var postdata = {'jsclassid': classid, 'jscourseid': courseid, 'jslessonid': lessonid};
         //post_url is the controller function where I want to post the data
-        var post_url = "<?php echo base_url()?>section/tutors";
+        var post_url = "<?php echo base_url('section/tutors')?>";
         $.ajax({
           type: "POST",
           url: post_url,
@@ -308,7 +318,7 @@ function gettutors(){
     var days = $('.programrow').length;
 
     var res = confirm("Πρόκειται να διαγράψετε μία ημέρα προγράμματος: "+day+". Σίγουρα Θέλετε να συνεχίσετε;");
-    var post_url = "<?php echo base_url();?>section/delprogramday/";
+    var post_url = "<?php echo base_url('section/delprogramday');?>";
 
       if (res==true){
           $.ajax({
@@ -565,7 +575,7 @@ function gettutors(){
 
                       <?php $days=array("Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο", "Κυριακή");?>
 
-                      <div class="col-xs-3">
+                      <div class="col-sm-3 col-sm-offset-0 col-sm-pull-0 col-xs-8 col-xs-offset-4 col-xs-pull-4">
                         <div class="form-group">  
                                 <label>Ημέρα</label>
                                 <!-- <input disabled class="form-control" id="day[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="day[<?php echo $daysectionprog['id'];?>]" value="<?php echo $daysectionprog['day'];?>"> -->
@@ -576,27 +586,26 @@ function gettutors(){
                                     <?php endforeach;?>
                                 </select>
                         </div>
-                          </div>
+                      </div>
 
-                      <div class="col-xs-3">
+                      <div class="col-sm-3 col-xs-4">
                             <div class="form-group timecontainer">
                                   <label>Έναρξη</label>
                                   <input disabled class="form-control" id="starttm[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="start_tm[<?php echo $daysectionprog['id'];?>]" value="<?php echo date('H:i',strtotime($daysectionprog['start_tm']));?>">
                             </div>
-                            </div>
-                          <div class="col-xs-3 timecontainer">
-                            <div class="form-group">
-                                <label>Λήξη</label>
-                                <input disabled class="form-control" id="endtm[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="end_tm[<?php echo $daysectionprog['id'];?>]" value="<?php echo date('H:i',strtotime($daysectionprog['end_tm']));?>">
-                            </div>
+                      </div>
+                      <div class="col-sm-3 col-xs-4 timecontainer">
+                         <div class="form-group">
+                             <label>Λήξη</label>
+                             <input disabled class="form-control" id="endtm[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="end_tm[<?php echo $daysectionprog['id'];?>]" value="<?php echo date('H:i',strtotime($daysectionprog['end_tm']));?>">
                           </div>
-                          <div class="col-xs-3">
-                              <div class="form-group">
-                                <label>Αίθουσα</label>
-                                <input disabled class="form-control" id="classroomid[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="classroom_id[<?php echo $daysectionprog['id'];?>]" value="<?php echo $daysectionprog['classroom_id'];?>">
-                              </div>
+                      </div>
+                      <div class="col-sm-3 col-xs-4">
+                          <div class="form-group">
+                             <label>Αίθουσα</label>
+                             <input disabled class="form-control" id="classroomid[<?php echo $daysectionprog['id'];?>]" type="text" placeholder="" name="classroom_id[<?php echo $daysectionprog['id'];?>]" value="<?php echo $daysectionprog['classroom_id'];?>">
                           </div>
-
+                      </div>
                     </div>
                   <?php endforeach;?>
                 <?php else:?>
@@ -641,9 +650,9 @@ function gettutors(){
                 <?php endif;?>
                 <div class="row">
                 <div class="col-md-12">    
-                  <div class="pull-right">
+                  <div class="btn-toolbar">
                     <?php if(!empty($sectionprog)):?>
-                      <div class="btn-group">
+                      <div class="btn-group pull-left">
                         <button type="button" class="btn btn-default dropdown-toggle" disabled data-toggle="dropdown">
                           Διαγραφή <span class="caret"></span>
                         </button>
@@ -654,7 +663,7 @@ function gettutors(){
                         </ul>
                       </div>
                     <?php endif;?>
-                    <div class="btn-group">
+                    <div class="btn-group pull-right">
                     <button id="newdaybtn" type="button" class="btn btn-primary" disabled >Προσθήκη</button>
                     <button id="undodaybtn" type="button" class="btn btn-primary" disabled ><span class="icon"><i class="icon-undo"></i></span></button>
                   </div>
@@ -668,13 +677,30 @@ function gettutors(){
 	</div>
 
     <div class="row">
-    	<div class="col-md-12">    
-        	<button id="submitbtn" type="submit" class="btn btn-primary">Αποθήκευση</button>
-        	<button id="cancelbtn" type="button" class="btn btn-default">Ακύρωση</button>
+    	<div class="col-md-12">  
+        <div class="btn-toolbar">  
+          <div class="btn-group">
+          	<button id="submitbtn" type="submit" class="btn btn-primary">Αποθήκευση</button>
+          	<button id="cancelbtn" type="button" class="btn btn-default">Ακύρωση</button>
+          </div>
+            <div class="btn-group pull-right">
+            <a id="delsectionbtn" href="#" class="btn btn-default" ><i class="icon-trash"></i></a>
+            <a id="newsectionbtn" href="<?php echo base_url();?>section/newreg" class="btn btn-default"><i class="icon-plus"></i></a>
+            </div>
+        </div>
     	</div>
     </div>
 
     </form>
+
+      <div class="row">
+        <div class="col-md-12">   
+        <ul class="pager">
+            <li class="previous <?php if(empty($prevnext['prev'])){echo 'disabled';};?>"  <?php if(empty($prevnext['prev'])){echo "onclick='return false;'";};?>><a href="<?php echo base_url('/section/card/'.$prevnext['prev']);?>"><i class="icon-chevron-left"></i> Προηγούμενο</a></li>
+            <li class="next <?php if(empty($prevnext['next'])){echo 'disabled';};?>"  <?php if(empty($prevnext['next'])){echo "onclick='return false;'";};?> ><a href="<?php echo base_url('/section/card/'.$prevnext['next']);?>">Επόμενο <i class="icon-chevron-right"></i></a></li>
+            </ul>
+         </div>
+      </div>
 
     </div> 
   </div>

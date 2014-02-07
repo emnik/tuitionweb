@@ -157,7 +157,7 @@ class Card_model extends CI_Model {
    }
 
 
-   public function update_section_data($section_update, $id, $section_program_update=null){
+   public function update_section_data($section_update, $id, $section_program_update){
 
       //replacing empty array values with NULL
       foreach ($section_update as $i => $value) {
@@ -168,26 +168,17 @@ class Card_model extends CI_Model {
       $this->db->update('section', $section_update);
    
 
-      if (!empty($section_program_update)){
-         //replacing empty array values with NULL
-         foreach ($section_program_update as $key=> $value) {
-            foreach ($value as $subkey => $subvalue) {
-               if ($subvalue === "") $section_program_update[$key][$subkey] = null;
-            };
-            
-         };
-
-         foreach ($section_program_update as $i => $data) {
-            $data['section_id']=$id;
-            if ($i>0){
-               $this->db->where('section_program.id',$i);
-               $this->db->update('section_program', $data);
-            }
-            else {
-               $this->db->insert('section_program', $data);  
-            }
+      foreach ($section_program_update as $i => $data) {
+         $data['section_id']=$id;
+         if ($i>0){
+            $this->db->where('section_program.id',$i);
+            $this->db->update('section_program', $data);
+         }
+         else {
+            $this->db->insert('section_program', $data);  
          }
       }
+
    }
 
 
@@ -228,6 +219,33 @@ class Card_model extends CI_Model {
       foreach ($data as $key => $value) {
          $this->db->delete('std_lesson',array('id'=>$key));
       }
+   }
+
+
+   public function get_prevnext_section_byname($sectionname, $id, $year)
+   {
+      $data=array('next'=>'', 'prev'=>'');
+      $ids = $this->db->select('id')->where('section', $sectionname)->where('schoolyear', $year)->order_by('section, id')->get('section');
+      if($ids->num_rows()>0)
+         {
+            foreach ($ids->result_array() as $row) {
+               $tmp[]=$row['id'];
+            }
+            $c=0;
+            while ($tmp[$c] != $id) {
+               $c++;
+            };
+
+            if ($c+1<count($tmp))
+            {
+               $data['next']=$tmp[$c+1];
+            }
+            if ($c-1>=0)
+            {
+               $data['prev']=$tmp[$c-1];     
+            }
+         }
+      return $data;
    }
 
 

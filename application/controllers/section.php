@@ -124,10 +124,16 @@ public function card($id, $subsection=null) {
 		die($msg);
 	}
 	
+	$this->load->model('section/card_model');
+	$prevnext = $this->card_model->get_prevnext_section_byname($section['section'], $id, $this->session->userdata('startsch'));
+	$data['prevnext']=$prevnext;
 
+	$this->load->library('firephp');
+	$this->firephp->info($prevnext);
+	
 	switch ($subsection) {
 	 	case 'sectionstudents':
-	 		$this->sectionstudents($id, $section, $user);
+	 		$this->sectionstudents($id, $section, $user, $prevnext);
 	 		return 0;
 	 		break;
 
@@ -150,6 +156,7 @@ public function card($id, $subsection=null) {
 	 	foreach ($section_data as $key => $value) {
 	 		switch ($key) {
 	 			case 'section':
+	 				$data['section']['section'] = $value; //get the section name in the sections main data 
 	 			case 'class_id':
 	 			case 'course_id':
 	 			case 'lesson_id':
@@ -236,8 +243,9 @@ public function card($id, $subsection=null) {
 	}
 
 
-	public function sectionstudents($id, $section, $user){
+	public function sectionstudents($id, $section, $user, $prevnext){
 		
+		$data['prevnext'] = $prevnext;
 		$data['user']=$user;
 		$this->load->model('section/card_model');
 

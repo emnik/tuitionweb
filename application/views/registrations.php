@@ -121,7 +121,7 @@ $(document).ready(function() {
    $('#stdbook_filter').append(fgroupDiv);
    $('#stdbook_filter').find('input').prependTo('#fgroupDiv');
    $('#stdbook_filter').find('input').attr('id','inputid');
-   $('#stdbook_filter').find('input').css({'max-width':'200px'});
+   $('#stdbook_filter').find('input').css({'max-width':'180px'});
    var $searchlabel = $("<label>").attr('for', "#inputid");
    $searchlabel.css({'margin-top':'5px','margin-bottom':'5px','margin-left':'0px', 'margin-right':'10px'})
    $searchlabel.addClass('pull-left');
@@ -343,7 +343,7 @@ function resizeWindow(e)
               <button class="btn btn-default btn-sm"><i class="icon-refresh"></i></button>
               <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
             </div>
-            <button class="btn btn-sm btn-success pull-right" id="student-card"><i class="icon-user"> </i> Καρτέλα Μαθητή</button>
+            <button class="btn btn-sm btn-openpage pull-right" id="student-card"><i class="icon-user"> </i> Καρτέλα Μαθητή</button>
           </div>
         </div>
         </div>

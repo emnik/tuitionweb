@@ -113,7 +113,7 @@ $(document).ready(function(){
         var r=confirm("Το παρών διαγώνισμα πρόκειται να διαγραφεί. Παρακαλώ επιβεβαιώστε.");
           if (r==true)
           {
-              window.open ("<?php echo base_url();?>exam/delexam/<?php echo $exam['id'];?>",'_self',false);  
+              window.open ("<?php echo base_url('exam/delexam/'.$exam['id']);?>",'_self',false);  
           }
           return false;
     });
@@ -465,7 +465,7 @@ function check_sections_exist(){
           </div>
           <div class="btn-group pull-right">
             <a id="delexam" href="#" class="btn btn-default" ><i class="icon-trash"></i></a>
-            <a id="newexambtn" href="<?php echo base_url();?>exam/newexam" class="btn btn-default"><i class="icon-plus"></i></a>
+            <a id="newexambtn" href="<?php echo base_url('exam/newexam');?>" class="btn btn-default"><i class="icon-plus"></i></a>
           </div>
       	</div>
       </div>

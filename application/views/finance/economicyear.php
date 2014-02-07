@@ -270,7 +270,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
    $('#tbl3_filter').append(fgroupDiv3);
    $('#tbl3_filter').find('input').prependTo('#fgroupDiv3');
    $('#tbl3_filter').find('input').attr('id','inputid3');
-   $('#tbl3_filter').find('input').css({'max-width':'200px'});
+   $('#tbl3_filter').find('input').css({'max-width':'180px'});
    var $searchlabel3 = $("<label>").attr('for', "#inputid3");
    $searchlabel3.css({'margin-top':'5px','margin-bottom':'5px','margin-left':'0px', 'margin-right':'10px'})
    $searchlabel3.addClass('pull-left');
@@ -305,7 +305,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
    $('#tbl2_filter').append(fgroupDiv2);
    $('#tbl2_filter').find('input').prependTo('#fgroupDiv2');
    $('#tbl2_filter').find('input').attr('id','inputid2');
-   $('#tbl2_filter').find('input').css({'max-width':'200px'});
+   $('#tbl2_filter').find('input').css({'max-width':'180px'});
    var $searchlabel = $("<label>").attr('for', "#inputid2");
    $searchlabel.css({'margin-top':'5px','margin-bottom':'5px','margin-left':'0px', 'margin-right':'10px'})
    $searchlabel.addClass('pull-left');

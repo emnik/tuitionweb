@@ -324,8 +324,8 @@ function makephonecall(phonenum){
 	          </div> <!-- end of mainform -->
   	      </div> <!-- end of group#2 -->
 	      </div>     
-
-        <div>
+      </div>
+        <div class="btn-group">
           <button id="submitbtn" type="submit" class="btn btn-primary">Αποθήκευση</button>
           <button id="cancelbtn" type="button" class="btn btn-default">Ακύρωση</button>
         </div>

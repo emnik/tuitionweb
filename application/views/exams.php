@@ -153,7 +153,7 @@ $(document).ready(function() {
    $('#examstbl_filter').append(fgroupDiv);
    $('#examstbl_filter').find('input').prependTo('#fgroupDiv');
    $('#examstbl_filter').find('input').attr('id','inputid');
-   $('#examstbl_filter').find('input').css({'max-width':'200px'});
+   $('#examstbl_filter').find('input').css({'max-width':'180px'});
    var $searchlabel = $("<label>").attr('for', "#inputid");
    $searchlabel.css({'margin-top':'5px','margin-bottom':'5px','margin-left':'0px', 'margin-right':'10px'})
    $searchlabel.addClass('pull-left');
@@ -350,7 +350,7 @@ function resizeWindow(e)
               <!-- <button class="btn btn-default btn-sm"><i class="icon-refresh"></i></button> -->
               <button class="btn btn-default btn-sm" id="newexam"><i class="icon-plus"></i></button>
             </div>
-            <button class="btn btn-sm btn-success pull-right" id="examdetails"><i class="icon-pencil"> </i> Επεξεργασία</button>
+            <button class="btn btn-sm btn-openpage pull-right" id="examdetails"><i class="icon-pencil"> </i> Επεξεργασία</button>
           </div>
         </div>
         </div>

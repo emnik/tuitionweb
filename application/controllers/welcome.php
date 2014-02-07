@@ -103,8 +103,8 @@ public function index() {
 				redirect('finance');
 				break;
 
-			case 'submit5': // Αναφορές
-				#code...
+			case 'submit5': // Πρόγραμμα Σπουδών
+				redirect('curriculum');
 				break;
 
 			case 'submit6': // Διαγωνίσματα

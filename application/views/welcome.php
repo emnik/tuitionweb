@@ -63,7 +63,7 @@
               <ul class="dropdown-menu">
                 <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url()?>welcome/logout">Αποσύνδεση</a></li>
+                <li><a href="<?php echo base_url('welcome/logout')?>">Αποσύνδεση</a></li>
               </ul>
             </li>
         </ul>
@@ -200,7 +200,8 @@
                 </button>
                 <div class="small">
                     Στοιχεία /
-                    Πλάνο διδασκαλίας
+                    Πλάνο διδασκαλίας /
+                    Βαθμολόγιο
                 </div>
             </div>
       
@@ -219,18 +220,18 @@
             <div class="clearfix visible-xs"></div>
 
             <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
-              <button disabled type="submit" class="btn-link" name="submit" value="submit4">
+              <button type="submit" class="btn-link" name="submit" value="submit5">
                 <i class="icon-sitemap icon-4x"></i>
                 <h4>Πρόγραμμα σπουδών</h4>
               </button>
               <div class="small">
-                    Τάξεις / 
                     Κατευθύνσεις /
-                    Μαθήματα
+                    Μαθήματα / 
+                    Διδάσκοντες
               </div>
             </div>
 
-            <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
+<!--             <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
               <button disabled type="submit" class="btn-link" name="submit" value="submit4">
                 <i class="icon-th-list icon-4x"></i>
                 <h4>Μαθήματα-Διδασκοντες</h4>
@@ -238,7 +239,7 @@
               <div class="small">
                     Αντιστοίχιση μαθημάτων - διδασκώντων
               </div>
-            </div>
+            </div> -->
 
 
             <div class="col-sm-3 col-xs-6 welcome" style="display: none;">

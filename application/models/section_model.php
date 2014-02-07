@@ -24,7 +24,8 @@ class Section_model extends CI_Model {
          ->join('course','lesson.course_id=course.id')
          ->join('class', 'course.class_id=class.id')
          ->where('section.schoolyear', $schyear)
-     	 ->get();
+         ->order_by('section.section, section.id')
+     	   ->get();
 
    	if ($query->num_rows() > 0) 
 		{

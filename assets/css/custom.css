@@ -1,6 +1,7 @@
 /**
  * My custom CSS rules go into this file
  */
+@import url(http://fonts.googleapis.com/css?family=Jura:400,600|Play:400,700|Roboto:700&subset=latin,greek);
 
 .pager li > a, .pager li > span  {
     border-radius: 10px;
@@ -8,54 +9,42 @@
 }
 
 
-li.dropdown-header{
+/*li.dropdown-header{
   font-style: italic;
-}
+}*/
 
 ul.nav.navbar-nav > li.dropdown > a.dropdown-toggle.active{
   color: white;
-  background-color: red;
+  background-color: #76818D;
 }
 
 ul.nav.navbar-nav > li.dropdown > a.dropdown-toggle.active:hover {
   color: white;
-  background-color: red;
+  background-color: #76818D;
 }
 
 ul.nav > li.dropdown> ul.dropdown-menu>li.active>a{
   color: white;
-  background-color: red;
+  /*background-color: red;*/
+  background-color: #76818D;
 }
 
 
-/*Change default divider for breadcrumb*/
-.breadcrumb > li + li:before {
-    content: "> ";
-}
-
-.breadcrumb > li.dash {
-  cursor: pointer;
-  float: right;
-  color:gray;
-  margin-right: 0px;
-}
-.breadcrumb > li.dash:before {
-    content: "";
-}
 
 
 /* Main title for my pages based on jumbotron from bootstrap docs.css 
 ---------------------------------------------------------------------*/
-/*body {
-    padding-top: 0px;
-}*/
+
 
 .navbar.navbar-inverse.navbar-top{
   margin-bottom: 0px;
 }
 
+.navbar.navbar-default.navbar-top{
+  margin-bottom: 0px;
+}
+
 .jumbotron {
-  /*position: relative;*/
   padding-top: 10px;
   text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
   background: #423B3C;
@@ -63,8 +52,10 @@ ul.nav > li.dropdown> ul.dropdown-menu>li.active>a{
 
 .jumbotron h1 {
   font-size: 40px;
-  font-weight: bold;
-  color: #C43C35;
+
+  font-family: 'Roboto', sans-serif; font-weight: 700;
+  /*color: #C43C35;*/
+  color: #76818D;
   letter-spacing: -1px;
   line-height: 1;
 }
@@ -77,6 +68,12 @@ ul.nav > li.dropdown> ul.dropdown-menu>li.active>a{
   margin-bottom: 0px;
 }
 
+/* change background colors 
+---------------------------*/
+body{
+  background-color: #EEEEEE;
+  /*background-color: #18BC9C;*/
+}
 
 /* Sticky footer based on from http://ryanfait.com/sticky-footer/ 
 --------------------------------------------------------------*/
@@ -136,20 +133,20 @@ Normally (without bootstrap intergration I would add the display class to the ta
 and use the demo_table.css file that includes the css rules below*/
 
 .table tr.odd.row_selected td {
-    background-color: #51A351;
+    /*background-color: #51A351;*/
+    background-color: #76818D;
+    color: white;
 }
 
 .table tr.even.row_selected td {
-    background-color: #51A351;
+    /*background-color: #51A351;*/
+    background-color: #76818D;
+    color: white;
 }
 
 
 
-/* change background colors 
----------------------------*/
-body{
-  background-color: #EEEEEE;
-}
+
 
 
 /* breadcrumb styling 
@@ -157,8 +154,7 @@ body{
 
 .breadcrumb {
   background-color: #E5E5E5;
-  /*border-bottom: 1px solid #D6D6D6;
-  border-top: 1px solid #D6D6D6;*/
+  /*background-color: #BAC4C5;*/
   border:1px solid #D6D6D6;
   box-shadow: 0 0 1px #FFFFFF;
 
@@ -182,6 +178,21 @@ body{
 .breadcrumb li.active {
     font-size: 12px; 
     font-weight: bold;
+}
+
+/*Change default divider for breadcrumb*/
+.breadcrumb > li + li:before {
+    content: "> ";
+}
+
+.breadcrumb > li.dash {
+  cursor: pointer;
+  float: right;
+  color:gray;
+  margin-right: 0px;
+}
+.breadcrumb > li.dash:before {
+    content: "";
 }
 
 /* nav tabs & pils styling 
@@ -213,6 +224,7 @@ body{
   color: #666666;*/
   margin-bottom: 15px;
   font-size: 14px;
+  font-family: 'Play', sans-serif; font-weight: 700;
 }
 
 .panel >.panel-heading > .buttons {
@@ -388,15 +400,17 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
 
     .welcome .btn-link {
         text-decoration: none;
-        color: black;
-        /*font-family: 'Ubuntu';*/
+        /*color: black;*/
+        color: #2C3E50;
         text-shadow: 5px 4px 2px #cfcfcf;
+    }
 
-
+    .welcome .btn-link > h4{
+        font-family: 'Jura', sans-serif;font-weight: 600;
     }
 
    .welcome .btn-link:enabled:hover {
-        color: red;
+        color: #2C3E50;
         transform: scale(1.1);
         -webkit-transform: scale(1.1);/* Saf3.1+, Chrome */
         -moz-transform: scale(1.1); /* FF3.5+ */
@@ -415,6 +429,8 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
       background:lightgray;
       padding:5px 10px;
       color:gray;
+      font-family: 'Jura', sans-serif;font-weight: 600;
+      /*color: #95A5A6;*/
       font-weight: bold;
       -moz-border-radius: 5px;
       -webkit-border-radius: 5px;
@@ -432,13 +448,39 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
 
 /* RowGrouping addon for datatables custom css 
 ---------------------------------------------------------------------*/
-    .group {
-      background-color: #E5E5E5;
-      font-weight: bold;
-    }
+.group {
+  background-color: #E5E5E5;
+  font-family: 'Jura', sans-serif;font-weight: 600;
+}
 
+/*---------------------------------------------------------------------*/
 
-/*Use everywhere ubuntu font!
-----------------------------*/
-body { font-family: 'Ubuntu'}
+body { 
+  font-family: 'Jura', sans-serif;font-weight: 400;
+}
 
+.btn-openpage {
+  background-color: #76818D;
+  color: white;
+}
+
+.btn-openpage:hover {
+  background-color: #2C3E50;
+  color: white;
+}
+.btn-openpage:active {
+  background-color: #2C3E50;
+  color: white;
+}
+
+table th {
+    font-family: 'Play', sans-serif;font-weight: 700;
+}
+
+fieldset legend {
+  font-family: 'Jura', sans-serif; font-weight: 600;
+}
+
+li.select2-search-choice {
+    font-family: 'Jura', sans-serif; font-weight: 400;
+}

@@ -287,9 +287,9 @@ function toggledays(togglecontrol) {
 				      				<th data-class="expand">Ώρα</th>
 				      				<th>Μάθημα</th>
 				      				<th data-hide="phone,tablet">Διδακτικές Ώρες</th>
-				      				<th data-hide="phone">Τμήμα</th>
+				      				<!-- <th data-hide="phone">Τμήμα</th> -->
 				      				<th data-hide="phone">Αίθουσα</th>
-                      <th></th>
+                      <th>Τμήμα</th>
                     </tr>
 			      			</thead>
 			      			<tbody>
@@ -300,9 +300,9 @@ function toggledays(togglecontrol) {
 				      						<td><?php echo date('H:i',strtotime($program[$k]['start_tm'])).'-'.date('H:i',strtotime($program[$k]['end_tm']));?></td>
 				      						<td><?php echo $program[$k]['title'];?></td>
 				      						<td><?php echo $program[$k]['duration'];?></td>
-				      						<td><?php echo $program[$k]['section'];?></td>
+				      						<!-- <td><?php echo $program[$k]['section'];?></td> -->
 				      						<td><?php echo $program[$k]['classroom'];?></td>
-                          <td><a class="btn btn-default btn-sm pull-right" href="<?php echo base_url()?>section/card/<?php echo $program[$k]['section_id'];?>"><i class="icon-edit"></i><small></small></a></td>
+                          <td><a style="font-weight:600;" class="btn btn-info btn-xs" href="<?php echo base_url()?>section/card/<?php echo $program[$k]['section_id'];?>"><?php echo $program[$k]['section'];?></a></td>
 				      					</tr>
 			      					  <?php $k++;?>
                       <?php else:?>

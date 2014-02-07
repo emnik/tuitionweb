@@ -107,6 +107,15 @@ $(document).ready(function(){
       };
   });
 
+        $('#delsectionbtn').click(function(){
+        var r=confirm("Το παρών τμήμα πρόκειται να διαγραφεί. Παρακαλώ επιβεβαιώστε.");
+          if (r==true)
+          {
+              window.open ("<?php echo base_url('section/delreg/'.$section['id']);?>",'_self',false);  
+          }
+          return false;
+        });
+        
 }) //end of (document).ready(function())
 
 </script>
@@ -287,10 +296,23 @@ $(document).ready(function(){
 
     <div class="row">
         <div class="col-md-12">
-			<button disabled id="submitbtn" type="button" class="btn btn-primary pull-right">Αφαίρεση από τμήμα</button>
+			     <button disabled id="submitbtn" type="button" class="btn btn-primary">Αφαίρεση από τμήμα</button>
+            <div class="btn-group pull-right">
+              <a id="delsectionbtn" href="#" class="btn btn-default" ><i class="icon-trash"></i></a>
+              <a id="newsectionbtn" href="<?php echo base_url();?>section/newreg" class="btn btn-default"><i class="icon-plus"></i></a>
+            </div>
         </div>
     </div> 
   </form>
+
+<div class="row">
+  <div class="col-md-12">   
+  <ul class="pager">
+      <li class="previous <?php if(empty($prevnext['prev'])){echo 'disabled';};?>"  <?php if(empty($prevnext['prev'])){echo "onclick='return false;'";};?>><a href="<?php echo base_url('/section/card/'.$prevnext['prev']);?>"><i class="icon-chevron-left"></i> Προηγούμενο</a></li>
+      <li class="next <?php if(empty($prevnext['next'])){echo 'disabled';};?>"  <?php if(empty($prevnext['next'])){echo "onclick='return false;'";};?> ><a href="<?php echo base_url('/section/card/'.$prevnext['next']);?>">Επόμενο <i class="icon-chevron-right"></i></a></li>
+      </ul>
+   </div>
+</div>
 
 <?php else:?>
 		<div class="well">
@@ -299,6 +321,8 @@ $(document).ready(function(){
 	</div>
 </div>
 <?php endif;?>
+
+
 
 </div><!--end of main container-->
 
