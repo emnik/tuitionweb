@@ -23,6 +23,7 @@ function toggleedit(togglecontrol, id) {
 }
     var courserowtemplate, lessonrowtemplate; //globals
     var newcoursec=0, newlessonc=0; //globals
+    var undoarr=[];
 
 
     $(document).on('click','.addcoursebtn', function(){
@@ -33,6 +34,7 @@ function toggleedit(togglecontrol, id) {
         newcourserow.attr('id',-newcoursec);
         var fields=newcourserow.find('input[type=text]');
         fields.eq(0).attr('id', 'courseid['+(-newcoursec)+']');
+        undoarr.push('courseid['+(-newcoursec)+']');
         fields.eq(0).attr('name', 'course['+(-newcoursec)+']');
         fields.eq(1).attr('id', 'lessonid['+(-newlessonc)+']');
         fields.eq(1).attr('name', 'title['+(-newlessonc)+']');
@@ -40,6 +42,7 @@ function toggleedit(togglecontrol, id) {
         var whereaddcourserow = $(this).parents('.courserow');
         newcourserow.insertAfter(whereaddcourserow);        
         $('#'+(-newcoursec)).find('input:first').focus();
+        $('#undobtn').removeAttr('disabled');
     });
  
     $(document).on('click', '.addlessonbtn', function(){
@@ -48,61 +51,123 @@ function toggleedit(togglecontrol, id) {
           newlessonrow.removeClass('hidden');
           var fields=newlessonrow.find('input[type=text]');
           fields.eq(0).attr('id', 'lessonid['+(-newlessonc)+']');
+          undoarr.push('lessonid['+(-newlessonc)+']');
           fields.eq(0).attr('name', 'title['+(-newlessonc)+']');
           fields.eq(1).attr('name', 'hours['+(-newlessonc)+']');
           var whereaddlessonrow = $(this).parents('.lessonrow');
           newlessonrow.insertAfter(whereaddlessonrow);
+          $('#undobtn').removeAttr('disabled');
     })
-
-
-$(document).ready(function(){
     
-    courserowtemplate = $('.courserow:hidden'); //store the template to be cloned
-    lessonrowtemplate = $('.lessonrow:hidden'); //store the template to be cloned
-
-    $('#cancelbtn').click(function(){
-      window.open("<?php echo base_url('curriculum/cancel');?>", '_self', false);
-    });
-
-    $("body").on('click', '#editform1, #editform2', function(){
-      toggleedit(this, this.id);
-      $(this).removeAttr('disabled');
-
-    });
-
-    //we must enable all form fields to submit the form with no errors!
-    $("body").on('click', '#submitbtn', function(){
-        $('.mainform').find(':input:disabled').removeAttr('disabled');
-        $('form').submit();
-    });
-
-    //if it is a new course all the fields should be enabled
-    <?php if(empty($exam['lesson_id'])):?>   
-        $('#editform1').addClass('active');
-        $('#editform2').addClass('active');
-        $('.mainform').find(':input:disabled').removeAttr('disabled');
-        $('#submitbtn').removeAttr('disabled');
-        $('#cancelbtn').removeAttr('disabled');
-    <?php endif;?>
-
     
-    $('#classes').change(function(){
-      getcourses();
-    })
+    //some characters needs to be escaped in order to recognize the id
+    //http://learn.jquery.com/using-jquery-core/faq/how-do-i-select-an-element-by-an-id-that-has-characters-used-in-css-notation/
+    function jq( myid ) {
+    return "#" + myid.replace( /(:|\.|\[|\])/g, "\\$1" );
+    }
+    
 
-
-
-    $('#delexam').click(function(){
-        var r=confirm("Το παρών διαγώνισμα πρόκειται να διαγραφεί. Παρακαλώ επιβεβαιώστε.");
-          if (r==true)
-          {
-              window.open ("<?php echo base_url('');?>",'_self',false);  
-          }
-          return false;
+    $(document).on('click', '#undobtn', function(){
+      var id = undoarr.pop();
+      if(id.contains('lessonid')){
+        $(jq(id)).parents('.lessonrow').remove();
+      }
+      else if (id.contains('courseid')){
+        $(jq(id)).parents('.courserow').remove(); 
+      }
+      if(undoarr.length==0)
+        {
+          $('#undobtn').attr('disabled','disabled');
+        }
     });
 
 
-}) //end of (document).ready(function())
+    $(document).on('click', '.delcoursebtn', function(){
+      var r=confirm('Πρόκειται να διαγράψετε μία κατεύθυνση. Συνίσταται να μην το κάνετε αν έχετε αντιστοιχίσει έστω και 1 μαθητή σε αυτήν, ακόμα και σε παλαιότερη σχολική χρονιά. Μαζί με την κατεύθυνση θα διαγραφούν και όλα τα μαθήματα που τυχών έχετε αντιστοιχίσει σε αυτήν. Η ενέργεια αυτή δεν αναιρείται. Παρακαλώ επιβεβαιώστε.')
+      if (r==true)
+      {
+        // window.open ('<?php echo base_url("curriculum/delcourse");?>/'+id,'_self',false);
+        $(this).parents('.courserow').remove();
+      }
+      var visiblecourses = $('.courserow:visible');
+      if(visiblecourses.length==0) {
+        $("#classes option").removeAttr('selected');
+        $("#classes option:first").attr("selected", "selected");
+      }
+    });
+
+    $(document).on('click', '.dellessonbtn', function(){
+      var r=confirm('Πρόκειται να διαγράψετε ένα μάθημα. Συνίσταται να μην το κάνετε αν έχετε αντιστοιχίσει έστω και 1 μαθητή σε αυτό, ακόμα και σε παλαιότερη σχολική χρονιά. Η ενέργεια αυτή δεν αναιρείται. Παρακαλώ επιβεβαιώστε.')
+      if (r==true)
+      {
+        var courselessons = $(this).parents('.courserow').find('.lessonrow');
+        var whereaddlessonrow = $(this).parents('.col-sm-6');
+        // window.open ('<?php echo base_url("curriculum/dellesson");?>/'+id,'_self',false);        
+        $(this).parents('.lessonrow').remove();
+
+        //if no lessons remain in a course we have to insert a new lesson field ready to be populated with a new lesson!
+        if (courselessons.length==1)
+        {
+          newlessonc++;
+          var newlessonrow = lessonrowtemplate.clone();
+          newlessonrow.removeClass('hidden');
+          var fields=newlessonrow.find('input[type=text]');
+          fields.eq(0).attr('id', 'lessonid['+(-newlessonc)+']');
+          fields.eq(0).attr('name', 'title['+(-newlessonc)+']');
+          fields.eq(1).attr('name', 'hours['+(-newlessonc)+']');
+          newlessonrow.appendTo(whereaddlessonrow);
+        }
+      }
+    });
+
+    $(document).ready(function(){
+        
+        courserowtemplate = $('.courserow:hidden'); //store the template to be cloned
+        lessonrowtemplate = $('.lessonrow:hidden'); //store the template to be cloned
+
+        $('#cancelbtn').click(function(){
+          window.open("<?php echo base_url('curriculum/cancel');?>", '_self', false);
+        });
+
+        $("body").on('click', '#editform1, #editform2', function(){
+          toggleedit(this, this.id);
+          $(this).removeAttr('disabled');
+
+        });
+
+        //we must enable all form fields to submit the form with no errors!
+        $("body").on('click', '#submitbtn', function(){
+            $('.mainform').find(':input:disabled').removeAttr('disabled');
+            $('form').submit();
+        });
+
+        //if it is a new course all the fields should be enabled
+        <?php if(empty($exam['lesson_id'])):?>   
+            $('#editform1').addClass('active');
+            $('#editform2').addClass('active');
+            $('.mainform').find(':input:disabled').removeAttr('disabled');
+            $('#submitbtn').removeAttr('disabled');
+            $('#cancelbtn').removeAttr('disabled');
+        <?php endif;?>
+
+        
+        $('#classes').change(function(){
+          getcourses();
+        })
+
+
+
+        $('#delexam').click(function(){
+            var r=confirm("Το παρών διαγώνισμα πρόκειται να διαγραφεί. Παρακαλώ επιβεβαιώστε.");
+              if (r==true)
+              {
+                  window.open ("<?php echo base_url('');?>",'_self',false);  
+              }
+              return false;
+        });
+
+
+    }) //end of (document).ready(function())
 
 function getcourses(){
         var classid = $('#classes option:selected').val();
@@ -188,12 +253,14 @@ function getcourses(){
                 newcourserow.attr('id',-newcoursec);
                 var fields=newcourserow.find('input[type=text]');
                 fields.eq(0).attr('id', 'courseid['+(-newcoursec)+']');
+                undoarr.push('courseid['+(-newcoursec)+']');
                 fields.eq(0).attr('name', 'course['+(-newcoursec)+']');
                 fields.eq(1).attr('id', 'lessonid['+(-newlessonc)+']');
                 fields.eq(1).attr('name', 'title['+(-newlessonc)+']');
                 fields.eq(2).attr('name', 'hours['+(-newlessonc)+']');
                 var whereaddcourserow = $('.courserow:hidden');
                 newcourserow.insertAfter(whereaddcourserow);    
+                $('#undobtn').removeAttr('disabled');
               }
             } //end success
           }) //end AJAX
@@ -396,7 +463,7 @@ function getcourses(){
           </div>
           <div class="btn-group pull-right">
             <button disabled id="submitbtn" type="submit" class="btn btn-primary">Αποθήκευση</button>
-            <button disabled id="ubdobtn type="button class="btn btn-primary pull-right"><i class="icon-undo"></i></button>
+            <button disabled id="undobtn" type="button" class="btn btn-primary pull-right"><i class="icon-undo"></i></button>
           </div>
       	</div>
       </div>
