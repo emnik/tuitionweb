@@ -1,7 +1,7 @@
 <script type="text/javascript">
-    
-function toggleedit(togglecontrol, id) {
+var undoarr=[]; //undo array
 
+function toggleedit(togglecontrol, id) {
   if ($(togglecontrol).hasClass('active')){
     $('#' + id).closest('.mainform').find(':input').each(function(){
       $(this).attr('disabled', 'disabled');
@@ -9,21 +9,26 @@ function toggleedit(togglecontrol, id) {
       });
       $('#submitbtn').attr('disabled', 'disabled');
       $('#cancelbtn').attr('disabled', 'disabled');
+      $('#undobtn').attr('disabled', 'disabled');
     }
-  
-  else {
+    else {
     $('#' + id).closest('.mainform').find(':input').each(function(){
       $(this).removeAttr('disabled');
       });
       $(this).find('btn').removeAttr('disabled');
       $('#submitbtn').removeAttr('disabled');
       $('#cancelbtn').removeAttr('disabled');
+      if(undoarr.length>0){
+        $('#undobtn').removeAttr('disabled');
+      }
     }
-
+    $('#classes').removeAttr('disabled');
 }
+
+
     var courserowtemplate, lessonrowtemplate; //globals
     var newcoursec=0, newlessonc=0; //globals
-    var undoarr=[];
+
 
 
     $(document).on('click','.addcoursebtn', function(){
@@ -69,10 +74,10 @@ function toggleedit(togglecontrol, id) {
 
     $(document).on('click', '#undobtn', function(){
       var id = undoarr.pop();
-      if(id.contains('lessonid')){
+      if(id.substring(0,8)=='lessonid'){
         $(jq(id)).parents('.lessonrow').remove();
       }
-      else if (id.contains('courseid')){
+      else if (id.substring(0,8)=='courseid'){
         $(jq(id)).parents('.courserow').remove(); 
       }
       if(undoarr.length==0)
@@ -141,18 +146,20 @@ function toggleedit(togglecontrol, id) {
             $('form').submit();
         });
 
-        //if it is a new course all the fields should be enabled
-        <?php if(empty($exam['lesson_id'])):?>   
-            $('#editform1').addClass('active');
-            $('#editform2').addClass('active');
-            $('.mainform').find(':input:disabled').removeAttr('disabled');
-            $('#submitbtn').removeAttr('disabled');
-            $('#cancelbtn').removeAttr('disabled');
-        <?php endif;?>
 
         
         $('#classes').change(function(){
-          getcourses();
+            getcourses();
+            $( document ).ajaxComplete(function() {
+                $('.mainform').find(':input:visible').attr('disabled','disabled');
+                $('#submitbtn').attr('disabled','disabled');
+                $('#cancelbtn').attr('disabled','disabled');
+                $('#undobtn').attr('disabled','disabled');
+                $('#classes').removeAttr('disabled');
+                $('#editform1').removeAttr('disabled');
+                $('#editform1').removeClass('active');
+
+            });
         })
 
 
