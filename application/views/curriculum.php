@@ -83,6 +83,11 @@ function toggleedit(togglecontrol, id) {
       if(undoarr.length==0)
         {
           $('#undobtn').attr('disabled','disabled');
+          var visiblecourses = $('.courserow:visible');
+          if(visiblecourses.length==0) {
+            $("#classes option").removeAttr('selected');
+            $("#classes option:first").attr("selected", "selected");
+          }
         }
     });
 
@@ -91,13 +96,33 @@ function toggleedit(togglecontrol, id) {
       var r=confirm('Πρόκειται να διαγράψετε μία κατεύθυνση. Συνίσταται να μην το κάνετε αν έχετε αντιστοιχίσει έστω και 1 μαθητή σε αυτήν, ακόμα και σε παλαιότερη σχολική χρονιά. Μαζί με την κατεύθυνση θα διαγραφούν και όλα τα μαθήματα που τυχών έχετε αντιστοιχίσει σε αυτήν. Η ενέργεια αυτή δεν αναιρείται. Παρακαλώ επιβεβαιώστε.')
       if (r==true)
       {
+        var courses = $('.courserow:visible');        
+        var whereaddcourserow = $(this).parents('.panel-body');
         // window.open ('<?php echo base_url("curriculum/delcourse");?>/'+id,'_self',false);
         $(this).parents('.courserow').remove();
-      }
-      var visiblecourses = $('.courserow:visible');
-      if(visiblecourses.length==0) {
-        $("#classes option").removeAttr('selected');
-        $("#classes option:first").attr("selected", "selected");
+
+        //if no courses remain in a class we have to insert a new course/lesson field ready to be populated!
+        if (courses.length==1)
+        {
+          newcoursec++;
+          newlessonc++; //every time we add a course it is also added one new lesson(+hours) field!
+          var newcourserow = courserowtemplate.clone();
+          newcourserow.removeClass('hidden');
+          newcourserow.attr('id',-newcoursec);
+          var fields=newcourserow.find('input[type=text]');
+          fields.eq(0).attr('id', 'courseid['+(-newcoursec)+']');
+          undoarr.push('courseid['+(-newcoursec)+']');
+          fields.eq(0).attr('name', 'course['+(-newcoursec)+']');
+          fields.eq(1).attr('id', 'lessonid['+(-newlessonc)+']');
+          fields.eq(1).attr('name', 'title['+(-newlessonc)+']');
+          fields.eq(2).attr('name', 'hours['+(-newlessonc)+']');
+          
+          newcourserow.appendTo(whereaddcourserow);
+          $('#'+(-newcoursec)).find('input:first').focus();
+          $('#undobtn').removeAttr('disabled');
+
+
+        }
       }
     });
 
