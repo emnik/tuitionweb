@@ -60,6 +60,19 @@ public function lessons()
 
 }
 
+public function lessontitles()
+{
+		$this->load->model('curriculum_model','', TRUE);    
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this
+						->curriculum_model
+						->get_lessontitles()
+						)
+			);
+
+}
+
+
 	public function index()
 	{
 		$this->load->model('login_model');
@@ -68,8 +81,35 @@ public function lessons()
 
 		$this->load->model('curriculum_model');
 		$data['class'] = $this->curriculum_model->get_classes();
-		// $this->load->library('firephp');
-		// $this->firephp->info($data['class']);
+
+
+		if(!empty($_POST))
+		{
+		$this->load->library('firephp');
+		$this->firephp->info($_POST);
+		$updatedata=array();			
+			foreach ($_POST as $key => $value) {
+				switch ($key) {
+					case 'course':
+						foreach ($value as $courseid => $name) {
+							$course[]=array('id'=>$courseid, 'class_id'=>$_POST['class_name'], 'course'=>$name);
+						}
+						break;
+					case 'title':
+						foreach ($value as $courseid2 => $lessondata) {
+							foreach ($lessondata as $lessonid => $cataloglessonid) {
+								$lesson[]=array('id'=>$lessonid, 'course_id'=>$courseid2, 'cataloglesson_id'=>$cataloglessonid, 'hours'=>$_POST['hours'][$lessonid]);
+							}							
+						}
+						break;					
+					default:
+						# code...
+						break;
+				}
+			 }
+		$updatedata = array('coursedata'=>$course, 'lessondata'=>$lesson);
+		$this->firephp->info($updatedata);
+		}
 
 		$this->load->view('include/header');
 		$this->load->view('curriculum', $data);
@@ -78,6 +118,10 @@ public function lessons()
 	}
 
 
+
+	public function cancel(){
+		$this->index();
+	}
 
 	public function logout()
 	{

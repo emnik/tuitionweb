@@ -1,3 +1,15 @@
+<!-- for styling select in webkit browsers where there are problems when used with input-addon
+http://silviomoreto.github.io/bootstrap-select/3/ -->
+<link href="<?php echo base_url('assets/bootstrap-select/bootstrap-select.css')?>" rel="stylesheet">
+<script src="<?php echo base_url('assets/bootstrap-select/bootstrap-select.js')?>"></script>
+<style type="text/css">
+  /*for styling bootstrap-select as the other fields when disabled!*/
+  button.selectpicker:disabled{
+    background-color: #EEEEEE;
+    color: #555555;
+    opacity: 1;
+  }
+</style>
 <script type="text/javascript">
 var undoarr=[]; //undo array
 
@@ -37,30 +49,39 @@ function toggleedit(togglecontrol, id) {
         var newcourserow = courserowtemplate.clone();
         newcourserow.removeClass('hidden');
         newcourserow.attr('id',-newcoursec);
-        var fields=newcourserow.find('input[type=text]');
+        var fields=newcourserow.find('input');
+        var selectfields = newcourserow.find('select');
         fields.eq(0).attr('id', 'courseid['+(-newcoursec)+']');
         undoarr.push('courseid['+(-newcoursec)+']');
         fields.eq(0).attr('name', 'course['+(-newcoursec)+']');
-        fields.eq(1).attr('id', 'lessonid['+(-newlessonc)+']');
-        fields.eq(1).attr('name', 'title['+(-newlessonc)+']');
-        fields.eq(2).attr('name', 'hours['+(-newlessonc)+']');
+        selectfields.eq(0).attr('id', 'lessonid['+(-newcoursec)+"]["+(-newlessonc)+']');
+        selectfields.eq(0).attr('name', 'title['+(-newcoursec)+"]["+(-newlessonc)+']');
+        fields.eq(1).attr('name', 'hours['+(-newlessonc)+']');
         var whereaddcourserow = $(this).parents('.courserow');
-        newcourserow.insertAfter(whereaddcourserow);        
+        newcourserow.insertAfter(whereaddcourserow);      
+        var newlessonid = 'lessonid['+(-newcoursec)+"]["+(-newlessonc)+']'
+        $(jq(newlessonid)).prop('disabled',false);
+        $(jq(newlessonid)).selectpicker('mobile');
         $('#'+(-newcoursec)).find('input:first').focus();
         $('#undobtn').removeAttr('disabled');
     });
  
     $(document).on('click', '.addlessonbtn', function(){
           newlessonc++;
+          var courseid = $(this).parents('.courserow').attr('id');
           var newlessonrow = lessonrowtemplate.clone();
           newlessonrow.removeClass('hidden');
-          var fields=newlessonrow.find('input[type=text]');
-          fields.eq(0).attr('id', 'lessonid['+(-newlessonc)+']');
-          undoarr.push('lessonid['+(-newlessonc)+']');
-          fields.eq(0).attr('name', 'title['+(-newlessonc)+']');
-          fields.eq(1).attr('name', 'hours['+(-newlessonc)+']');
+          var fields=newlessonrow.find('input');
+          var selectfields = newlessonrow.find('select');
+          selectfields.eq(0).attr('id', 'lessonid['+courseid+']['+(-newlessonc)+']');
+          undoarr.push('lessonid['+courseid+']['+(-newlessonc)+']');
+          selectfields.eq(0).attr('name', 'title['+courseid+']['+(-newlessonc)+']');
+          fields.eq(0).attr('name', 'hours['+courseid+']['+(-newlessonc)+']');
           var whereaddlessonrow = $(this).parents('.lessonrow');
           newlessonrow.insertAfter(whereaddlessonrow);
+          var newlessonid = 'lessonid['+courseid+']['+(-newlessonc)+']';
+          $(jq(newlessonid)).prop('disabled',false);
+          $(jq(newlessonid)).selectpicker('mobile');
           $('#undobtn').removeAttr('disabled');
     })
     
@@ -109,19 +130,20 @@ function toggleedit(togglecontrol, id) {
           var newcourserow = courserowtemplate.clone();
           newcourserow.removeClass('hidden');
           newcourserow.attr('id',-newcoursec);
-          var fields=newcourserow.find('input[type=text]');
+          var fields=newcourserow.find('input');
+          var selectfields=newcourserow.find('select');
           fields.eq(0).attr('id', 'courseid['+(-newcoursec)+']');
           undoarr.push('courseid['+(-newcoursec)+']');
           fields.eq(0).attr('name', 'course['+(-newcoursec)+']');
-          fields.eq(1).attr('id', 'lessonid['+(-newlessonc)+']');
-          fields.eq(1).attr('name', 'title['+(-newlessonc)+']');
-          fields.eq(2).attr('name', 'hours['+(-newlessonc)+']');
-          
+          selectfields.eq(0).attr('id', 'lessonid['+(-newcoursec)+']['+(-newlessonc)+']');
+          selectfields.eq(0).attr('name', 'title['+(-newcoursec)+']['+(-newlessonc)+']');
+          fields.eq(1).attr('name', 'hours['+(-newcoursec)+']['+(-newlessonc)+']');
           newcourserow.appendTo(whereaddcourserow);
+          var newlessonid = 'lessonid['+(-newcoursec)+']['+(-newlessonc)+']';
+          $(jq(newlessonid)).prop('disabled',false);
+          $(jq(newlessonid)).selectpicker('mobile');
           $('#'+(-newcoursec)).find('input:first').focus();
           $('#undobtn').removeAttr('disabled');
-
-
         }
       }
     });
@@ -132,6 +154,7 @@ function toggleedit(togglecontrol, id) {
       {
         var courselessons = $(this).parents('.courserow').find('.lessonrow');
         var whereaddlessonrow = $(this).parents('.col-sm-6');
+        var courseid = $(this).parents('.courserow').attr('id');
         // window.open ('<?php echo base_url("curriculum/dellesson");?>/'+id,'_self',false);        
         $(this).parents('.lessonrow').remove();
 
@@ -141,19 +164,45 @@ function toggleedit(togglecontrol, id) {
           newlessonc++;
           var newlessonrow = lessonrowtemplate.clone();
           newlessonrow.removeClass('hidden');
-          var fields=newlessonrow.find('input[type=text]');
-          fields.eq(0).attr('id', 'lessonid['+(-newlessonc)+']');
-          fields.eq(0).attr('name', 'title['+(-newlessonc)+']');
-          fields.eq(1).attr('name', 'hours['+(-newlessonc)+']');
+          var fields=newlessonrow.find('input');
+          var selectfields=newlessonrow.find('select');
+          selectfields.eq(0).attr('id', 'lessonid['+courseid+']['+(-newlessonc)+']');
+          selectfields.eq(0).attr('name', 'title['+courseid+']['+(-newlessonc)+']');
+          fields.eq(0).attr('name', 'hours['+courseid+']['+(-newlessonc)+']');
           newlessonrow.appendTo(whereaddlessonrow);
+          var newlessonid = 'lessonid['+courseid+']['+(-newlessonc)+']';
+          $(jq(newlessonid)).prop('disabled',false);
+          $(jq(newlessonid)).selectpicker('mobile');
         }
       }
     });
 
     $(document).ready(function(){
-        
+
         courserowtemplate = $('.courserow:hidden'); //store the template to be cloned
         lessonrowtemplate = $('.lessonrow:hidden'); //store the template to be cloned
+
+        // $('#classes').selectpicker();
+        
+        $.ajax({
+          type: "POST",
+          url: "<?php echo base_url()?>curriculum/lessontitles/",
+          dataType:'json',
+          success: function(lessontitles){
+            // titles = lessontitles;
+            $.each(lessontitles,function(id,text) 
+            {
+              // here we're creating a new select option for each group
+              var opt = $('<option />');
+              opt.val(id);
+              opt.text(text);
+              $('select:hidden').append(opt); 
+            });
+            $('select:hidden').val("");
+            $('select:hidden').prop('value', "");
+            $('select:hidden').attr('value', "");
+            } 
+        });
 
         $('#cancelbtn').click(function(){
           window.open("<?php echo base_url('curriculum/cancel');?>", '_self', false);
@@ -164,13 +213,6 @@ function toggleedit(togglecontrol, id) {
           $(this).removeAttr('disabled');
 
         });
-
-        //we must enable all form fields to submit the form with no errors!
-        $("body").on('click', '#submitbtn', function(){
-            $('.mainform').find(':input:disabled').removeAttr('disabled');
-            $('form').submit();
-        });
-
 
         
         $('#classes').change(function(){
@@ -183,11 +225,8 @@ function toggleedit(togglecontrol, id) {
                 $('#classes').removeAttr('disabled');
                 $('#editform1').removeAttr('disabled');
                 $('#editform1').removeClass('active');
-
             });
         })
-
-
 
         $('#delexam').click(function(){
             var r=confirm("Το παρών διαγώνισμα πρόκειται να διαγραφεί. Παρακαλώ επιβεβαιώστε.");
@@ -222,7 +261,8 @@ function getcourses(){
                   newcourserow = courserowtemplate.clone();
                   newcourserow.removeClass('hidden');
                   var whereaddcourserow = $('.courserow:last');
-                  var fields = newcourserow.find('input[type="text"]');
+                  var fields = newcourserow.find('input');
+                  var selectfields = newcourserow.find('select');
                   fields.eq(0).attr("name", "course[" + id +"]");        
                   fields.eq(0).attr('id', "courseid["+id+"]");
                   fields.eq(0).prop('value', course);
@@ -230,50 +270,65 @@ function getcourses(){
                   newcourserow.attr('id', id);
                   newcourserow.insertAfter(whereaddcourserow);
 
-                   var newpostdata = {'jsclassid': classid, 'jscourseid': id};
-                          var post_url = "<?php echo base_url()?>curriculum/lessons";
-                          $.ajax({
-                            type: "POST",
-                            url: post_url,
-                            data : newpostdata,
-                            dataType:'json',
-                            // async:false,
-                            success: function(lessons) 
-                              {
-                               // console.log(lessons);
-                               var firsttitle = lessons[Object.keys(lessons)[0]]['title'];
-                               var firsthours = lessons[Object.keys(lessons)[0]]['hours'];
-                               var firstid = Object.keys(lessons)[0];
-                               fields.eq(1).attr("name", "title[" + firstid +"]");
-                               fields.eq(1).attr('id', "lessonid"+firstid);
-                               fields.eq(1).prop('value', firsttitle);
-                               fields.eq(1).attr('value', firsttitle);
-                               fields.eq(2).attr("name", "hours[" + firstid +"]");
-                               fields.eq(2).attr('id', "hoursid"+firstid);
-                               fields.eq(2).prop('value', firsthours);
-                               fields.eq(2).attr('value', firsthours);
-                               for (var i = 1; i < Object.keys(lessons).length; i++) {
-                                  var lessonid = Object.keys(lessons)[i];
-                                  var lessontitle = lessons[Object.keys(lessons)[i]]['title'];
-                                  var lessonhours = lessons[Object.keys(lessons)[i]]['hours'];
-                                  
-                                  var newlessonrow = lessonrowtemplate.clone();
-                                  newlessonrow.removeClass('hidden');
-                                  var subfields = newlessonrow.find('input[type=text]');
+                  var newpostdata = {'jsclassid': classid, 'jscourseid': id};
+                  var post_url = "<?php echo base_url()?>curriculum/lessons";
+                  $.ajax({
+                    type: "POST",
+                    url: post_url,
+                    data : newpostdata,
+                    dataType:'json',
+                    // async:false,
+                    success: function(lessons) 
+                      {
+                        if(lessons){
+                           var firstcataloglessonid = lessons[Object.keys(lessons)[0]]['cataloglesson_id'];
+                           var firstlessontext = lessons[Object.keys(lessons)[0]]['title'];
+                           var firsthours = lessons[Object.keys(lessons)[0]]['hours'];
+                           var firstid = Object.keys(lessons)[0];
+                           selectfields.eq(0).attr("name", "title[" + id +"][" + firstid +"]");
+                           selectfields.eq(0).attr('id', 'lessonid['+id+']['+firstid+']');
+                           fields.eq(1).attr("name", "hours[" + firstid +"]");
+                           fields.eq(1).attr('id', "hoursid"+firstid);
+                           fields.eq(1).prop('value', firsthours);
+                           fields.eq(1).attr('value', firsthours);
+                           for (var i = 1; i < Object.keys(lessons).length; i++) {
+                              var lessonid = Object.keys(lessons)[i];
+                              var cataloglessonid = lessons[Object.keys(lessons)[i]]['cataloglesson_id'];
+                              var lessontext = lessons[Object.keys(lessons)[i]]['title'];
+                              var lessonhours = lessons[Object.keys(lessons)[i]]['hours'];
+                              
+                              var newlessonrow = lessonrowtemplate.clone();
+                              newlessonrow.removeClass('hidden');
+                              var subfields = newlessonrow.find('input');
+                              var subselectfields = newlessonrow.find('select');
 
-                                  subfields.eq(0).attr("name", "title[" + lessonid +"]");        
-                                  subfields.eq(0).attr('id', "lessonid["+lessonid+"]");
-                                  subfields.eq(0).prop('value', lessontitle);
-                                  subfields.eq(0).attr('value', lessontitle);
-                                  subfields.eq(1).attr("name", "hours[" + lessonid +"]");        
-                                  subfields.eq(1).prop('value', lessonhours);
-                                  subfields.eq(1).attr('value', lessonhours);
+                              subselectfields.eq(0).attr("name", "title["+id+"]["+lessonid +"]");        
+                              subselectfields.eq(0).attr('id', "lessonid["+id+"]["+lessonid+"]");
+                              subfields.eq(0).attr("name", "hours[" + lessonid +"]");        
+                              subfields.eq(0).prop('value', lessonhours);
+                              subfields.eq(0).attr('value', lessonhours);
 
-                                  var whereaddlessonrow = $('#'+id+' .lessonrow:visible:last');
-                                  newlessonrow.insertAfter(whereaddlessonrow);
-                                }
-                              }
-                          })
+                              var whereaddlessonrow = $('#'+id+' .lessonrow:visible:last');
+                              newlessonrow.insertAfter(whereaddlessonrow);
+
+                              var nextlessonid = "lessonid["+id+"]["+lessonid+"]";
+                              $(jq(nextlessonid)).val(cataloglessonid);
+                              $(jq(nextlessonid)).prop('value', cataloglessonid);
+                              $(jq(nextlessonid)).attr('value', cataloglessonid);
+                              $(jq(nextlessonid)).prop('disabled',false);
+                              $(jq(nextlessonid)).selectpicker('mobile');
+                            }
+
+                            var firstlessonid = 'lessonid['+id+']['+firstid+']';
+                            $(jq(firstlessonid)).val(firstcataloglessonid);
+                            $(jq(firstlessonid)).prop('value', firstcataloglessonid);
+                            $(jq(firstlessonid)).attr('value', firstcataloglessonid);
+                            $(jq(firstlessonid)).prop('disabled',false);
+                            $(jq(firstlessonid)).selectpicker('mobile');
+                          }                                  
+                        }
+
+                  })
                 })
               }
               else if(classid!=0)
@@ -284,14 +339,16 @@ function getcourses(){
                 newcourserow.removeClass('hidden');
                 newcourserow.attr('id',-newcoursec);
                 var fields=newcourserow.find('input[type=text]');
+                var selectfields = newcourserow.find('select');
                 fields.eq(0).attr('id', 'courseid['+(-newcoursec)+']');
                 undoarr.push('courseid['+(-newcoursec)+']');
                 fields.eq(0).attr('name', 'course['+(-newcoursec)+']');
-                fields.eq(1).attr('id', 'lessonid['+(-newlessonc)+']');
-                fields.eq(1).attr('name', 'title['+(-newlessonc)+']');
-                fields.eq(2).attr('name', 'hours['+(-newlessonc)+']');
+                selectfields.eq(0).attr('id', 'lessonid['+(-newcoursec)+"]["+(-newlessonc)+']');
+                selectfields.eq(0).attr('name', 'title['+(-newcoursec)+"]["+(-newlessonc)+']');
+                fields.eq(1).attr('name', 'hours['+(-newlessonc)+']');
                 var whereaddcourserow = $('.courserow:hidden');
-                newcourserow.insertAfter(whereaddcourserow);    
+                newcourserow.insertAfter(whereaddcourserow);
+
                 $('#undobtn').removeAttr('disabled');
               }
             } //end success
@@ -395,14 +452,14 @@ function getcourses(){
       
       <ul class="nav nav-tabs" style="margin-bottom:15px;">
         <li class="active"><a href="<?php echo base_url('/curriculum')?>">Πρόγραμμα Σπουδών</a></li>
-        <li><a href="<?php echo base_url('/curriculum/tutorsperlesson')?>">Διδάσκωντες</a></li>
+        <li><a href="<?php echo base_url('/curriculum/tutorsperlesson')?>">Μαθήματα & Διδάσκωντες</a></li>
       </ul>
 
     
 	<div class="row">
 
     <div class="col-md-12">
-        <!-- <form action="<?php echo base_url('/curriculum')?>" method="post" accept-charset="utf-8" role="form"> -->
+     <form action="<?php echo base_url('/curriculum')?>" method="post" accept-charset="utf-8" role="form">
      	<div class="row"> 
         <div class="col-md-12" id="group1">
 		    	 <div class="mainform">
@@ -464,14 +521,16 @@ function getcourses(){
                                   <li><a class="dellessonbtn" href="#" onclick="return false;"><i class="icon-trash"> </i>Διαγραφή</a></li>
                                 </ul>
                               </div>
-                              <input type="text" class="form-control" value="">
+                              <select class="form-control">
+                                <option></option>
+                              </select>
                             </div>
                           </div>
                         </div>
                       <div class="col-xs-2" style="padding-left:0px;padding-right:0px;"> <!-- Ώρες -->
                         <div class="form-group">
                           <label>Ώρες</label>
-                          <input type="text" class="form-control" name="course" value="">
+                          <input type="text" class="form-control" name="" value="">
                         </div>
                       </div>
                      </div>
@@ -501,7 +560,7 @@ function getcourses(){
       </div>
     </div>
 
-    <!-- </form> -->
+   </form>
 
   </div>
 

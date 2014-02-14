@@ -53,7 +53,7 @@ class Curriculum_model extends CI_Model {
 
    public function get_lessons($classid, $courseid)
    {
-      $query = $this->db->select(array('catalog_lesson.title', 'lesson.id', 'lesson.hours'))
+      $query = $this->db->select(array('catalog_lesson.title', 'cataloglesson_id', 'lesson.id', 'lesson.hours'))
                         ->from('class')
                         ->join('course', 'course.class_id=class.id')
                         ->join('lesson', 'course.id = lesson.course_id')
@@ -66,7 +66,7 @@ class Curriculum_model extends CI_Model {
       {
          foreach ($query->result() as $row)
          {
-               $lessons_data[$row->id] = array('title'=>$row->title, 'hours'=>$row->hours);
+               $lessons_data[$row->id] = array('title'=>$row->title, 'hours'=>$row->hours, 'cataloglesson_id'=>$row->cataloglesson_id);
          };
          return $lessons_data;   
       }
@@ -78,5 +78,27 @@ class Curriculum_model extends CI_Model {
       
    }
 
+   public function get_lessontitles()
+   {
+      $query=$this
+         ->db
+         ->select('*')
+         ->order_by('title')
+         ->get('catalog_lesson');
+
+
+      if ($query->num_rows() > 0) 
+      {
+         foreach ($query->result_array() as $row) {
+         	// $data[]=array('id'=>$row['id'], 'text'=>$row['title']); //for use with select2
+         	$data[$row['id']]=$row['title'];
+         }
+         return $data;
+      }
+      else 
+      {
+         return false;
+      }   	
+   }
    
 }
