@@ -6,7 +6,7 @@ http://silviomoreto.github.io/bootstrap-select/3/ -->
   /*for styling bootstrap-select as the other fields when disabled!*/
   button.selectpicker:disabled{
     background-color: #EEEEEE;
-    color: #555555;
+    color: #A19A99;
     opacity: 1;
   }
 </style>
@@ -445,7 +445,9 @@ function getcourses(){
                 fields.eq(1).attr('name', 'hours['+(-newlessonc)+']');
                 var whereaddcourserow = $('.courserow:hidden');
                 newcourserow.insertAfter(whereaddcourserow);
-
+                var newlessonid = 'lessonid['+(-newcoursec)+"]["+(-newlessonc)+']';
+                $(jq(newlessonid)).prop('disabled',false);
+                $(jq(newlessonid)).selectpicker('mobile');
                 $('#undobtn').removeAttr('disabled');
               }
             } //end success
@@ -603,7 +605,7 @@ function getcourses(){
                                 <li><a class="delcoursebtn" href="#" onclick="return false;"><i class="icon-trash"> </i>Διαγραφή</a></li>
                               </ul>
                             </div>
-                            <input type="text" class="form-control" value="">
+                            <input type="text" class="form-control" value="" placeholder="Πληκτρ/στε ένα όνομα...">
                           </div>
                         </div>
                       </div>
@@ -649,7 +651,6 @@ function getcourses(){
     	<div class="col-md-12">    
         <div class="btn-toolbar">
           <div class="btn-group">
-          	<!-- <button disabled id="submitbtn" type="submit" class="btn btn-danger">Αποθήκευση</button> -->
           	<button disabled id="cancelbtn" type="button" class="btn btn-default">Ακύρωση</button>
           </div>
           <div class="btn-group pull-right">

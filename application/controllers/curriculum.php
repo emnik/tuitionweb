@@ -116,7 +116,7 @@ public function delcourse()
 				switch ($key) {
 					case 'course':
 						foreach ($value as $courseid => $name) {
-							$course[]=array('id'=>$courseid, 'class_id'=>$_POST['class_name'], 'course'=>$name);
+							$course[]=array('id'=>$courseid, 'class_id'=>$_POST['class_name'], 'course'=>(!empty($name))?$name:'-');
 						}
 						break;
 					case 'title':
