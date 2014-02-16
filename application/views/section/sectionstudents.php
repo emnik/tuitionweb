@@ -234,7 +234,7 @@ $(document).ready(function(){
  		
  		<div class="alert alert-warning" style="display:none;">
         	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        	<strong>Θυμηθείτε! </strong> Η εισαγωγή μαθητών σε τμήματα γίνεται από την καρτέλα φοίτησης του εκάστοτε μαθητή, επιλέγοντας την ενότητα "Διαχείριση".
+        	<span style="font-family:'Play';font-weight:700;">Θυμηθείτε! </span> Η εισαγωγή μαθητών σε τμήματα γίνεται από την καρτέλα φοίτησης του εκάστοτε μαθητή, επιλέγοντας την ενότητα "Διαχείριση".
       	</div>
 
 		<?php if(!empty($students)):?>

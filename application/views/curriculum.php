@@ -30,6 +30,7 @@ function toggleedit(togglecontrol, id) {
       $(this).find('btn').removeAttr('disabled');
       $('#submitbtn').removeAttr('disabled');
       $('#cancelbtn').removeAttr('disabled');
+      $(".alert").fadeIn();
       if(undoarr.length>0){
         $('#undobtn').removeAttr('disabled');
       }
@@ -76,7 +77,7 @@ function toggleedit(togglecontrol, id) {
           selectfields.eq(0).attr('id', 'lessonid['+courseid+']['+(-newlessonc)+']');
           undoarr.push('lessonid['+courseid+']['+(-newlessonc)+']');
           selectfields.eq(0).attr('name', 'title['+courseid+']['+(-newlessonc)+']');
-          fields.eq(0).attr('name', 'hours['+courseid+']['+(-newlessonc)+']');
+          fields.eq(0).attr('name', 'hours['+(-newlessonc)+']');
           var whereaddlessonrow = $(this).parents('.lessonrow');
           newlessonrow.insertAfter(whereaddlessonrow);
           var newlessonid = 'lessonid['+courseid+']['+(-newlessonc)+']';
@@ -108,19 +109,78 @@ function toggleedit(togglecontrol, id) {
           if(visiblecourses.length==0) {
             $("#classes option").removeAttr('selected');
             $("#classes option:first").attr("selected", "selected");
+            $('#editform1').attr('disabled', 'disabled');
+            $('#submitbtn').attr('disabled', 'disabled');
+            $('#cancelbtn').attr('disabled', 'disabled');
           }
         }
     });
 
 
+
+
     $(document).on('click', '.delcoursebtn', function(){
-      var r=confirm('Πρόκειται να διαγράψετε μία κατεύθυνση. Συνίσταται να μην το κάνετε αν έχετε αντιστοιχίσει έστω και 1 μαθητή σε αυτήν, ακόμα και σε παλαιότερη σχολική χρονιά. Μαζί με την κατεύθυνση θα διαγραφούν και όλα τα μαθήματα που τυχών έχετε αντιστοιχίσει σε αυτήν. Η ενέργεια αυτή δεν αναιρείται. Παρακαλώ επιβεβαιώστε.')
-      if (r==true)
-      {
+
+        var rowcourseid = $(this).parents('.courserow').attr('id');
+        var courseid = $(this).parent().parent().parent().next('input').attr('id');
         var courses = $('.courserow:visible');        
         var whereaddcourserow = $(this).parents('.panel-body');
-        // window.open ('<?php echo base_url("curriculum/delcourse");?>/'+id,'_self',false);
-        $(this).parents('.courserow').remove();
+
+        //remove course id from undoarr
+        var a = $.inArray(courseid,undoarr);
+        if(a!==-1){
+          undoarr.splice(a,1);
+        }
+        
+        //find the lessonids - if any - corresponding in this course and store their positions in undoarr in another array named removeidspos
+        if (Math.abs(rowcourseid)<10 ){
+          var slength = 12; //I need slength to know how many characters to remove with substring
+        }
+        else
+        {
+          var slength=13;
+        }
+        removeidspos=[];
+        for (var i = 0; i < undoarr.length; i++) {
+          var v = undoarr[i].substring(0,slength);
+          if (v=='lessonid['+rowcourseid+']'){
+            removeidspos.push(i);
+          }
+        };
+        //remove the values from undoarr using reverse iteration as not to change the positions when removing each item !!!
+        for (var i = removeidspos.length-1; i >= 0; i--)
+        {
+          undoarr.splice(removeidspos[i],1);
+        }
+        if(undoarr.length==0)
+        {
+          $('#undobtn').attr('disabled','disabled');
+        }
+
+
+        //if it is a new course..
+        if (rowcourseid<0){
+          $(this).parents('.courserow').remove();  
+        }
+        else
+        {
+          var r=confirm('Πρόκειται να διαγράψετε μία κατεύθυνση. Συνίσταται να μην το κάνετε αν έχετε αντιστοιχίσει έστω και 1 μαθητή σε αυτήν, ακόμα και σε παλαιότερη σχολική χρονιά. Μαζί με την κατεύθυνση θα διαγραφούν και όλα τα μαθήματα που τυχών έχετε αντιστοιχίσει σε αυτήν. Η ενέργεια αυτή δεν αναιρείται. Παρακαλώ επιβεβαιώστε.')
+          if (r==true)
+          {
+            post_url = '<?php echo base_url("curriculum/delcourse");?>'; 
+            $.ajax({
+              global: false,
+              type: "post",
+              url: post_url,
+              data : {'jscourseid':rowcourseid},
+              dataType:'json', 
+              success: function(){
+                $('#'+rowcourseid).remove();
+              }
+            }); //end of ajax
+//            $(this).parents('.courserow').remove();  
+          }
+        }
 
         //if no courses remain in a class we have to insert a new course/lesson field ready to be populated!
         if (courses.length==1)
@@ -137,7 +197,7 @@ function toggleedit(togglecontrol, id) {
           fields.eq(0).attr('name', 'course['+(-newcoursec)+']');
           selectfields.eq(0).attr('id', 'lessonid['+(-newcoursec)+']['+(-newlessonc)+']');
           selectfields.eq(0).attr('name', 'title['+(-newcoursec)+']['+(-newlessonc)+']');
-          fields.eq(1).attr('name', 'hours['+(-newcoursec)+']['+(-newlessonc)+']');
+          fields.eq(1).attr('name', 'hours['+(-newlessonc)+']');
           newcourserow.appendTo(whereaddcourserow);
           var newlessonid = 'lessonid['+(-newcoursec)+']['+(-newlessonc)+']';
           $(jq(newlessonid)).prop('disabled',false);
@@ -145,18 +205,45 @@ function toggleedit(togglecontrol, id) {
           $('#'+(-newcoursec)).find('input:first').focus();
           $('#undobtn').removeAttr('disabled');
         }
-      }
     });
 
     $(document).on('click', '.dellessonbtn', function(){
-      var r=confirm('Πρόκειται να διαγράψετε ένα μάθημα. Συνίσταται να μην το κάνετε αν έχετε αντιστοιχίσει έστω και 1 μαθητή σε αυτό, ακόμα και σε παλαιότερη σχολική χρονιά. Η ενέργεια αυτή δεν αναιρείται. Παρακαλώ επιβεβαιώστε.')
-      if (r==true)
-      {
         var courselessons = $(this).parents('.courserow').find('.lessonrow');
         var whereaddlessonrow = $(this).parents('.col-sm-6');
         var courseid = $(this).parents('.courserow').attr('id');
-        // window.open ('<?php echo base_url("curriculum/dellesson");?>/'+id,'_self',false);        
-        $(this).parents('.lessonrow').remove();
+        var lessonid = $(this).parent().parent().parent().next().find('select').attr('id');
+        if ($.inArray(lessonid, undoarr)!==-1)
+        {
+          undoarr.splice($.inArray(lessonid, undoarr),1);
+          $(this).parents('.lessonrow').remove();
+          if(undoarr.length==0)
+          {
+            $('#undobtn').attr('disabled','disabled');
+          }
+        }
+        else
+        //it is an old record
+        {
+          var a=[];
+          var jslessonidtmp = lessonid;
+          jslessonidtmp.replace(/\[(.+?)\]/g, function($0, $1) { a.push($1) });
+          var jslessonid = a[1];
+          var r=confirm('Πρόκειται να διαγράψετε ένα μάθημα. Συνίσταται να μην το κάνετε αν έχετε αντιστοιχίσει έστω και 1 μαθητή σε αυτό, ακόμα και σε παλαιότερη σχολική χρονιά. Η ενέργεια αυτή δεν αναιρείται. Παρακαλώ επιβεβαιώστε.')
+          if (r==true)
+          {
+            post_url = '<?php echo base_url("curriculum/dellesson");?>'; 
+            $.ajax({
+              global: false,
+              type: "post",
+              url: post_url,
+              data : {'jslessonid':jslessonid},
+              dataType:'json', 
+              success: function(){
+                $(jq(lessonid)).parents('.lessonrow').remove();
+              }
+            }); //end of ajax
+          }
+        }
 
         //if no lessons remain in a course we have to insert a new lesson field ready to be populated with a new lesson!
         if (courselessons.length==1)
@@ -168,19 +255,20 @@ function toggleedit(togglecontrol, id) {
           var selectfields=newlessonrow.find('select');
           selectfields.eq(0).attr('id', 'lessonid['+courseid+']['+(-newlessonc)+']');
           selectfields.eq(0).attr('name', 'title['+courseid+']['+(-newlessonc)+']');
-          fields.eq(0).attr('name', 'hours['+courseid+']['+(-newlessonc)+']');
+          fields.eq(0).attr('name', 'hours['+(-newlessonc)+']');
           newlessonrow.appendTo(whereaddlessonrow);
           var newlessonid = 'lessonid['+courseid+']['+(-newlessonc)+']';
           $(jq(newlessonid)).prop('disabled',false);
           $(jq(newlessonid)).selectpicker('mobile');
         }
-      }
+      // }
     });
 
     $(document).ready(function(){
 
         courserowtemplate = $('.courserow:hidden'); //store the template to be cloned
         lessonrowtemplate = $('.lessonrow:hidden'); //store the template to be cloned
+        $('#editform1').attr('disabled', 'disabled');
 
         // $('#classes').selectpicker();
         
@@ -223,19 +311,17 @@ function toggleedit(togglecontrol, id) {
                 $('#cancelbtn').attr('disabled','disabled');
                 $('#undobtn').attr('disabled','disabled');
                 $('#classes').removeAttr('disabled');
-                $('#editform1').removeAttr('disabled');
                 $('#editform1').removeClass('active');
+                $('#editform1').removeAttr('disabled');
+                if($('#classes').val()==0)
+                {
+                  $('#editform1').attr('disabled', 'disabled');
+                  $('#submitbtn').attr('disabled', 'disabled');
+                  $('#cancelbtn').attr('disabled', 'disabled');
+                }
             });
-        })
 
-        $('#delexam').click(function(){
-            var r=confirm("Το παρών διαγώνισμα πρόκειται να διαγραφεί. Παρακαλώ επιβεβαιώστε.");
-              if (r==true)
-              {
-                  window.open ("<?php echo base_url('');?>",'_self',false);  
-              }
-              return false;
-        });
+        })
 
 
     }) //end of (document).ready(function())
@@ -288,7 +374,7 @@ function getcourses(){
                            selectfields.eq(0).attr("name", "title[" + id +"][" + firstid +"]");
                            selectfields.eq(0).attr('id', 'lessonid['+id+']['+firstid+']');
                            fields.eq(1).attr("name", "hours[" + firstid +"]");
-                           fields.eq(1).attr('id', "hoursid"+firstid);
+                           //fields.eq(1).attr('id', "hoursid"+firstid);
                            fields.eq(1).prop('value', firsthours);
                            fields.eq(1).attr('value', firsthours);
                            for (var i = 1; i < Object.keys(lessons).length; i++) {
@@ -325,6 +411,17 @@ function getcourses(){
                             $(jq(firstlessonid)).attr('value', firstcataloglessonid);
                             $(jq(firstlessonid)).prop('disabled',false);
                             $(jq(firstlessonid)).selectpicker('mobile');
+                          }
+                          else
+                          {
+                            newlessonc++;
+                            var newlessonid = 'lessonid['+id+']['+(-newlessonc)+']';
+                            fields.eq(1).attr("name", "hours[" + (-newlessonc) +"]");  
+                            selectfields.eq(0).attr('id', newlessonid);
+                            selectfields.eq(0).attr("name", "title[" + id +"][" + (-newlessonc) +"]");
+                            undoarr.push(newlessonid);
+                            $(jq(newlessonid)).prop('disabled',false);
+                            $(jq(newlessonid)).selectpicker('mobile');
                           }                                  
                         }
 
@@ -455,10 +552,13 @@ function getcourses(){
         <li><a href="<?php echo base_url('/curriculum/tutorsperlesson')?>">Μαθήματα & Διδάσκωντες</a></li>
       </ul>
 
-    
-	<div class="row">
 
-    <div class="col-md-12">
+	<div class="row">
+   <div class="col-md-12">
+    <div class="alert alert-danger" style="display:none;">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <span style="font-family:'Play';font-weight:700;">ΠΡΟΣΟΧΗ! </span> Αποφεύγετε τις διαγραφές κατευθύνσεων ή/και μαθημάτων μιας και θα επηρρεάσουν άμεσα τα ήδη καταχωρημένα δεδομένα μαθητών που έχουν αντιστοιχιστεί στις κατευθύνσεις ή/και τα μαθήματα αυτά.
+    </div>
      <form action="<?php echo base_url('/curriculum')?>" method="post" accept-charset="utf-8" role="form">
      	<div class="row"> 
         <div class="col-md-12" id="group1">
@@ -470,7 +570,7 @@ function getcourses(){
             			</span>
             			<h3 class="panel-title">Κατευθύνσεις & Μαθήματα</h3>
               			<div class="buttons">
-                			<button enabled id="editform1" type="button" class="btn btn-default btn-sm" data-toggle="button"><i class="icon-edit"></i></button>
+                			<button id="editform1" type="button" class="btn btn-default btn-sm" data-toggle="button"><i class="icon-edit"></i></button>
               			</div>
           		  </div>
 	              <div class="panel-body">

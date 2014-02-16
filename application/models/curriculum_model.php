@@ -100,5 +100,68 @@ class Curriculum_model extends CI_Model {
          return false;
       }   	
    }
+
+   public function insertupdatedata($coursedata, $lessondata)
+   {
+   	$insertedcourseids = array();
+   	foreach ($coursedata as $key => $value) {
+   		$id = $value['id'];
+   		if ($id>0){
+   			$data = $value;
+   			unset($data['id']);
+   			$this->db->where('id', $id);
+			$this->db->update('course', $data); 
+   		}
+   		else
+   		{
+   			$data = $value;
+   			unset($data['id']);
+			$this->db->insert('course', $data); 
+			$insertedcourseids[$id]=$this->db->insert_id();
+   		}
+   	}
+   	foreach ($lessondata as $key => $tmpdata) {
+   		foreach ($tmpdata as $subkey => $value) {
+   			if($subkey=='course_id' && $value<0){
+   				$lessondata[$key]['course_id'] = $insertedcourseids[$value];
+   			}
+   		}
+   	}
+   	foreach ($lessondata as $key => $value) {
+   		$id = $value['id'];
+   		if ($id>0){
+   			$data = $value;
+   			unset($data['id']);
+   			$this->db->where('id', $id);
+			$this->db->update('lesson', $data); 
+   		}
+   		else
+   		{
+   			$data = $value;
+   			unset($data['id']);
+			$this->db->insert('lesson', $data); 
+   		}
+   	}
+   }
    
+
+
+   public function dellesson($id)
+   {
+	if($this->db->where('id', $id)->delete('lesson'))
+		{
+			return array('success'=>'true');
+   		}
+   }
+
+   
+   public function delcourse($id)
+   {
+	if($this->db->where('id', $id)->delete('course'))
+		{
+			return array('success'=>'true');
+   		}
+   }
+
+
 }

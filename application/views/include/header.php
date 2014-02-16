@@ -20,7 +20,7 @@
    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 
    <!-- visit http://www.google.com/fonts#UsePlace:use/Collection:Ubuntu to include more styles-->
-   <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic&subset=latin,greek' rel='stylesheet' type='text/css'>
+   <!-- <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic&subset=latin,greek' rel='stylesheet' type='text/css'> -->
    
 
    <!-- Javascript & JQuery libs -->

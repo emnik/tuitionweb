@@ -72,6 +72,30 @@ public function lessontitles()
 
 }
 
+public function dellesson()
+{
+		$this->load->model('curriculum_model','', TRUE);    
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this
+						->curriculum_model
+						->dellesson($this->input->post('jslessonid'))
+						)
+			);
+
+}
+
+public function delcourse()
+{
+		$this->load->model('curriculum_model','', TRUE);    
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this
+						->curriculum_model
+						->delcourse($this->input->post('jscourseid'))
+						)
+			);
+
+}
+
 
 	public function index()
 	{
@@ -98,7 +122,7 @@ public function lessontitles()
 					case 'title':
 						foreach ($value as $courseid2 => $lessondata) {
 							foreach ($lessondata as $lessonid => $cataloglessonid) {
-								$lesson[]=array('id'=>$lessonid, 'course_id'=>$courseid2, 'cataloglesson_id'=>$cataloglessonid, 'hours'=>$_POST['hours'][$lessonid]);
+								$lesson[]=array('id'=>$lessonid, 'course_id'=>$courseid2, 'cataloglesson_id'=>$cataloglessonid, 'hours'=>(!empty($_POST['hours'][$lessonid]))?$_POST['hours'][$lessonid]:null);
 							}							
 						}
 						break;					
@@ -109,6 +133,8 @@ public function lessontitles()
 			 }
 		$updatedata = array('coursedata'=>$course, 'lessondata'=>$lesson);
 		$this->firephp->info($updatedata);
+
+		$this->curriculum_model->insertupdatedata($course, $lesson);
 		}
 
 		$this->load->view('include/header');
