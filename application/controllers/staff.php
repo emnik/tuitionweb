@@ -100,18 +100,41 @@ public function card($id, $subsection=null, $innersubsection=null) {
 	 		# code...
 	 		break;
 	 }
-
+	// $this->load->library('firephp');
+	
 	$this->load->model('staff/card_model');
+	$lessons = $this->card_model->get_lessons();
+	if($lessons){$data['lesson']=$lessons;}
+	
+	$selectedlessons = $this->card_model->get_tutor_lessons($id);
+	if($selectedlessons){$data['selectedlessons']=$selectedlessons;}
 
+	// $this->firephp->info(array($selectedlessons, $lessons));
 	$data['emplcard']=array();
 	if (!empty($_POST)) {
-		$this->load->library('firephp');
-		$this->firephp->info($_POST);
+		// $this->load->library('firephp');
+		$lessons_data=array();
+		// $this->firephp->info($_POST);
 	 	foreach ($_POST as $key => $value) 
 	 	{
-	 		$employee_data[$key]=$value;
+	 		if($key=='lessons') 
+	 		{
+	 			foreach ($value as $lkey => $lvalue) {
+	 				$lessons_data[]=$lvalue;	
+	 			}
+	 		}
+	 		else
+	 		{
+				$employee_data[$key]=$value;
+	 		}	
 	 	};
+	 	// $this->firephp->info($lessons_data);
 	 	$this->card_model->update_employee_data($employee_data, $id);
+	 	$this->card_model->update_lessons_data($lessons_data, $selectedlessons, $id);
+	 	//get the new lessons data
+	 	$data['selectedlessons']=array();
+	 	$selectedlessons = $this->card_model->get_tutor_lessons($id);
+		if($selectedlessons){$data['selectedlessons']=$selectedlessons;}
 	}
 	else 
 	{
@@ -123,7 +146,6 @@ public function card($id, $subsection=null, $innersubsection=null) {
 	$this->load->view('include/header');
 	$this->load->view('employee/card', $data);
 	$this->load->view('include/footer');
-
 	}
 
 public function newreg(){

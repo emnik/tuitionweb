@@ -9,8 +9,13 @@
 </style>
 
 <script type="text/javascript">
+
   var addedyear=false;
   $(document).ready(function(){
+
+    // $('.group2').toggle();
+    // $('.group2').parent().parent().siblings().toggle();
+
     $('select[name=startschoolyear]').change(function(){
         var sel=$(this).find('option:selected').val();
         var prevpos=$(this).find('option:selected').prevAll().size()-1;
@@ -117,8 +122,8 @@
         <div class="row"> <!--first row-->
             <div class="col-xs-12">
               <div class="welcome-title">
-                <span class="icon"><i class="icon-minus"></i></span>
-                <span class="icon" style="display:none"><i class="icon-plus"></i></span>
+                <span class="icon group1"><i class="icon-minus"></i></span>
+                <span class="icon group1" style="display:none"><i class="icon-plus"></i></span>
                 Λειτουργία Φροντιστηρίου
               </div>
             </div>
@@ -187,8 +192,8 @@
 
             <div class="col-xs-12">
               <div class="welcome-title">
-                <span class="icon"><i class="icon-plus"></i></span>
-                <span class="icon" style="display:none"><i class="icon-minus"></i></span>
+                <span class="icon group2"><i class="icon-plus"></i></span>
+                <span class="icon group2" style="display:none"><i class="icon-minus"></i></span>
                 Οργάνωση / Διαχείριση φροντιστηρίου
               </div>
             </div>
@@ -257,8 +262,8 @@
         <div class="row" style="margin-bottom:20px;"> <!--third row-->
             <div class="col-xs-12">
               <div class="welcome-title">
-                <span class="icon"><i class="icon-plus"></i></span>
-                <span class="icon" style="display:none"><i class="icon-minus"></i></span>
+                <span class="icon group3"><i class="icon-plus"></i></span>
+                <span class="icon group3" style="display:none"><i class="icon-minus"></i></span>
                 Συγκεντρωτικές αναφορές
               </div>
             </div>

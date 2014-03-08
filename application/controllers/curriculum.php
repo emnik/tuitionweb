@@ -50,10 +50,10 @@ public function __construct() {
 
 public function lessons()
 {
-		$this->load->model('curriculum_model','', TRUE);    
+		$this->load->model('curriculum/courselessons_model','', TRUE);    
         header('Content-Type: application/x-json; charset=utf-8');
         echo(json_encode($this
-						->curriculum_model
+						->courselessons_model
 						->get_lessons($this->input->post('jsclassid'), $this->input->post('jscourseid'))
 						)
 			);
@@ -62,10 +62,10 @@ public function lessons()
 
 public function lessontitles()
 {
-		$this->load->model('curriculum_model','', TRUE);    
+		$this->load->model('curriculum/courselessons_model','', TRUE);    
         header('Content-Type: application/x-json; charset=utf-8');
         echo(json_encode($this
-						->curriculum_model
+						->courselessons_model
 						->get_lessontitles()
 						)
 			);
@@ -74,10 +74,10 @@ public function lessontitles()
 
 public function dellesson()
 {
-		$this->load->model('curriculum_model','', TRUE);    
+		$this->load->model('curriculum/courselessons_model','', TRUE);    
         header('Content-Type: application/x-json; charset=utf-8');
         echo(json_encode($this
-						->curriculum_model
+						->courselessons_model
 						->dellesson($this->input->post('jslessonid'))
 						)
 			);
@@ -86,11 +86,24 @@ public function dellesson()
 
 public function delcourse()
 {
-		$this->load->model('curriculum_model','', TRUE);    
+		$this->load->model('curriculum/courselessons_model','', TRUE);    
         header('Content-Type: application/x-json; charset=utf-8');
         echo(json_encode($this
-						->curriculum_model
+						->courselessons_model
 						->delcourse($this->input->post('jscourseid'))
+						)
+			);
+
+}
+
+
+public function delcataloglesson()
+{
+		$this->load->model('curriculum/tutorsperlesson_model','', TRUE);    
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this
+						->courselessons_model
+						->delcataloglesson($this->input->post('jscatlessonid'))
 						)
 			);
 
@@ -99,9 +112,32 @@ public function delcourse()
 
 	public function index()
 	{
+	/*
+	If I want to pass a parameter to index through a uri segment then I would have to use
+	a url such as: http://domain/tuitionweb/student/index/id
+	It must have the index method specified!!! 
+	*/
+		redirect('curriculum/edit');
+	}
+
+	public function edit($subsection=null)
+	{
 		$this->load->model('login_model');
 		$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
 		$data['user']=$user;
+
+		switch ($subsection) {
+		 	case 'tutorsperlesson':
+		 		$this->tutorsperlesson($user);
+		 		return 0;
+		 		# code...
+		 		break;
+
+		 	default:
+		 		# code...
+		 		break;
+		 }
+
 
 		$this->load->model('curriculum_model');
 		$data['class'] = $this->curriculum_model->get_classes();
@@ -109,8 +145,8 @@ public function delcourse()
 
 		if(!empty($_POST))
 		{
-		$this->load->library('firephp');
-		$this->firephp->info($_POST);
+		// $this->load->library('firephp');
+		// $this->firephp->info($_POST);
 		$updatedata=array();			
 			foreach ($_POST as $key => $value) {
 				switch ($key) {
@@ -132,13 +168,13 @@ public function delcourse()
 				}
 			 }
 		$updatedata = array('coursedata'=>$course, 'lessondata'=>$lesson);
-		$this->firephp->info($updatedata);
+		// $this->firephp->info($updatedata);
 
-		$this->curriculum_model->insertupdatedata($course, $lesson);
+		$this->courselessons_model->insertupdatedata($course, $lesson);
 		}
 
 		$this->load->view('include/header');
-		$this->load->view('curriculum', $data);
+		$this->load->view('curriculum/courselessons', $data);
 		$footer_data['regs']=false;
 		$this->load->view('include/footer', $footer_data);
 	}
@@ -148,6 +184,51 @@ public function delcourse()
 	public function cancel(){
 		$this->index();
 	}
+
+
+	public function tutorsperlesson($user){
+		$data['user'] = $user;
+		$this->load->model('curriculum/tutorsperlesson_model');
+   		
+   		// $this->load->library('firephp');		
+		
+		$lessons = $this->tutorsperlesson_model->get_cataloglessons();
+		if($lessons){$data['lesson'] = $lessons;}
+		
+		$tutors = $this->tutorsperlesson_model->get_tutors();
+		if($tutors){$data['tutor'] = $tutors;}
+
+		$alltutors = $this->tutorsperlesson_model->get_employees();
+		if($alltutors){$data['alltutors'] = $alltutors;}
+		
+
+		if(!empty($_POST))
+		{
+			// $this->firephp->info($_POST);	
+			$lessonsdata = $_POST['lesson']; 
+			$tutorsdata = $_POST['employees']; 
+			$this->tutorsperlesson_model->update_lessontutors($lessonsdata, $tutorsdata, $tutors);
+		
+			//get the new data...
+			$lessons = $this->tutorsperlesson_model->get_cataloglessons();
+			if($lessons){$data['lesson'] = $lessons;}
+			$tutors = $this->tutorsperlesson_model->get_tutors();
+			if($tutors){$data['tutor'] = $tutors;}
+			$alltutors = $this->tutorsperlesson_model->get_employees();
+			if($alltutors){$data['alltutors'] = $alltutors;}
+		}
+		
+		// $this->firephp->info($lessons);
+		// $this->firephp->info($tutors);
+		// $this->firephp->info($alltutors);
+
+		$this->load->view('include/header');
+		$this->load->view('curriculum/tutorsperlesson', $data);
+		$footer_data['regs']=false;
+		$this->load->view('include/footer', $footer_data);
+	}
+	
+
 
 	public function logout()
 	{

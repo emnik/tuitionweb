@@ -1,6 +1,10 @@
-<!-- https://github.com/hgoebl/mobile-detect.js -->
+<!--https://github.com/hgoebl/mobile-detect.js -->
 <script src="<?php echo base_url('assets/mobile-detect.js/mobile-detect.min.js')?>"></script>
-
+<!-- Using https://github.com/ivaynberg/select2 with https://github.com/t0m/select2-bootstrap-css -->
+<link href="<?php echo base_url('assets/select2/select2.css')?>" rel="stylesheet">
+<link href="<?php echo base_url('assets/select2/select2-bootstrap.css')?>" rel="stylesheet">
+<script src="<?php echo base_url('assets/select2/select2.js')?>"></script>
+<script src="<?php echo base_url('assets/select2/select2_locale_el.js')?>"></script>
 <script type="text/javascript">
 var md = new MobileDetect(window.navigator.userAgent);
 
@@ -18,7 +22,19 @@ function toggleedit(togglecontrol, id) {
 
 }
 
+$('select').on()
+
 $(document).ready(function(){
+
+    $('select').select2();
+
+    // $('select').select2().on('select2-removing', function(e){
+    //   var c=confirm("Η διαγραφή ενός μαθήματος θα επηρρεάσει όλα τα τμήματα και τους μαθητές που έχουν αντιστοιχιστεί σε αυτό. Η ενέργεια αυτή δεν αναιρείται.Παρακαλώ επιβεβαιώστε.");
+    //   if(c==false){
+    //     e.preventDefault(); //a bug in the select2 ...
+    //     // https://github.com/ivaynberg/select2/issues/2073
+    //   }
+    // });
 
     $('#cancelbtn').click(function(){
       window.open("<?php echo base_url()?>staff/cancel/card/<?php echo $employee['id']?>", '_self', false);
@@ -197,7 +213,8 @@ function makephonecall(phonenum){
           <div class="col-md-12">
             <div class="btn-group pull-left">  
               <a class="btn btn-default btn-sm" href="#group1">Εργαζομένου</a>
-              <a class="btn btn-default btn-sm" href="#group2">Πρόσληψης</a>
+              <a class="btn btn-default btn-sm" href="#group2">Ειδικότητας</a>
+              <!-- <a class="btn btn-default btn-sm" href="#group3">Πρόσληψης</a> -->
             </div>
           </div>      
         </div>
@@ -318,11 +335,35 @@ function makephonecall(phonenum){
 	        	    	  </div>
                   </div>
                   </div>
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <div class="form-group">
+                        <label>Διδασκώμενα μαθήματα</label>
+                        <select placeholder="Επιλέξτε μαθήματα από τη λίστα..." multiple  disabled   name="lessons[]" class="form-control">
+                        <?php if($lesson):?>
+                          <?php foreach ($lesson as $id=>$title):?>
+                              <option value="<?php echo $id;?>" 
+                              <?php
+                                if(!empty($selectedlessons))
+                                {
+                                if(in_array($id, $selectedlessons))
+                                  {
+                                    echo 'selected';
+                                  }                                  
+                                }?>>
+                                <?php echo $title;?>
+                              </option>
+                          <?php endforeach;?>
+                        <?php endif;?>
+                        </select>
+                      </div>
+                    </div>
                   </div>
-	        	   </div> <!-- end of pabel-body -->
-	            </div> <!-- end of panel -->
-	          </div> <!-- end of mainform -->
-  	      </div> <!-- end of group#2 -->
+                  </div> <!-- end of pabel-body -->
+	        	   </div> <!-- end of panel -->
+	            </div> <!-- end of mainform -->
+	          </div> <!-- end of group#2 --> 
+  	      </div> 
 	      </div>     
       </div>
         <div class="btn-group">
@@ -331,7 +372,6 @@ function makephonecall(phonenum){
         </div>
 
       </form>
-
     </div> 
   </div>
 </div><!--end of main container-->
