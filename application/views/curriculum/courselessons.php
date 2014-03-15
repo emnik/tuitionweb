@@ -303,6 +303,7 @@ function toggleedit(togglecontrol, id) {
 
         
         $('#classes').change(function(){
+            $('.progress').show();
             getcourses();
             $( document ).ajaxComplete(function() {
                 $('.mainform').find(':input:visible').attr('disabled','disabled');
@@ -318,6 +319,7 @@ function toggleedit(togglecontrol, id) {
                   $('#submitbtn').attr('disabled', 'disabled');
                   $('#cancelbtn').attr('disabled', 'disabled');
                 }
+               
             });
 
         })
@@ -326,6 +328,9 @@ function toggleedit(togglecontrol, id) {
     }) //end of (document).ready(function())
 
 function getcourses(){
+
+        var bar = $('.bar');
+
         var classid = $('#classes option:selected').val();
 
         $('.courserow:visible').remove();
@@ -341,8 +346,17 @@ function getcourses(){
           success: function(courses) 
             {
               if(courses){
+                //get the courselegth for determining the progress bar length
+                var courselength = 0;
+                  for (var key in courses) {
+                    if (courses.hasOwnProperty(key)) ++courselength;
+                  }
+                var percent=0; //counter
+
               $.each(courses,function(id,course) 
                 {
+                  percent++; //counter raise
+                  
                   newcourserow = courserowtemplate.clone();
                   newcourserow.removeClass('hidden');
                   var whereaddcourserow = $('.courserow:last');
@@ -354,7 +368,7 @@ function getcourses(){
                   fields.eq(0).attr('value', course);
                   newcourserow.attr('id', id);
                   newcourserow.insertAfter(whereaddcourserow);
-
+                  bar.width(100*percent/courselength + '%'); //progress bar update
                   var newpostdata = {'jsclassid': classid, 'jscourseid': id};
                   var post_url = "<?php echo base_url()?>curriculum/lessons";
                   $.ajax({
@@ -362,10 +376,11 @@ function getcourses(){
                     url: post_url,
                     data : newpostdata,
                     dataType:'json',
-                    // async:false,
+                    async:false, //needed for progress bar
                     success: function(lessons) 
                       {
                         if(lessons){
+                           // bar.html(100*percent/courselength + '%');
                            var firstcataloglessonid = lessons[Object.keys(lessons)[0]]['cataloglesson_id'];
                            var firstlessontext = lessons[Object.keys(lessons)[0]]['title'];
                            var firsthours = lessons[Object.keys(lessons)[0]]['hours'];
@@ -373,7 +388,6 @@ function getcourses(){
                            selectfields.eq(0).attr("name", "title[" + id +"][" + firstid +"]");
                            selectfields.eq(0).attr('id', 'lessonid['+id+']['+firstid+']');
                            fields.eq(1).attr("name", "hours[" + firstid +"]");
-                           //fields.eq(1).attr('id', "hoursid"+firstid);
                            fields.eq(1).prop('value', firsthours);
                            fields.eq(1).attr('value', firsthours);
                            for (var i = 1; i < Object.keys(lessons).length; i++) {
@@ -402,6 +416,7 @@ function getcourses(){
                               $(jq(nextlessonid)).attr('value', cataloglessonid);
                               $(jq(nextlessonid)).prop('disabled',false);
                               $(jq(nextlessonid)).selectpicker('mobile');
+
                             }
 
                             var firstlessonid = 'lessonid['+id+']['+firstid+']';
@@ -422,13 +437,17 @@ function getcourses(){
                             $(jq(newlessonid)).prop('disabled',false);
                             $(jq(newlessonid)).selectpicker('mobile');
                           }                                  
+
                         }
 
                   })
                 })
+             
               }
               else if(classid!=0)
               {
+                bar.width('100%');
+                // bar.html('100%');
                 newcoursec++;
                 newlessonc++; //every time we add a course it is also added one new lesson(+hours) field!
                 var newcourserow = courserowtemplate.clone();
@@ -450,7 +469,14 @@ function getcourses(){
                 $('#undobtn').removeAttr('disabled');
               }
             } //end success
+          })
+          .done(function(){
+            window.setTimeout(function(){
+              bar.width(0);
+              $('.progress').hide();              
+            },300);
           }) //end AJAX
+
 }
 
 
@@ -589,6 +615,12 @@ function getcourses(){
                         </select>
                       </div>
                     </div>
+                    <div class="col-xs-6 col-sm-8 col-md-9 col-lg-9" style="margin-top:30px;">
+                      <div class="progress" style="display:none;">
+                        <div class="progress-bar progress-bar-info bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                        </div>
+                      </div>
+                    </div>
                   </div>
 <!-- template row start -->
                   <div class="row courserow hidden">
@@ -667,3 +699,4 @@ function getcourses(){
   <div class="push"></div>
 
 </div> <!-- end of body wrapper-->
+

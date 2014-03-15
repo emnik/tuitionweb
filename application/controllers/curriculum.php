@@ -181,8 +181,8 @@ public function delcataloglesson()
 
 
 
-	public function cancel(){
-		$this->index();
+	public function cancel($view=null){
+		$this->edit($view);
 	}
 
 

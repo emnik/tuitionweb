@@ -26,7 +26,8 @@ function toggleedit(togglecontrol, id) {
       $('#cancelbtn').attr('disabled', 'disabled');
       $('#undobtn').attr('disabled', 'disabled');
     }
-    else {
+    else 
+    {
     $('#' + id).closest('.mainform').find(':input').each(function(){
       $(this).removeAttr('disabled');
       });
@@ -34,7 +35,13 @@ function toggleedit(togglecontrol, id) {
       $('#submitbtn').removeAttr('disabled');
       $('#cancelbtn').removeAttr('disabled');
       $(".alert").fadeIn();
-	  $('#undobtn').removeAttr('disabled');
+      if(undoarr.length>0){
+        $('#undobtn').removeAttr('disabled');
+      }
+      else
+      {
+        $('#undobtn').attr('disabled', 'disabled');
+      }
     }
 }
 
@@ -52,16 +59,12 @@ function toggleedit(togglecontrol, id) {
 	    
 	    $('.mainform').find(':input').each(function(){
 	      $(this).attr('disabled', 'disabled');
-	      $(this).find('btn').attr('disabled','disabled');
 	      });
-	    $('#submitbtn').attr('disabled', 'disabled');
-	    $('#cancelbtn').attr('disabled', 'disabled');
-	    $('#undobtn').attr('disabled', 'disabled');
   		$('#editform1').removeAttr('disabled');
 
 
       $('#cancelbtn').click(function(){
-        window.open("<?php echo base_url('curriculum/cancel');?>", '_self', false);
+        window.open("<?php echo base_url('curriculum/cancel/tutorsperlesson');?>", '_self', false);
       });
 
       $("body").on('click', '#editform1, #editform2', function(){
@@ -254,7 +257,7 @@ function toggleedit(togglecontrol, id) {
               <div class="panel panel-default">
        	        <div class="panel-heading">
               		<span class="icon">
-               			<i class="icon-folder-close-alt "></i>
+               			<i class="icon-paste "></i>
             			</span>
             			<h3 class="panel-title">Μαθήματα & Διδάσκωντες</h3>
               			<div class="buttons">
