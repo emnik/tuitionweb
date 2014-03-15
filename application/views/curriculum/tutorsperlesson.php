@@ -50,28 +50,25 @@ function toggleedit(togglecontrol, id) {
 
       $(".select2inputs").select2();
 	    
-	   //  $('.mainform').find(':input').each(function(){
-	   //    $(this).attr('disabled', 'disabled');
-	   //    $(this).find('btn').attr('disabled','disabled');
-	   //    });
-	    // $('#submitbtn').attr('disabled', 'disabled');
-	    // $('#cancelbtn').attr('disabled', 'disabled');
-	    // $('#undobtn').attr('disabled', 'disabled');
-  		// $('#editform1').removeAttr('disabled');
+	    $('.mainform').find(':input').each(function(){
+	      $(this).attr('disabled', 'disabled');
+	      $(this).find('btn').attr('disabled','disabled');
+	      });
+	    $('#submitbtn').attr('disabled', 'disabled');
+	    $('#cancelbtn').attr('disabled', 'disabled');
+	    $('#undobtn').attr('disabled', 'disabled');
+  		$('#editform1').removeAttr('disabled');
 
-$('#submitbtn').removeAttr('disabled');
-$('#btnaddrow').removeAttr('disabled');
-$('#undobtn').removeAttr('disabled');
 
-          $('#cancelbtn').click(function(){
-            window.open("<?php echo base_url('curriculum/cancel');?>", '_self', false);
-          });
+      $('#cancelbtn').click(function(){
+        window.open("<?php echo base_url('curriculum/cancel');?>", '_self', false);
+      });
 
-          $("body").on('click', '#editform1, #editform2', function(){
-            toggleedit(this, this.id);
-            $(this).removeAttr('disabled');
+      $("body").on('click', '#editform1, #editform2', function(){
+        toggleedit(this, this.id);
+        $(this).removeAttr('disabled');
 
-          });
+      });
         
     }) //end of (document).ready(function())
 
@@ -274,14 +271,14 @@ $('#undobtn').removeAttr('disabled');
                           <span class="input-group-btn">
                             <button class="btn btn-default dellessonbtn" type="button"><i class="icon-trash"></i></button>
                           </span>
-                          <input id="lessonid[]" name="lesson[]" type="text" class="form-control" value="" placeholder="Πληκτρ/στε ένα τίτλο...">
+                          <input type="text" class="form-control" value="" placeholder="Πληκτρ/στε ένα τίτλο...">
                         </div>
                       </div>
                     </div>
                     <div class="col-xs-6 col-sm-8 col-md-9 col-lg-9">
                       <div class="form-group">
                         <label>Διδάσκωντες</label>
-                        <select multiple placeholder="Επιλέξτε διδάσκωντες..." class="form-control" name="employees[][]" id="employeeids[]">
+                        <select multiple placeholder="Επιλέξτε διδάσκωντες..." class="form-control">
                           <!-- <optgroup label="Ενεργοί"> -->
                           <?php foreach ($alltutors['active'] as $data):?>
                             <option value="<?php echo $data['id'];?>"><?php echo $data['text'];?></option>
@@ -327,7 +324,10 @@ $('#undobtn').removeAttr('disabled');
                   			<select multiple placeholder="Επιλέξτε διδάσκωντες..." class="form-control select2inputs" name="employees[<?php echo $lessonkey;?>][]" id="employeeids[<?php echo $lessonkey;?>]">
                   				<optgroup label="Ενεργοί">
                   				<?php foreach ($alltutors['active'] as $data):?>
-                  					<option value="<?php echo $data['id'];?>" <?php if(in_array($data['id'],$tutor['active'][$lessonkey])){echo 'selected';}?>><?php echo $data['text'];?></option>
+                  					<option value="<?php echo $data['id'];?>" 
+                                <?php if(!empty($tutor['active'][$lessonkey])){
+                                if(in_array($data['id'],$tutor['active'][$lessonkey]))
+                                {echo 'selected';}}?>><?php echo $data['text'];?></option>
                   				<?php endforeach;?>
                   				</optgroup>
                   				<?php if(!empty($tutor['inactive'])):?>

@@ -101,6 +101,7 @@ class Tutorsperlesson_model extends CI_Model {
 
    public function update_lessontutors($lessonsdata, $tutorsdata, $tutors)
    {
+
    		//merge lesson tutors regardless if they are active or not...
    		foreach ($tutors['active'] as $key => $value) {
    			$existingtutors[$key]=$value;
@@ -120,7 +121,7 @@ class Tutorsperlesson_model extends CI_Model {
    		}//end of merge...
 
    		$insertedlessontutorids = array();
-		$lessonupdate = array();
+		   $lessonupdate = array();
 
    		foreach ($lessonsdata as $key=>$value) {
    			if($key>0){
@@ -128,30 +129,54 @@ class Tutorsperlesson_model extends CI_Model {
    				$lessonupdate[] = array('id'=>$key, 'title'=>$value);
 
    				//delete from lesson_tutor the records that have been removed by the user...
-   				foreach ($existingtutors[$key] as $existkey => $existvalue) {
-   					if (!in_array($existvalue, $tutorsdata[$key]))
-   					{
-   						$this->db->where('employee_id', $existvalue)->where('cataloglesson_id', $key)->delete('lesson_tutor');
-   					}
-   				}
+                  if(!empty($existingtutors[$key])){
+         				foreach ($existingtutors[$key] as $existkey => $existvalue) {
+                     if(!empty($tutorsdata[$key])){ 
+         					if (!in_array($existvalue, $tutorsdata[$key]))
+         					{
+         						$this->db->where('employee_id', $existvalue)->where('cataloglesson_id', $key)->delete('lesson_tutor');
+         					}
+         				}
+                     else //in case of an existing lesson when removing all tutors
+                     {
+                           $this->db->where('employee_id', $existvalue)->where('cataloglesson_id', $key)->delete('lesson_tutor');                        
+                     }
+                  }
+               }
    				//for every user check if he is in the existing users. If not insert a new record
-   				foreach ($tutorsdata[$key] as $tkey=>$tvalue) {
-	   				if(!in_array($tvalue, $existingtutors[$key]))
-	   				{
-	   					$insdata1 = array('cataloglesson_id'=>$key, 'employee_id'=>$tvalue);
-	   					$this->db->insert('lesson_tutor', $insdata1);
-	   				}
-   				}
-   			}
+   				if(!empty($tutorsdata[$key])){
+                  foreach ($tutorsdata[$key] as $tkey=>$tvalue) {
+   	   				if (!empty($existingtutors[$key])){
+                        if(!in_array($tvalue, $existingtutors[$key]))
+      	   				{
+      	   					$insdata1 = array('cataloglesson_id'=>$key, 'employee_id'=>$tvalue);
+      	   					$this->db->insert('lesson_tutor', $insdata1);
+      	   				}
+                     }
+                     else //in case of an existing lesson when adding the first tutor
+                     {
+                           $insdata1 = array('cataloglesson_id'=>$key, 'employee_id'=>$tvalue);
+                           $this->db->insert('lesson_tutor', $insdata1);                        
+                     }
+      				}
+               }
+               if(!empty($lessonupdate)){
+                  $this->db->update_batch('catalog_lesson', $lessonupdate, 'id');                     
+               }
+            }
 			else //new lesson
-			{
-	   			$insdata = array('title'=>$value);
-				$this->db->insert('lesson_tutor', $insdata); 					
-				$insertedlessontutorids[$key]=$this->db->insert_id();
-			}   			
-			
+   			{
+   	   		$insdata = array('title'=>$value);
+   				$this->db->insert('catalog_lesson', $insdata); 					
+   				$insertedlessonid=$this->db->insert_id();
+               if(!empty($tutorsdata[$key])){
+                  foreach ($tutorsdata[$key] as $ntkey => $ntvalue) {
+                     $insdata2 = array('cataloglesson_id'=>$insertedlessonid, 'employee_id'=>$ntvalue);
+                     $this->db->insert('lesson_tutor', $insdata2);
+                  }
+               }
+   			}   			
    		}
-   		$this->db->update_batch('catalog_lesson', $lessonupdate, 'id');
    }
 
 

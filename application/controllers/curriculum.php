@@ -102,7 +102,7 @@ public function delcataloglesson()
 		$this->load->model('curriculum/tutorsperlesson_model','', TRUE);    
         header('Content-Type: application/x-json; charset=utf-8');
         echo(json_encode($this
-						->courselessons_model
+						->tutorsperlesson_model
 						->delcataloglesson($this->input->post('jscatlessonid'))
 						)
 			);
