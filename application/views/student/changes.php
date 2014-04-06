@@ -439,8 +439,8 @@ $(document).ready(function() {
               <ul class="dropdown-menu">
                 <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
                 <li><a href="<?php echo base_url()?>section">Τμήματα</a></li>
-                <li><a href="<?php echo base_url()?>">Πρόγραμμα Σπουδών</a></li>
-                <li><a href="<?php echo base_url()?>">Μαθήματα-Διδάσκωντες</a></li>
+                <li><a href="<?php echo base_url('curriculum/edit')?>">Πρόγραμμα Σπουδών</a></li>
+                <li><a href="<?php echo base_url('curriculum/edit/tutorsperlesson')?>">Μαθήματα-Διδάσκωντες</a></li>
                 <li><a href="<?php echo base_url()?>">Στοιχεία Φροντιστηρίου</a></li>
               </ul>
             </li>

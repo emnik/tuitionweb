@@ -95,7 +95,11 @@ public function card($id, $subsection=null, $innersubsection=null) {
 	 		return 0;
 	 		break;
 
- 	
+ 	    case 'gradebook':
+	 		$this->gradebook($id, $employee, $user);
+	 		return 0;
+	 		break;
+
 	 	default:
 	 		# code...
 	 		break;
@@ -288,6 +292,61 @@ public function teachingplan($id, $innersubsection=null, $employee, $user){
 
 	$this->load->view('include/footer');
 }
+
+
+public function gradebook($id, $employee, $user){
+	
+	$data['employee']=$employee;
+	$data['user']=$user;
+
+	//get the exam data from the teachingplan model as we use exactly the same info...
+	$this->load->model('staff/teachingplan_model');
+	$examdata = $this->teachingplan_model->get_exams_by_employeeid($id, $this->session->userdata('startsch'));
+	if($examdata)
+	{
+		//get the paricipants and merge the results with the examdata
+		foreach ($examdata as $row) {
+			$examids[]=$row['id'];
+			$participants = $this->teachingplan_model->get_participants($examids, $id);
+			if($participants)
+			{
+				$participants_list=array();
+				foreach ($participants as $key => $value) {
+					$participants_list[$key]="";
+					foreach ($value as $subkey => $subvalue) {
+						if($participants_list[$key]=="")
+						{
+							$participants_list[$key]=$subvalue;	
+						}
+						else
+						{
+							$participants_list[$key]=$participants_list[$key].', '.$subvalue;
+						}
+					}
+				}
+				foreach ($participants_list as $key1 => $value1) {
+					foreach ($examdata as $key2 => $value2) {
+						if($value2['id']==$key1)
+						{
+							$examdata[$key2]['sections'] = $value1;
+						}
+					}
+				}
+				$data['participants']=$participants;
+			}
+		}
+
+		$data['exam']=$examdata;
+	}
+
+
+	$this->load->view('include/header');
+	$this->load->view('employee/gradebook', $data);	
+	$this->load->view('include/footer');
+
+
+}
+
 
 	public function logout()
 	{

@@ -13,23 +13,35 @@
   font-style: italic;
 }*/
 
+.navbar {
+    border-radius: 0;
+}
+
+.navbar-inverse {
+    background: url("./images/header-bg.png") repeat-x  scroll 0 0 #4E4A41;
+    border: none;
+}
+
+
 ul.nav.navbar-nav > li.dropdown > a.dropdown-toggle.active{
-  color: white;
-  background-color: #76818D;
+  color: #D3D0C5;
+  background-color: #4E4A41;
 }
 
 ul.nav.navbar-nav > li.dropdown > a.dropdown-toggle.active:hover {
-  color: white;
-  background-color: #76818D;
+  color: #D3D0C5;
+  background-color: #4E4A41;
 }
 
 ul.nav > li.dropdown> ul.dropdown-menu>li.active>a{
-  color: white;
-  /*background-color: red;*/
-  background-color: #76818D;
+  color: #D3D0C5;
+  background-color:#4E4A41;
 }
 
-
+ul.nav > li.dropdown> ul.dropdown-menu>li a:focus{
+  color: #D3D0C5;
+  background-color:#4E4A41;
+}
 
 
 /* Main title for my pages based on jumbotron from bootstrap docs.css 
@@ -47,7 +59,8 @@ ul.nav > li.dropdown> ul.dropdown-menu>li.active>a{
 .jumbotron {
   padding-top: 10px;
   text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
-  background: #423B3C;
+  background: url("./images/header-bg.png") repeat scroll 0 0 #5F594E;
+  /*background: #423B3C;*/
 }
 
 .jumbotron h1 {
@@ -55,7 +68,7 @@ ul.nav > li.dropdown> ul.dropdown-menu>li.active>a{
 
   font-family: 'Roboto', sans-serif; font-weight: 700;
   /*color: #C43C35;*/
-  color: #76818D;
+  color: #7B7771;
   letter-spacing: -1px;
   line-height: 1;
 }
@@ -71,8 +84,9 @@ ul.nav > li.dropdown> ul.dropdown-menu>li.active>a{
 /* change background colors 
 ---------------------------*/
 body{
-  background-color: #EEEEEE;
+  /*background-color: #EEEEEE;*/
   /*background-color: #18BC9C;*/
+  background: url("./images/bg.png") repeat scroll 0 0 #F5F4F1;
 }
 
 /* Sticky footer based on from http://ryanfait.com/sticky-footer/ 
@@ -101,17 +115,27 @@ height: 110px;
 
 
 .footer {
-  color: #FFF; 
+  color: #706C66; 
   /*text-align: center;*/
   padding: 30px 0;
   margin-bottom: 0px;
   margin-top: 0px;
-  background-color: #423B3C;
+  /*background-color: #423B3C;*/
+  background: none repeat scroll 0 0 rgba(44, 37, 8, 0.17);
+}
+
+.footer a {
+  color: #8CA757;
+  font-weight: 600px;
+}
+
+.footer a:hover{
+  text-decoration: none;
 }
 /* end of sticky footer*/
 
 .social {
-  color:grey; 
+  color:#706C66; 
   float:center;
   margin-top:5px;
 }
@@ -121,7 +145,7 @@ height: 110px;
 }
 
 .social span i:hover{
-  color: white;
+  color: #8CA757;
   cursor: pointer;
 }
 
@@ -134,13 +158,13 @@ and use the demo_table.css file that includes the css rules below*/
 
 .table tr.odd.row_selected td {
     /*background-color: #51A351;*/
-    background-color: #76818D;
+    background-color: #89A452;
     color: white;
 }
 
 .table tr.even.row_selected td {
     /*background-color: #51A351;*/
-    background-color: #76818D;
+    background-color: #89A452;
     color: white;
 }
 
@@ -153,7 +177,8 @@ and use the demo_table.css file that includes the css rules below*/
 ---------------------------*/
 
 .breadcrumb {
-  background-color: #E5E5E5;
+  background: none repeat scroll 0 0 rgba(66, 55, 13, 0.05);
+  /*background-color: #E5E5E5;*/
   /*background-color: #BAC4C5;*/
   border:1px solid #D6D6D6;
   box-shadow: 0 0 1px #FFFFFF;
@@ -211,8 +236,20 @@ and use the demo_table.css file that includes the css rules below*/
 
 /*bootstrap panels: add span icon on the left and buttons on the right*/
 
-.panel-heading {
+
+.panel-default {
+  background: url("./images/bg.png") repeat scroll 0 0 #F5F4F1;
+}
+
+.panel-body{
+  background-color: #ffffff;
+}
+
+.panel-default > .panel-heading{
+  background-color: none;
   padding-bottom: 32px;
+  background: none repeat scroll 0 0 rgba(66, 55, 13, 0.05);
+
 }
 
 .panel-title {
@@ -232,6 +269,7 @@ and use the demo_table.css file that includes the css rules below*/
     margin-top: -4px;
     margin-right: -7px;
 }
+
 
 .panel >.panel-heading >span.icon {
     border-right: 1px solid;
@@ -401,7 +439,8 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
     .welcome .btn-link {
         text-decoration: none;
         /*color: black;*/
-        color: #2C3E50;
+        /*color: #2C3E50;*/
+        color: #706C66;
         text-shadow: 5px 4px 2px #cfcfcf;
     }
 
@@ -410,7 +449,8 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
     }
 
    .welcome .btn-link:enabled:hover {
-        color: #2C3E50;
+        /*color: #2C3E50;*/
+        color: #89A452;
         transform: scale(1.1);
         -webkit-transform: scale(1.1);/* Saf3.1+, Chrome */
         -moz-transform: scale(1.1); /* FF3.5+ */
@@ -419,14 +459,20 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
     }
    
    .welcome .btn-link:disabled {
-        color: grey;
+        color: lightgrey;
+        text-shadow:none;
+    }
+
+   .welcome .btn-link:disabled ~ .small{
+        color: lightgrey;
     }
 
     .welcome-title {
       cursor: pointer;
       text-align: left;
       margin-top:20px;
-      background:lightgray;
+      /*background:lightgray;*/
+      background: none repeat scroll 0 0 rgba(66, 55, 13, 0.05);
       padding:5px 10px;
       color:gray;
       font-family: 'Jura', sans-serif;font-weight: 600;
@@ -459,18 +505,32 @@ body {
   font-family: 'Jura', sans-serif;font-weight: 400;
 }
 
-.btn-openpage {
-  background-color: #76818D;
+/*.btn-openpage {
+  background-color: #89A452;
   color: white;
-}
+}*/
 
 .btn-openpage:hover {
-  background-color: #2C3E50;
+  /*background-color: 89A452;*/
+  background: url("./images/btn-bg.png") repeat scroll 0 0px, -moz-linear-gradient(center top , #99b45e 0px, #8fac54 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background:url('./images/btn-bg.png') repeat scroll 0 0px, -webkit-gradient(linear, center top, center bottom, from(#99b45e), to(#8fac54)) repeat scroll 0 0 rgba(0, 0, 0, 0);
   color: white;
 }
 .btn-openpage:active {
-  background-color: #2C3E50;
+  /*background-color: 89A452;*/
+  background: url("./images/btn-bg.png") repeat scroll 0 0px, -moz-linear-gradient(center top , #99b45e 0px, #8fac54 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background:url('./images/btn-bg.png') repeat scroll 0 0px, -webkit-gradient(linear, center top, center bottom, from(#99b45e), to(#8fac54)) repeat scroll 0 0 rgba(0, 0, 0, 0);
   color: white;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    background-color: #89A452;
+    border-color: #89A452;
+}
+
+a {
+    color: #89A452;
+    text-decoration: none;
 }
 
 table th {
@@ -483,4 +543,15 @@ fieldset legend {
 
 li.select2-search-choice {
     font-family: 'Jura', sans-serif; font-weight: 400;
+}
+
+.btn-success , .btn-openpage, .btn-openpage:focus, .btn-success:focus  {
+    background:url('./images/btn-bg.png') repeat scroll 0 0px, -moz-linear-gradient(center top , #92AC5A 0px, #88A450 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    background:url('./images/btn-bg.png') repeat scroll 0 0px, -webkit-gradient(linear, center top, center bottom, from(#92AC5A), to(#88A450)) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.07) inset, 0 1px 2px 0 rgba(0, 0, 0, 0.09), 0 0 0 rgba(0, 0, 0, 0);
+    color: #FFFFFF;
+    font-size: 12px;
+    height: 34px;
+    padding: 0 14px;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
 }

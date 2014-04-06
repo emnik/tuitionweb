@@ -151,7 +151,7 @@ $(document).ready(function(){
           <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
           <li><a href="<?php echo base_url()?>staff">Προσωπικό</a> </li>
           <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Καρτέλα εργαζομένου</a> </li>
-          <li class="active">Πλάνο Διδασκαλίας</li>
+          <li class="active">Βαθμολόγιο</li>
         </ul>
       </div>
       
@@ -163,84 +163,19 @@ $(document).ready(function(){
 
       <ul class="nav nav-tabs">
         <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>">Στοιχεία</a></li>
-        <li class="active"><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan">Πλάνο Διδασκαλίας</a></li>
-        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/gradebook" >Βαθμολόγιο</a></li>
+        <li><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan">Πλάνο Διδασκαλίας</a></li>
+        <li class="active"><a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/gradebook">Βαθμολόγιο</a></li>
       </ul>
      
-      <div class="row">
+<!--       <div class="row">
         <div class="col-md-12">
           <h4>Σύνοψη:</h4>
         </div>
-      </div>
+      </div> -->
 
-      <div class="row"> <!--Συνοπτική ενημέρωση-->
+      <div class="row" style="margin-top:15px;"> <!--Συνοπτική ενημέρωση-->
       	<div class="col-md-12">
-	      	<div class="row"> <!--Πρόγραμμα ημέρας-->
-		      	<div class="col-md-12"> 
-		      	<div class="panel panel-default">
-              <div class="panel-heading">
-                <span class="icon">
-                  <i class="icon-time"></i>
-                </span>
-                <h3 class="panel-title">Πρόγραμμα ημέρας</h3>
-                <?php if(!empty($dayprogram) && !empty($program)):?>
-                  <div class="buttons">
-                    <a enabled data-trigger="footable_expand_all" class="toggle1 btn btn-default btn-sm" href="#expandall"><i class="icon-angle-down"></i></a>
-                    <a enabled data-trigger="footable_collapse_all" style="display: none" class="toggle1 btn btn-default btn-sm" href="#collapseall"><i class="icon-angle-up"></i></a>
-                  </div>
-                <?php endif;?>
-              </div>
-            <div class="panel-body">
-			      		<?php if(empty($dayprogram)):?>
-			      			<?php if(empty($program)):?>
-				      			<p class="text-info">
-				      				Δεν έχει εισαχθεί πρόγραμμα για το συγκεκριμένο καθηγητή!
-				      			</p>
-				      		<?php else:?>
-				      			<p class="text-info">
-				      				Σήμερα δεν έχει κανένα μάθημα!
-				      			</p>
-				      		<?php endif;?>
-			      		<?php else:?>
-				      		<table class="footable table table-striped table-condensed " >
-				      			<thead>
-                      <tr>
-  				      				<th data-toggle="true">Ώρα</th>
-  				      				<th>Μάθημα</th>
-  				      				<!-- <th data-hide="phone">Διδάσκων</th> -->
-  				      				<th>Τμήμα</th>
-  				      				<th data-hide="phone">Αίθουσα</th>
-                      </tr>
-				      			</thead>
-				      			<tbody>
-				      				<?php foreach ($dayprogram as $data):?>
-				      					<tr>
-				      						<td><?php echo date('H:i',strtotime($data['start_tm'])).'-'.date('H:i',strtotime($data['end_tm']))?></td>
-				      						<td><?php echo $data['title']?></td>
-				      						<!-- <td><?php echo $data['nickname']?></td> -->
-				      						<td><?php echo $data['section']?></td>
-				      						<td><?php echo $data['classroom']?></td>
-				      					</tr>
-				      				<?php endforeach;?>
-				      			</tbody>
-				      		</table>
-				      	<?php endif;?>
-				      	<div class="row">
-			      			<div class="col-md-12">	
-			      				<!-- onclick="return false;" is needed as an a tag can't be disabled by the disabled property. I'm using the property just for it's css -->
-			      				<a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan/program" class="btn btn-default btn-sm pull-right" <?php if(empty($program)) echo 'disabled="disabled" onclick="return false;"';?> >Εβδομαδιαίο πρόγραμμα</a>
-			      			</div>
-			      		</div>
-				      </div>
-		      	</div>
-          </div>
-		      </div> <!--τέλος ημερησίου προγράμματος-->
-
-		      <div class="row">
-		      	<div class="col-md-7"> <!--Διαγωνίσματα-->
-			      	<div class="row">
-				      	<div class="col-md-12"> 
-                	<div class="panel panel-default">
+          	<div class="panel panel-default">
               <div class="panel-heading">
                 <span class="icon">
                   <i class="icon-pencil"></i>
@@ -267,7 +202,7 @@ $(document).ready(function(){
                           </p>
                           <a href="<?php echo base_url('/exam')?>" class="btn btn-default btn-sm pull-right">Διαγωνίσματα</a>
                     <?php else:?>
-                    <label class="label label-warning">Προγραμματισμένα:</label>
+                    <label class="label label-warning">Επιλέξτε:</label>
                     <table id="examtable" class="table footable table-striped table-condensed">
                         <thead>
                           <tr>
@@ -302,7 +237,7 @@ $(document).ready(function(){
                         </tbody>
                     </table>
                     <button disabled id="examdetails" class="btn btn-warning btn-sm pull-left">Λεπτομέρειες</button>
-                    <a href="<?php echo base_url('/exam')?>" class="btn btn-default btn-sm pull-right">Διαγωνίσματα</a>
+<!--                     <a href="<?php echo base_url('/exam')?>" class="btn btn-default btn-sm pull-right">Διαγωνίσματα</a> -->
               <?php endif;?>
                 </div>
               </div>
@@ -311,83 +246,6 @@ $(document).ready(function(){
 		    </div>
       </div>
 
-   	</div>
-            <div class="col-md-5"> <!--Αριθμός/Ονομασία Τμημάτων - Ίσως και αρ. ατόμων ανα τμήμα-->
-              <div class="panel panel-default">
-              <div class="panel-heading">
-                <span class="icon">
-                  <i class=" icon-tags"></i>
-                </span>
-                <h3 class="panel-title">Τμήματα</h3>
-                   <div class="buttons">
-                    <a enabled data-trigger="footable_expand_all" class="toggle2 btn btn-default btn-sm" href="#expandall"><i class="icon-angle-down"></i></a>
-                    <a enabled data-trigger="footable_collapse_all" style="display: none" class="toggle2 btn btn-default btn-sm" href="#collapseall"><i class="icon-angle-up"></i></a>
-                  </div>
-              </div>
-            <div class="panel-body">
-                <?php if (empty($program)):?>
-                <div class="alert alert-block alert-error fade in">
-                    <!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
-                    <!-- <h5 class="alert-heading"><i class="icon-exclamation-sign"></i> Δεν έχει εισαχθεί πρόγραμμα τμημάτων!</h5> -->
-                    <p class="text-info">Δεν έχει εισαχθεί πρόγραμμα τμημάτων! Για την εισαγωγή τμημάτων επιλέξτε "Τμήματα" από το μενού ή την αρχική σελίδα.</p>
-                </div>
-                <div class="row">
-                  <div class="col-md-12"> 
-                    <a href="#" class="btn btn-default btn-sm pull-right" onclick="return false;" disabled>Περισσότερα</a>
-                </div>
-              </div>
-            <?php else:?>
-                  <?php $stdsum=0; $sectionsnum=0; $hourssum=0;?>
-                  <table class="footable table table-striped table-condensed">
-                    <thead>
-                      <tr>
-                        <th data-toggle="true">Τμήμα</th>
-                        <th data-hide="phone">Αρ. Ατόμων</th>
-                        <th>Μάθημα</th>
-                        <th>Ώρες</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php foreach ($section as $data):?>
-                        <tr>
-                          <td><?php echo $data['section']?></td>
-                          <td><?php echo $data['studentsnum']?></td>
-                          <td><?php echo $data['title']?></td>
-                          <td><?php echo $data['hours']?></td>
-                          <?php $sectionsnum++; $stdsum+=$data['studentsnum']; $hourssum+=$data['hours'];?>
-                        </tr>
-                      <?php endforeach;?>
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                          <th data-class="expand">Σύνολο:</th>
-                          <th data-hide="phone"></th>
-                          <th></th>
-                          <th></th>
-                      </tr>
-                      <tr>
-                          <td><?php echo $sectionsnum;?></td>
-                          <td><?php echo $stdsum;?></td>
-                          <td></td>
-                          <td><?php echo $hourssum;?></td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                  <div class="row">
-                  <div class="col-md-12"> 
-                    <a href="<?php echo base_url()?>staff/card/<?php echo $employee['id']?>/teachingplan/sections" class="btn btn-default btn-sm pull-right">Περισσότερα</a>
-                </div>
-              </div>
-              <?php endif;?>
-
-              </div>
-            </div>
-          </div>
-  </div>
-</div>
-
-
-</div> <!--Τέλος συνοπτικής ενημέρωσης-->
 
 </div> <!--end of main container-->
 

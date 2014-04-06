@@ -83,6 +83,7 @@
 <div class="jumbotron subhead">
   <div class="container">
     <h1>Φροντιστήριο 'σπουδή'</h1>
+    <!-- <h1>ΦΡΟΝΤΙΣΤΗΡΙΟ ΣΠΟΥΔΗ</h1> -->
     <p class="leap"> Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
   </div>
 </div>
