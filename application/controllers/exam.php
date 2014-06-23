@@ -44,6 +44,7 @@ public function index(){
 	$this->load->model('exams_model');
 	$exams=$this->exams_model->get_exams_data($this->session->userdata('startsch'));
 
+
 	if ($exams) {
 		$data['exams'] = $exams;
 		}
@@ -82,6 +83,16 @@ public function lessons()
 
 }
 
+public function deletelesson()
+{
+		$this->load->model('exam/details_model','', TRUE);    
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this
+						->details_model
+						->deletelesson($this->input->post('jsdellessonid'))
+						)
+			);	
+}
 
 public function sections()
 {
@@ -121,7 +132,8 @@ public function details($id, $subsection=null){
 
 		die($msg);
 	}
-
+	$this->load->library('firephp');
+	$this->firephp->info($examdata);
 
 	// $this->load->library('firephp');
 	// $this->firephp->info($prevnext);
@@ -137,80 +149,116 @@ public function details($id, $subsection=null){
 	 		# code...
 	 		break;
 	 }
-
 	$data['class'] = $this->details_model->get_classes();
+	$groupsdata =  $this->details_model->get_exam_group_data($id);
+	if ($groupsdata){
+		foreach ($groupsdata as $key => $value) {
+			$groupsdata[$key]['course'] = $this->details_model->get_courses($groupsdata[$key]['class_id']);
+			$groupsdata[$key]['lesson'] = $this->details_model->get_lessons($groupsdata[$key]['class_id'], $groupsdata[$key]['course_id']);
+		}
+	$data['group'] = $groupsdata;
+	}	
 
 	$examupdate=array('id'=>$id);
+
 	if(!empty($_POST)){
+	$this->firephp->info($_POST);
 		$tmp='';
+		$groupsinsert=array();
+		$groupsupdate=array();
 		foreach ($_POST as $key => $value) {
 			switch ($key) {
-				case 'date':
-					$value = implode('-', array_reverse(explode('-', $value)));
 				case 'class_id':
+					foreach ($_POST['class_id'] as $subkey => $subvalue) {
+						if ($subkey<0)
+						{
+							$groupsinsert[$subkey]['class_id']=$subvalue;
+						}
+						else
+						{
+							$groupsupdate[$subkey]['class_id']=$subvalue;	
+						}
+					}
+					break;
 				case 'course_id':
+					foreach ($_POST['course_id'] as $subkey => $subvalue) {
+						if ($subkey<0)
+						{
+							$groupsinsert[$subkey]['course_id']=$subvalue;
+						}
+						else
+						{
+							$groupsupdate[$subkey]['course_id']=$subvalue;	
+						}
+					}
+					break;
 				case 'lesson_id':
+					foreach ($_POST['lesson_id'] as $subkey => $subvalue) {
+						if ($subkey<0)
+						{
+							$groupsinsert[$subkey]['lesson_id']=$subvalue;
+						}
+						else
+						{
+							$groupsupdate[$subkey]['lesson_id']=$subvalue;	
+						}						
+					}	
+					break;			
+				case 'date':
+					$value = implode('-', array_reverse(explode('-', $value)));					
 				case 'start_tm':
 				case 'end_tm':
+				case 'title':
 				case 'description':
 					$examupdate[$key]=$value;
 					break;
 			}
 		}
-			$this->details_model->update_exam($id, $examupdate);	
+		 	$this->details_model->update_exam($id, $examupdate, $groupsinsert, $groupsupdate);
+		 	//$this->firephp->info($groupsinsert);	
 		
 
-		//after we post the data from view to controller if there is a lesson_id and the participants table is empty we map ALL the
-		//available sections to the participants. If one wants can change the participants from the corresponting view!
-		if(!empty($examupdate['lesson_id']))
-		{
-			$this->load->model('exam/participants_model');
-			$getparticipants = $this->participants_model->get_participants_data($id);
-				if ($getparticipants==false)
-				{
-					$sections = $this->participants_model->get_all_sections_by_lesson($examupdate['lesson_id'], $this->session->userdata('startsch'));	
-					if($sections)
-					{
-						// $this->firephp->info($sections);
-						foreach ($sections as $key => $value) 
-						{
-							$sectionids[]=$key;
-						}
-						// $this->firephp->info($sectionids);
-						$this->participants_model->insertexamsectionids($id, $sectionids);
-					}
+		// //after we post the data from view to controller if there is a lesson_id and the participants table is empty we map ALL the
+		// //available sections to the participants. If one wants can change the participants from the corresponting view!
+		// if(!empty($examupdate['lesson_id']))
+		// {
+		// 	$this->load->model('exam/participants_model');
+		// 	$getparticipants = $this->participants_model->get_participants_data($id);
+		// 		if ($getparticipants==false)
+		// 		{
+		// 			$sections = $this->participants_model->get_all_sections_by_lesson($examupdate['lesson_id'], $this->session->userdata('startsch'));	
+		// 			if($sections)
+		// 			{
+		// 				// $this->firephp->info($sections);
+		// 				foreach ($sections as $key => $value) 
+		// 				{
+		// 					$sectionids[]=$key;
+		// 				}
+		// 				// $this->firephp->info($sectionids);
+		// 				$this->participants_model->insertexamsectionids($id, $sectionids);
+		// 			}
 
-				}
-		}
+		// 		}
+		// }
 		
-		$exam = $examupdate;
-		if (!isset($exam['description']))
-		{
-			$exam['description']="";	
-		}
-	}
-	else
-	{
-		$exam = $this->details_model->get_exam_data($id); //check again why I dont use  $examdata?
-	}
-
-	$data['exam']=$exam;	
-	
-
-	if(!empty($exam['class_id'])){
-		$data['course'] = $this->details_model->get_courses($exam['class_id']);
-		$data['lesson'] = $this->details_model->get_lessons($exam['class_id'], $exam['course_id']);
+		redirect('exam/details/'.$id); //to get the new data!
 	}
 	
-	if (is_null($exam['lesson_id'])) //if it is a new exam ...
-	{
-		$prevnext=array('prev'=>'', 'next'=>'');
-	}
-	else
-	{
-		$prevnext = $this->details_model->get_prevnext_exam_bydate($id, $this->session->userdata('startsch'));	
-	}
-	$data['prevnext']=$prevnext;
+
+	$data['exam']=$examdata;
+
+
+	$this->firephp->info($data);
+	
+	// if (is_null($exam['lesson_id'])) //if it is a new exam ...
+	// {
+	// 	$prevnext=array('prev'=>'', 'next'=>'');
+	// }
+	// else
+	// {
+	// 	$prevnext = $this->details_model->get_prevnext_exam_bydate($id, $this->session->userdata('startsch'));	
+	// }
+	// $data['prevnext']=$prevnext;
 	
 	$this->load->view('include/header');
 	$this->load->view('exam/details', $data);
