@@ -24,6 +24,11 @@ var asInitVals = new Array(); //for specific columns filtering with input field 
 
 $(document).ready(function(){ 
 
+  //Menu current active links and Title
+  $('#menu-reports-summary').addClass('active');
+  $('#menu-history').addClass('active');
+  $('#menu-header-title').text('Ιστορικό');  
+
 // add sorting methods for currency columns
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
     "currency-pre": function (a) {
@@ -46,6 +51,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         // 'copy', 
         {
           extend: 'copy',
+          title: function () { return "Ιστορικό ΑΠΥ"; },
             exportOptions: {
             orthogonal: "exportCopy"
           }
@@ -53,6 +59,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         // 'excel', 
         {
           extend: 'excel',
+          title: function () { return "Ιστορικό ΑΠΥ"; },
             exportOptions: {
             orthogonal: "exportExcel"
           }
@@ -69,6 +76,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         // 'print'
         {
           extend: 'print',
+          title: function () { return "Ιστορικό ΑΠΥ"; },
             exportOptions: {
             orthogonal: "exportPrint"
           }
@@ -125,8 +133,8 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             { "data": "month_range"},
             { "data": "notes"},
             ],
-        "order": [[0, 'asc']],    
-        "sort": true,
+        "order": [[2, 'desc']],    
+        "sort": false,
         "filter": true,
         "columnDefs": [
             { "searchable": true, "targets": [6] }  //don't filter class name and course
@@ -134,7 +142,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         ],
         "paginate": true,
         "drawCallback": function () {
-            if ($(this).find('.dataTables_empty').length == 1) {
+            if ($(this).find('.dataTables_empty').length == 1 && $('#monthfilter').text()!="") {
                 $('th').hide();
                 // $('#tbl1_filter').hide();
                 $('#tbl1_search').hide();
@@ -142,6 +150,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
                 $('#tbl1_info').hide();
                 $('.dt-buttons').hide();
                 $('#tbl1_paginate').hide();
+                $('#monthfilter').hide();
 
                 // $('.dataTables_empty').css({ "border-top": "1px solid #111" });
 
@@ -241,80 +250,10 @@ $(window).on("resize", function (e) {
 
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
-
-    <div class="navbar navbar-inverse navbar-top">
-      <div class="container">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
-     </div>
-
-      <div class="navbar-collapse collapse" role="navigation">
-        <ul class="nav navbar-nav">
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('student')?>">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url('exam')?>">Διαγωνίσματα</a></li>
-                <!-- <li><a href="<?php echo base_url()?>files">Αρχεία</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li> -->
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Οργάνωση/Διαχείριση<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('staff')?>">Προσωπικό</a></li>
-                <li><a href="<?php echo base_url('section')?>">Τμήματα</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit')?>">Πρόγραμμα Σπουδών</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit/tutorsperlesson')?>">Μαθήματα-Διδάσκωντες</a></li>
-                <li><a href="<?php echo base_url()?>">Στοιχεία Φροντιστηρίου</a></li>
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Συγκεντρωτικές Αναφορές<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('reports')?>">Αναφορές</a></li>
-                <li class="active"><a href="<?php echo base_url('history')?>">Ιστορικό</a></li>
-                <li><a href="<?php echo base_url('telephones')?>">Τηλ. Κατάλογοι</a></li>
-                <li><a href="<?php echo base_url('finance')?>">Οικονομικά</a></li>
-              </ul>
-            </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
-                <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url('history/logout')?>">Αποσύνδεση</a></li>
-              </ul>
-            </li>
-        </ul>
-      </div><!--/.navbar-collapse -->
-    </div>
-  </div>
-
-
-<!-- Subhead
-================================================== -->
-<div class="jumbotron subhead">
-  <div class="container">
-    <h1>Ιστορικό</h1>
-    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
-    <p style="font-size:13px; margin-top:15px; margin-bottom:-15px;">
-      <?php 
-      $s=$this->session->userdata('startsch');
-      echo 'Διαχειριστική Περίοδος: '.$s.'-'.($s + 1);
-      ?>
-    </p>
-  </div>
-</div>
-
+    <!-- Menu start -->
+    <!-- dirname(__DIR__) gives the path one level up by default -->
+    <?php include(dirname(__DIR__).'/include/menu.php');?> 
+    <!-- Menu end -->
 
 <!-- main container
 ================================================== -->
@@ -324,16 +263,17 @@ $(window).on("resize", function (e) {
       <div>
 	      <ul class="breadcrumb">
 	        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
-	        <li class="active">Ιστορικό</li>
+          <li class="active"><a href="<?php echo base_url('reports/initial')?>">Συγκεντρωτικές Αναφορές</a></li>
+          <li class="active">Ιστορικό</li>
           <li class="active">ΑΠΥ</li>
 	      </ul>
       </div>
       
-     <p> 
+     <!-- <p> 
       <h3>
         Ιστορικό
       </h3>
-    </p>
+    </p> -->
         
 
       <ul class="nav nav-tabs">
@@ -356,6 +296,10 @@ $(window).on("resize", function (e) {
           <h3 class="panel-title">Αποδείξεις</h3>
        </div> 
         <div class="panel-body">
+          <div class="alert alert-danger alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            Οι αποδείξεις αφορούν πληρωμές για την <u>επιλεγμένη διαχειριστική περίοδο</u>. Αν έχει κοπεί απόδειξη που αφορά προηγούμενη διαχειριστική περίοδο <strong>δεν</strong> εμφανίζεται εδώ!
+          </div>
         <!-- <h4>Αναφορές</h4> -->
         <table id="tbl1" class="table datatable table-striped" style="width:100%">
     			<thead>
@@ -391,6 +335,7 @@ $(window).on("resize", function (e) {
         </div>
     </div>
 </div>
+
 </div><!--end of main container-->
 
 

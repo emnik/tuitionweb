@@ -6,6 +6,11 @@
   input.checkall {
       margin-right: 7px; 
   }
+
+  #moveApyModal .modal-body {
+		/*max-height: 700px;*/
+    	overflow: visible;
+	}
 </style>
 
 <script type="text/javascript">
@@ -36,11 +41,53 @@ var monthnames={1:'Ιανουαρίου',
 
 var firstpay = false; 
 
+var newindex = 0;
+var newpay = 0;
+
 $(document).ready(function() {
-  var newindex = 0;
-  var newpay = 0;
+
+    //Menu current active links and Title
+    $('#menu-operation').addClass('active');
+    $('#menu-student').addClass('active');
+    $('#menu-header-title').text('Καρτέλα Μαθητή');
+
+
   var undobtn = document.getElementById('undo_payment');
   undobtn.disabled=true;  
+
+
+ // Move apy --------------------------------------------------------
+
+    $('#selectStdToMoveApy').select2({
+      minimumInputLength: 2,
+      ajax: {
+        url: "<?php echo base_url()?>welcome/user_list",
+        dataType: 'json',
+        data: function (term, page) {
+          return {
+            q: term //sends the typed letters to the controller
+          };
+        },
+        results: function (data, page) {
+          return { results: data }; //data needs to be {{id:"",text:""},{id:"",text:""}}...
+        }
+      }
+    });
+
+    $('#moveApyModal').on('shown.bs.modal', function(){
+        $('#selectStdToMoveApy').select2("open");
+    });
+
+    $('#selectStdToMoveApy').on('change', function(){
+        $(".alert").hide();
+        $('.alert > p > span').remove();
+        $('.alert > p > a').remove();
+    })
+ // -----------------------------------------------------------------
+
+
+
+
 
 
   $('#firstpayment').click(function(){
@@ -278,7 +325,7 @@ $(document).ready(function() {
   });
 
 
-//delete or cancel multiple payments using the select checkboxes and the combobox below (the action fires through ajax)
+ //delete or cancel multiple payments using the select checkboxes and the combobox below (the action fires through ajax)
   $('#select_action').change(function(){
       var act=$(this).val();
       var fieldsets = $('form').find('fieldset');
@@ -297,9 +344,13 @@ $(document).ready(function() {
             var msg="Πρόκειται να ακυρώσετε τις επιλεγμένες πληρωμές. Η ενέργεια αυτή δεν αναιρείται. Παρακαλώ επιβεβαιώστε.";
             var post_url = "<?php echo base_url();?>student/payment_batch_actions/cancel";
             break;
+          case 'move':
+            $('#moveApyModal').modal();
+            break;
         };
-        var ans=confirm(msg);
-        if (ans==true){
+        if(act!='move'){
+          var ans=confirm(msg);
+          if (ans==true){
             $.ajax({
               type: "post",
               url: post_url,
@@ -308,16 +359,16 @@ $(document).ready(function() {
               success: function(){
                 if (allselected==true && newpay==0){
                     window.location.href = window.location.href;  
-                    //window.location.reload(true); it pops up an alert message from the browser
                 }
+                selected_chkboxes.each(function(){
+                  $(this).parents('fieldset').remove();
+                });
               }
             }); //end of ajax
-            selected_chkboxes.each(function(){
-              $(this).parents('fieldset').remove();
-            });
+          }
         } //end if ans
-      $(this).prop('selectedIndex',0);
       } //end if act
+      $(this).prop('selectedIndex',0);
   })
 
 
@@ -340,7 +391,7 @@ $(document).ready(function() {
     }
    });
 
-//check or uncheck all payments
+ //check or uncheck all payments
   $('.checkall').click(function(){
     var fieldsets = $('form').find('fieldset');
     var selected_chkboxes = $('form').find(':input[type="checkbox"][name*="select"]:visible:checked');
@@ -367,11 +418,6 @@ $(document).ready(function() {
         });
       };
   });
-
-  $('li.dash').click(function(){
-    $('#footerModal').modal();
-  });
-
 
     $('.datecontainer input')
     .datepicker({
@@ -446,7 +492,6 @@ $(document).ready(function() {
               if (firstpay==true && id==1){    
                 var fields = paydata.start_lessons_dt.split('-');
                 var startmonth = parseInt(fields[1],10);
-                //$('#apymonthrange'+id).val(startmonth);
                 $('#apymonthrange'+id).attr('value', startmonth);
                 $('#apymonthrange'+id).prop('value', startmonth);
                 
@@ -454,7 +499,6 @@ $(document).ready(function() {
                 fieldset.find('legend').empty();
                 fieldset.find('legend').append('<span><i class="icon-certificate"></i></span>');
                 fieldset.find('legend').append('<div class="legend-text">Πληρωμή ' + monthnames[startmonth]+'</div>');
-                //fieldset.find('legend').append('<div class="legend-selector"> <input class="pull-right" type="checkbox" name="select['+ -id +']" value=\'0\'></div>');
               };
               
             } //end success
@@ -497,7 +541,46 @@ $(document).ready(function() {
 
   }
 
-
+   
+  function moveapy(){
+      id=$('#selectStdToMoveApy').val();
+        var fieldsets = $('form').find('fieldset');
+        var selected_chkboxes = $('form').find(':input[type="checkbox"][name*="select"]:visible:checked');
+        var allselected = false;
+        if(selected_chkboxes.length == fieldsets.length) allselected = true;
+        var sData = selected_chkboxes.serialize();
+        $.ajax({
+            url: "<?php echo base_url();?>student/payment_batch_actions/move",
+            method: 'post',
+            data: sData + '&regid=' + id,
+            dataType: 'json',
+            success: function(response){
+              console.log(response);
+              if (response.success=='true'){
+                selected_chkboxes.each(function(){
+                  $(this).parents('fieldset').remove();
+                });
+                if (allselected==true && newpay==0){
+                    window.location.href = window.location.href;  
+                } else {
+                  $('#moveApyModal').modal('hide');
+                  // $('.alert > p').append('<span>Η μεταφορά ήταν επιτυχής! Μπορείτε να κλείσετε το παρών πλαίσιο.</span>');
+                  // $('#moveapyresultmsg').removeClass();
+                  // $('#moveapyresultmsg').addClass('alert');
+                  // $('#moveapyresultmsg').addClass('alert-success');
+                  // $(".alert").fadeIn();
+                }
+              }
+              else {
+                  $('.alert > p').append('<span>ΣΦΑΛΜΑ: Η μεταφορά ΔΕΝ ήταν επιτυχής. </span>');
+                  $('#moveapyresultmsg').removeClass();
+                  $('#moveapyresultmsg').addClass('alert');
+                  $('#moveapyresultmsg').addClass('alert-danger');
+                  $(".alert").fadeIn();
+              }
+             }
+        })
+    }
 
 </script>
 
@@ -517,80 +600,44 @@ $(document).ready(function() {
 
 </head>
 <body>
- <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
-    <div class="navbar navbar-inverse navbar-top">
-      <div class="container">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
-     </div>
+<div id="moveApyModal" class="modal" role="dialog" aria-labelledby="moveApyModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+      <div class="modal-content">	
+		<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="moveApyModalLabel">Μεταφορά ΑΠΥ σε άλλο μαθητή</h3>
+		</div>
+		<div class="modal-body">
+			 <div class="form-group">
+			 	<label for="single" class="control-label">Επιλέξτε μαθητή/μαθήτρια:</label>
+ 			 	<input class="form-control" id="selectStdToMoveApy" type="hidden" name="optionvalue" />
+			 </div>
+		</div>
+		<div class="modal-footer">
+			<!-- <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> -->
+			<button class="btn btn-primary" onclick="moveapy();">Μεταφορά</button>
+			<div class="alert alert-success" role="alert" id="moveapyresultmsg" style="display:none; margin-top:10px;">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      			<p style="text-align:left;"> </p> 
+			</div>
 
-      <div class="navbar-collapse collapse" role="navigation">
-        <ul class="nav navbar-nav">
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="active"><a href="<?php echo base_url('student')?>">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url('exam')?>">Διαγωνίσματα</a></li>
-                <!-- <li><a href="<?php echo base_url()?>files">Αρχεία</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li> -->
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Οργάνωση/Διαχείριση<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('staff')?>">Προσωπικό</a></li>
-                <li><a href="<?php echo base_url('section')?>">Τμήματα</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit')?>">Πρόγραμμα Σπουδών</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit/tutorsperlesson')?>">Μαθήματα-Διδάσκωντες</a></li>
-                <li><a href="<?php echo base_url()?>">Στοιχεία Φροντιστηρίου</a></li>
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Συγκεντρωτικές Αναφορές<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('reports')?>">Αναφορές</a></li>
-                <li><a href="<?php echo base_url('history')?>">Ιστορικό</a></li>
-                <li><a href="<?php echo base_url('telephones')?>">Τηλ. Κατάλογοι</a></li>
-                <li><a href="<?php echo base_url('finance')?>">Οικονομικά</a></li>
-              </ul>
-            </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
-                <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url('student/logout')?>">Αποσύνδεση</a></li>
-              </ul>
-            </li>
-        </ul>
-      </div><!--/.navbar-collapse -->
-    </div>
-  </div>
-
-
-<!-- Subhead
-================================================== -->
-<div class="jumbotron subhead">
-  <div class="container">
-    <h1>Καρτέλα Μαθητή</h1>
-    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
-    <p style="font-size:13px; margin-top:15px; margin-bottom:-15px;">
-      <?php 
-      $s=$this->session->userdata('startsch');
-      echo 'Διαχειριστική Περίοδος: '.$s.'-'.($s + 1);
-      ?>
-    </p>    
-  </div>
+		</div>
+		</div>
+	</div>
 </div>
+
+
+
+
+
+
+ <div class="wrapper"> <!--body wrapper for css sticky footer-->
+ 
+    <!-- Menu start -->
+    <!-- dirname(__DIR__) gives the path one level up by default -->
+    <?php include(dirname(__DIR__).'/include/menu.php');?> 
+    <!-- Menu end -->
 
 
 <!-- main container
@@ -604,7 +651,7 @@ $(document).ready(function() {
           <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> </li>
           <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> </li>
           <li class="active">Οικονομικά</li>
-          <li class="dash"><i class="icon-dashboard icon-small"></i></li>
+          <!-- <li class="dash"><i class="icon-dashboard icon-small"></i></li> -->
         </ul>
       </div>
       
@@ -619,6 +666,12 @@ $(document).ready(function() {
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Φοίτηση</a></li>
         <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a></li>
       </ul>
+
+      <?php if($student['active']==0):?>
+        <div class="alert alert-danger" role="alert" style='margin-top:10px; margin-left:0px; margin-right:0px;'>
+          <i class="icon-warning-sign"> </i><strong> ΠΡΟΣΟΧΗ! Τα δεδομένα αφορούν στη διαχειριστική περίοδο <u><?php echo($student['termname']);?></u> και όχι στην επιλεγμένη!</strong>
+        </div>
+      <?php endif;?>
 
       <ul class="nav nav-pills"  style="margin:15px 0px;">
         <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Πληρωμές</a></li>
@@ -701,21 +754,14 @@ $(document).ready(function() {
                             </div>
 
                             <div class="col-md-1 col-sm-1">
-                                <label class="checkbox">
+                                <label class="checkbox" style="margin-left: 20px;">
                                   <input type="checkbox" name="is_credit[<?php echo $data['id'];?>]" <?php if($data['is_credit']==true) echo "checked='yes'";?> value=<?php echo $data['is_credit'];?>>
-                                Ε.Π </label>
+                                Ε.Π. </label>
                             </div>
                             
                             <div class="col-md-2 col-sm-2">
                               <input type="textarea" rows="1" class="form-control" placeholder="Παρατηρήσεις" name="notes[<?php echo $data['id'];?>]" value="<?php echo $data['notes'];?>">
                             </div>
-
-<!--                             <div class="col-md-1">
-                              <div class="btn-group pull-right">
-                                <a class="btn btn-default cancelbtn" onclick="actionpay('cancel',<?php echo $data['id']?>);return false;" href="#"><i class="icon-ban-circle"></i></a>
-                                <a class="btn btn-default delbtn" onclick="actionpay('del',<?php echo $data['id']?>);return false;" href="#"><i class="icon-remove-circle"></i></a>
-                              </div>
-                            </div> -->
 
                         </div> <!--end main form row-->
 
@@ -729,17 +775,18 @@ $(document).ready(function() {
                       <i class="icon-hand-up"></i>
                     </span>
                   </div>
-                  <div class="col-md-2 col-sm-3">
+                  <div class="col-md-2 col-sm-3" style="padding-right:0px;">
                     <label>Με τα επιλεγμένα : </label>
                   </div>
                   <div class="col-md-3 col-sm-3">
                      <select class="form-control"  name="select_action" id="select_action">
                         <option value="none" selected>-</option>
+                        <option value="move">Μεταφορά</option>
                         <option value="delete">Διαγραφή</option>
                         <option value="cancel">Ακύρωση</option>
                       </select>
                   </div>
-              </div>
+                </div>
 
 
               <div style="margin-top:30px;">
@@ -771,7 +818,6 @@ $(document).ready(function() {
                     <div class="col-md-2">Μήνας</div>
                     <div class="col-md-1">Ε.Π.</div>
                     <div class="col-md-2">Παρατηρήσεις</div>
-                    <!-- <div class="col-md-2"><p class="pull-right">Ενέργειες</p></div> -->
                   </div>
                 </div>
                   <div class="row">
@@ -797,20 +843,11 @@ $(document).ready(function() {
                             </div>
 
                             <div class="col-md-1">
-                              <!-- <label class="checkbox"> -->
                                 <input type="checkbox" name="is_credit[-1]" value="0">
-                             <!-- </label> -->
                             </div>
                             
                             <div class="col-md-2">
                               <input type="textarea" rows="1" class="form-control" name="notes[-1]" value="">
-                            </div>
-
-                            <div class="col-md-2">
-                              <div class="btn-group pull-right">
-                                <a class="btn btn-default cancelbtn" onclick="return false;" href="#" disabled ><i class="icon-ban-circle"></i></a>
-                                <a class="btn btn-default delbtn" onclick="return false;" href="#" disabled><i class="icon-remove-circle"></i></a>
-                              </div>
                             </div>
 
                         </div> <!--end main form row-->

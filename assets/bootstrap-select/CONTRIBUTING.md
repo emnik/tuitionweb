@@ -11,18 +11,17 @@ patches and features.
 
 ## Using the issue tracker
 
-The issue tracker is the preferred channel for [bug reports](#bugs),
-[features requests](#features) and submitting pull
-requests, but please respect the following restrictions:
+The issue tracker is the preferred channel for [bug reports](#bug-reports),
+[features requests](#feature-requests) and submitting pull requests, but please
+respect the following restrictions:
 
 * Please **do not** use the issue tracker for personal support requests (use
-  [Stack Overflow](http://stackoverflow.com) or IRC).
+  [Stack Overflow](https://stackoverflow.com) or IRC).
 
 * Please **do not** derail or troll issues. Keep the discussion on topic and
   respect the opinions of others.
 
 
-<a name="bugs"></a>
 ## Bug reports
 
 A bug is a _demonstrable problem_ that is caused by the code in the repository.
@@ -36,12 +35,13 @@ Guidelines for bug reports:
 2. **Check if the issue has been fixed.** Try to reproduce it using the
    latest `master` or development branch in the repository.
 
-3. **Provide environment details.** Provide your operating system, browser(s), jQuery version, Bootstrap version, and bootstrap-select version.
+3. **Provide environment details.** Provide your operating system, browser(s),
+   jQuery version, Bootstrap version, and bootstrap-select version.
 
 4. **Create an isolated and reproducible test case.** Create a [reduced test
-   case](http://css-tricks.com/6263-reduced-test-cases/).
+   case](https://css-tricks.com/reduced-test-cases/).
 
-5. **Include a live example.** Make use of jsFiddle or jsBin to share your isolated test cases.
+5. **Include a live example.** Use [this Plunker debugging template](https://developer.snapappointments.com/bootstrap-select/playground/) to share your isolated test cases. You can also make use of [jsFiddle](https://jsfiddle.net/) or [JS Bin](https://jsbin.com/).
 
 A good bug report shouldn't leave others needing to chase you up for more
 information. Please try to be as detailed as possible in your report. What is
@@ -68,7 +68,6 @@ Example:
 > merits).
 
 
-<a name="features"></a>
 ## Feature requests
 
 Feature requests are welcome. But take a moment to find out whether your idea
@@ -78,10 +77,44 @@ provide as much detail and context as possible.
 
 ## Pull Request Guidelines
 
-* To instantiate a context or use it, use the variable **that** instead of **_this**.
-* Submit your CLA, if you haven't.
-* Please check to make sure that there aren't existing pull requests attempting to address the issue mentioned. We also recommend checking for issues related to the issue on the tracker, as a team member may be working on the issue in a branch or fork.
+You must understand that by contributing code to this project, you are granting
+the authors (and/or leaders) of the project a non-exclusive license to
+re-distribute your code under the current license and possibly re-license the
+code as deemed necessary.
+
+* To instantiate a context or use it, use the variable **that** instead of
+  **_this**.
+* Please check to make sure that there aren't existing pull requests attempting
+  to address the issue mentioned. We also recommend checking for issues related
+  to the issue on the tracker, as a team member may be working on the issue in
+  a branch or fork.
 * Non-trivial changes should be discussed in an issue first
-* If possible, use JSlint or JSHint to validate it
+* When modifying files, please do not edit the generated or minified files in the dist/ directory. Please edit the original files.
 * If possible, add relevant tests to cover the change
 * Write a convincing description of your PR and why we should land it
+
+## Using Grunt
+
+We are using node and grunt to build and (in the future) test this project.
+This means that you must setup a local development environment:
+
+1. Install `node` and `npm` using your preferred method
+2. Install the grunt CLI: `npm install -g grunt-cli`
+3. Install the project's development dependencies: `npm install`
+4. Run the various grunt tasks as needed:
+   - `grunt`: clean the distribution files and re-build them
+   - `grunt dist`: build the distribution files
+   - `grunt clean`: clean the distribution files
+   - `grunt build-css`: build the css distribution files
+   - `grunt build-js`: build the javascript distribution files
+   - `grunt dev-watch`: watch for changes in the source files and build the
+     distribution files as needed
+
+## Running documentation locally
+
+1. If necessary, [install MkDocs](https://www.mkdocs.org/#installation).
+2. Install [mkdocs-bootstrap](https://mkdocs.github.io/mkdocs-bootstrap/) using `pip install mkdocs-bootstrap`.
+3. From the `/bootstrap-select/docs` directory, run `mkdocs serve` in the command line.
+4. Open `http://127.0.0.1:8000/` in your browser, and voilà.
+
+Learn more about using MkDocs by reading its [documentation](https://www.mkdocs.org/).

@@ -97,12 +97,19 @@ class Courselessons_model extends CI_Model {
    		{
    			$data = $value;
    			unset($data['id']);
-			$this->db->insert('lesson', $data); 
+			   $this->db->insert('lesson', $data); 
    		}
    	}
    }
    
 
+   public function delclass($id)
+   {
+	if($this->db->where('id', $id)->delete('class'))
+		{
+			return array('success'=>'true');
+   	}
+   }
 
    public function dellesson($id)
    {
@@ -121,5 +128,17 @@ class Courselessons_model extends CI_Model {
    	}
    }
 
+   public function updateclass($classid, $classname){
+      if(!empty($classname)){
+         $data = array('class_name'=>$classname);
+         if($classid==0){
+            $this->db->insert('class', $data);
+         }
+         else {
+            $this->db->where('id', $classid);
+            $this->db->update('class', $data);
+         }
+      }
+   }
 
 }

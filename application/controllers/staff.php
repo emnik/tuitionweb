@@ -54,7 +54,8 @@ public function index() {
 	
 	$this->load->view('include/header');
 	$this->load->view('staff', $data);
-	$this->load->view('include/footer');
+	$footer_data['regs']=true;
+	$this->load->view('include/footer', $footer_data);
 
 	}
 
@@ -95,10 +96,10 @@ public function card($id, $subsection=null, $innersubsection=null) {
 	 		return 0;
 	 		break;
 
- 	    case 'gradebook':
-	 		$this->gradebook($id, $employee, $user);
-	 		return 0;
-	 		break;
+ 	    // case 'gradebook':
+	 	// 	$this->gradebook($id, $employee, $user);
+	 	// 	return 0;
+	 	// 	break;
 
 	 	default:
 	 		# code...
@@ -149,7 +150,8 @@ public function card($id, $subsection=null, $innersubsection=null) {
 	
 	$this->load->view('include/header');
 	$this->load->view('employee/card', $data);
-	$this->load->view('include/footer');
+	$footer_data['regs']=true;
+	$this->load->view('include/footer', $footer_data);
 	}
 
 public function newreg(){
@@ -190,77 +192,86 @@ public function teachingplan($id, $innersubsection=null, $employee, $user){
 	$this->load->model('staff/teachingplan_model');
 	$program = $this->teachingplan_model->get_tutor_program($id);
 
-	$sections_summary = $this->teachingplan_model->get_tutor_section_summary($id);
-	if ($sections_summary){
-		$data['section'] = $sections_summary;
+	$exams = $this->teachingplan_model->get_exams_data($id);
+	if ($exams) {
+		$data['exam']=$exams;
+	}
+
+	$supervisor = $this->teachingplan_model->get_supervisor_data($id);
+	if ($supervisor) {
+		$data['supervisor']=$supervisor;
+	}
+
+	$sections_data = $this->teachingplan_model->get_tutor_section_summary($id);
+	if ($sections_data){
+		//group sections by class name
+		$classcount = 1;
+		$section_summary=array();
+		$classname = $sections_data[0]['class_name'];
+		$section_summary[$classname]=array();
+		foreach($sections_data as $section){
+			if(!array_key_exists($section['class_name'], $section_summary)){
+				$classcount ++;
+				$classname=$section['class_name'];
+				$section_summary[$classname]=array();
+			}
+		}
+		//we have multiple entries for the sections that have multiple days in their program
+		//so we keep one of them and calculate the summary of weekly hours
+		$previd=-1;
+		$k=null; //doesn't need a value as it will get one the first time it executes array_push below
+		$hourscount = 0;
+		$sectionscount = 0;
+		foreach($sections_data as $row){
+			if($row['id']!=$previd){
+				$k=array_push($section_summary[$row['class_name']], $row);
+				$previd = $row['id'];
+				//count the sections for statistics
+				$sectionscount++;
+			}
+			else {
+				$section_summary[$row['class_name']][$k-1]['hours'] += $row['hours'];
+
+			}
+			//count the hours for statistics
+			$hourscount += $row['hours'];
+		}
+
+		//statistics
+		$stats=array();
+		$stats['sectionscount']=$sectionscount;
+		$stats['hourscount']=$hourscount;
+		$stats['classcount']=$classcount;
+		//number of students for stats is calculated below as we need the number of unique students
+		//and not the summary of students in the sections (as one student can participate in many sections!)
+
+		$data['section_summary']=$section_summary;
 
 		$section_data=array();
-		foreach ($sections_summary as $tmpdata) {
+		foreach ($sections_data as $tmpdata) {
 			$students = $this->teachingplan_model->get_section_students($tmpdata['id']);
 			$section_data[$tmpdata['id']]=$students;
 		}
-	$data['section_data'] = $section_data;
-	};
+		$data['section_data'] = $section_data;
+
+		//count unique students (for stats)!
+		$stds = array();
+		foreach($section_data as $sn=>$mdata){
+			foreach($mdata as $key=>$value){
+				array_push($stds, $value['stdname']);
+			}
+		};
+		$unames = array_unique($stds);
+		$stats['stdcount']=count($unames);
+		$data['stats']=$stats;
 
 
-	// $examdata = $this->teachingplan_model->get_exams_by_employeeid($id, $this->session->userdata('startsch'));
-	// if($examdata)
-	// {
-	// 	//get the paricipants and merge the results with the examdata
-	// 	foreach ($examdata as $row) {
-	// 		$examids[]=$row['id'];
-	// 		$participants = $this->teachingplan_model->get_participants($examids, $id);
-	// 		if($participants)
-	// 		{
-	// 			$participants_list=array();
-	// 			foreach ($participants as $key => $value) {
-	// 				$participants_list[$key]="";
-	// 				foreach ($value as $subkey => $subvalue) {
-	// 					if($participants_list[$key]=="")
-	// 					{
-	// 						$participants_list[$key]=$subvalue;	
-	// 					}
-	// 					else
-	// 					{
-	// 						$participants_list[$key]=$participants_list[$key].', '.$subvalue;
-	// 					}
-	// 				}
-	// 			}
-	// 			foreach ($participants_list as $key1 => $value1) {
-	// 				foreach ($examdata as $key2 => $value2) {
-	// 					if($value2['id']==$key1)
-	// 					{
-	// 						$examdata[$key2]['sections'] = $value1;
-	// 					}
-	// 				}
-	// 			}
-	// 			$data['participants']=$participants;
-	// 		}
-	// 	}
-
-	// 	$data['exam']=$examdata;
-	// }
-
-	// $supervisor = $this->teachingplan_model->get_supervisor_dates($this->session->userdata('startsch'),$id);
-	// if($supervisor)
-	// {
-	// 	$supervisor_dates="";
-	// 	foreach ($supervisor as $key => $value) {
-	// 		if($supervisor_dates=="")
-	// 		{
-	// 			$supervisor_dates='<strong>'.implode('-', array_reverse(explode('-', $value))).'</strong>';
-	// 		}
-	// 		else
-	// 		{
-	// 			$supervisor_dates = $supervisor_dates.' , <strong>'.implode('-', array_reverse(explode('-', $value))).'</strong>';
-	// 		}
-	// 	}
-	// 	$data['supervisor'] = $supervisor_dates;
-	// }
-
-
-	// $this->load->library('firephp');
-	// $this->firephp->info($supervisor);
+	}
+	else {
+		$data['section_summary']=false;
+		$data['section_data']=false;
+		$data['stats']=false;
+	}
 
 	
 	if($program){
@@ -274,8 +285,13 @@ public function teachingplan($id, $innersubsection=null, $employee, $user){
 			}
 		};
 		$data['dayprogram'] = $dayprogram;
-	};
-
+	}
+	else {
+		$data['program'] = false;
+		$data['dayprogram'] = false;
+	}
+	// $this->load->library('firephp');
+	// $this->firephp->info($exams);
 	$this->load->view('include/header');
 
 	switch ($innersubsection) {
@@ -289,74 +305,10 @@ public function teachingplan($id, $innersubsection=null, $employee, $user){
 			$this->load->view('employee/teachingplan', $data);	
 			break;
 	}
-
-	$this->load->view('include/footer');
-}
-
-
-public function gradebook($id, $employee, $user){
 	
-	$data['employee']=$employee;
-	$data['user']=$user;
-
-	//get the exam data from the teachingplan model as we use exactly the same info...
-	$this->load->model('staff/teachingplan_model');
-	$examdata = $this->teachingplan_model->get_exams_by_employeeid($id, $this->session->userdata('startsch'));
-	if($examdata)
-	{
-		//get the paricipants and merge the results with the examdata
-		foreach ($examdata as $row) {
-			$examids[]=$row['id'];
-			$participants = $this->teachingplan_model->get_participants($examids, $id);
-			if($participants)
-			{
-				$participants_list=array();
-				foreach ($participants as $key => $value) {
-					$participants_list[$key]="";
-					foreach ($value as $subkey => $subvalue) {
-						if($participants_list[$key]=="")
-						{
-							$participants_list[$key]=$subvalue;	
-						}
-						else
-						{
-							$participants_list[$key]=$participants_list[$key].', '.$subvalue;
-						}
-					}
-				}
-				foreach ($participants_list as $key1 => $value1) {
-					foreach ($examdata as $key2 => $value2) {
-						if($value2['id']==$key1)
-						{
-							$examdata[$key2]['sections'] = $value1;
-						}
-					}
-				}
-				$data['participants']=$participants;
-			}
-		}
-
-		$data['exam']=$examdata;
-	}
-
-
-	$this->load->view('include/header');
-	$this->load->view('employee/gradebook', $data);	
-	$this->load->view('include/footer');
-
-
+	$footer_data['regs']=true;
+	$this->load->view('include/footer', $footer_data);
 }
-
-
-	public function logout()
-	{
-
-		$this->session->destroy();
-
-		$this->load->view('include/header');		
-		$this->load->view('login');
-		$this->load->view('include/footer');
-	}
 
 
 }

@@ -49,7 +49,8 @@ class History extends CI_Controller {
 
 		$this->load->view('include/header');
 		$this->load->view('reports/apyhistory', $data);
-		$this->load->view('include/footer');
+		$footer_data['regs']=true;
+		$this->load->view('include/footer', $footer_data);
 	}
 
 	public function absences()
@@ -65,7 +66,8 @@ class History extends CI_Controller {
 
 		$this->load->view('include/header');
 		$this->load->view('reports/absenthistory', $data);
-		$this->load->view('include/footer');
+		$footer_data['regs']=true;
+		$this->load->view('include/footer', $footer_data);
 	}
 
 	public function gethistoryapydata()
@@ -88,13 +90,5 @@ class History extends CI_Controller {
 		echo json_encode($res);
 	}
 
-	public function logout()
-	{
-		$this->session->destroy();
-
-		$this->load->view('include/header');		
-		$this->load->view('login');
-		$this->load->view('include/footer');
-	}
 
 }

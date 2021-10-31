@@ -11,8 +11,8 @@ class Welcome_model extends CI_Model {
    public function get_schoolyears() {
    	$query=$this
    		->db
-         ->select('*')
-         ->from('schoolyear')
+         ->from('term')
+         ->select(array('term.id', 'term.name', 'term.active'))
    		->get();
 
    	if ($query->num_rows() > 0) 
@@ -30,61 +30,44 @@ class Welcome_model extends CI_Model {
 
    }
 
-   public function get_selected_startschyear() {
-      $query=$this
-         ->db
-         ->select('lookup.value_1')
-         ->from('lookup')
-         ->where('lookup.id',2)
-         ->limit(1)
-         ->get();
-
+   public function get_school_data(){
+      $query = $this->db->select(array('school.distinctive_title', 'school.facebookurl', 'school.twitterurl'))->get('school');
       if ($query->num_rows() > 0) 
       {
-         //return selected schoolyear start
-         $row = $query->row_array();
-         return $row['value_1'];
-      }
-      else 
+         $data = $query->row_array();
+      } 
+      else
       {
-         //if none selected return current schoolyear start
-         $d=explode(' ', date('m Y'));
-         if ($d[0]<=7){
-            $cur_schoolyear_start=$d[1]-1;
-         } 
-         else {
-            $cur_schoolyear_start=$d[1];  
-         }
-         return $cur_schoolyear_start;
+         $data = false;
       }
-
+      return $data;
    }
 
-   public function set_schoolyear($startsch){
-
-      $data = array('value_1'=>$startsch);
-      $this-> db
-           -> where('lookup.id',2)
-           -> update('lookup',$data);
-   }
-
-   public function insert_schoolyear($newstartyear){
-      $data = array('schoolyear' => $newstartyear.'-'.($newstartyear+1));
-      $this-> db
-           -> insert('schoolyear',$data);
+   public function set_schoolyear($termid){
+      $this->db->update('term', array('active'=>0));
+      $this->db->where('id', $termid)->update('term', array('active'=>1));
    }
 
 
    public function get_student_names_ids($filter=null){
-      $this->db
-            ->select(array('registration.id', 'CONCAT_WS(" ",registration.surname, registration.name) as stdname'))
-            ->from('vw_schoolyear_reg_ids')
-            ->join('registration', 'vw_schoolyear_reg_ids.id = registration.id', 'left');
-            if (!is_null($filter)){
-               $this->db->like('registration.surname', $filter);
-               $this->db->or_like('registration.name', $filter);
-            };
-            $this->db->order_by('stdname', 'ASC');
+
+      if (!is_null($filter)){
+         $this->db
+         // ->select(array('registration.id', 'CONCAT_WS(" - ", CONCAT_WS(" ", registration.surname, registration.name), term.name) as stdname'))
+         ->select(array('registration.id', 'CONCAT_WS(" ", registration.surname, registration.name)  as stdname', 'term.name as termname', 'term.id as termid'))
+         ->from('registration')
+         ->join('term', 'registration.term_id=term.id')
+         //the next where clause is instead of the commented lines below because Codeigniter2 does not support group_start/end !
+         // ->where("(`term`.`active`=1 AND (`registration`.`surname` LIKE '%".$filter."%' OR `registration`.`name` LIKE '%".$filter."%'))")
+         ->where("((`registration`.`surname` LIKE '%".$filter."%' OR `registration`.`name` LIKE '%".$filter."%'))")
+         // ->group_start()
+            // ->like('registration.surname', $filter)
+            // ->or_like('registration.name', $filter)
+         // ->group_end()
+         // ->where('term.active',1)
+         ->order_by('stdname', 'ASC')
+         ->order_by('termid', 'ASC');
+      };
       
       $query=$this->db->get();
 
@@ -100,12 +83,14 @@ class Welcome_model extends CI_Model {
       {
          return false;
       }
-
    }
 
 
-
-
+   public function get_termid(){
+      //get active term
+      $termid = $this->db->select('term.id')->where('term.active',1)->get('term')->row()->id;
+      return $termid;
+   }
 
 
 }

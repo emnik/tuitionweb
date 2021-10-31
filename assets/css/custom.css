@@ -1,72 +1,83 @@
 /**
  * My custom CSS rules go into this file
  */
+
 @import url(http://fonts.googleapis.com/css?family=Jura:400,600|Play:400,700|Roboto:700&subset=latin,greek);
-
-.pager li > a, .pager li > span  {
-    border-radius: 10px;
-    padding: 5px 14px;
+.pager li>a, .pager li>span {
+  border-radius: 10px;
+  padding: 5px 14px;
 }
-
 
 /*li.dropdown-header{
   font-style: italic;
 }*/
 
 .navbar {
-    border-radius: 0;
+  border-radius: 0;
 }
 
 .navbar-inverse {
-    background: url("./images/header-bg.png") repeat-x  scroll 0 0 #4E4A41;
-    border: none;
+  background: url("./images/header-bg.png") repeat-x scroll 0 0 #4E4A41;
+  border: none;
 }
 
-
-ul.nav.navbar-nav > li.dropdown > a.dropdown-toggle.active{
+.navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>li>a:focus {
   color: #D3D0C5;
   background-color: #4E4A41;
 }
 
-ul.nav.navbar-nav > li.dropdown > a.dropdown-toggle.active:hover {
+.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus {
   color: #D3D0C5;
   background-color: #4E4A41;
 }
 
-ul.nav > li.dropdown> ul.dropdown-menu>li.active>a{
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
   color: #D3D0C5;
-  background-color:#4E4A41;
+  background-color: #4E4A41;
 }
 
-ul.nav > li.dropdown> ul.dropdown-menu>li a:focus{
+.dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
   color: #D3D0C5;
-  background-color:#4E4A41;
+  background-color: #4E4A41;
 }
 
+.navbar-inverse .navbar-nav .open .dropdown-menu>.active>a, .navbar-inverse .navbar-nav .open .dropdown-menu>.active>a:hover, .navbar-inverse .navbar-nav .open .dropdown-menu>.active>a:focus {
+  color: #D3D0C5;
+  background-color: #4E4A41;
+}
 
 /* Main title for my pages based on jumbotron from bootstrap docs.css 
 ---------------------------------------------------------------------*/
 
-
-.navbar.navbar-inverse.navbar-top{
+.navbar.navbar-inverse.navbar-top {
   margin-bottom: 0px;
 }
 
-.navbar.navbar-default.navbar-top{
+.navbar.navbar-default.navbar-top {
   margin-bottom: 0px;
 }
 
 .jumbotron {
   padding-top: 10px;
-  text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .4), 0 0 30px rgba(0, 0, 0, .075);
   background: url("./images/header-bg.png") repeat scroll 0 0 #5F594E;
   /*background: #423B3C;*/
 }
 
+.jumbotron.subhead {
+  margin-top: 30px;
+  padding-bottom: 40px;
+}
+
+body.slide-active div.wrapper div.jumbotron.subhead {
+  position: relative;
+  margin-top: -40px;
+}
+
 .jumbotron h1 {
   font-size: 40px;
-
-  font-family: 'Roboto', sans-serif; font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
   /*color: #C43C35;*/
   color: #7B7771;
   letter-spacing: -1px;
@@ -83,7 +94,8 @@ ul.nav > li.dropdown> ul.dropdown-menu>li a:focus{
 
 /* change background colors 
 ---------------------------*/
-body{
+
+body {
   /*background-color: #EEEEEE;*/
   /*background-color: #18BC9C;*/
   background: url("./images/bg.png") repeat scroll 0 0 #F5F4F1;
@@ -93,29 +105,28 @@ body{
 --------------------------------------------------------------*/
 
 * {
-margin: 0;
+  margin: 0;
 }
 
 html, body {
-height: 100%;
+  height: 100%;
 }
 
 .wrapper {
-min-height: 100%;
-height: auto !important;
-height: 100%;
-margin: 0 auto -110px;
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -110px;
+  /* position: relative;
+top:30px; */
 }
-
-
 
 .footer, .push {
-height: 110px;
+  height: 110px;
 }
 
-
 .footer {
-  color: #706C66; 
+  color: #706C66;
   /*text-align: center;*/
   padding: 30px 0;
   margin-bottom: 0px;
@@ -129,49 +140,45 @@ height: 110px;
   font-weight: 600px;
 }
 
-.footer a:hover{
+.footer a:hover {
   text-decoration: none;
 }
+
 /* end of sticky footer*/
 
 .social {
-  color:#706C66; 
-  float:center;
-  margin-top:5px;
+  color: #706C66;
+  float: center;
+  margin-top: 5px;
 }
 
 .social span {
-  margin-right:7px;
+  margin-right: 7px;
 }
 
-.social span i:hover{
+.social span i:hover {
   color: #8CA757;
   cursor: pointer;
 }
 
-
 /* Table row selector (color adjustment) for datatables
 ----------------------------------------------------*/
+
 /*for selecting rows with dataTables.bootstrap.css
 Normally (without bootstrap intergration I would add the display class to the table
 and use the demo_table.css file that includes the css rules below*/
 
 .table tr.odd.row_selected td {
-    /*background-color: #51A351;*/
-    background-color: #89A452;
-    color: white;
+  /*background-color: #51A351;*/
+  background-color: #89A452;
+  color: white;
 }
 
 .table tr.even.row_selected td {
-    /*background-color: #51A351;*/
-    background-color: #89A452;
-    color: white;
+  /*background-color: #51A351;*/
+  background-color: #89A452;
+  color: white;
 }
-
-
-
-
-
 
 /* breadcrumb styling 
 ---------------------------*/
@@ -180,76 +187,100 @@ and use the demo_table.css file that includes the css rules below*/
   background: none repeat scroll 0 0 rgba(66, 55, 13, 0.05);
   /*background-color: #E5E5E5;*/
   /*background-color: #BAC4C5;*/
-  border:1px solid #D6D6D6;
+  border: 1px solid #D6D6D6;
   box-shadow: 0 0 1px #FFFFFF;
-
 }
 
 .breadcrumb a {
-    text-decoration: none;
-    color:#8C7D7F;
-    font-size: 12px;
+  text-decoration: none;
+  color: #8C7D7F;
+  font-size: 12px;
 }
 
 .breadcrumb a:hover {
-    color:#423B3C;
+  color: #423B3C;
 }
 
 .breadcrumb li span.divider {
-    font-size: 12px; 
-    font-weight: bold;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .breadcrumb li.active {
-    font-size: 12px; 
-    font-weight: bold;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 /*Change default divider for breadcrumb*/
-.breadcrumb > li + li:before {
-    content: "> ";
+
+.breadcrumb>li+li:before {
+  content: "> ";
 }
 
-.breadcrumb > li.dash {
+.breadcrumb>li.dash {
   cursor: pointer;
   float: right;
-  color:gray;
+  color: gray;
   margin-right: 0px;
 }
-.breadcrumb > li.dash:before {
-    content: "";
+
+.breadcrumb>li.dash:before {
+  content: "";
 }
 
 /* nav tabs & pils styling 
 ---------------------------*/
 
-.nav a{
-    color:#5B5152;
+.nav a {
+  color: #5B5152;
 }
 
-
-.nav-pills > .active > a, .nav-pills > .active > a:hover, .nav-pills > .active > a:focus {
-    background-color: #C43C35;
-    color: #FFFFFF;
+.nav-pills>.active>a, .nav-pills>.active>a:hover, .nav-pills>.active>a:focus {
+  background-color: #C43C35;
+  color: #FFFFFF;
 }
 
+.nav.nav-pills li{
+  background-color: white;
+  border-style: solid;
+  border-width: thin;
+  border-radius: 5px;
+  border-color: turquoise;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+ul.nav.nav-pills li a.active{
+  background-color: #C43C35;
+  color: white;
+}
+
+#togglesections.active, #toggledays.active{
+  background-color: #C43C35;
+  color: white;
+}
+
+.section-info-divider{
+  padding: 5px 10px;
+  background-color: #f2dede;
+  font-weight: bold;
+  border-radius: 5px;
+}
 
 /*bootstrap panels: add span icon on the left and buttons on the right*/
-
 
 .panel-default {
   background: url("./images/bg.png") repeat scroll 0 0 #F5F4F1;
 }
 
-.panel-body{
+.panel-body {
   background-color: #ffffff;
 }
 
-.panel-default > .panel-heading{
+.panel-default>.panel-heading {
   background-color: none;
   padding-bottom: 32px;
   background: none repeat scroll 0 0 rgba(66, 55, 13, 0.05);
-
 }
 
 .panel-title {
@@ -257,252 +288,306 @@ and use the demo_table.css file that includes the css rules below*/
   padding-top: 5px;
   padding-left: 10px;
   font-weight: bold;
-/*  text-shadow: 0 1px 0 #FFFFFF;
+  /*  text-shadow: 0 1px 0 #FFFFFF;
   color: #666666;*/
   margin-bottom: 15px;
   font-size: 14px;
-  font-family: 'Play', sans-serif; font-weight: 700;
+  font-family: 'Play', sans-serif;
+  font-weight: 700;
 }
 
-.panel >.panel-heading > .buttons {
-    float: right;
-    margin-top: -4px;
-    margin-right: -7px;
+.panel>.panel-heading>.buttons {
+  float: right;
+  margin-top: -4px;
+  margin-right: -7px;
 }
 
-
-.panel >.panel-heading >span.icon {
-    border-right: 1px solid;
-    border-color: inherit;
-    float: left;
-    opacity: 0.7;
-    margin-top: -10px;
-    padding: 12px 10px 10px 0px;
+.panel>.panel-heading>span.icon {
+  border-right: 1px solid;
+  border-color: inherit;
+  float: left;
+  opacity: 0.7;
+  margin-top: -10px;
+  padding: 12px 10px 10px 0px;
 }
 
 /*CSS rules for multiple records in one page as in payments*/
+
 @media (max-width: 768px) {
-    .multiplefieldset-header{display: none;}
+  .multiplefieldset-header {
+    display: none;
+  }
 }
 
 @media (min-width: 768px) {
-    .multiplefieldset-header {
-        border-left: 1px solid #CDCDCD;
-        border-right: 1px solid #CDCDCD;
-        border-top: 1px solid #CDCDCD;
-        border-bottom: 1px solid #CDCDCD;
-        padding: 20px 20px 20px 15px;
-        color: #666666;
-        font-size: 14px;
-        font-weight: bold;
-    }
-
-}
-
-
-
-.multiplefieldset {
-    background: none repeat scroll 0 0 #F9F9F9;
+  .multiplefieldset-header {
     border-left: 1px solid #CDCDCD;
     border-right: 1px solid #CDCDCD;
     border-top: 1px solid #CDCDCD;
-    clear: both;
-    margin-bottom: 6px;
-    margin-top: -7px;
-    position: relative;
     border-bottom: 1px solid #CDCDCD;
-    padding: 16px 10px 10px 15px;
+    padding: 20px 20px 20px 15px;
+    color: #666666;
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+
+.multiplefieldset {
+  background: none repeat scroll 0 0 #F9F9F9;
+  border-left: 1px solid #CDCDCD;
+  border-right: 1px solid #CDCDCD;
+  border-top: 1px solid #CDCDCD;
+  clear: both;
+  margin-bottom: 6px;
+  margin-top: -7px;
+  position: relative;
+  border-bottom: 1px solid #CDCDCD;
+  padding: 16px 10px 10px 15px;
 }
 
 .multiplefieldset:nth-child(even) {
-   background-color:#EEEEEE;
+  background-color: #EEEEEE;
 }
-
 
 .paylegend {
-    color: #666666;
-    float: left;
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 12px;
-    text-shadow: 0 1px 0 #FFFFFF;
-    border:0px;
+  color: #666666;
+  float: left;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 12px;
+  text-shadow: 0 1px 0 #FFFFFF;
+  border: 0px;
 }
 
-.paylegend span{
-    float: left;
-    padding-right: 4px;
+.paylegend span {
+  float: left;
+  padding-right: 4px;
 }
-.paylegend .legend-text{
-    cursor:pointer;
-    float: left;
+
+.paylegend .legend-text {
+  cursor: pointer;
+  float: left;
 }
 
 .paylegend .legend-selector {
-    float: right;
-    padding-right: 4px;
-    margin-top: -3px;
+  float: right;
+  padding-right: 4px;
+  margin-top: -3px;
 }
-
-
 
 /* Collaplsible fieldsets CSS based on
 https://github.com/malteo/bootstrap-collapsible-fieldset*/
+
 @media (max-width: 768px) {
-    fieldset.collapsible {
-        border: 1px solid #D5D8D8;
-    }
-
-    fieldset.collapsible > div {
-        display: none;
-    }
-
-    .multiplefieldset .selector {
-      display: none;
-      margin:0px;
-      padding:0px;
-    }
-
-    /* Απόκρυψη των placeholders ΜΟΝΟ όταν γίνεται focus στα αντίστοιχα πεδία*/
-
-    /* WebKit browsers */
-    input:focus::-webkit-input-placeholder { color:transparent; }
-
-    /* Mozilla Firefox 4 to 18 */
-    input:focus:-moz-placeholder { color:transparent; }
-
-    /* Mozilla Firefox 19+ */
-    input:focus::-moz-placeholder { color:transparent; }
-
-    /* Internet Explorer 10+ */
-    input:focus:-ms-input-placeholder { color:transparent; }
-
-
+  fieldset.collapsible {
+    border: 1px solid #D5D8D8;
+  }
+  fieldset.collapsible>div {
+    display: none;
+  }
+  .multiplefieldset .selector {
+    display: none;
+    margin: 0px;
+    padding: 0px;
+  }
+  /* Απόκρυψη των placeholders ΜΟΝΟ όταν γίνεται focus στα αντίστοιχα πεδία*/
+  /* WebKit browsers */
+  input:focus::-webkit-input-placeholder {
+    color: transparent;
+  }
+  /* Mozilla Firefox 4 to 18 */
+  input:focus:-moz-placeholder {
+    color: transparent;
+  }
+  /* Mozilla Firefox 19+ */
+  input:focus::-moz-placeholder {
+    color: transparent;
+  }
+  /* Internet Explorer 10+ */
+  input:focus:-ms-input-placeholder {
+    color: transparent;
+  }
 }
 
 @media (min-width: 768px) {
-    fieldset.collapsible > legend {
-      display: none;
-      margin:0px;
-      padding:0px;
-    }
-
-    fieldset.collapsible > div {
+  fieldset.collapsible>legend {
+    display: none;
+    margin: 0px;
+    padding: 0px;
+  }
+  fieldset.collapsible>div {
     display: block!important;
-    }
-
-    .multiplefieldset .selector{
-      display: block!important;
-    }
-
-    /* Απόκρυψη των placeholders ΓΕΝΙΚΑ αφού σε αυτή τη διάσταση υπαρχουν labels*/
-    
-    /* WebKit browsers */
-    input::-webkit-input-placeholder { color:transparent; }
-
-    /* Mozilla Firefox 4 to 18 */
-    input:-moz-placeholder { color:transparent; }
-
-    /* Mozilla Firefox 19+ */
-    input::-moz-placeholder { color:transparent; }
-
-    /* Internet Explorer 10+ */
-    input:-ms-input-placeholder { color:transparent; }
-
+  }
+  .multiplefieldset .selector {
+    display: block!important;
+  }
+  /* Απόκρυψη των placeholders ΓΕΝΙΚΑ αφού σε αυτή τη διάσταση υπαρχουν labels*/
+  /* WebKit browsers */
+  input::-webkit-input-placeholder {
+    color: transparent;
+  }
+  /* Mozilla Firefox 4 to 18 */
+  input:-moz-placeholder {
+    color: transparent;
+  }
+  /* Mozilla Firefox 19+ */
+  input::-moz-placeholder {
+    color: transparent;
+  }
+  /* Internet Explorer 10+ */
+  input:-ms-input-placeholder {
+    color: transparent;
+  }
 }
+
+/* label styles for sections shortcut-links */
+/* @brand-primary: darken(#428bca, 6.5%); // #337ab7
+@brand-success: #5cb85c;
+@brand-info:    #5bc0de;
+@brand-warning: #f0ad4e;
+@brand-danger:  #d9534f; */
+
+.label-section{
+  background-color: #d9534f;
+}
+
+.stats {
+background-color: #d9534f;
+border: 10px solid #ffffff;
+/* border-left: 0; */
+/* border-top: 0; */
+height: 150px;
+/* border-radius: 1em; */
+/* cursor: pointer; */
+}
+
+.stats:hover{
+  scale: 1.1;
+  z-index: 2;
+}
+
+.stats h3 {
+  font-size: 15px;
+  margin: 0;
+  font-weight: 800;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-align: center;
+}
+.stats-icon {
+  text-align: center;
+  height: 90px;
+}
+
+.stats-icon img {
+  display: inline-block;
+  height: 90px;
+  vertical-align: middle;
+  padding: 15px 0;
+  filter: brightness(0) invert(1);
+}
+
 
 
 
 /*SCROLL TO TOP*/
-/*http://antesarkkinen.com/blog/easy-jquery-scroll-to-top-of-the-page-code-snippet/*/
-    .scrollup {
-        background: url("images/icon_gototop.png") no-repeat scroll 0 0 transparent;
-        bottom: 20px;
-        display: none;
-        height: 40px;
-        position: fixed;
-        right: 20px;
-        text-indent: -9999px;
-        width: 40px;
-    }
 
+/*http://antesarkkinen.com/blog/easy-jquery-scroll-to-top-of-the-page-code-snippet/*/
+
+.scrollup {
+  background: url("images/icon_gototop.png") no-repeat scroll 0 0 transparent;
+  bottom: 20px;
+  display: none;
+  height: 40px;
+  position: fixed;
+  right: 20px;
+  text-indent: -9999px;
+  width: 40px;
+  z-index: 10000;
+}
 
 /*Welcome buttons styled as links with font awesome*/
 
-    .welcome {
-        text-align:center;
-        margin-bottom:15px;
-        margin-top:15px;
+.welcome {
+  text-align: center;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
 
-    }
+.welcome .btn-link {
+  text-decoration: none;
+  /*color: black;*/
+  /*color: #2C3E50;*/
+  color: #706C66;
+  text-shadow: 5px 4px 2px #cfcfcf;
+}
 
-    .welcome .btn-link {
-        text-decoration: none;
-        /*color: black;*/
-        /*color: #2C3E50;*/
-        color: #706C66;
-        text-shadow: 5px 4px 2px #cfcfcf;
-    }
+.welcome .btn-link>h4 {
+  font-family: 'Jura', sans-serif;
+  font-weight: 600;
+}
 
-    .welcome .btn-link > h4{
-        font-family: 'Jura', sans-serif;font-weight: 600;
-    }
+.welcome .btn-link:enabled:hover {
+  /*color: #2C3E50;*/
+  color: #89A452;
+  transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  /* Saf3.1+, Chrome */
+  -moz-transform: scale(1.1);
+  /* FF3.5+ */
+  -ms-transform: scale(1.1);
+  /* IE9 */
+  -o-transform: scale(1.1);
+  /* Opera 10.5+ */
+}
 
-   .welcome .btn-link:enabled:hover {
-        /*color: #2C3E50;*/
-        color: #89A452;
-        transform: scale(1.1);
-        -webkit-transform: scale(1.1);/* Saf3.1+, Chrome */
-        -moz-transform: scale(1.1); /* FF3.5+ */
-        -ms-transform: scale(1.1); /* IE9 */
-        -o-transform: scale(1.1); /* Opera 10.5+ */
-    }
-   
-   .welcome .btn-link:disabled {
-        color: lightgrey;
-        text-shadow:none;
-    }
+.welcome .btn-link:disabled {
+  color: lightgrey;
+  text-shadow: none;
+}
 
-   .welcome .btn-link:disabled ~ .small{
-        color: lightgrey;
-    }
+.welcome .btn-link:disabled~.small {
+  color: lightgrey;
+}
 
-    .welcome-title {
-      cursor: pointer;
-      text-align: left;
-      margin-top:20px;
-      /*background:lightgray;*/
-      background: none repeat scroll 0 0 rgba(66, 55, 13, 0.05);
-      padding:5px 10px;
-      color:gray;
-      font-family: 'Jura', sans-serif;font-weight: 600;
-      /*color: #95A5A6;*/
-      font-weight: bold;
-      -moz-border-radius: 5px;
-      -webkit-border-radius: 5px;
-      -khtml-border-radius: 5px;
-      border-radius: 5px;
-    }
+.welcome-title {
+  cursor: pointer;
+  text-align: left;
+  margin-top: 20px;
+  /*background:lightgray;*/
+  background: none repeat scroll 0 0 rgba(66, 55, 13, 0.05);
+  padding: 5px 10px;
+  color: gray;
+  font-family: 'Jura', sans-serif;
+  font-weight: 600;
+  /*color: #95A5A6;*/
+  font-weight: bold;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+}
 
-    .panel-scroll {
-      overflow: auto;
-      word-wrap: normal;
-      white-space: pre;
-    }
-
-
+.panel-scroll {
+  overflow: auto;
+  word-wrap: normal;
+  white-space: pre;
+}
 
 /* RowGrouping addon for datatables custom css 
 ---------------------------------------------------------------------*/
+
 .group {
   background-color: #E5E5E5;
-  font-family: 'Jura', sans-serif;font-weight: 600;
+  font-family: 'Jura', sans-serif;
+  font-weight: 600;
 }
 
 /*---------------------------------------------------------------------*/
 
-body { 
-  font-family: 'Jura', sans-serif;font-weight: 400;
+body {
+  font-family: 'Jura', sans-serif;
+  font-weight: 400;
 }
 
 /*.btn-openpage {
@@ -512,46 +597,203 @@ body {
 
 .btn-openpage:hover {
   /*background-color: 89A452;*/
-  background: url("./images/btn-bg.png") repeat scroll 0 0px, -moz-linear-gradient(center top , #99b45e 0px, #8fac54 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
-  background:url('./images/btn-bg.png') repeat scroll 0 0px, -webkit-gradient(linear, center top, center bottom, from(#99b45e), to(#8fac54)) repeat scroll 0 0 rgba(0, 0, 0, 0);
-  color: white;
-}
-.btn-openpage:active {
-  /*background-color: 89A452;*/
-  background: url("./images/btn-bg.png") repeat scroll 0 0px, -moz-linear-gradient(center top , #99b45e 0px, #8fac54 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
-  background:url('./images/btn-bg.png') repeat scroll 0 0px, -webkit-gradient(linear, center top, center bottom, from(#99b45e), to(#8fac54)) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: url("./images/btn-bg.png") repeat scroll 0 0px, -moz-linear-gradient(center top, #99b45e 0px, #8fac54 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: url('./images/btn-bg.png') repeat scroll 0 0px, -webkit-gradient(linear, center top, center bottom, from(#99b45e), to(#8fac54)) repeat scroll 0 0 rgba(0, 0, 0, 0);
   color: white;
 }
 
-.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
-    background-color: #89A452;
-    border-color: #89A452;
+.btn-openpage:active {
+  /*background-color: 89A452;*/
+  background: url("./images/btn-bg.png") repeat scroll 0 0px, -moz-linear-gradient(center top, #99b45e 0px, #8fac54 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: url('./images/btn-bg.png') repeat scroll 0 0px, -webkit-gradient(linear, center top, center bottom, from(#99b45e), to(#8fac54)) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  color: white;
+}
+
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+  background-color: #89A452;
+  border-color: #89A452;
 }
 
 a {
-    color: #89A452;
-    text-decoration: none;
+  color: #89A452;
+  text-decoration: none;
 }
 
 table th {
-    font-family: 'Play', sans-serif;font-weight: 700;
+  font-family: 'Play', sans-serif;
+  font-weight: 700;
 }
 
 fieldset legend {
-  font-family: 'Jura', sans-serif; font-weight: 600;
+  font-family: 'Jura', sans-serif;
+  font-weight: 600;
 }
 
 li.select2-search-choice {
-    font-family: 'Jura', sans-serif; font-weight: 400;
+  font-family: 'Jura', sans-serif;
+  font-weight: 400;
 }
 
-.btn-success , .btn-openpage, .btn-openpage:focus, .btn-success:focus  {
-    background:url('./images/btn-bg.png') repeat scroll 0 0px, -moz-linear-gradient(center top , #92AC5A 0px, #88A450 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
-    background:url('./images/btn-bg.png') repeat scroll 0 0px, -webkit-gradient(linear, center top, center bottom, from(#92AC5A), to(#88A450)) repeat scroll 0 0 rgba(0, 0, 0, 0);
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.07) inset, 0 1px 2px 0 rgba(0, 0, 0, 0.09), 0 0 0 rgba(0, 0, 0, 0);
-    color: #FFFFFF;
-    font-size: 12px;
-    height: 34px;
-    padding: 0 14px;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+.btn-success, .btn-openpage, .btn-openpage:focus, .btn-success:focus {
+  background: url('./images/btn-bg.png') repeat scroll 0 0px, -moz-linear-gradient(center top, #92AC5A 0px, #88A450 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: url('./images/btn-bg.png') repeat scroll 0 0px, -webkit-gradient(linear, center top, center bottom, from(#92AC5A), to(#88A450)) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.07) inset, 0 1px 2px 0 rgba(0, 0, 0, 0.09), 0 0 0 rgba(0, 0, 0, 0);
+  color: #FFFFFF;
+  font-size: 12px;
+  height: 34px;
+  padding: 0 14px;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* off canvas menu css */
+
+/* adjust body when menu is open */
+
+body.slide-active {
+  overflow-x: hidden
+}
+
+/*first child of #page-content so it doesn't shift around*/
+
+.no-margin-top {
+  margin-top: 0px !important
+}
+
+/*wrap the entire page content but not nav inside this div if not a fixed top, don't add any top padding */
+
+#page-content {
+  position: relative;
+  padding-top: 70px;
+  left: 0;
+}
+
+#page-content.slide-active {
+  padding-top: 0
+}
+
+/* put toggle bars on the left :: not using button */
+
+#slide-nav .navbar-toggle {
+  cursor: pointer;
+  position: relative;
+  line-height: 0;
+  float: left;
+  margin: 0;
+  width: 30px;
+  height: 40px;
+  padding: 10px 0 0 0;
+  border: 0;
+  background: transparent;
+}
+
+/* icon bar prettyup - optional */
+
+#slide-nav .navbar-toggle>.icon-bar {
+  width: 100%;
+  display: block;
+  height: 3px;
+  margin: 5px 0 0 0;
+}
+
+#slide-nav .navbar-toggle.slide-active .icon-bar {
+  background: orange
+}
+
+.navbar-header {
+  position: relative
+}
+
+/* un fix the navbar when active so that all the menu items are accessible */
+
+.navbar.navbar-fixed-top.slide-active {
+  position: relative
+}
+
+/* screw writing importants and shit, just stick it in max width since these classes are not shared between sizes */
+
+@media (max-width:767px) {
+
+  #slide-nav .container {
+    margin: 0!important;
+    padding: 0!important;
+    height: 100%;
+  }
+  #slide-nav .navbar-header {
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+  #slide-nav .navbar.slide-active {
+    position: absolute;
+    width: 100%;
+    top: -1px;
+    z-index: 1000;
+  }
+  #slide-nav #slidemenu {
+    background: #f7f7f7;
+    left: -100%;
+    width: 100%;
+    min-width: 0;
+    position: absolute;
+    padding-left: 0;
+    z-index: 4;
+    top: -8px;
+    margin: 0;
+    margin-top: 70px;
+  }
+  #slide-nav #slidemenu .navbar-nav {
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+  }
+  #slide-nav #slidemenu .navbar-nav .dropdown-menu li a {
+    min-width: 0;
+    width: 100%;
+    white-space: normal;
+  }
+  #slide-nav {
+    border-top: 0
+  }
+  #slide-nav.navbar-inverse #slidemenu {
+    background: #333
+  }
+  /* this is behind the navigation but the navigation is not inside it so that the navigation is accessible and scrolls*/
+  #navbar-height-col {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    bottom: 0;
+    width: 100%;
+    left: -100%;
+    background: #f7f7f7;
+  }
+  #navbar-height-col.inverse {
+    background: #333;
+    z-index: 1001;
+    border: 0;
+  }
+  #slide-nav .navbar-form {
+    width: 100%;
+    margin: 8px 0;
+    text-align: center;
+    overflow: hidden;
+    /*fast clearfixer*/
+  }
+  #slide-nav .navbar-form .form-control {
+    text-align: center
+  }
+  #slide-nav .navbar-form .btn {
+    width: 100%
+  }
+}
+
+@media (min-width:768px) {
+  #page-content {
+    left: 0!important
+  }
+  .navbar.navbar-fixed-top.slide-active {
+    position: fixed
+  }
+  .navbar-header {
+    left: 0!important
+  }
 }

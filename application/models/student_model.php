@@ -32,8 +32,6 @@ class Student_model extends CI_Model {
 
    }
 
-
-
    public function get_classes() {
       $query=$this
          ->db
@@ -54,10 +52,12 @@ class Student_model extends CI_Model {
 
    public function get_student_data($id) {
       //for common use in all student sections
+      //the term data are used to know whether it is a student of the current term or not!
       $query=$this
          ->db
-         ->select(array('registration.surname','registration.name','registration.id'))
+         ->select(array('registration.surname','registration.name','registration.id', 'term.name as termname', 'term.active'))
          ->from('registration')
+         ->join('term', 'registration.term_id=term.id')
          ->where('registration.id',$id)
          ->limit(1)
          ->get();

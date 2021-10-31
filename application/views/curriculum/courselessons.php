@@ -1,17 +1,9 @@
-<!-- for styling select in webkit browsers where there are problems when used with input-addon
-http://silviomoreto.github.io/bootstrap-select/3/ -->
-<link href="<?php echo base_url('assets/bootstrap-select/bootstrap-select.css')?>" rel="stylesheet">
-<script src="<?php echo base_url('assets/bootstrap-select/bootstrap-select.js')?>"></script>
 <style type="text/css">
-  /*for styling bootstrap-select as the other fields when disabled!*/
-  button.selectpicker:disabled{
-    background-color: #EEEEEE;
-    color: #A19A99;
-    opacity: 1;
-  }
 </style>
+
 <script type="text/javascript">
 var undoarr=[]; //undo array
+var editClassOn = false;
 
 function toggleedit(togglecontrol, id) {
   if ($(togglecontrol).hasClass('active')){
@@ -46,7 +38,7 @@ function toggleedit(togglecontrol, id) {
 
     $(document).on('click','.addcoursebtn', function(){
         newcoursec++;
-        newlessonc++; //every time we add a course it is also added one new lesson(+hours) field!
+        newlessonc++; //every time we add a course it is also added one new lesson field!
         var newcourserow = courserowtemplate.clone();
         newcourserow.removeClass('hidden');
         newcourserow.attr('id',-newcoursec);
@@ -57,12 +49,10 @@ function toggleedit(togglecontrol, id) {
         fields.eq(0).attr('name', 'course['+(-newcoursec)+']');
         selectfields.eq(0).attr('id', 'lessonid['+(-newcoursec)+"]["+(-newlessonc)+']');
         selectfields.eq(0).attr('name', 'title['+(-newcoursec)+"]["+(-newlessonc)+']');
-        fields.eq(1).attr('name', 'hours['+(-newlessonc)+']');
         var whereaddcourserow = $(this).parents('.courserow');
         newcourserow.insertAfter(whereaddcourserow);      
         var newlessonid = 'lessonid['+(-newcoursec)+"]["+(-newlessonc)+']'
         $(jq(newlessonid)).prop('disabled',false);
-        $(jq(newlessonid)).selectpicker('mobile');
         $('#'+(-newcoursec)).find('input:first').focus();
         $('#undobtn').removeAttr('disabled');
     });
@@ -77,12 +67,10 @@ function toggleedit(togglecontrol, id) {
           selectfields.eq(0).attr('id', 'lessonid['+courseid+']['+(-newlessonc)+']');
           undoarr.push('lessonid['+courseid+']['+(-newlessonc)+']');
           selectfields.eq(0).attr('name', 'title['+courseid+']['+(-newlessonc)+']');
-          fields.eq(0).attr('name', 'hours['+(-newlessonc)+']');
           var whereaddlessonrow = $(this).parents('.lessonrow');
           newlessonrow.insertAfter(whereaddlessonrow);
           var newlessonid = 'lessonid['+courseid+']['+(-newlessonc)+']';
           $(jq(newlessonid)).prop('disabled',false);
-          $(jq(newlessonid)).selectpicker('mobile');
           $('#undobtn').removeAttr('disabled');
     })
     
@@ -115,9 +103,6 @@ function toggleedit(togglecontrol, id) {
           }
         }
     });
-
-
-
 
     $(document).on('click', '.delcoursebtn', function(){
 
@@ -185,7 +170,7 @@ function toggleedit(togglecontrol, id) {
         if (courses.length==1)
         {
           newcoursec++;
-          newlessonc++; //every time we add a course it is also added one new lesson(+hours) field!
+          newlessonc++; //every time we add a course it is also added one new lesson field!
           var newcourserow = courserowtemplate.clone();
           newcourserow.removeClass('hidden');
           newcourserow.attr('id',-newcoursec);
@@ -196,21 +181,19 @@ function toggleedit(togglecontrol, id) {
           fields.eq(0).attr('name', 'course['+(-newcoursec)+']');
           selectfields.eq(0).attr('id', 'lessonid['+(-newcoursec)+']['+(-newlessonc)+']');
           selectfields.eq(0).attr('name', 'title['+(-newcoursec)+']['+(-newlessonc)+']');
-          fields.eq(1).attr('name', 'hours['+(-newlessonc)+']');
           newcourserow.appendTo(whereaddcourserow);
           var newlessonid = 'lessonid['+(-newcoursec)+']['+(-newlessonc)+']';
           $(jq(newlessonid)).prop('disabled',false);
-          $(jq(newlessonid)).selectpicker('mobile');
           $('#'+(-newcoursec)).find('input:first').focus();
           $('#undobtn').removeAttr('disabled');
         }
     });
 
     $(document).on('click', '.dellessonbtn', function(){
-        var courselessons = $(this).parents('.courserow').find('.lessonrow');
-        var whereaddlessonrow = $(this).parents('.col-sm-6');
-        var courseid = $(this).parents('.courserow').attr('id');
-        var lessonid = $(this).parent().parent().parent().next().find('select').attr('id');
+        var courselessons = $(this).parents('.courserow').find('.lessonrow'); //how many lessons exist in current course
+        var whereaddlessonrow = $(this).parents('.col-sm-6'); //the div that contains the lessons for the current course 
+        var courseid = $(this).parents('.courserow').attr('id');//the courseid
+        var lessonid = $(this).parent().parent().prev().find('select').attr('id');//the lessonid from the select input
         if ($.inArray(lessonid, undoarr)!==-1)
         {
           undoarr.splice($.inArray(lessonid, undoarr),1);
@@ -254,23 +237,25 @@ function toggleedit(togglecontrol, id) {
           var selectfields=newlessonrow.find('select');
           selectfields.eq(0).attr('id', 'lessonid['+courseid+']['+(-newlessonc)+']');
           selectfields.eq(0).attr('name', 'title['+courseid+']['+(-newlessonc)+']');
-          fields.eq(0).attr('name', 'hours['+(-newlessonc)+']');
           newlessonrow.appendTo(whereaddlessonrow);
           var newlessonid = 'lessonid['+courseid+']['+(-newlessonc)+']';
           $(jq(newlessonid)).prop('disabled',false);
-          $(jq(newlessonid)).selectpicker('mobile');
         }
       // }
     });
 
     $(document).ready(function(){
 
+        //Menu current active links and Title
+        $('#menu-management').addClass('active');
+        $('#menu-curriculum').addClass('active');
+        $('#menu-header-title').text('Πρόγραμμα Σπουδών');
+
         courserowtemplate = $('.courserow:hidden'); //store the template to be cloned
         lessonrowtemplate = $('.lessonrow:hidden'); //store the template to be cloned
         $('#editform1').attr('disabled', 'disabled');
 
-        // $('#classes').selectpicker();
-        
+       
         $.ajax({
           type: "POST",
           url: "<?php echo base_url()?>curriculum/lessontitles/",
@@ -301,9 +286,11 @@ function toggleedit(togglecontrol, id) {
 
         });
 
-        
-        $('#classes').change(function(){
-            $('.progress').show();
+
+        $('#classes').on('change', function(){
+          if(editClassOn) return;
+          $('#editclassrow').hide();
+          $('.progress').show();
             getcourses();
             $( document ).ajaxComplete(function() {
                 $('.mainform').find(':input:visible').attr('disabled','disabled');
@@ -318,11 +305,66 @@ function toggleedit(togglecontrol, id) {
                   $('#editform1').attr('disabled', 'disabled');
                   $('#submitbtn').attr('disabled', 'disabled');
                   $('#cancelbtn').attr('disabled', 'disabled');
+                  $('#addclassbtn').removeAttr('disabled');      
                 }
-               
-            });
+            }); 
+        });
 
+
+        $("body").on('click','#addclassbtn', function(){
+            editClassOn = true;
+            $('#classes').val(0);
+            editClassOn = false;
+            $('#editclassrow').find('label').text('Όνομα τάξης:');
+            $('#editclassrow').show();
+            $('#editform1').removeClass('active');
+            $('#editform1').removeAttr('disabled');
+            $('#submitbtn').removeAttr('disabled');
+            $('#cancelbtn').removeAttr('disabled');
+            $('.courserow:visible').remove();          
         })
+
+        $("body").on('click','#editclassbtn', function(){
+            classid = $('#classes').val();
+            if(classid!=0){
+              console.log(classid);
+              $('#editclassrow').find('label').text('Νέο Όνομα:');
+              $('#editclassrow').show();
+
+              $('#editform1').removeClass('active');
+              $('#editform1').removeAttr('disabled');
+              $('#submitbtn').removeAttr('disabled');
+              $('#cancelbtn').removeAttr('disabled');
+              $('.courserow:visible').remove();          
+            }
+            else {
+              console.log('no class selected to edit!')
+            }
+        })
+
+        $("body").on('click','#delclassbtn', function(){
+          classid = $('#classes').val();
+          console.log(classid);
+          if(classid!=0){
+          var r=confirm('Πρόκειται να διαγράψετε μία τάξη. Συνίσταται να μην το κάνετε αν έχετε αντιστοιχίσει έστω και 1 μαθητή σε αυτήν, ακόμα και σε παλαιότερη σχολική χρονιά. Μαζί με την τάξη θα διαγραφούν και όλές οι κατευθύνσεις και τα μαθήματα που τυχών έχετε αντιστοιχίσει σε αυτήν. Η ενέργεια αυτή δεν αναιρείται. Παρακαλώ επιβεβαιώστε.')
+          if (r==true)
+          {
+            post_url = '<?php echo base_url("curriculum/delclass");?>'; 
+            $.ajax({
+              global: false,
+              type: "post",
+              url: post_url,
+              data : {'jsclassid':classid},
+              dataType:'json', 
+              success: function(){
+                $('#classes option[value="'+classid+'"').remove();
+                $('.courserow:visible').remove();   
+              }
+            }); //end of ajax
+          }
+          }
+        })
+        
 
 
     }) //end of (document).ready(function())
@@ -380,21 +422,15 @@ function getcourses(){
                     success: function(lessons) 
                       {
                         if(lessons){
-                           // bar.html(100*percent/courselength + '%');
                            var firstcataloglessonid = lessons[Object.keys(lessons)[0]]['cataloglesson_id'];
                            var firstlessontext = lessons[Object.keys(lessons)[0]]['title'];
-                           var firsthours = lessons[Object.keys(lessons)[0]]['hours'];
                            var firstid = Object.keys(lessons)[0];
                            selectfields.eq(0).attr("name", "title[" + id +"][" + firstid +"]");
                            selectfields.eq(0).attr('id', 'lessonid['+id+']['+firstid+']');
-                           fields.eq(1).attr("name", "hours[" + firstid +"]");
-                           fields.eq(1).prop('value', firsthours);
-                           fields.eq(1).attr('value', firsthours);
                            for (var i = 1; i < Object.keys(lessons).length; i++) {
                               var lessonid = Object.keys(lessons)[i];
                               var cataloglessonid = lessons[Object.keys(lessons)[i]]['cataloglesson_id'];
                               var lessontext = lessons[Object.keys(lessons)[i]]['title'];
-                              var lessonhours = lessons[Object.keys(lessons)[i]]['hours'];
                               
                               var newlessonrow = lessonrowtemplate.clone();
                               newlessonrow.removeClass('hidden');
@@ -403,10 +439,6 @@ function getcourses(){
 
                               subselectfields.eq(0).attr("name", "title["+id+"]["+lessonid +"]");        
                               subselectfields.eq(0).attr('id', "lessonid["+id+"]["+lessonid+"]");
-                              subfields.eq(0).attr("name", "hours[" + lessonid +"]");        
-                              subfields.eq(0).prop('value', lessonhours);
-                              subfields.eq(0).attr('value', lessonhours);
-
                               var whereaddlessonrow = $('#'+id+' .lessonrow:visible:last');
                               newlessonrow.insertAfter(whereaddlessonrow);
 
@@ -415,8 +447,6 @@ function getcourses(){
                               $(jq(nextlessonid)).prop('value', cataloglessonid);
                               $(jq(nextlessonid)).attr('value', cataloglessonid);
                               $(jq(nextlessonid)).prop('disabled',false);
-                              $(jq(nextlessonid)).selectpicker('mobile');
-
                             }
 
                             var firstlessonid = 'lessonid['+id+']['+firstid+']';
@@ -424,22 +454,17 @@ function getcourses(){
                             $(jq(firstlessonid)).prop('value', firstcataloglessonid);
                             $(jq(firstlessonid)).attr('value', firstcataloglessonid);
                             $(jq(firstlessonid)).prop('disabled',false);
-                            $(jq(firstlessonid)).selectpicker('mobile');
                           }
                           else
                           {
                             newlessonc++;
                             var newlessonid = 'lessonid['+id+']['+(-newlessonc)+']';
-                            fields.eq(1).attr("name", "hours[" + (-newlessonc) +"]");  
                             selectfields.eq(0).attr('id', newlessonid);
                             selectfields.eq(0).attr("name", "title[" + id +"][" + (-newlessonc) +"]");
                             undoarr.push(newlessonid);
                             $(jq(newlessonid)).prop('disabled',false);
-                            $(jq(newlessonid)).selectpicker('mobile');
                           }                                  
-
                         }
-
                   })
                 })
              
@@ -447,9 +472,8 @@ function getcourses(){
               else if(classid!=0)
               {
                 bar.width('100%');
-                // bar.html('100%');
                 newcoursec++;
-                newlessonc++; //every time we add a course it is also added one new lesson(+hours) field!
+                newlessonc++; //every time we add a course it is also added one new lesson field!
                 var newcourserow = courserowtemplate.clone();
                 newcourserow.removeClass('hidden');
                 newcourserow.attr('id',-newcoursec);
@@ -460,12 +484,10 @@ function getcourses(){
                 fields.eq(0).attr('name', 'course['+(-newcoursec)+']');
                 selectfields.eq(0).attr('id', 'lessonid['+(-newcoursec)+"]["+(-newlessonc)+']');
                 selectfields.eq(0).attr('name', 'title['+(-newcoursec)+"]["+(-newlessonc)+']');
-                fields.eq(1).attr('name', 'hours['+(-newlessonc)+']');
                 var whereaddcourserow = $('.courserow:hidden');
                 newcourserow.insertAfter(whereaddcourserow);
                 var newlessonid = 'lessonid['+(-newcoursec)+"]["+(-newlessonc)+']';
                 $(jq(newlessonid)).prop('disabled',false);
-                $(jq(newlessonid)).selectpicker('mobile');
                 $('#undobtn').removeAttr('disabled');
               }
             } //end success
@@ -487,79 +509,10 @@ function getcourses(){
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
-    <div class="navbar navbar-inverse navbar-top">
-      <div class="container">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
-     </div>
-
-      <div class="navbar-collapse collapse" role="navigation">
-        <ul class="nav navbar-nav">
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('student')?>">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url('exam')?>">Διαγωνίσματα</a></li>
-                <!-- <li><a href="<?php echo base_url()?>files">Αρχεία</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li> -->
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Οργάνωση/Διαχείριση<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('staff')?>">Προσωπικό</a></li>
-                <li><a href="<?php echo base_url('section')?>">Τμήματα</a></li>
-                <li class="active"><a href="<?php echo base_url('curriculum/edit')?>">Πρόγραμμα Σπουδών</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit/tutorsperlesson')?>">Μαθήματα-Διδάσκωντες</a></li>
-                <li><a href="<?php echo base_url()?>">Στοιχεία Φροντιστηρίου</a></li>
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Συγκεντρωτικές Αναφορές<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('reports')?>">Αναφορές</a></li>
-                <li><a href="<?php echo base_url('history')?>">Ιστορικό</a></li>
-                <li><a href="<?php echo base_url('telephones')?>">Τηλ. Κατάλογοι</a></li>
-                <li><a href="<?php echo base_url('finance')?>">Οικονομικά</a></li>
-              </ul>
-            </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
-                <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url('curriculum/logout')?>">Αποσύνδεση</a></li>
-              </ul>
-            </li>
-        </ul>
-      </div><!--/.navbar-collapse -->
-    </div>
-  </div>
-
-
-<!-- Subhead
-================================================== -->
-<div class="jumbotron subhead">
-  <div class="container">
-    <h1>Πρόγραμμα Σπουδών</h1>
-    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
-    <p style="font-size:13px; margin-top:15px; margin-bottom:-15px;">
-      <?php 
-      $s=$this->session->userdata('startsch');
-      echo 'Διαχειριστική Περίοδος: '.$s.'-'.($s + 1);
-      ?>
-    </p>    
-  </div>
-</div>
-
+    <!-- Menu start -->
+    <!-- dirname(__DIR__) gives the path one level up by default -->
+    <?php include(dirname(__DIR__).'/include/menu.php');?> 
+    <!-- Menu end -->
 
 <!-- main container
 ================================================== -->
@@ -573,7 +526,7 @@ function getcourses(){
 	      </ul>
       </div>
 
-     <p><h3>Επεξεργασία προγράμματος σπουδών</h3></p>
+     <!-- <p><h3>Επεξεργασία προγράμματος σπουδών</h3></p> -->
       
       <ul class="nav nav-tabs" style="margin-bottom:15px;">
         <li class="active"><a href="<?php echo base_url('/curriculum')?>">Πρόγραμμα Σπουδών</a></li>
@@ -603,20 +556,37 @@ function getcourses(){
           		  </div>
 	              <div class="panel-body">
         	        <div class="row">	
-                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
+                  <div class="col-xs-7 col-sm-5 col-md-4">
                       <div class="form-group">
                         <label>Επιλέξτε Τάξη:</label>
                         <select id="classes" class="form-control" name="class_name">
-                          <option value="0"></option>
+                        <option value="0"></option>  
                           <?php if(!empty($class)):?>
                             <?php foreach ($class as $data):?>
                               <option value="<?php echo $data['id'];?>"><?php echo $data['class_name'];?></option>
                             <?php endforeach;?>
                           <?php endif;?>
                         </select>
+                        </div>
+                    </div>
+                    <div id="classfunctions" class="col-xs-5 col-sm-5 col-md-4">
+                      <div class="btn-group" style="margin-top:24px;">
+                        <button type="button" disabled id="delclassbtn" class="btn btn-default"><i class="icon icon-trash"></i></button>
+                        <button type="button" disabled id="editclassbtn"class="btn btn-default"><i class="icon icon-edit"></i></button>
+                        <button type="button" id="addclassbtn" class="btn btn-default"><i class="icon icon-plus"></i></button>
                       </div>
                     </div>
-                    <div class="col-xs-6 col-sm-8 col-md-9 col-lg-9" style="margin-top:30px;">
+                  </div>
+                  <div id="editclassrow" class="row" style="display:none;">
+                    <div class="col-xs-7 col-sm-5 col-md-4">
+                      <div class="form-group">
+                        <label for="inputClassName">Όνομα τάξης:</label>
+                          <input type="text" class="form-control" id="inputClassName" placeholder="" name="class_name_text">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-12">
                       <div class="progress" style="display:none;">
                         <div class="progress-bar progress-bar-info bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
                         </div>
@@ -630,41 +600,29 @@ function getcourses(){
                         <div class="form-group">
                           <label>Κατεύθυνση</label>
                           <div class="input-group">
-                            <div class="input-group-btn">
-                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-                              <ul class="dropdown-menu">
-                                <li><a class="addcoursebtn" href="#" onclick="return false;"><i class="icon-plus"> </i>Προσθήκη Νέας</a></li>
-                                <li><a class="delcoursebtn" href="#" onclick="return false;"><i class="icon-trash"> </i>Διαγραφή</a></li>
-                              </ul>
-                            </div>
                             <input type="text" class="form-control" value="" placeholder="Πληκτρ/στε ένα όνομα...">
+                            <div class="input-group-btn">
+                              <button type="button" class="btn btn-default delcoursebtn"><i class="icon-trash"> </i></a></button>
+                              <button type="button" class="btn btn-default addcoursebtn"><i class="icon-plus"> </i></a></button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="col-xs-12 lessonrow"> <!-- Μαθημα -->
-                        <div class="col-xs-10">
+                        <div class="col-xs-9">
                           <div class="form-group">
                             <label>Μάθημα</label>
-                            <div class="input-group">
-                              <div class="input-group-btn">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-                                <ul class="dropdown-menu">
-                                  <li><a class="addlessonbtn" href="#" onclick="return false;"><i class="icon-plus"> </i>Προσθήκη Νέου</a></li>
-                                  <li><a class="dellessonbtn" href="#" onclick="return false;"><i class="icon-trash"> </i>Διαγραφή</a></li>
-                                </ul>
-                              </div>
                               <select class="form-control">
                                 <option></option>
                               </select>
-                            </div>
                           </div>
                         </div>
-                      <div class="col-xs-2" style="padding-left:0px;padding-right:0px;"> <!-- Ώρες -->
-                        <div class="form-group">
-                          <label>Ώρες</label>
-                          <input type="text" class="form-control" name="" value="">
+                      <div class="col-xs-3 pull-right" style="padding-left:0px;padding-right:0px;"> <!-- Ώρες -->
+                        <div class="btn-group" role="group" style="margin-top:24px;">
+                          <button type="button" class="btn btn-default dellessonbtn"><i class="icon-trash"> </i></a></button>
+                          <button type="button" class="btn btn-default addlessonbtn"><i class="icon-plus"> </i></a></button>
                         </div>
                       </div>
                      </div>

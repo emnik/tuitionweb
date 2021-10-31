@@ -3,24 +3,26 @@
 
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
-  <div class="navbar navbar-inverse navbar-top">
+ <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="slide-nav">
     <div class="container">
-      <div class="navbar-header">
-          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-     </div>
-
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="#about">Περί</a></li>
-        </ul>
-      </div><!--/.navbar-collapse -->
+        <div class="navbar-header">
+            <a class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="navbar-brand" href="#">TuitionWeb</a>
+        </div>
+        <div id="slidemenu">
+            <ul class="nav navbar-nav">
+                <li><a href="<?php echo base_url() ?>">Αρχική</a></li>
+                <li><a href="#about">Περί</a></li>
+                <li><a href="#contact">Επικοινωνία</a></li>
+            </ul>
+        </div>
     </div>
-  </div>
+</div>
 
 
 
@@ -28,7 +30,7 @@
 ================================================== -->
 <div class="jumbotron subhead">
   <div class="container">
-    <h1>Φροντιστήριο 'σπουδή'</h1>
+    <h1>Φροντιστήριο ΣΠΟΥΔΗ</h1>
     <p class="leap"> Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
   </div>
 </div>

@@ -56,9 +56,20 @@ public function get_secondary_data($id){
       foreach ($contact_data as $i => $value) {
          if ($value === "") $contact_data[$i] = null;
       };
+      $existid = $this->db->select('contact.reg_id')->where('contact.reg_id',$id)->get('contact')->num_rows()>0;
 
-      $this->db->where('contact.reg_id',$id);
-      $this->db->update('contact', $contact_data);
+		// $this->load->library('firephp');
+      // $this->firephp->info($check);
+      
+      if($existid){
+         $this->db->where('contact.reg_id',$id);
+         $this->db->update('contact', $contact_data);
+      } 
+      else {
+         $contact_data['reg_id']=$id; //add the reg id to the data 
+         $this->db->insert('contact', $contact_data);
+      }
+      
    }
 
 }

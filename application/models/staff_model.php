@@ -58,10 +58,6 @@ class Staff_model extends CI_Model {
       $this->db->insert('employee', $data);
       $emplid = $this->db->insert_id();
 
-      // //insert new record in contact table
-      // $contact_data = array('id' => 'null', 'reg_id' => $regid);
-      // $this->db->insert('contact', $contact_data);
-
       return $emplid;
    }
 

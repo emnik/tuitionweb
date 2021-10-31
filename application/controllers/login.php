@@ -60,8 +60,8 @@ class Login extends CI_Controller {
 			{
 				//get the schoolyear and store it as session variable
 				$this->load->model('welcome_model');
-				$startsch = $this->welcome_model->get_selected_startschyear();
-				$this->session->set_userdata(array('startsch'=>$startsch));
+				// $startsch = $this->welcome_model->get_selected_startschyear();
+				// $this->session->set_userdata(array('startsch'=>$startsch));
 
 				//logged in => set user data
 				$this

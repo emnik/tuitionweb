@@ -38,17 +38,53 @@ class Reports extends CI_Controller {
 		redirect('reports/studentscount');
     }    
 
-    public function studentscount()
-    {
+	public function initial(){
 		$this->load->model('login_model');
 	    $user=$this->login_model->get_user_name($this->session->userdata('user_id'));
         $data['user']=$user;
         
-        $startsch=$this->session->userdata('startsch');
+		$startsch=$this->session->userdata('startsch');
+		
+		switch ($this->input->post('submit')) {
+			case 'submit4': // Οικονομικά
+				redirect('finance');
+				break;
+
+			case 'submit7': // Τηλεφωνικοί Κατάλογοι
+				redirect('telephones');
+				break;
+
+			case 'submit8': // Ιστορικό
+				redirect('history');
+				break;		
+
+			case 'submit9': // Αναφορές
+				redirect('reports');
+				break;							
+		}
+	
+		$this->load->view('include/header');
+		$this->load->view('reports/reportsinit', $data);
+		$footer_data['regs']=true;
+		$this->load->view('include/footer', $footer_data);      		
+	}
+
+    public function studentscount()
+    {
+		$this->load->model('login_model');
+	    $user=$this->login_model->get_user_name($this->session->userdata('user_id'));
+		$data['user']=$user;
+		
+		$this->load->model('reports/studentscount_model');
+		$classes=$this->studentscount_model->get_classes();
+		if($classes){$data['classes']=json_encode($classes, JSON_UNESCAPED_UNICODE);}
+		
+		$startsch=$this->session->userdata('startsch');
 
 		$this->load->view('include/header');
 		$this->load->view('reports/studentscount', $data);
-		$this->load->view('include/footer');        
+		$footer_data['regs']=true;
+		$this->load->view('include/footer', $footer_data);   
     }
 
     
@@ -57,12 +93,20 @@ class Reports extends CI_Controller {
 		$this->load->model('login_model');
 	    $user=$this->login_model->get_user_name($this->session->userdata('user_id'));
         $data['user']=$user;
-        
-        $startsch=$this->session->userdata('startsch');
+		
+		$this->load->model('reports/studentteachers_model');
+		$classes=$this->studentteachers_model->get_classes();
+		if($classes){$data['classes']=json_encode($classes, JSON_UNESCAPED_UNICODE);}
+		
+		// $this->load->library('firephp');
+		// $this->firephp->info($data['classes']);
+		
+		$startsch=$this->session->userdata('startsch');
 
 		$this->load->view('include/header');
 		$this->load->view('reports/studentteachers', $data);
-		$this->load->view('include/footer');        
+		$footer_data['regs']=true;
+		$this->load->view('include/footer', $footer_data);     
     }
 
 	public function getstdcountperlesson()
@@ -75,7 +119,7 @@ class Reports extends CI_Controller {
 		echo json_encode($res);
 	}
 
-    
+
 	public function getstdcountperclass()
 	{
 		header('Content-Type: application/x-json; charset=utf-8');
@@ -86,13 +130,30 @@ class Reports extends CI_Controller {
 		echo json_encode($res);
 	}
 
-    public function logout()
-	{
-		$this->session->destroy();
+	public function getstudentsTeachersPerClass(){
+		header('Content-Type: application/x-json; charset=utf-8');
+		$postdata = $this->input->post();
+	
+		// $this->load->library('firephp');
+		// $this->firephp->info($postdata);
 
-		$this->load->view('include/header');		
-		$this->load->view('login');
-		$this->load->view('include/footer');
+		$this->load->model('reports/studentteachers_model');
+   		$res=$this->studentteachers_model->get_studentsTeachersPerClass($postdata);
+		
+		echo json_encode($res);		
+	}
+
+	public function getstudentsPerClass(){
+		header('Content-Type: application/x-json; charset=utf-8');
+		$postdata = $this->input->post();
+	
+		// $this->load->library('firephp');
+		// $this->firephp->info($postdata);
+
+		$this->load->model('reports/studentteachers_model');
+   		$res=$this->studentteachers_model->get_studentsPerClass($postdata);
+		
+		echo json_encode($res);		
 	}
 
 }

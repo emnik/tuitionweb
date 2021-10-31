@@ -18,8 +18,11 @@ ob_start();
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://192.168.0.12:8080/tuitionweb/';
-// $config['base_url']	= 'http://10.185.9.101/tuitionweb/';
+
+
+// $config['base_url']	= 'http://192.168.1.9:8080/tuitionweb/';
+  $config['base_url']	= 'http://localhost:8080/tuitionweb/';
+
 
 /*
 |--------------------------------------------------------------------------

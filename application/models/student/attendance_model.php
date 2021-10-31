@@ -107,28 +107,27 @@ public function get_attendance_general_data($id){
 					$possible_classes = array($classid);
 					break;
 			}
-			//3.get selected schoolyear start
-			$this->load->model('welcome_model');
-			$startyear = $this->welcome_model->get_selected_startschyear();
 
-			//4.get all possible sections
+			//3.get all possible sections
 			$subquery1 = $this->db->distinct()
 								->select(array('CONCAT_WS(" ",`section`.`section`,`catalog_lesson`.`title`) as section_title', 'section.id', 'section.section'))
 								->from('section')
+								->join('term', 'section.term_id=term.id')
 								->join('lesson_tutor','section.tutor_id = lesson_tutor.id')
 								->join('catalog_lesson','lesson_tutor.cataloglesson_id = catalog_lesson.id')
-								->where('section.schoolyear', $startyear)
+								->where('term.active',1)
 								->where_in('section.class_id',$possible_classes)
 								->order_by('section.section', 'ASC')
 								->get();
 
-			//5.get groups of possible sections by name
+			//4.get groups of possible sections by name
 			$subquery2 = $this->db->distinct()
 								->select('section.section')
 								->from('section')
+								->join('term', 'section.term_id=term.id')
 								->join('lesson_tutor','section.tutor_id = lesson_tutor.id')
 								->join('catalog_lesson','lesson_tutor.cataloglesson_id = catalog_lesson.id')
-								->where('section.schoolyear', $startyear)
+								->where('term.active',1)
 								->where_in('section.class_id',$possible_classes)
 								->order_by('section.section', 'ASC')
 								->get();
@@ -179,15 +178,12 @@ public function get_attendance_general_data($id){
 
 	public function insertallbyname($id, $sectionName){
 
-		//1.get selected schoolyear start
-		$this->load->model('welcome_model');
-		$startyear = $this->welcome_model->get_selected_startschyear();
-
-		//2.get all possible sections with the selected section name
+		//1.get all possible sections with the selected section name
 		$query = $this->db->distinct()
 							->select(array('section.lesson_id','section.tutor_id','section.id'))
 							->from('section')
-							->where('section.schoolyear', $startyear)
+							->join('term', 'section.term_id=term.id')
+							->where('term.active',1)
 							->where('section.section',$sectionName)
 							->get();
 
@@ -224,7 +220,6 @@ public function get_attendance_general_data($id){
 							$this->db->where_not_in('std_lesson.id', $stdlessonsids);
 						};
 						$this->db->where('weekday.priority', date('N'))
-						//$this->db->where('weekday.priority', date('N')+5)
 						->order_by('weekday.priority', 'asc');
 						$query=$this->db->get();
 
@@ -351,6 +346,36 @@ public function get_attendance_general_data($id){
 		}
 	}
 
+
+	public function get_future_exams($id){
+		$query = $this->db
+						->distinct() //this is needed if there is a student that is being teached the same lesson with two teachers!
+						->select(array('exam.date', 'exam.start', 'exam.end', 'catalog_lesson.title'))
+						->from('exam')
+						->join('exam_lesson', 'exam.id = exam_lesson.exam_id')
+						->join('term', 'term.id = exam.term_id')
+						->join('lesson', 'lesson.id = exam_lesson.lesson_id')
+						->join('catalog_lesson', 'catalog_lesson.id = lesson.cataloglesson_id')
+						->join('std_lesson', 'std_lesson.lesson_id = exam_lesson.lesson_id')
+						->where('term.active', 1)
+						->where('std_lesson.reg_id', $id)
+						->where('exam.date >=', date('Y-m-d'))
+						->order_by('exam.date')
+						->get();
+
+						if ($query -> num_rows() > 0)
+						{
+							foreach($query->result_array() as $row) 
+								{
+									$exams[] = $row;
+								}
+							return $exams;
+						}
+						else 
+						{
+							return false;
+						}					
+	}
 
 }
 

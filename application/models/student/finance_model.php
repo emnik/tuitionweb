@@ -11,9 +11,11 @@ class Finance_model extends CI_Model {
    function get_payments($id) {
    		$query = $this-> db
    				 -> select('payment.*')
-   				 -> from('payment')
-   				 -> join('vw_schoolyear_reg_ids', 'payment.reg_id=vw_schoolyear_reg_ids.id' )
-   				 -> where('payment.reg_id',$id)
+                -> from('payment')
+                -> join('registration', 'registration.id = payment.reg_id')
+               //  -> join('term', 'registration.term_id=term.id')
+               //  -> where('term.active',1)
+                -> where('payment.reg_id',$id)
    				 -> order_by('payment.apy_no')
    				 -> get();
 
@@ -49,10 +51,10 @@ class Finance_model extends CI_Model {
   function get_last_apy_no(){
       $query = $this
          ->db
-         ->select_max('apy_no')
-         ->from('payment')
+         ->select('apy_no')
+         ->order_by('id', 'desc')
          ->limit(1)
-         ->get();
+         ->get('payment');
 
 
      if ($query->num_rows() > 0) 
@@ -104,13 +106,25 @@ class Finance_model extends CI_Model {
              ->update('payment', $data);
    }
 
+
+   function move_payment($pay_id, $reg_id)
+   {
+   
+      $data = array('reg_id' => $reg_id);
+      $this->db->where('payment.id',$pay_id)
+                ->update('payment', $data);
+   }
+   
+
 //----------------------------CHANGES-----------------------
 
    function get_changes($id) {
       $query = $this-> db
            -> select('change.*')
            -> from('change')
-           -> join('vw_schoolyear_reg_ids', 'change.reg_id=vw_schoolyear_reg_ids.id' )
+           -> join('registration', 'registration.id = change.reg_id')
+         //   -> join('term', 'registration.term_id=term.id')
+         //   -> where('term.active',1)
            -> where('change.reg_id',$id)
            -> order_by('change.change_dt')
            -> get();

@@ -28,6 +28,12 @@ function toggleedit(togglecontrol, id) {
 }
 
 $(document).ready(function(){
+
+    //Menu current active links and Title
+    $('#menu-operation').addClass('active');
+    $('#menu-student').addClass('active');
+    $('#menu-header-title').text('Καρτέλα Μαθητή');
+
     $('#cancelbtn').click(function(){
       window.open("<?php echo base_url()?>student/cancel/contact/<?php echo $student['id']?>", '_self', false);
     });
@@ -42,9 +48,9 @@ $(document).ready(function(){
         $('form').submit();
     });
 
-    $('li.dash').click(function(){
-      $('#footerModal').modal();
-    });
+    // $('li.dash').click(function(){
+    //   $('#footerModal').modal();
+    // });
 
     //if not on phone the makecall buttons become just decorative!
     if(md.phone()==null){
@@ -73,81 +79,11 @@ function makephonecall(phonenum){
 
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
-
-    <div class="navbar navbar-inverse navbar-top">
-      <div class="container">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
-     </div>
-
-      <div class="navbar-collapse collapse" role="navigation">
-        <ul class="nav navbar-nav">
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="active"><a href="<?php echo base_url('student')?>">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url('exam')?>">Διαγωνίσματα</a></li>
-                <!-- <li><a href="<?php echo base_url()?>files">Αρχεία</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li> -->
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Οργάνωση/Διαχείριση<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('staff')?>">Προσωπικό</a></li>
-                <li><a href="<?php echo base_url('section')?>">Τμήματα</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit')?>">Πρόγραμμα Σπουδών</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit/tutorsperlesson')?>">Μαθήματα-Διδάσκωντες</a></li>
-                <li><a href="<?php echo base_url()?>">Στοιχεία Φροντιστηρίου</a></li>
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Συγκεντρωτικές Αναφορές<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('reports')?>">Αναφορές</a></li>
-                <li><a href="<?php echo base_url('history')?>">Ιστορικό</a></li>
-                <li><a href="<?php echo base_url('telephones')?>">Τηλ. Κατάλογοι</a></li>
-                <li><a href="<?php echo base_url('finance')?>">Οικονομικά</a></li>
-              </ul>
-            </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
-                <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url('student/logout')?>">Αποσύνδεση</a></li>
-              </ul>
-            </li>
-        </ul>
-      </div><!--/.navbar-collapse -->
-    </div>
-  </div>
-
-
-
-<!-- Subhead
-================================================== -->
-<div class="jumbotron subhead">
-  <div class="container">
-    <h1>Καρτέλα Μαθητή</h1>
-    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
-    <p style="font-size:13px; margin-top:15px; margin-bottom:-15px;">
-      <?php 
-      $s=$this->session->userdata('startsch');
-      echo 'Διαχειριστική Περίοδος: '.$s.'-'.($s + 1);
-      ?>
-    </p>    
-  </div>
-</div>
-
+ 
+    <!-- Menu start -->
+    <!-- dirname(__DIR__) gives the path one level up by default -->
+    <?php include(dirname(__DIR__).'/include/menu.php');?> 
+    <!-- Menu end -->
 
 <!-- main container
 ================================================== -->
@@ -160,7 +96,7 @@ function makephonecall(phonenum){
           <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
           <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a></li>
           <li class="active">Επικοινωνία</li>
-          <li class="dash"><i class="icon-dashboard icon-small"></i></li>
+          <!-- <li class="dash"><i class="icon-dashboard icon-small"></i></li> -->
         </ul>
       </div>
       
@@ -176,6 +112,12 @@ function makephonecall(phonenum){
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a></li>
       </ul>
 
+      <?php if($student['active']==0):?>
+        <div class="alert alert-danger" role="alert" style='margin-top:10px; margin-left:0px; margin-right:0px;'>
+          <i class="icon-warning-sign"> </i><strong> ΠΡΟΣΟΧΗ! Τα δεδομένα αφορούν στη διαχειριστική περίοδο <u><?php echo($student['termname']);?></u> και όχι στην επιλεγμένη!</strong>
+        </div>
+      <?php endif;?>
+            
       <p></p>
 
       <div class="row">
@@ -200,9 +142,9 @@ function makephonecall(phonenum){
                 <label>Τηλέφωνο σπιτιού</label>
                 <div class="input-group">
                     <span class="input-group-btn">
-                      <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php echo $contact['home_tel'];?>);"><span class="icon"><i class="icon-phone"></i></span></button>
+                      <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php if(!empty($contact)) {if (!is_null($contact['home_tel'])) echo $contact['home_tel'];}?>);"><span class="icon"><i class="icon-phone"></i></span></button>
                     </span>
-                    <input disabled type="text" class="form-control" placeholder="" name="home_tel" value="<?php echo $contact['home_tel'];?>">
+                    <input disabled type="text" class="form-control" placeholder="" name="home_tel" value="<?php if(!empty($contact)) {if (!is_null($contact['home_tel'])) echo $contact['home_tel'];}?>">
                </div>
              </div>
              
@@ -210,9 +152,9 @@ function makephonecall(phonenum){
                 <label>Κινητό τηλέφωνο</label>
                 <div class="input-group">
                   <span class="input-group-btn">
-                     <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php echo $contact['std_mobile'];?>);"><span class="icon"><i class="icon-mobile-phone"></i></span></button>
+                     <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php if(!empty($contact)) {if (!is_null($contact['std_mobile'])) echo $contact['std_mobile'];}?>);"><span class="icon"><i class="icon-mobile-phone"></i></span></button>
                   </span>
-                  <input disabled  type="text" class="form-control" placeholder="" name="std_mobile" value="<?php echo $contact['std_mobile'];?>">
+                  <input disabled  type="text" class="form-control" placeholder="" name="std_mobile" value="<?php if(!empty($contact)) {if (!is_null($contact['std_mobile'])) echo $contact['std_mobile'];}?>">
                 </div>
               </div>
           </div>
@@ -237,27 +179,27 @@ function makephonecall(phonenum){
                 <label>Κινητό πατέρα <?php if(!empty($secondary)) {if (!is_null($secondary['fathers_name'])) echo '('.$secondary['fathers_name'].')';}?></label>
                   <div class="input-group">
                     <span class="input-group-btn">
-                       <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php echo $contact['fathers_mobile'];?>);"><span class="icon"><i class="icon-mobile-phone"></i></span></button>
+                       <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php if(!empty($contact)) {if (!is_null($contact['fathers_mobile'])) echo $contact['fathers_mobile'];}?>);"><span class="icon"><i class="icon-mobile-phone"></i></span></button>
                     </span>
-                    <input disabled  type="text" class="form-control" placeholder="" name="fathers_mobile" value="<?php echo $contact['fathers_mobile'];?>">
+                    <input disabled  type="text" class="form-control" placeholder="" name="fathers_mobile" value="<?php if(!empty($contact)) {if (!is_null($contact['fathers_mobile'])) echo $contact['fathers_mobile'];}?>">
                   </div>
               </div>
               <div class="form-group col-sm-6">
                 <label>Κινητό μητέρας <?php if(!empty($secondary)) {if (!is_null($secondary['mothers_name'])) echo '('.$secondary['mothers_name'].')';}?></label>
                 <div class="input-group">
                   <span class="input-group-btn">
-                     <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php echo $contact['mothers_mobile'];?>);"><span class="icon"><i class="icon-mobile-phone"></i></span></button>
+                     <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php if(!empty($contact)) {if (!is_null($contact['mothers_mobile'])) echo $contact['mothers_mobile'];}?>);"><span class="icon"><i class="icon-mobile-phone"></i></span></button>
                   </span>
-                  <input disabled  type="text" class="form-control" placeholder="" name="mothers_mobile" value="<?php echo $contact['mothers_mobile'];?>">
+                  <input disabled  type="text" class="form-control" placeholder="" name="mothers_mobile" value="<?php if(!empty($contact)) {if (!is_null($contact['mothers_mobile'])) echo $contact['mothers_mobile'];}?>">
                 </div>
                 </div>
               <div class="form-group col-sm-6">
                 <label>Τηλέφωνο εργασίας</label>
                 <div class="input-group">
                   <span class="input-group-btn">
-                     <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php echo $contact['work_tel'];?>);"><span class="icon"><i class="icon-phone"></i></span></button>
+                     <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php if(!empty($contact)) {if (!is_null($contact['work_tel'])) echo $contact['work_tel'];}?>);"><span class="icon"><i class="icon-phone"></i></span></button>
                   </span>
-                  <input disabled  type="text" class="form-control" placeholder="" name="work_tel" value="<?php echo $contact['work_tel'];?>">
+                  <input disabled  type="text" class="form-control" placeholder="" name="work_tel" value="<?php if(!empty($contact)) {if (!is_null($contact['work_tel'])) echo $contact['work_tel'];}?>">
                 </div>
               </div>
             </div>

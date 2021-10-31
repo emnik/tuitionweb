@@ -6,7 +6,6 @@
 
 <!-- 
 <?php if(!empty($attendance_general)){
-
   $tableData=array('aaData'=>$attendance_general);  
 };?>
 
@@ -15,6 +14,11 @@
 
 $(document).ready(function(){
     
+    //Menu current active links and Title
+    $('#menu-operation').addClass('active');
+    $('#menu-student').addClass('active');
+    $('#menu-header-title').text('Καρτέλα Μαθητή');
+
   $('.footable').footable();
 
   $('.toggle').click(function() {
@@ -194,11 +198,6 @@ function hideAbsencesTime(){
       }
 }
 
-  $('li.dash').click(function(){
-    $('#footerModal').modal();
-  });
-
-
 });
 
 //fnReloadAjax is not part of DataTables core. As a plug-in, we need to add the following code
@@ -266,78 +265,10 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
-    <div class="navbar navbar-inverse navbar-top">
-      <div class="container">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
-     </div>
-      <div class="navbar-collapse collapse" role="navigation">
-        <ul class="nav navbar-nav">
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="active"><a href="<?php echo base_url('student')?>">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url('exam')?>">Διαγωνίσματα</a></li>
-                <!-- <li><a href="<?php echo base_url()?>files">Αρχεία</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li> -->
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Οργάνωση/Διαχείριση<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('staff')?>">Προσωπικό</a></li>
-                <li><a href="<?php echo base_url('section')?>">Τμήματα</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit')?>">Πρόγραμμα Σπουδών</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit/tutorsperlesson')?>">Μαθήματα-Διδάσκωντες</a></li>
-                <li><a href="<?php echo base_url()?>">Στοιχεία Φροντιστηρίου</a></li>
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Συγκεντρωτικές Αναφορές<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('reports')?>">Αναφορές</a></li>
-                <li><a href="<?php echo base_url('history')?>">Ιστορικό</a></li>
-                <li><a href="<?php echo base_url('telephones')?>">Τηλ. Κατάλογοι</a></li>
-                <li><a href="<?php echo base_url('finance')?>">Οικονομικά</a></li>
-              </ul>
-            </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
-                <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url('student/logout')?>">Αποσύνδεση</a></li>
-              </ul>
-            </li>
-        </ul>
-      </div><!--/.navbar-collapse -->
-    </div>
-  </div>
-
-
-<!-- Subhead
-================================================== -->
-<div class="jumbotron subhead">
-  <div class="container">
-    <h1>Καρτέλα Μαθητή</h1>
-    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
-    <p style="font-size:13px; margin-top:15px; margin-bottom:-15px;">
-      <?php 
-      $s=$this->session->userdata('startsch');
-      echo 'Διαχειριστική Περίοδος: '.$s.'-'.($s + 1);
-      ?>
-    </p>    
-  </div>
-</div>
-
+     <!-- Menu start -->
+    <!-- dirname(__DIR__) gives the path one level up by default -->
+    <?php include(dirname(__DIR__).'/include/menu.php');?> 
+    <!-- Menu end -->
 
 <!-- main container
 ================================================== -->
@@ -350,7 +281,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
           <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> </li>
           <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> </li>
           <li class="active">Φοίτηση</li>
-          <li class="dash"><i class="icon-dashboard icon-small"></i></li>
+          <!-- <li class="dash"><i class="icon-dashboard icon-small"></i></li> -->
           </span>
         </ul>
       </div>
@@ -366,8 +297,14 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
         <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Φοίτηση</a></li>
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a></li>
       </ul>
-     
-      <ul class="nav nav-pills" style="margin:15px 0px;">
+
+      <?php if($student['active']==0):?>
+        <div class="alert alert-danger" role="alert" style='margin-top:10px; margin-left:0px; margin-right:0px;'>
+          <i class="icon-warning-sign"> </i><strong> ΠΡΟΣΟΧΗ! Τα δεδομένα αφορούν στη διαχειριστική περίοδο <u><?php echo($student['termname']);?></u> και όχι στην επιλεγμένη!</strong>
+        </div>
+      <?php endif;?>      
+
+      <ul class="nav nav-pills" style="margin:10px 0px;">
         <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Σύνοψη</a></li>
         <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/manage">Διαχείριση</a></li>
       </ul>
@@ -483,108 +420,154 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
           </div>
 
 		      	<div class="col-md-6"> <!--απουσίες & πρόοδος-->
+              <!-- <div class="row">
+                <div class="col-md-12"> Σύνολο απουσιών -->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <span class="icon">
+                        <i class=" icon-flag"></i>
+                      </span>
+                      <h3 class="panel-title">Απουσίες</h3>
+                    </div>
+                    <div class="panel-body">
+                    <?php if(empty($dayprogram)):?>
+                      <?php if(empty($program)):?>
+                        <p class="text-info">
+                          Για την παρακολούθηση των απουσιών του μαθητή, απαιτείται να έχει ενημερωθεί το πρόγραμμα σπουδών του.
+                        </p>
+                        <div class="row">
+                          <div class="col-md-12">	
+                            <a href="#" class="btn btn-default btn-sm pull-right disabled" onclick="return false;" >Απουσιολόγιο</a>
+                          </div>
+                        </div>
+                      <?php else:?>
+                        <h6>Δικαιολογημένες: <span id="excusedbadged" class="badge">-</span> &nbsp Αδικαιολόγητες: <span id="unexcusedbadged" class="badge">-</span></h6>
+                        <p><span class="label label-warning">Σήμερα:</span></p>
+                        <p class="text-info">
+                          Σήμερα δεν έχει κανένα μάθημα!
+                        </p>
+                        <div class="row">
+                          <div class="col-md-12">	
+                            <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" class="btn  btn-default btn-sm pull-right">Απουσιολόγιο</a>
+                          </div>
+                        </div>
+                      <?php endif;?>
+                    <?php else:?>
+                      <h6>Δικαιολογημένες: <span id="excusedbadged" class="badge">-</span> &nbsp Αδικαιολόγητες: <span id="unexcusedbadged" class="badge">-</span></h6>
+                      <p><span class="label label-warning">Σήμερα:</span></p>
+                      <form id="absencesform">
+                        <table id="absencestable" class="table table-striped table-condensed" width="100%">
+                          <thead>
+                            <tr>
+                              <th>Μάθημα</th>
+                              <th>Ώρα</th>
+                              <th>Παρών</th>
+                              <th>Απών</th>
+                              <th>Δικ</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                        </table>
+                      </form>
+                      <div class="row">
+                        <div class="col-md-12">	
+                          <button class="btn  btn-warning btn-sm" id="savedayabsence" >Αποθήκευση</button>
+                          <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" class="btn  btn-default btn-sm pull-right">Απουσιολόγιο</a>
+                        </div>
+                      </div>
+                    <?php endif;?>
+                  </div> <!--end of panel-->
+                </div> <!--end of absences row-->
+              </div> 
+            </div>
+          <!-- </div> -->
+			    
+          <div class="row">
 
-			      <div class="row">
-			      	<div class="col-md-12"> <!--Σύνολο απουσιών -->
-			      	<div class="panel panel-default">
-              <div class="panel-heading">
-                <span class="icon">
-                  <i class=" icon-flag"></i>
-                </span>
-                <h3 class="panel-title">Απουσίες</h3>
-              </div>
-            <div class="panel-body">
-				      		<?php if(empty($dayprogram)):?>
-				      			<?php if(empty($program)):?>
-					      			<p class="text-info">
-					      				Για την παρακολούθηση των απουσιών του μαθητή, απαιτείται να έχει ενημερωθεί το πρόγραμμα σπουδών του.
-					      			</p>
-							      	<div class="row">
-						      			<div class="col-md-12">	
-						      				<a href="#" class="btn btn-default btn-sm pull-right disabled" onclick="return false;" >Απουσιολόγιο</a>
-							   			</div>
-							   		</div>
-					      		<?php else:?>
-					      			<h6>Δικαιολογημένες: <span id="excusedbadged" class="badge">-</span> &nbsp Αδικαιολόγητες: <span id="unexcusedbadged" class="badge">-</span></h6>
-					      			<p><span class="label label-warning">Σήμερα:</span></p>
-					      			<p class="text-info">
-					      				Σήμερα δεν έχει κανένα μάθημα!
-					      			</p>
-							      	<div class="row">
-						      			<div class="col-md-12">	
-						      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" class="btn  btn-default btn-sm pull-right">Απουσιολόγιο</a>
-							   			</div>
-							   		</div>
-					      		<?php endif;?>
-				      		<?php else:?>
-				      			<h6>Δικαιολογημένες: <span id="excusedbadged" class="badge">-</span> &nbsp Αδικαιολόγητες: <span id="unexcusedbadged" class="badge">-</span></h6>
-					      		<p><span class="label label-warning">Σήμερα:</span></p>
-                    <form id="absencesform">
-					      		<table id="absencestable" class="table table-striped table-condensed" width="100%">
-					      			<thead>
-                        <tr>
-  					      				<th>Μάθημα</th>
-  					      				<th>Ώρα</th>
-  					      				<th>Παρών</th>
-  					      				<th>Απών</th>
-  					      				<th>Δικ</th>
-  					      				<th></th>
-                        </tr>
-					      			</thead>
-					      			<tbody>
-					      			</tbody>
-					      		</table>
-                  </form>
-					      	<div class="row">
-				      			<div class="col-md-12">	
-				      				<button class="btn  btn-warning btn-sm" id="savedayabsence" >Αποθήκευση</button>
-				      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" class="btn  btn-default btn-sm pull-right">Απουσιολόγιο</a>
-					   			</div>
-					   		</div>
-					      	<?php endif;?>
-	  				    </div>
-			      	</div>
-			      </div>
-          </div>
-
-			      	<div class="row">
-				      	<div class="col-md-12"> <!--Βαθμολογία τελευταίου διαγωνίσματος - Μέσος όρος βαθμολογίας (στο τέλος Περισότερα...) -->
-				      		<div class="panel panel-default">
-              <div class="panel-heading">
-                <span class="icon">
-                  <i class="icon-random"></i>
-                </span>
-                <h3 class="panel-title">Πρόοδος</h3>
-              </div>
-            <div class="panel-body">
-              <?php if(empty($progress)):?>
-                <div class="row">
-                  <div class="col-md-12">  
-                    <p class="text-info">
-                      Δεν υπάρχουν δεδομένα για την πρόοδο του μαθητή!
-                    </p>
-                    <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right disabled" onclick="return false;" >Βαθμολόγιο</a>
+          <div class="col-md-6"> <!--Προγραμματισμένα Διαγωνίσματα -->
+				      	<div class="panel panel-default">
+                  <div class="panel-heading">
+                    <span class="icon">
+                      <i class="icon-pencil"></i>
+                    </span>
+                    <h3 class="panel-title">Προγραμματισμένα Διαγωνίσματα</h3>
                   </div>
-                </div>
-              <?php else:?>
-               <div class="row">
-                <div class="col-md-12">  
-                  <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right" >Βαθμολόγιο</a>
-                </div>
-              </div>
-              <?php endif;?>
-	      		</div>
-	      	</div>
-		    </div>
+                  <div class="panel-body">
+                    <?php if(empty($exams)):?>
+                      <div class="row">
+                        <div class="col-md-12">  
+                          <p class="text-info">
+                            Δεν υπάρχουν προγραμματισμένα διαγωνίσματα!
+                          </p>
+                        </div>
+                      </div>
+                    <?php else:?>
+                      <div class="row">
+                        <div class="col-md-12">  
+                        
+                        <table class = "table table-striped table-condensed table-hover" width="100%">
+                          <thead>
+                            <th>Μάθημα</th>
+                            <th>Ημερομηνία</th>
+                            <th>Ώρα</th>
+                          </thead>
+                          <tbody>
+                            <?php foreach ($exams as $data):?>
+                              <tr>
+                                <td><?php echo $data['title'];?></td>
+                                <td><?php echo implode('-', array_reverse(explode('-', $data['date'])));?></td>
+                                <td><?php echo date('H:i', strtotime($data['start'])).'-'.date('H:i', strtotime($data['end']));?></td>
+                              </tr>
+                            <?php endforeach;?>
+                          </tbody>
+                          </table>
+
+                        </div>
+                      </div>
+                    <?php endif;?>
+	      		      </div>
+	      	      </div>
+		          </div>
+
+				      <div class="col-md-6"> <!--Βαθμολογία τελευταίου διαγωνίσματος - Μέσος όρος βαθμολογίας (στο τέλος Περισότερα...) -->
+				      	<div class="panel panel-default">
+                  <div class="panel-heading">
+                    <span class="icon">
+                      <i class="icon-bar-chart"></i>
+                    </span>
+                    <h3 class="panel-title">Πρόοδος</h3>
+                  </div>
+                  <div class="panel-body">
+                    <?php if(empty($progress)):?>
+                      <div class="row">
+                        <div class="col-md-12">  
+                          <p class="text-info">
+                            Δεν υπάρχουν δεδομένα για την πρόοδο του μαθητή!
+                          </p>
+                          <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right disabled" onclick="return false;" >Βαθμολόγιο</a>
+                        </div>
+                      </div>
+                    <?php else:?>
+                      <div class="row">
+                        <div class="col-md-12">  
+                          <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right" >Βαθμολόγιο</a>
+                        </div>
+                      </div>
+                    <?php endif;?>
+	      		      </div>
+	      	      </div>
+		          </div>
+
+            </div><!--end of row--> 
+
+         	<!-- </div> -->
       </div>
-
-   	</div>
-
-  </div>
-</div>
+    </div>
 
 
-</div> <!--Τέλος συνοπτικής ενημέρωσης-->
+  </div> <!--Τέλος συνοπτικής ενημέρωσης-->
 
 
 </div> <!--end of main container-->

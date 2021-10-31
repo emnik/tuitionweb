@@ -37,16 +37,37 @@ public function __construct() {
 public function user_list(){
 	header('Content-Type: application/x-json; charset=utf-8');
 	$this->load->model('welcome_model');
+	$termid = $this->welcome_model->get_termid();
 	$list=$this->welcome_model->get_student_names_ids($this->input->get('q'));
 	if ($list) {
+		// foreach ($list as $stud) {
+		// 	$data[]=array("id"=>$stud['id'],"text"=>$stud['stdname']);
+		// }
 		foreach ($list as $stud) {
-			$data[]=array("id"=>$stud['id'],"text"=>$stud['stdname']);
+			if ($stud['termid']==$termid){
+				$currentStds[] = array("id"=>$stud['id'],"text"=>$stud['stdname']);
+			} else {
+				$prevStds[] = array("id"=>$stud['id'],"text"=>$stud['stdname'].'-'.$stud['termname']);
+			}
 		}
+		$data[0]=array("text"=>"Επιλεγμένη διαχ. περίοδος", "children"=>$currentStds);
+		$data[1]=array("text"=>"Υπόλοιπες διαχ. περίοδοι", "children"=>$prevStds);
+		// $this->load->library('firephp');
+		// $this->firephp->info($data);
 	}
 	else
 	{
 		$data=array("id"=>"0","text"=>"Κανένα αποτέλεσμα...");
 	}
+	echo(json_encode($data));
+}
+
+
+public function social_media(){
+	//needed for the footer!
+	header('Content-Type: application/x-json; charset=utf-8');
+	$this->load->model('welcome_model');
+	$data = $this->welcome_model->get_school_data();
 	echo(json_encode($data));
 }
 
@@ -62,31 +83,37 @@ public function index() {
 	$schoolyears=$this->welcome_model->get_schoolyears();
 	if ($schoolyears) {
 		$data['schoolyears'] = $schoolyears;
+		foreach($schoolyears as $termdata){
+			if($termdata['active']==1){
+				$termname= $termdata['name'];
+				$this->session->set_userdata(array('startsch' => $termname)); // όνομα διαχειριστικής περιόδου
+			}
 		}
-	else {
-		$data['schoolyears']=array();
-	}
-	
-	$justyears=array();
-	foreach ($schoolyears as $tmpdata) {
-		array_push($justyears, $tmpdata['schoolyear']);
-	};
+		}
 
-	$selected_schstart = $this->welcome_model->get_selected_startschyear(); 
-	$data['selected_schstart']= $selected_schstart; 
+	$schooldata = $this->welcome_model->get_school_data();
+	$data['school']=$schooldata;
 
 	$startsch = $this->input->post('startschoolyear');
-	if (!empty($startsch) and $startsch!="addnextschoolyear") {
-				if ($selected_schstart!=$startsch){
-					$this->welcome_model->set_schoolyear($startsch);	
-				};
-			
-				if (in_array($startsch.'-'.($startsch+1), $justyears)==false){
-					$this->welcome_model->insert_schoolyear($startsch);
-				};
-		$this->session->set_userdata(array('startsch' => $startsch));
 
-		switch ($this->input->post('submit')) {
+	if (!empty($startsch)) {
+					$this->welcome_model->set_schoolyear($startsch);	
+					$schoolyears=$this->welcome_model->get_schoolyears();
+					if ($schoolyears) {
+						$data['schoolyears'] = $schoolyears;
+						foreach($schoolyears as $termdata){
+							if($termdata['active']==1){
+								$termname= $termdata['name'];
+								$this->session->set_userdata(array('startsch' => $termname)); // όνομα διαχειριστικής περιόδου
+							}
+						}
+						}
+
+		switch ($this->input->post('submitbtn')) {
+			case 'submit0': //Διαχειριστικές Περίοδοι
+				redirect('term');
+				break;
+				
 			case 'submit1': //Μαθητολόγιο
 				redirect('student');
 				break;
@@ -122,9 +149,22 @@ public function index() {
 			case 'submit9': // Ιστορικό
 				redirect('reports');
 				break;							
-		}
+			
+			case 'submit10': // Ημερήσιο Πρόγραμμα
+				redirect('schedule/index/'.date('w'));//date('w') returns 0..6 with Sunday=0
+				break;			
+
+			case 'submit11': // Στοιχεία φροντιστηρίου
+				redirect('school');
+				break;	
+
+			case 'submit12': // Διαγωνίσματα
+				redirect('exam');
+				break;					
+			}
+
 	}
-	
+
 	$this->load->view('include/header');
 	$this->load->view('welcome', $data);
 	$footer_data['regs']=true;

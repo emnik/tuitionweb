@@ -54,7 +54,8 @@ public function index() {
 	
 	$this->load->view('include/header');
 	$this->load->view('sections', $data);
-	$this->load->view('include/footer');
+	$footer_data['regs']=true;
+	$this->load->view('include/footer', $footer_data);
 
 	}
 
@@ -95,6 +96,24 @@ public function tutors()
 }
 
 
+public function student_list(){
+	header('Content-Type: application/x-json; charset=utf-8');
+	$this->load->model('section_model');
+	$list=$this->section_model->get_student_names_ids($this->input->get('q'));
+	if ($list) {
+		foreach ($list as $stud) {
+			$data[]=array("id"=>$stud['id'],"text"=>$stud['stdname']);
+		}
+	}
+	else
+	{
+		$data=array("id"=>"0","text"=>"Κανένα αποτέλεσμα...");
+	}
+	echo(json_encode($data));
+}
+
+
+
 public function card($id, $subsection=null) {
 
 	if(is_null($id)) redirect('section');
@@ -125,11 +144,11 @@ public function card($id, $subsection=null) {
 	}
 	
 	$this->load->model('section/card_model');
-	$prevnext = $this->card_model->get_prevnext_section_byname($section['section'], $id, $this->session->userdata('startsch'));
+	$prevnext = $this->card_model->get_prevnext_section_byname($section['section'], $id);
 	$data['prevnext']=$prevnext;
 
-	$this->load->library('firephp');
-	$this->firephp->info($prevnext);
+	// $this->load->library('firephp');
+	// $this->firephp->info($prevnext);
 	
 	switch ($subsection) {
 	 	case 'sectionstudents':
@@ -170,17 +189,35 @@ public function card($id, $subsection=null) {
 	 			case 'classroom_id':
 	 				foreach ($value as $programid => $progvalue) {
 	 					$section_program_update[$programid][$key]=$progvalue;
-	 				}
+					 }
 	 				break;
 	 		}
-	 	}
-	 	
-	 	$this->load->model('welcome_model');
-	 	$section_update['schoolyear'] = $this->welcome_model->get_selected_startschyear();
+		 }
 
+		//calculate the lesson's duration in hours
+		foreach ($section_program_update as $s => $arr){
+			if(!empty($arr['start_tm'])){
+				$starttm = explode(':', $arr['start_tm']);
+				$endtm = explode(':', $arr['end_tm']);
+				$start = intval($starttm[0])*60 + intval($starttm[1]);
+				$end = intval($endtm[0])*60 + intval($endtm[1]);
+				$duration = ($end - $start)/60;
+			}
+			else {$duration=0;}
+
+			$section_program_update[$s]['duration']=$duration;
+		}
+
+	 	// $this->load->model('welcome_model');
+	 	// $section_update['schoolyear'] = $this->welcome_model->get_selected_startschyear();
+		
 
 		$this->card_model->update_section_data($section_update, $id, $section_program_update);
-
+		//after update get again section's main data (name id ...) in an array to use everywhere in section page
+		if ($section['title']==null) { //if it is a new section!
+			$section = $this->section_model->get_section_common_data($id);
+			$data['section'] = $section;	
+		}
 	}
 	else
 	{
@@ -193,13 +230,19 @@ public function card($id, $subsection=null) {
 	$data['sectionprog'] = $section_program;
 
 	$data['class'] = $this->card_model->get_classes();
+	$data['classroom'] = $this->card_model->get_classrooms();
+
+	// $this->load->library('firephp');
+	// $this->firephp->info($data['classroom']);
+
 	$data['course'] = $this->card_model->get_courses($section_data['class_id']);
 	$data['lesson'] = $this->card_model->get_lessons($section_data['class_id'], $section_data['course_id']);
 	$data['tutor'] = $this->card_model->get_tutors($section_data['class_id'], $section_data['course_id'], $section_data['lesson_id']);
 
 	$this->load->view('include/header');
 	$this->load->view('section/card', $data);
-	$this->load->view('include/footer');
+	$footer_data['regs']=true;
+	$this->load->view('include/footer', $footer_data);
 
 	}
 
@@ -237,7 +280,7 @@ public function card($id, $subsection=null) {
         header('Content-Type: application/x-json; charset=utf-8');
         echo(json_encode($this
 						->card_model
-						->delprogramday($this->input->post('jsprogramid'))
+						->delprogramday($this->input->post('jsprogramid'),$this->input->post('sectionid'))
 						)
 			);
 	}
@@ -250,7 +293,12 @@ public function card($id, $subsection=null) {
 		$this->load->model('section/card_model');
 
 		if(!empty($_POST)) {
-			$this->card_model->removefromsection($this->input->post('select'));
+			if(!empty($this->input->post('select'))){
+				$this->card_model->removefromsection($this->input->post('select'));
+			}
+			if(!empty($this->input->post('newstudents'))){
+				$this->card_model->addstudentstosection($this->input->post('newstudents'), $id);
+			}
 		};
 		
 		$students = $this->card_model->getsectionstudents($id);
@@ -262,18 +310,9 @@ public function card($id, $subsection=null) {
 
 		$this->load->view('include/header');
 		$this->load->view('section/sectionstudents', $data);
-		$this->load->view('include/footer');
+		$footer_data['regs']=true;
+		$this->load->view('include/footer', $footer_data);
 
 	}	
-
-	public function logout()
-	{
-
-		$this->session->destroy();
-
-		$this->load->view('include/header');		
-		$this->load->view('login');
-		$this->load->view('include/footer');
-	}
 
 }

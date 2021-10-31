@@ -12,6 +12,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jszip-2.5.0/dt-1.10.22/b-1.6.4/b-colvis-1.6.4/b-html5-1.6.4/b-print-1.6.4/fc-3.3.1/r-2.2.6/rg-1.1.2/sl-1.3.1/datatables.min.js"></script>
 
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- <link href="<?php echo base_url('assets/css/dataTables.bootstrap.css') ?>" rel="stylesheet"> -->
 <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap.min.css" rel="stylesheet">
 
@@ -27,6 +28,11 @@ var oTable2;
 //var oTable3;
 
 $(document).ready(function(){ 
+
+        //Menu current active links and Title
+        $('#menu-reports-summary').addClass('active');
+        $('#menu-finance').addClass('active');
+        $('#menu-header-title').text('Οικονομικά');
 
 // add sorting methods for currency columns
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
@@ -142,31 +148,38 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         // 'copy', 
         {
           extend: 'copy',
+          title: function () { return "Επί πιστώσει οφειλές ανα μήνα"; },
             exportOptions: {
-            orthogonal: "exportCopy"
+            orthogonal: "exportCopy",
+            columns: [0,1,2]
           }
         },
         // 'excel', 
         {
           extend: 'excel',
+          title: function () { return "Επί πιστώσει οφειλές ανα μήνα"; },
             exportOptions: {
-            orthogonal: "exportExcel"
+            orthogonal: "exportExcel",
+            columns: [0,1,2]
           }
         },
         // 'pdf', 
         {
           extend: 'pdf',
           // add title to pdf
-          title: function () { return "Ιστορικό ΑΠΥ"; },
+          title: function () { return "Επί πιστώσει οφειλές ανα μήνα"; },
           exportOptions: {
-            orthogonal: "exportPdf"
+            orthogonal: "exportPdf",
+            columns: [0,1,2]
           }
         },
         // 'print'
         {
           extend: 'print',
+          title: function () { return "Επί πιστώσει οφειλές ανα μήνα"; },
             exportOptions: {
-            orthogonal: "exportPrint"
+            orthogonal: "exportPrint",
+            columns: [0,1,2]
           }
         },
         ],
@@ -225,6 +238,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         // 'copy', 
         {
           extend: 'copy',
+          title: function () { return "Ε.Π οφειλές ανα σύνολο μηνών"; },
             exportOptions: {
             orthogonal: "exportCopy"
           }
@@ -232,6 +246,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         // 'excel', 
         {
           extend: 'excel',
+          title: function () { return "Ε.Π οφειλές ανα σύνολο μηνών"; },
             exportOptions: {
             orthogonal: "exportExcel"
           }
@@ -240,7 +255,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         {
           extend: 'pdf',
           // add title to pdf
-          title: function () { return "Ιστορικό ΑΠΥ"; },
+          title: function () { return "Ε.Π οφειλές ανα σύνολο μηνών"; },
           exportOptions: {
             orthogonal: "exportPdf"
           }
@@ -248,6 +263,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         // 'print'
         {
           extend: 'print',
+          title: function () { return "Ε.Π οφειλές ανα σύνολο μηνών"; },
             exportOptions: {
             orthogonal: "exportPrint"
           }
@@ -399,78 +415,10 @@ function clicklink3(){
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
-    <div class="navbar navbar-inverse navbar-top">
-      <div class="container">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
-     </div>
-
-      <div class="navbar-collapse collapse" role="navigation">
-        <ul class="nav navbar-nav">
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('student')?>">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url('exam')?>">Διαγωνίσματα</a></li>
-                <!-- <li><a href="<?php echo base_url()?>files">Αρχεία</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li> -->
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Οργάνωση/Διαχείριση<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('staff')?>">Προσωπικό</a></li>
-                <li><a href="<?php echo base_url('section')?>">Τμήματα</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit')?>">Πρόγραμμα Σπουδών</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit/tutorsperlesson')?>">Μαθήματα-Διδάσκωντες</a></li>
-                <li><a href="<?php echo base_url()?>">Στοιχεία Φροντιστηρίου</a></li>
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Συγκεντρωτικές Αναφορές<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('reports')?>">Αναφορές</a></li>
-                <li><a href="<?php echo base_url('history')?>">Ιστορικό</a></li>
-                <li><a href="<?php echo base_url('telephones/catalog')?>">Τηλ. Κατάλογοι</a></li>
-                <li class="active"><a href="<?php echo base_url('finance')?>">Οικονομικά</a></li>
-              </ul>
-            </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
-                <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url('finance/logout')?>">Αποσύνδεση</a></li>
-              </ul>
-            </li>
-        </ul>
-      </div><!--/.navbar-collapse -->
-    </div>
-  </div>
-
-
-<!-- Subhead
-================================================== -->
-<div class="jumbotron subhead">
-  <div class="container">
-    <h1>Οικονομικά</h1>
-    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
-    <p style="font-size:13px; margin-top:15px; margin-bottom:-15px;">
-      <?php 
-      $s=$this->session->userdata('startsch');
-      echo 'Διαχειριστική Περίοδος: '.$s.'-'.($s + 1);
-      ?>
-    </p>
-  </div>
-</div>
+    <!-- Menu start -->
+    <!-- dirname(__DIR__) gives the path one level up by default -->
+    <?php include(dirname(__DIR__).'/include/menu.php');?> 
+    <!-- Menu end -->
 
 
 <!-- main container
@@ -481,21 +429,22 @@ function clicklink3(){
       <div>
 	      <ul class="breadcrumb">
 	        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
+          <li class="active"><a href="<?php echo base_url('reports/initial')?>">Συγκεντρωτικές Αναφορές</a></li>
 	        <li class="active">Οικονομικά</li>
-          <li class="active">Οικονομικό έτος</li>
+          <li class="active">Οικ. έτος</li>
 	      </ul>
       </div>
       
-     <p> 
+     <!-- <p> 
       <h3>
         Οικονομικά
       </h3>
-    </p>
+    </p> -->
         
 
       <ul class="nav nav-tabs">
         <!-- <li><a href="<?php echo base_url()?>finance">Σύνοψη</a></li> -->
-        <li><a href="<?php echo base_url()?>finance/schoolyear">Σχολικό έτος</a></li>
+        <li><a href="<?php echo base_url()?>finance/schoolyear">Διαχειριστική Περίοδος</a></li>
         <li class="active"><a href="<?php echo base_url()?>finance/economicyear">Οικονομικό έτος</a></li>
       </ul>
 

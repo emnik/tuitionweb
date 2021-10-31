@@ -10,17 +10,43 @@ class Finance_model extends CI_Model
     }
 
 
+	public function get_term_data(){
+		$query = $this->db->query("SELECT MONTH(`term`.`start`) AS `startmonth` ,
+					YEAR(`term`.`start`) AS `startyear`,
+					MONTH(`term`.`end`) AS `endmonth`,
+					YEAR(`term`.`end`) AS `endyear`
+					FROM `term` 
+					WHERE `term`.`active`=1");
+
+		if ($query->num_rows() > 0) 
+		{
+			foreach($query->result_array() as $row) 
+			{
+				$termdata = $row;
+			}
+
+			return $termdata;
+		}
+		else 
+		{
+			return false;
+		}
+	}
+
 
     //---------------------------------------------------------------------//
     //-------------------FUNCTIONS FOR SCHOOLYEAR FINANCE------------------//
     //---------------------------------------------------------------------//
 
 
-    public function get_dept_update_date($startsch){
+    public function get_dept_update_date(){
+		//get active term
+		$termid = $this->db->select('term.id')->where('term.active',1)->get('term')->row()->id;
+
 		$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',3)->get();
     	$row = $existingdata->row();
 
-	    if ($row->value_2 == $startsch) 
+	    if ($row->value_2 == $termid) 
 	    {
 	       return $row->value_1; 
 	    }
@@ -38,24 +64,28 @@ class Finance_model extends CI_Model
     }
 
 
-    public function insertSinglePays($startsch){
+    public function insertSinglePays(){
     	$this->db->query("INSERT INTO `post_payment` (`reg_id`, `month_num`, `amount`, `is_credit`)
 						   SELECT `payment`.`reg_id`,`payment`.`month_range`, `payment`.`amount`, `payment`.`is_credit`
 						   FROM `payment`, `registration` 
-						   WHERE `payment`.`reg_id` = `registration`.`id` AND 
+						   JOIN `term` ON `registration`.`term_id`=`term`.`id`
+						   WHERE `payment`.`reg_id` = `registration`.`id`  
+						   AND `term`.`active` = 1 AND
 						   LENGTH(`payment`.`month_range`)<=2 AND 
-						   ((YEAR(`registration`.`start_lessons_dt`)=".$this->db->escape($startsch)." AND MONTH(`registration`.`start_lessons_dt`)>=8) 
-						   OR (YEAR(`registration`.`start_lessons_dt`)=".$this->db->escape($startsch+1)." AND MONTH(`registration`.`start_lessons_dt`)<=7))");
+						   ((YEAR(`registration`.`start_lessons_dt`)=YEAR(`term`.`start`) AND MONTH(`registration`.`start_lessons_dt`)>=MONTH(`term`.`start`))
+						   OR (YEAR(`registration`.`start_lessons_dt`)=YEAR(`term`.`end`) AND MONTH(`registration`.`start_lessons_dt`)<=MONTH(`term`.`end`)))");
     }
 
 
-    public function getMultiplePays($startsch){
+    public function getMultiplePays(){
     	$query = $this->db->query("SELECT `payment`.`reg_id`,`payment`.`month_range`, `payment`.`amount`, `payment`.`is_credit`, `registration`.`month_price`
 									FROM `payment`, `registration`
-									WHERE `payment`.`reg_id` = `registration`.`id` AND
+									JOIN `term` ON `registration`.`term_id`=`term`.`id`
+									WHERE `payment`.`reg_id` = `registration`.`id` 
+									AND `term`.`active` = 1 AND
 									LENGTH(`payment`.`month_range`)>2 AND
-									((YEAR(`registration`.`start_lessons_dt`)=".$this->db->escape($startsch)." AND MONTH(`registration`.`start_lessons_dt`)>=8)
-									OR (YEAR(`registration`.`start_lessons_dt`)=".$this->db->escape($startsch+1)." AND MONTH(`registration`.`start_lessons_dt`)<=7))");
+									((YEAR(`registration`.`start_lessons_dt`)=YEAR(`term`.`start`) AND MONTH(`registration`.`start_lessons_dt`)>=MONTH(`term`.`start`))
+						   			OR (YEAR(`registration`.`start_lessons_dt`)=YEAR(`term`.`end`) AND MONTH(`registration`.`start_lessons_dt`)<=MONTH(`term`.`end`)))");
     	
     	if ($query->num_rows() > 0) 
 		{
@@ -79,17 +109,23 @@ class Finance_model extends CI_Model
     }
 
 
-    public function populateDebt($monthset, $endmonth, $startsch)
+	public function populateDebt($monthset, $endmonth, $yearspan, $termdata)
     {
+		// $startmonth = $termdata['startmonth'];
+		$startyear = $termdata['startyear'];
+		$endyear = $termdata['endyear'];
+
     	foreach ($monthset as $monthnum) {
     		if ($monthnum<>0)
     		{
     			//Εισάγουμε στο πίνακα debt όλους εκείνους τους μαθητές του τρέχοντος σχολικού έτους, που για τον εκάστοτε μήνα από το σετ δεν έχουν αντίστοιχη εγγραφή στο πίνακα πληρωμών.
 				//Σε αυτό το σημείο δε μας ενδιαφέρει πιο μήνα γράφτηκε ο μαθητής ή αν και πότε διαγράφηκε κλπ. Θα γίνουν αργότερα οι απαραίτητες διαγραφές!
     			$this->db->query("INSERT INTO `debt`(`reg_id`, `amount`)
-						SELECT `id`, `month_price` FROM `registration`
-						WHERE ((YEAR(`registration`.`start_lessons_dt`)=".$this->db->escape($startsch). " AND MONTH(`registration`.`start_lessons_dt`)>=8) 
-						OR (YEAR(`registration`.`start_lessons_dt`)=".$this->db->escape($startsch+1)." AND MONTH(`registration`.`start_lessons_dt`)<=7))
+						SELECT `registration`.`id`, `month_price` FROM `registration`
+						JOIN `term` ON `registration`.`term_id`=`term`.`id`
+						WHERE `term`.`active`=1 AND
+						((YEAR(`registration`.`start_lessons_dt`)=YEAR(`term`.`start`) AND MONTH(`registration`.`start_lessons_dt`)>=MONTH(`term`.`start`))
+						  OR (YEAR(`registration`.`start_lessons_dt`)=YEAR(`term`.`end`) AND MONTH(`registration`.`start_lessons_dt`)<=MONTH(`term`.`end`)))
 						AND NOT EXISTS (SELECT * FROM `post_payment` WHERE `post_payment`.`reg_id` = `registration`.`id` AND `post_payment`.`is_credit` = '0' AND `post_payment`.`month_num` = ".$this->db->escape($monthnum).")");
 
 				//Ενημερώνουμε το πεδίο <Μήνας> του πίνακα tbldebt για το μήνα που αναφερόμαστε...     		
@@ -104,7 +140,7 @@ class Finance_model extends CI_Model
 
     	//Διαγραφή όσων έχουν εγγραφές στο πίνακα οφειλών για μήνες προ εγγραφής και για μήνες μετά τη διαγραφή!
 
-		if ($endmonth >=1 and $endmonth <=7) { //'Αν βρισκόμαστε στο νέο έτος...
+		if ($yearspan==2 and date('Y')==$endyear) { //'Αν βρισκόμαστε στο νέο έτος...
 			//[*] Η ακόλουθη διαγραφή αφορά όσους <γράφτηκαν> το προηγούμενο έτος. Όταν βρισκόμαστε σε μήνα του τρέχοντος έτους π.χ 2ο οι εγγραφές στο πίνακα οφειλών περιέχουν τους μήνες 8,9,10,11,12,1,2
 			//Για κάποιον λοιπόν που γράφτηκε το 10ο πρέπει να διαγραφούν οι εγγραφές για μήνες 8 & 9. Άρα η συνθήκη είναι > τρέχων μήνα ΚΑΙ < μήνα έναρξης (>2 ΚΑΙ <10)
 			//(The next is a trick to resolve the above issue. Instead of < FROM `tbldebt` > I use < FROM (SELECT * FROM `tbldebt`) AS `temp` >)
@@ -112,36 +148,36 @@ class Finance_model extends CI_Model
 
 			
 			//[*] Διαγραφή όσων έχουν εγγραφές για μήνες μετά τη διαγραφή τους από το μαθητολόγιο
-			//[-] Αν η διαγραφή από το μαθητολόγιο έγινε τους μήνες 1-7 (νέο έτος) τότε σβήνω τις οφειλές για τους μήνες μετά τη διαγραφή του μαθητολογίου και μέχρι τον τρέχων
-			$this->db->query("DELETE FROM `debt` WHERE `debt`.`id` IN (SELECT `temp`.`id` FROM (SELECT * FROM `debt`) AS `temp` JOIN `registration` ON (`temp`.`reg_id` = `registration`.`id`) WHERE (MONTH(`del_lessons_dt`) >=1 AND MONTH(`del_lessons_dt`) <=7) AND (`temp`.`month_num` > MONTH(`del_lessons_dt`) AND `temp`.`month_num` <= ".$this->db->escape($endmonth)."))");
+			//[-] Αν η διαγραφή από το μαθητολόγιο έγινε το νέο έτος τότε σβήνω τις οφειλές για τους μήνες μετά τη διαγραφή του μαθητολογίου και μέχρι τον τρέχων μήνα
+			$this->db->query("DELETE FROM `debt` WHERE `debt`.`id` IN (SELECT `temp`.`id` FROM (SELECT * FROM `debt`) AS `temp` JOIN `registration` ON (`temp`.`reg_id` = `registration`.`id`) WHERE (YEAR(`del_lessons_dt`) =".$endyear.") AND (`temp`.`month_num` > MONTH(`del_lessons_dt`) AND `temp`.`month_num` <= ".$this->db->escape($endmonth)."))");
 			
 			//[*] Διαγραφή όσων γράφτηκαν και διέκοψαν την ίδια μέρα.
 			$this->db->query("DELETE FROM `debt` WHERE `debt`.`id` IN (SELECT `temp`.`id` FROM (SELECT * FROM `debt`) AS `temp` JOIN `registration` ON (`temp`.`reg_id` = `registration`.`id`) WHERE `del_lessons_dt` = `start_lessons_dt`)");
 
 
-			//--> Αν η διαγραφή από το μαθητολόγιο έγινε σε μήνα >=8 (προηγούμενο έτος) τότε σβήνω τις οφειλές για τους μήνες μετά τη διαγραφή του μαθητολογίου και μέχρι και το Δεκέμβριο
-			$this->db->query("DELETE FROM `debt` WHERE `debt`.`id` IN (SELECT `temp`.`id` FROM (SELECT * FROM `debt`) AS `temp` JOIN `registration` ON (`temp`.`reg_id` = `registration`.`id`) WHERE (MONTH(`del_lessons_dt`) >=8) AND (`temp`.`month_num` > MONTH(`del_lessons_dt`) AND `temp`.`month_num`<= 12 ))");
+			//--> Αν η διαγραφή από το μαθητολόγιο έγινε το προηγούμενο έτος τότε σβήνω τις οφειλές για τους μήνες μετά τη διαγραφή του μαθητολογίου και μέχρι και το Δεκέμβριο
+			$this->db->query("DELETE FROM `debt` WHERE `debt`.`id` IN (SELECT `temp`.`id` FROM (SELECT * FROM `debt`) AS `temp` JOIN `registration` ON (`temp`.`reg_id` = `registration`.`id`) WHERE (YEAR(`del_lessons_dt`) = ".$startyear.") AND (`temp`.`month_num` > MONTH(`del_lessons_dt`) AND `temp`.`month_num`<= 12 ))");
 			
-			//--> --> όπως επίσης και από το Δεκέμβριο μέχρι τον τρέχων μήνα.
-			$this->db->query("DELETE FROM `debt` WHERE `debt`.`id` IN (SELECT `temp`.`id` FROM (SELECT * FROM `debt`) AS `temp` JOIN `registration` ON (`temp`.`reg_id` = `registration`.`id`) WHERE (MONTH(`del_lessons_dt`) >=8) AND (`temp`.`month_num` >=1 AND `temp`.`month_num`<= ".$this->db->escape($endmonth)." ))");
+			//--> όπως επίσης και από το Δεκέμβριο μέχρι τον τρέχων μήνα.
+			$this->db->query("DELETE FROM `debt` WHERE `debt`.`id` IN (SELECT `temp`.`id` FROM (SELECT * FROM `debt`) AS `temp` JOIN `registration` ON (`temp`.`reg_id` = `registration`.`id`) WHERE (YEAR(`del_lessons_dt`) = ".$startyear.") AND (`temp`.`month_num` >=1 AND `temp`.`month_num`<= ".$this->db->escape($endmonth)." ))");
 			
 			
-			//[*] Διαγραφή όσων γράφτηκαν το νέο έτος (μήνας εγγραφής < 7) και έχουν στο πίνακα οφειλών εγγραφή για μήνα < από το μήνα έναρξης !
-	    	$this->db->query("DELETE FROM `debt` WHERE `id` IN (SELECT `debt`.`id` FROM (SELECT * FROM `debt`) AS `temp`, `registration` WHERE `debt`.`reg_id` = `registration`.`id` AND (MONTH(`registration`.`start_lessons_dt`)<=7 AND `debt`.`month_num` < MONTH(`registration`.`start_lessons_dt`)))");
+			//[*] Διαγραφή όσων γράφτηκαν το νέο έτος και έχουν στο πίνακα οφειλών εγγραφή για μήνα < από το μήνα έναρξης !
+	    	$this->db->query("DELETE FROM `debt` WHERE `id` IN (SELECT `debt`.`id` FROM (SELECT * FROM `debt`) AS `temp`, `registration` WHERE `debt`.`reg_id` = `registration`.`id` AND (YEAR(`registration`.`start_lessons_dt`)=".$endyear." AND `debt`.`month_num` < MONTH(`registration`.`start_lessons_dt`)))");
 			
-			//[*] Διαγραφή όσων γράφτηκαν το νέο έτος (μήνας εγγραφής < 7) και έχουν στο πίνακα οφειλών εγγραφή για μήνα > από τον τρέχων !
-			$this->db->query("DELETE FROM `debt` WHERE `id` IN (SELECT `debt`.`id` FROM (SELECT * FROM `debt`) AS `temp`, `registration` WHERE `debt`.`reg_id` = `registration`.`id` AND (`debt`.`month_num` > ".$this->db->escape($endmonth)." and MONTH(`registration`.`start_lessons_dt`)<=7))");
+			//[*] Διαγραφή όσων γράφτηκαν το νέο έτος και έχουν στο πίνακα οφειλών εγγραφή για μήνα > από τον τρέχων !
+			$this->db->query("DELETE FROM `debt` WHERE `id` IN (SELECT `debt`.`id` FROM (SELECT * FROM `debt`) AS `temp`, `registration` WHERE `debt`.`reg_id` = `registration`.`id` AND (`debt`.`month_num` > ".$this->db->escape($endmonth)." and YEAR(`registration`.`start_lessons_dt`)=".$endyear."))");
 
 		}
 		else //Αν βρισκόμαστε στο έτος έναρξης της σχολικής χρονιάς...
 		{
 			$this->db->query("DELETE FROM `debt` WHERE `id` IN (SELECT `debt`.`id` FROM (SELECT * FROM `debt`) AS `temp`, `registration` WHERE `debt`.`reg_id` = `registration`.`id` AND ((`debt`.`month_num` < MONTH(`registration`.`start_lessons_dt`) ) OR  `debt`.`month_num` >= MONTH(`registration`.`del_lessons_dt`)))");
-			$this->db->query("DELETE FROM `debt` WHERE `id` IN (SELECT `debt`.`id` FROM (SELECT * FROM `debt`) AS `temp`, `registration` WHERE `debt`.`reg_id` = `registration`.`id` AND (MONTH(`registration`.`start_lessons_dt`) <= 7))");
+			// $this->db->query("DELETE FROM `debt` WHERE `id` IN (SELECT `debt`.`id` FROM (SELECT * FROM `debt`) AS `temp`, `registration` WHERE `debt`.`reg_id` = `registration`.`id` AND (MONTH(`registration`.`start_lessons_dt`) <= 7))");
 		}
 
 
-		//Διαγραφή όσων διαγράφηκαν το προηγούμενο έτος (μήνες 8-12) και έχουν εγγραφές στο πίνακα οφειλών για το νέο έτος (μήνες >=1)
-		$this->db->query("DELETE FROM `debt` WHERE `id` IN (SELECT `debt`.`id` FROM (SELECT * FROM `debt`) AS `temp`, `registration` WHERE `debt`.`reg_id` = `registration`.`id` AND (MONTH(`registration`.`del_lessons_dt`)>=8 AND `debt`.`month_num`<=7))");
+		//Διαγραφή όσων διαγράφηκαν το προηγούμενο έτος και έχουν εγγραφές στο πίνακα οφειλών για το νέο έτος (μήνες >=1)
+		// $this->db->query("DELETE FROM `debt` WHERE `id` IN (SELECT `debt`.`id` FROM (SELECT * FROM `debt`) AS `temp`, `registration` WHERE `debt`.`reg_id` = `registration`.`id` AND (MONTH(`registration`.`del_lessons_dt`)>=8 AND `debt`.`month_num`<=7))");
     }
 
 
@@ -152,64 +188,68 @@ class Finance_model extends CI_Model
     }
 
 
-    public function UpdateDebtChanges($monthset)
-    //Update table debt with payment changes
-    {
-    	foreach ($monthset as $monthnum) {
-	
-			if ($monthnum <> 0) {
-				if ($monthnum <> 1) {	
-					$myquery1 = $this->db->query("SELECT DISTINCT `change`.* FROM `debt`, `change` WHERE  `debt`.`reg_id` = `change`.`reg_id` AND MONTH(`change`.`change_dt`)-1 = ".$this->db->escape($monthnum)." ");
-				}
-				else
-				{ 
-					$myquery1 = $this->db->query("SELECT DISTINCT `change`.* FROM `debt`, `change` WHERE  `debt`.`reg_id` = `change`.`reg_id` AND MONTH(`change`.`change_dt`)-1 = 0 ");
-				}
+    // public function UpdateDebtChanges($monthset)
+    // //Update table debt with payment changes
+    // {
+    // 	foreach ($monthset as $monthnum) {
+	// 		//για κάθε μήνα στο σετ επιλέγω τις μεταβολές με ημερομηνία μεταβολής στον προηγούμενο μήνα!
+	// 		if ($monthnum <> 0) {
+	// 			if ($monthnum <> 1) {	
+	// 				$myquery1 = $this->db->query("SELECT DISTINCT `change`.* FROM `debt`, `change` WHERE  `debt`.`reg_id` = `change`.`reg_id` AND MONTH(`change`.`change_dt`)-1 = ".$this->db->escape($monthnum)." ");
+	// 			}
+	// 			else
+	// 			{ 
+	// 				$myquery1 = $this->db->query("SELECT DISTINCT `change`.* FROM `debt`, `change` WHERE  `debt`.`reg_id` = `change`.`reg_id` AND MONTH(`change`.`change_dt`)-1 = 0 ");
+	// 			}
 				
-				foreach($myquery1->result_array() as $row) 
-				{
-					$Apo_Poso = $row['prev_month_price'];
-					$std_ID = $row['reg_id'];
-					if ($monthnum > 7) {
-						$this->db->query("UPDATE `debt` SET `debt`.`amount` = ".$this->db->escape($Apo_Poso)." WHERE  `debt`.`reg_id` = ".$this->db->escape($std_ID)." AND (`debt`.`month_num` >= ".$this->db->escape($monthnum)." OR `debt`.`month_num` <= 7) " );
-					}
-					elseif ($monthnum > 1) {
-						$this->db->query("UPDATE `debt` SET `debt`.`amount` = ".$this->db->escape($Apo_Poso)." WHERE  `debt`.`reg_id` = ".$this->db->escape($std_ID)." AND (`debt`.`month_num` >= ".$this->db->escape($monthnum)." AND `debt`.`month_num` <= 7) " );
-					}
-					elseif ($monthnum == 1) {
-						$this->db->query("UPDATE `debt` SET `debt`.`amount` = ".$this->db->escape($Apo_Poso)." WHERE  `debt`.`reg_id` = ".$this->db->escape($std_ID)." AND (`debt`.`month_num` =  12  OR ( `debt`.`month_num` >=1 AND `debt`.`month_num` <= 7)) " );
-					}
-				}
+	// 			//για κάθε μεταβολή από αυτές ενημερώνω τον πίνακα των οφειλών με την τιμή ΑΠΟ εφόσον ο μήνας είναι πριν από το μήνα της μεταβολής!
+	// 			foreach($myquery1->result_array() as $row) 
+	// 			{
+	// 				$Apo_Poso = $row['prev_month_price'];
+	// 				$std_ID = $row['reg_id'];
+	// 				if ($monthnum > 7) {
+	// 					$this->db->query("UPDATE `debt` SET `debt`.`amount` = ".$this->db->escape($Apo_Poso)." WHERE  `debt`.`reg_id` = ".$this->db->escape($std_ID)." AND (`debt`.`month_num` >= ".$this->db->escape($monthnum)." OR `debt`.`month_num` <= 7) " );
+	// 				}
+	// 				elseif ($monthnum > 1) {
+	// 					$this->db->query("UPDATE `debt` SET `debt`.`amount` = ".$this->db->escape($Apo_Poso)." WHERE  `debt`.`reg_id` = ".$this->db->escape($std_ID)." AND (`debt`.`month_num` >= ".$this->db->escape($monthnum)." AND `debt`.`month_num` <= 7) " );
+	// 				}
+	// 				elseif ($monthnum == 1) {
+	// 					$this->db->query("UPDATE `debt` SET `debt`.`amount` = ".$this->db->escape($Apo_Poso)." WHERE  `debt`.`reg_id` = ".$this->db->escape($std_ID)." AND (`debt`.`month_num` =  12  OR ( `debt`.`month_num` >=1 AND `debt`.`month_num` <= 7)) " );
+	// 				}
+	// 			}
 				
 
-				$myquery2 = $this->db->query("SELECT DISTINCT `change`.* FROM `debt`, `change` WHERE  `debt`.`reg_id` = `change`.`reg_id` AND MONTH(`change`.`change_dt`) = ".$this->db->escape($monthnum)." ");
+	// 			$myquery2 = $this->db->query("SELECT DISTINCT `change`.* FROM `debt`, `change` WHERE  `debt`.`reg_id` = `change`.`reg_id` AND MONTH(`change`.`change_dt`) = ".$this->db->escape($monthnum)." ");
 
-				foreach ($myquery2->result_array() as $row) 
-				{
-					$Se_Poso = $row['new_month_price'];
-					$std_ID = $row['reg_id'];
-					if ($monthnum > 7) {
-						$this->db->query("UPDATE `debt` SET `debt`.`amount` = ".$this->db->escape($Se_Poso)." WHERE  `debt`.`reg_id` = ".$this->db->escape($std_ID)." AND (`debt`.`month_num` >= ".$this->db->escape($monthnum)." OR `debt`.`month_num` <= 7) " );
-					}
-					elseif ($monthnum >= 1) {
-						$this->db->query("UPDATE `debt` SET `debt`.`amount` = ".$this->db->escape($Se_Poso)." WHERE  `debt`.`reg_id` = ".$this->db->escape($std_ID)." AND (`debt`.`month_num` >= ".$this->db->escape($monthnum)." AND `debt`.`month_num` <= 7) " );
-					}
-				}
-			}
-			else 
-			{
-				break;
-			}
+	// 			foreach ($myquery2->result_array() as $row) 
+	// 			{
+	// 				$Se_Poso = $row['new_month_price'];
+	// 				$std_ID = $row['reg_id'];
+	// 				if ($monthnum > 7) {
+	// 					$this->db->query("UPDATE `debt` SET `debt`.`amount` = ".$this->db->escape($Se_Poso)." WHERE  `debt`.`reg_id` = ".$this->db->escape($std_ID)." AND (`debt`.`month_num` >= ".$this->db->escape($monthnum)." OR `debt`.`month_num` <= 7) " );
+	// 				}
+	// 				elseif ($monthnum >= 1) {
+	// 					$this->db->query("UPDATE `debt` SET `debt`.`amount` = ".$this->db->escape($Se_Poso)." WHERE  `debt`.`reg_id` = ".$this->db->escape($std_ID)." AND (`debt`.`month_num` >= ".$this->db->escape($monthnum)." AND `debt`.`month_num` <= 7) " );
+	// 				}
+	// 			}
+	// 		}
+	// 		else 
+	// 		{
+	// 			break;
+	// 		}
 		
-		} //end foreach
+	// 	} //end foreach
 
-    }
+    // }
 
 
-    public function schFinanceUpdateDate($startsch)
+    public function schFinanceUpdateDate()
     //store date of this update and the schoolyear it refers
     {
-    	$data=array('value_1'=>date('d-m-Y'), 'value_2'=>$startsch);
+		//get active term
+		$termid = $this->db->select('term.id')->where('term.active',1)->get('term')->row()->id;
+
+    	$data=array('value_1'=>date('d-m-Y'), 'value_2'=>$termid);
     	$this->db->where('id', 3);
 		$this->db->update('lookup', $data);
 
@@ -428,11 +468,14 @@ class Finance_model extends CI_Model
     }
 
 //=============================SCHOOLYEAR REPORTS' DATA=======================//
-    public function getschoolreport1data($startsch)
+    public function getschoolreport1data()
     {
+		//get active term
+		$termid = $this->db->select('term.id')->where('term.active',1)->get('term')->row()->id;
+
     	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',3)->get();
     	$row = $existingdata->row();
-    	if ($row->value_2 == $startsch ){
+    	if ($row->value_2 == $termid ){
 	    	$query = $this->db->select(array('CONCAT_WS(" ",registration.surname, registration.name) as student', 'debt.amount', 'month.name', 'month.priority'))
 	    					->from('debt')
 	    					->join('registration', 'registration.id=debt.reg_id')
@@ -462,17 +505,18 @@ class Finance_model extends CI_Model
     }
 
 
-    public function getschoolreport2data($startsch)
+    public function getschoolreport2data()
     {
+		//get active term
+		$termid = $this->db->select('term.id')->where('term.active',1)->get('term')->row()->id;
+
     	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',3)->get();
     	$row = $existingdata->row();
-    	if ($row->value_2 == $startsch ){
+    	if ($row->value_2 == $termid ){
 	    	$query = $this->db->select(array('CONCAT_WS(" ",registration.surname, registration.name) as student', 'SUM(debt.amount) AS totaldebt', "CONCAT_WS(' ', 'Οφειλόμενοι Μήνες:',COUNT(debt.month_num)) AS months"))
 	    					->from('debt')
 	    					->join('registration', 'registration.id=debt.reg_id')
-	    					// ->join('month','debt.month_num = month.num')
 	    					->group_by('student')
-	    					//->order_by('months','desc')
 	    					->order_by('student')
 	    					->get();
 
@@ -496,27 +540,91 @@ class Finance_model extends CI_Model
 	    }
 	}
 
-    function get_schoolyear_finance($startsch){
-    	$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',3)->get();
-    	$row = $existingdata->row();
-    	if ($row->value_2 == $startsch ){
-	    	$query=$this->db->select(array('Μήνας', 'Οφειλές', 'Εισπράξεις', 'Τζίρος'))
-	    			->from('vw_finance_schoolyear')
-	    			->get();
+    function get_schoolyear_finance(){
+		//get active term
+		$termid = $this->db->select('term.id')->where('term.active',1)->get('term')->row()->id;
 
-	    	if ($query->num_rows() > 0) 
-			{
-				foreach($query->result_array() as $row) 
-				{
-					$schfinance[] = $row;
-				}
-				return $schfinance;
+		$existingdata = $this->db->select(array('value_1','value_2'))->from('lookup')->where('id',3)->get();
+    	$row = $existingdata->row();
+
+    	if ($row->value_2 == $termid ){
+			// Payments summary per month
+			$query1 = $this->db->select(array('month.name as monthname', 'SUM(post_payment.amount) as collected'))
+							->from('post_payment')
+							->join('registration', 'post_payment.reg_id = registration.id')
+							->join('month', 'post_payment.month_num = month.num')
+							->where('post_payment.is_credit', 0)
+							->group_by('post_payment.month_num')
+							->order_by('month.priority')
+							->get();
+
+			// Debt summary per month
+			$query2 = $this->db->select(array('month.name as monthname', 'SUM(debt.amount) as due'))
+							->from('debt')
+							->join('month', 'debt.month_num = month.num')
+							->group_by('debt.month_num')
+							->order_by('month.priority')
+							->get();
+
+			if($query1->num_rows() >= $query2->num_rows()){
+				$max = $query1->num_rows();
+				$data1=$query1->result_array();
+				$data2=$query2->result_array();
+			} else {
+				$max = $query2->num_rows();
+				$data1=$query2->result_array();
+				$data2=$query1->result_array();
 			}
-			else 
-			{
+			$data=$data1;
+
+			$j=0;
+			for ($i=0; $i<$max; $i++){
+				if(!empty($data2[$j])){
+					if($data1[$i]['monthname'] == $data2[$j]['monthname']){
+						if(array_key_exists('due',$data2[$j])){
+							$data[$i]['due'] = $data2[$j]['due'];
+							$data[$i]['turnover'] = strval($data1[$i]['collected']+$data2[$j]['due']);
+						}
+						else {
+							$data[$i]['collected'] = $data2[$j]['collected'];
+							$data[$i]['turnover'] = strval($data2[$j]['collected']+$data1[$i]['due']);
+						}
+						$j++;
+					}
+					else {
+						if(array_key_exists('collected',$data1[$i])){
+							$data[$i]['due'] = '0';
+							$data[$i]['turnover'] = $data1[$i]['collected'];
+						}
+						else {
+							$data[$i]['collected'] = '0';
+							$data[$i]['turnover'] = $data1[$i]['due'];
+						}
+					}
+				}
+				else {
+					if(array_key_exists('collected',$data1[$i])){
+						$data[$i]['due'] = '0';
+						$data[$i]['turnover'] = $data1[$i]['collected'];
+					}
+					else {
+						$data[$i]['collected'] = '0';
+						$data[$i]['turnover'] = $data1[$i]['due'];
+					}
+				}
+				
+			}
+
+			// $this->load->library('firephp');
+			// $this->firephp->info($data);
+
+			if (sizeof($data)>0){
+				return $data;
+			}
+			else {
 				return false;
 			}
-    	}
+		}
     	else
     	{
     		return false;

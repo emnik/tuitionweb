@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('BASEPATH')) die();
 
 class Supervisors_model extends CI_Model {
 
@@ -8,70 +8,83 @@ class Supervisors_model extends CI_Model {
    }
 
 
-   public function get_employees() {
-      $query=$this
-         ->db
-         ->select(array('id', 'CONCAT_WS(" ",`surname`,`name`) as employee'))
-         ->where('active','1')
-         ->get('employee');
+   public function get_exams_data(){
+      
+      $termid = $this->db->select('*')->where('term.active',1)->get('term')->row()->id;
+      
+      $query=$this->db->select('*')
+                  ->where('exam.term_id', $termid)
+                  ->order_by('exam.date')
+                  ->get('exam');
 
       if ($query->num_rows() > 0) 
       {
-        foreach ($query->result_array() as $row) {
-           	$data[$row['id']]=$row['employee'];
-        }
-         return $data;
+         foreach($query->result_array() as $row) 
+         {
+            $list[] = $row;
+         }
+         return $list;
       }
       else 
       {
          return false;
       }
-
    }
 
+   public function update_supervisors_data($supervisor){
 
-   public function get_exam_dates()
-   {
-      $query = $this->db->distinct()
-				->select('date')
-				->from('exam_schedule')
-				->where('exam_schedule.startschyear', $this->session->userdata('startsch'))
-				->order_by('date')
-				->get();
-      
-      if ($query->num_rows()>0)
-      {
-         foreach ($query->result_array() as $row) {
-            $data[]=$row['date'];
+      $this->db->empty_table('exam_supervisor');
+      // $this->load->library('firephp');
+      // $this->firephp->info($supervisor);
+      if (!empty($supervisor)){
+         foreach ($supervisor as $key => $value) {
+            foreach($value as $subkey => $subvalue){
+               $data[]=array('exam_id'=>$key, 'employee_id'=>$subvalue);      
+            }
          }
-         return $data;
       }
-      return false;
+      $this->db->insert_batch('exam_supervisor', $data);
    }
 
-   public function get_supervisors($dates)
-   {
-      $query = $this->db->select('*')
-      					->from('exam_supervisor')
-      					->where_in('date', $dates)
-      					->get();
-      
-      if ($query->num_rows()>0)
+
+   public function get_supervisors_names_ids(){
+      $query = $this->db
+                     ->select(array('employee.id', 'employee.nickname'))
+                     ->from('employee')
+                     ->where('employee.active', 1)
+                     ->where('employee.is_tutor', 1)
+                     ->order_by('nickname', 'ASC')
+                     ->get();
+
+      if ($query->num_rows() > 0) 
       {
-         foreach ($query->result_array() as $row) {
-            $data[$row['date']][]=$row['employee_id'];
+         foreach($query->result_array() as $row) 
+         {
+            $list[] = $row;
          }
-         return $data;
+         return $list;
       }
-      return false;
+      else 
+      {
+         return false;
+      }
    }
-  
 
-  public function insert_supervisors($insertdata, $dates)
-  {
-  	$query = $this->db->where_in('date',$dates)->delete('exam_supervisor');
-	$query = $this->db->insert_batch('exam_supervisor', $insertdata);
-  }
 
+   public function get_supervisors($examid){
+      $query = $this->db->select('employee_id')
+                        ->where('exam_id', $examid)
+                        ->get('exam_supervisor');
+
+      if ($query->num_rows() > 0) 
+      {                        
+         $supervisors = $query->result_array();
+         return $supervisors;
+      }
+      else 
+      {
+         return false;
+      }      
+   }
 
 }

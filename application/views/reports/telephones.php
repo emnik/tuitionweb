@@ -35,6 +35,11 @@ var oTable2;
 
 $(document).ready(function(){ 
 
+  //Menu current active links and Title
+  $('#menu-reports-summary').addClass('active');
+  $('#menu-telephones').addClass('active');
+  $('#menu-header-title').text('Τηλεφωνικοί Κατάλογοι');
+
 // add sorting methods for currency columns
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
     "currency-pre": function (a) {
@@ -56,11 +61,19 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         // 'copy', 
         {
                 extend: 'copy',
+                title: function () { return "Τηλεφωνικός Κατάλογος Μαθητών"; },
                 exportOptions: {
                     columns: ':visible'
                 }
             },
-        'excel', 
+        // 'excel', 
+        {
+                extend: 'excel',
+                title: function () { return "Τηλεφωνικός Κατάλογος Μαθητών"; },
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
         // 'pdf', 
         {
                 extend: 'pdf',
@@ -70,7 +83,20 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
                 orientation: 'landscape',
                 // add page numbers to pdf 
                 customize: function(doc) {
-                  doc['footer'] = (function(page, pages) {
+                  doc.styles.tableHeader = {
+                            alignment: 'left',
+                            bold: true,
+                            fillColor: 'gray'
+                        }
+                        doc.styles.tableFooter = {
+                            alignment: 'left',
+                            bold: true,
+                            fillColor: 'lightgray'
+                        }
+                        doc.styles.title = {
+                            fontSize: 14
+                        },
+                  doc.footer = (function(page, pages) {
                     return {
                       columns: [
                       {
@@ -90,7 +116,14 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
                     columns: ':visible'
                 }
             },
-        'print'
+        // 'print'
+        {
+                extend: 'print',
+                title: function () { return "Τηλεφωνικός Κατάλογος Μαθητών"; },
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
         
     ],
     dom: 'Blfrtip',
@@ -107,6 +140,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
     { "data": "Initial_Letter", "class":"hidden"}
     ],
     order: [[9, 'asc'],[0, 'asc']],
+    ordering: false,
     rowGroup: {
       dataSrc: "Initial_Letter",
     },
@@ -139,15 +173,46 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
 
  oTable2 = $('#tbl2').DataTable({
     buttons: [
-        'copy', 
-        'excel', 
+        // 'copy', 
+        {
+          extend: 'copy',
+          // add title to pdf
+          title: function () { return "Τηλεφωνικός Κατάλογος Καθηγητών"; },
+        },
+        // 'excel', 
+        {
+          extend: 'excel',
+          // add title to pdf
+          title: function () { return "Τηλεφωνικός Κατάλογος Καθηγητών"; },
+        },
         // 'pdf', 
         {
           extend: 'pdf',
           // add title to pdf
           title: function () { return "Τηλεφωνικός Κατάλογος Καθηγητών"; },
+          customize: function(doc) {
+                        doc.styles.tableHeader = {
+                            alignment: 'left',
+                            bold: true,
+                            fillColor: 'gray'
+                        }
+                        doc.styles.tableFooter = {
+                            alignment: 'left',
+                            bold: true,
+                            fillColor: 'lightgray'
+                        }
+                        doc.styles.title = {
+                            fontSize: 14
+                        }
+                        doc.content[1].table.widths = ['*', '*', '*', '*'];
+                    },
         },
-        'print'
+        // 'print'
+        {
+          extend: 'print',
+          // add title to pdf
+          title: function () { return "Τηλεφωνικός Κατάλογος Καθηγητών"; },
+        },
     ],
     dom: 'Bfrtip',
     "columns": [
@@ -157,7 +222,9 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
     { "data": "mobile", "class": "col-sm-4"  }
     ],
     order: [[0, 'asc']],
-    "pageLength": 15,
+    // "pageLength": 15,
+    "paginate":false,
+    ordering: false,
     "language": {
           "paginate": {
               "first":    "Πρώτη",
@@ -253,78 +320,10 @@ function clicklink1(){
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
-    <div class="navbar navbar-inverse navbar-top">
-      <div class="container">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
-     </div>
-
-      <div class="navbar-collapse collapse" role="navigation">
-        <ul class="nav navbar-nav">
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('student')?>">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url('exam')?>">Διαγωνίσματα</a></li>
-                <!-- <li><a href="<?php echo base_url()?>files">Αρχεία</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li> -->
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Οργάνωση/Διαχείριση<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('staff')?>">Προσωπικό</a></li>
-                <li><a href="<?php echo base_url('section')?>">Τμήματα</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit')?>">Πρόγραμμα Σπουδών</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit/tutorsperlesson')?>">Μαθήματα-Διδάσκωντες</a></li>
-                <li><a href="<?php echo base_url()?>">Στοιχεία Φροντιστηρίου</a></li>
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Συγκεντρωτικές Αναφορές<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('reports')?>">Αναφορές</a></li>
-                <li><a href="<?php echo base_url('history')?>">Ιστορικό</a></li>
-                <li class="active"><a href="<?php echo base_url('telephones/catalog')?>">Τηλ. Κατάλογοι</a></li>
-                <li><a href="<?php echo base_url('finance')?>">Οικονομικά</a></li>
-              </ul>
-            </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
-                <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url('telephones/logout')?>">Αποσύνδεση</a></li>
-              </ul>
-            </li>
-        </ul>
-      </div><!--/.navbar-collapse -->
-    </div>
-  </div>
-
-
-<!-- Subhead
-================================================== -->
-<div class="jumbotron subhead">
-  <div class="container">
-    <h1>Τηλεφωνικοί Κατάλογοι</h1>
-    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
-    <p style="font-size:13px; margin-top:15px; margin-bottom:-15px;">
-      <?php 
-      $s=$this->session->userdata('startsch');
-      echo 'Διαχειριστική Περίοδος: '.$s.'-'.($s + 1);
-      ?>
-    </p>
-  </div>
-</div>
+     <!-- Menu start -->
+    <!-- dirname(__DIR__) gives the path one level up by default -->
+    <?php include(dirname(__DIR__).'/include/menu.php');?> 
+    <!-- Menu end -->
 
 
 <!-- main container
@@ -335,16 +334,23 @@ function clicklink1(){
       <div>
 	      <ul class="breadcrumb">
 	        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
-	        <li class="active">Τηλεφωνικοί Κατάλογοι</li>
+          <li class="active"><a href="<?php echo base_url('reports/initial')?>">Συγκεντρωτικές Αναφορές</a></li>
+	        <li class="active">Τηλ. Κατάλογοι</li>
 	      </ul>
       </div>
       
-     <p> 
+     <!-- <p> 
       <h3>
         Τηλέφωνα
       </h3>
-    </p>
+    </p> -->
         
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="<?php echo base_url('telephones')?>">Τηλέφωνα</a></li>
+        <li><a href="<?php echo base_url('telephones/exports')?>">Ομαδικά SMS / Επαφές Google</a></li>
+      </ul>
+
+      <p></p>
 
 	<div class="row">
    	<div class="col-xs-12">
@@ -366,6 +372,12 @@ function clicklink1(){
     </div>
     <div id="collapseThree" class="panel-collapse collapse">
       <div class="panel-body">
+          <div class="alert alert-info" role="alert">
+          <p>
+            <span class="icon icon-info-sign"></span>
+               <b>Tip!</b> Μπορείτε να χρησιμοποιήσετε το πλαίσιο της αναζήτησης και για αντίστροφη αναζήτηση μαθητή βαση του τηλεφώνου!
+            </p>
+          </div>
         <table id="tbl1" class="table datatable table-condensed">
           <thead>
                 <tr>

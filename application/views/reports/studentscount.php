@@ -1,15 +1,12 @@
-<!-- <link href="<?php echo base_url('assets/css/dataTables.bootstrap.css') ?>" rel="stylesheet"> -->
-<link href="<?php echo base_url('assets/tabletools/css/TableTools.css') ?>" rel="stylesheet">
+<link href="<?php echo base_url('assets/select2/select2.css') ?>" rel="stylesheet">
+<link href="<?php echo base_url('assets/select2/select2-bootstrap.css') ?>" rel="stylesheet">
+<script src="<?php echo base_url('assets/select2/select2.js') ?>"></script>
+<script src="<?php echo base_url('assets/select2/select2_locale_el.js') ?>"></script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jszip-2.5.0/dt-1.10.22/b-1.6.4/b-colvis-1.6.4/b-html5-1.6.4/b-print-1.6.4/fc-3.3.1/r-2.2.6/rg-1.1.2/sl-1.3.1/datatables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/datatables_bundle/datatables.css') ?>" />
+<script type="text/javascript" src="<?php echo base_url('assets/datatables_bundle/datatables.js') ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/datatables_bundle/Buttons-1.6.5/js/dataTables.buttons.js') ?>"></script>
 
-<!-- For date formating -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- <link href="<?php echo base_url('assets/css/dataTables.bootstrap.css') ?>" rel="stylesheet"> -->
 <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap.min.css" rel="stylesheet">
 
 
@@ -25,6 +22,11 @@
     var oTable2;
 
     $(document).ready(function() {
+
+  //Menu current active links and Title
+  $('#menu-reports-summary').addClass('active');
+  $('#menu-reports').addClass('active');
+  $('#menu-header-title').text('Αναφορές');  
 
         // add sorting methods for currency columns
         jQuery.extend(jQuery.fn.dataTableExt.oSort, {
@@ -46,6 +48,10 @@
                 // 'copy', 
                 {
                     extend: 'copy',
+                    footer: true,
+                    title: function() {
+                        return "Αριθμός μαθητών ανά τάξη";
+                    },
                     exportOptions: {
                         orthogonal: "exportCopy"
                     }
@@ -53,6 +59,10 @@
                 // 'excel', 
                 {
                     extend: 'excel',
+                    footer: true,
+                    title: function() {
+                        return "Αριθμός μαθητών ανά τάξη";
+                    },
                     exportOptions: {
                         orthogonal: "exportExcel"
                     }
@@ -60,8 +70,28 @@
                 // 'pdf', 
                 {
                     extend: 'pdf',
+                    footer: true,
                     // add title to pdf
-                    // title: function () { return "Ιστορικό ΑΠΥ"; },
+                    title: function() {
+                        return "Αριθμός μαθητών ανά τάξη";
+                    },
+                    customize: function(doc) {
+                        doc.styles.tableHeader = {
+                            alignment: 'left',
+                            bold: true,
+                            fillColor: 'gray'
+                        }
+                        doc.styles.tableFooter = {
+                            alignment: 'left',
+                            bold: true,
+                            fillColor: 'lightgray'
+                        }
+                        doc.styles.title = {
+                            fontSize: 14
+                        }
+
+                        doc.content[1].table.widths = ['*', '*', '*', '*'];
+                    },
                     exportOptions: {
                         orthogonal: "exportPdf"
                     }
@@ -69,6 +99,10 @@
                 // 'print'
                 {
                     extend: 'print',
+                    footer: true,
+                    title: function() {
+                        return "Αριθμός μαθητών ανά τάξη";
+                    },
                     exportOptions: {
                         orthogonal: "exportPrint"
                     }
@@ -89,6 +123,7 @@
                     "data": "Ενεργός αριθμός μαθητών"
                 }
             ],
+            paging: false,
             // order: [
             //     [3, 'asc']
             // ],
@@ -112,8 +147,29 @@
                 "lengthMenu": "_MENU_",
                 "loadingRecords": "Φόρτωση καταλόγου οφειλών...",
                 "processing": "Επεξεργασία...",
-                "search": "ανάζήτηση:",
+                "search": "Aνάζήτηση:",
                 "zeroRecords": "Δεν βρέθηκαν εγγραφές"
+            },
+            "footerCallback": function(nRow, aaData, iStart, iEnd, aiDisplay) {
+                /*
+                 * Calculate the total market share for all browsers in this table (ie inc. outside
+                 * the pagination)
+                 * if Sort and/or Filter is enabled see http://www.datatables.net/examples/advanced_init/footer_callback.html
+                 */
+                var iTotalAvenues = 0;
+                var iTotalDepts = 0;
+                var iTotal = 0;
+                for (var i = 0; i < aaData.length; i++) {
+                    iTotalAvenues += parseInt(aaData[i]['Μαθητές']);
+                    iTotalDepts += parseInt(aaData[i]['Διεγραμμένοι']);
+                    iTotal += parseInt(aaData[i]['Ενεργός αριθμός μαθητών']);
+                }
+
+                /* Modify the footer row to match what we want */
+                var nCells = nRow.getElementsByTagName('th');
+                nCells[1].innerHTML = iTotalAvenues;
+                nCells[2].innerHTML = iTotalDepts;
+                nCells[3].innerHTML = iTotal;
             }
         })
 
@@ -124,71 +180,146 @@
 
 
         oTable2 = $('#tbl2').DataTable({
-            "buttons": [
+            dom: "<'row'<'col-sm-9 col-xs-12 pull-right' B><'col-sm-3 col-xs-12 pull-left' l>><'row' <'col-sm-3 col-xs-5 ' <'#customfilter'>> r><'row'<'col-md-12't>><'row'<'col-md-6'i><'col-md-6'p>>",
+            buttons: [
                 // 'copy', 
                 {
                     extend: 'copy',
+                    title: function() {
+                        return "Αριθμός μαθητών ανά μάθημα";
+                    },
                     exportOptions: {
-                        orthogonal: "exportCopy"
+                        orthogonal: "exportCopy",
+                        grouped_array_index: 'Τάξη',
+                        columns: ':visible',
                     }
                 },
                 // 'excel', 
                 {
                     extend: 'excel',
+                    title: function() {
+                        return "Αριθμός μαθητών ανά μάθημα";
+                    },
                     exportOptions: {
-                        orthogonal: "exportExcel"
+                        orthogonal: "exportExcel",
+                        grouped_array_index: 'Τάξη',
+                        columns: ':visible',
                     }
                 },
                 // 'pdf', 
                 {
                     extend: 'pdf',
-                    // add title to pdf
-                    // title: function () { return "Ιστορικό ΑΠΥ"; },
+                    title: function() {
+                        return "Αριθμός μαθητών ανά μάθημα";
+                    },
+                    customize: function(doc) {
+                        doc.styles.tableHeader = {
+                            alignment: 'left',
+                            bold: true,
+                            fillColor: 'gray'
+                        }
+                        doc.styles.title = {
+                            fontSize: 14
+                        }
+                        doc.footer = (function(page, pages) {
+                            return {
+                                columns: [
+                                    {
+                                        alignment: 'right',
+                                        text: [
+                                            'σελ. ',
+                                            {
+                                                text: page.toString(),
+                                                italics: true
+                                            },
+                                            ' από ',
+                                            {
+                                                text: pages.toString(),
+                                                italics: true
+                                            }
+                                        ]
+                                    }
+                                ],
+                                margin: [50, 0]
+                            }
+                        });
+
+                        doc.content[1].table.widths = ['*', '*'];
+
+                        var tblBody = doc['content']['1'].table['body'];
+                        
+                        //show all pages to be able to use the jquery selector for highlighting the names!
+                        oTable2.page.len( -1 ).draw(); 
+
+                        // get all table rows from html table
+                        $('#tbl2').find('tr').each(function(ix, row) {
+                            // console.log(ix);
+                            var index = ix;
+                            // var rowElt = row;
+                            $(row).find('td').each(function(ind, elt) {
+                                // console.log([ind, elt]);
+                                console.log(tblBody[index]);
+                                // if the second cell (1) of each row is empty then it is a group header
+                                if (tblBody[index][1].text == '') {
+                                    //style the first cell (0)
+                                    delete tblBody[index][ind].style;
+                                    tblBody[index][ind].fillColor = 'lightgray';
+                                    //style the second cell (1)
+                                    delete tblBody[index][ind + 1].style;
+                                    tblBody[index][ind + 1].fillColor = 'lightgray';
+                                }
+                            });
+                        });
+                        oTable2.page.len(10).draw(); //restore pagination length to default!
+                    },                    
                     exportOptions: {
-                        orthogonal: "exportPdf"
+                        orthogonal: "exportPdf",
+                        grouped_array_index: 'Τάξη',
+                        columns: ':visible',
                     }
                 },
                 // 'print'
                 {
                     extend: 'print',
+                    title: function() {
+                        return "Αριθμός μαθητών ανά μάθημα";
+                    },
+                    customize: function(win) {
+                        $(win.document.body).find('td:empty').parent()
+                            // .addClass( 'compact' )
+                            .css('background-color', 'lightgray');
+                    },
                     exportOptions: {
-                        orthogonal: "exportPrint"
+                        orthogonal: "exportPrint",
+                        grouped_array_index: 'Τάξη',
+                        columns: ':visible',
                     }
                 },
             ],
-            dom: 'Bfrtip',
-            "processing": true,
-            "columns": [{
+            // dom: 'Blfrtip',
+            processing: true,
+            columns: [{
                     "data": "Μάθημα"
                 },
                 {
                     "data": "Τάξη",
-                    //   "render": function (data, type, row, meta) {
-                    //             if (data == null) {data='0'};
-                    //             if (type ==="display" || type ==="exportPdf" || type ==="exportPrint" ){
-                    //                 return data+'€';
-                    //             }
-                    //             else 
-                    //             {
-                    //               return data;
-                    //             }
-                    //           }
                 },
                 {
                     "data": "Μαθητές"
                 }
             ],
-            order: [
-                [1, 'desc']
-            ],
+            // order: [
+            //     [1, 'desc']
+            // ],
             rowGroup: {
                 dataSrc: "Τάξη"
             },
+            ordering: false,
             columnDefs: [{
                 targets: [1],
                 visible: false
             }],
-            "language": {
+            language: {
                 "paginate": {
                     "first": "Πρώτη",
                     "previous": "",
@@ -198,12 +329,12 @@
                 "info": "Εμφανίζονται οι _START_ έως _END_ από τις _TOTAL_ εγγραφές",
                 "infoEmpty": "Εμφάνιζονται 0 εγγραφές",
                 "infoFiltered": "Φιλτράρισμα από _MAX_ συνολικά εγγραφές",
-                "lengthMenu": "_MENU_",
+                "lengthMenu": "Εγγραφές/σελ. _MENU_",
                 "loadingRecords": "Φόρτωση καταλόγου ...",
                 "processing": "Επεξεργασία...",
-                "search": "ανάζήτηση:",
+                "search": "Aνάζήτηση:",
                 "zeroRecords": "Δεν βρέθηκαν οφειλές"
-            }
+            },
         })
 
         $('#link2').on('click', clicklink2);
@@ -223,11 +354,11 @@
             "text-align": "left"
         });
 
-        $('#tbl2_filter').addClass("pull-left");
+        // $('#tbl2_filter').addClass("pull-left");
         $('#tbl2_length').css({
             "margin-top": "10px"
         });
-        $('#tbl2_search').addClass("pull-left");
+        // $('#tbl2_search').addClass("pull-left");
         $('#tbl2_length').css({
             "text-align": "left"
         });
@@ -244,14 +375,17 @@
 
         function checkScreenSize() {
             var newWindowWidth = $(window).width();
-            if (newWindowWidth < 481) {
+            if (newWindowWidth < 750) {
                 $(".dt-buttons").removeClass("pull-right");
+                $(".dt-buttons").addClass("pull-left");
             } else {
+                $(".dt-buttons").removeClass("pull-left");
                 $(".dt-buttons").addClass("pull-right");
             }
         }
 
     }) //end of (document).ready(function())
+
 
     function clicklink1() {
         $.ajax({
@@ -278,6 +412,32 @@
                     oTable2.clear();
                     oTable2.rows.add(data.aaData).draw();
                     $('#link2').off('click');
+                    // $('#customfilter').select2({
+                    //     data: <?php echo $classes; ?>,
+                    //     // multiple: true,
+                    //     // closeOnSelect: false,
+                    //     readonly: true,
+                    //     // placeholder: "Επιλογή τάξεων",
+                    // })
+                    // $('#customfilter').addClass('form-control');
+                    // $('#customfilter').on('change', function () {
+                    //     var sdata = $('#customfilter').select2('data');
+                    //     // console.log(sdata);
+                    //     var sval = sdata.text;
+                    //     // $("#tbl2 thead th").each(function(i) {
+                    //     // oTable2.column(1).visible(false);    
+                    //     // console.log(sval);
+                    //     if (sval!='Όλα') {
+                    //         oTable2.column(1)
+                    //         .search(sval, true, false)
+                    //         .draw();
+                    //     }
+                    //     else {
+                    //         oTable2.columns()
+                    //         .search('')
+                    //         .draw();
+                    //     }
+                    // });
                 }
             }
         });
@@ -290,79 +450,10 @@
     <div class="wrapper">
         <!--body wrapper for css sticky footer-->
 
-        <div class="navbar navbar-inverse navbar-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="<?php echo base_url() ?>">TuitionWeb</a>
-                </div>
-
-                <div class="navbar-collapse collapse" role="navigation">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="<?php echo base_url('student') ?>">Μαθητολόγιο</a></li>
-                                <li><a href="<?php echo base_url('exam') ?>">Διαγωνίσματα</a></li>
-                                <!-- <li><a href="<?php echo base_url() ?>cashdesk">Ταμείο</a></li> -->
-                                <!-- <li><a href="<?php echo base_url() ?>announcements">ανάκοινώσεις</a></li> -->
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Οργάνωση/Διαχείριση<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="<?php echo base_url('staff') ?>">Προσωπικό</a></li>
-                                <li><a href="<?php echo base_url('section') ?>">Τμήματα</a></li>
-                                <li><a href="<?php echo base_url('curriculum/edit') ?>">Πρόγραμμα Σπουδών</a></li>
-                                <li><a href="<?php echo base_url('curriculum/edit/tutorsperlesson') ?>">Μαθήματα-Διδάσκωντες</a></li>
-                                <li><a href="<?php echo base_url() ?>">Στοιχεία Φροντιστηρίου</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Συγκεντρωτικές Αναφορές<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li class="active"><a href="<?php echo base_url('reports') ?>">Αναφορές</a></li>
-                                <li><a href="<?php echo base_url('history') ?>">Ιστορικό</a></li>
-                                <li><a href="<?php echo base_url('telephones') ?>">Τηλ. Κατάλογοι</a></li>
-                                <li><a href="<?php echo base_url('finance') ?>">Οικονομικά</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-header"><?php echo $user->surname . ' ' . $user->name; ?></li>
-                                <li><a href="#">Αλλαγή κωδικού</a></li>
-                                <li><a href="<?php echo base_url('reports/logout') ?>">Αποσύνδεση</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <!--/.navbar-collapse -->
-            </div>
-        </div>
-
-
-        <!-- Subhead
-================================================== -->
-        <div class="jumbotron subhead">
-            <div class="container">
-                <h1>Αναφορές</h1>
-                <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
-                <p style="font-size:13px; margin-top:15px; margin-bottom:-15px;">
-                    <?php
-                    $s = $this->session->userdata('startsch');
-                    echo 'Διαχειριστική Περίοδος: ' . $s . '-' . ($s + 1);
-                    ?>
-                </p>
-            </div>
-        </div>
-
+    <!-- Menu start -->
+    <!-- dirname(__DIR__) gives the path one level up by default -->
+    <?php include(dirname(__DIR__).'/include/menu.php');?> 
+    <!-- Menu end -->
 
         <!-- main container
 ================================================== -->
@@ -372,6 +463,7 @@
             <div>
                 <ul class="breadcrumb">
                     <li><a href="<?php echo base_url() ?>"><i class="icon-home"> </i> Αρχική </a></li>
+                    <li class="active"><a href="<?php echo base_url('reports/initial')?>">Συγκεντρωτικές Αναφορές</a></li>
                     <li class="active">Αναφορές</li>
                     <li class="active">Δυναμολόγιο</li>
                 </ul>
@@ -385,9 +477,8 @@
 
 
             <ul class="nav nav-tabs">
-                <!-- <li><a href="<?php echo base_url() ?>reports">Σύνοψη</a></li> -->
-                <li class="active"><a href="<?php echo base_url() ?>reports/studentscount">Δυναμολόγιο</a></li>
-                <li><a href="<?php echo base_url() ?>reports/studentteachers">Καθηγητές ανά μαθητή</a></li>
+                <li class="active"><a href="<?php echo base_url('reports/studentscount') ?>">Δυναμολόγιο</a></li>
+                <li><a href="<?php echo base_url('reports/studentteachers') ?>">Διδάσκοντες ανά μαθητή / Λίστα μαθητών ανα τάξη</a></li>
             </ul>
 
             <p></p>
@@ -399,7 +490,7 @@
                     <!-- <div id="schmessage" class="alert  alert-warning fade in"><span class="icon"><i class="icon-info-sign"> </i> Tελευταία ενημέρωση των οικονομικών δεδομένων για το σχολικό έτος : <?php $m = (!isset($schoolyear_update)) ? " Δεν υπάρχει!" : $schoolyear_update;
                                                                                                                                                                                                             echo '<strong>' . ' ' . $m . '</strong>'; ?></span></div> -->
 
-                    <h4>Αναφορές</h4>
+                    <!-- <h4>Αναφορές</h4> -->
 
                     <div class="panel-group" id="accordion">
 
@@ -420,13 +511,21 @@
                                         <thead>
                                             <tr>
                                                 <th>Τάξη</th>
-                                                <th>Αρ. Μαθητών</th>
+                                                <th>Μαθητές</th>
                                                 <th>Διεγραμμένοι</th>
                                                 <th>Ενεργοί</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Σύνολο:</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -455,6 +554,13 @@
                                         </thead>
                                         <tbody>
                                         </tbody>
+                                        <!-- <tfoot>
+                                            <tr>
+                                                <th></th>
+                                                <th>Τάξη</th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot> -->
                                     </table>
                                 </div>
                             </div>

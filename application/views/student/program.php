@@ -7,41 +7,13 @@
 <script type="text/javascript">
 var nodays = new Array(7);
 
-function toggledays(togglecontrol) {
-
-  if ($(togglecontrol).hasClass('active')){
-     $('#toggledays').attr('data-original-title', 'Εμφάνιση όλων των ημερών')
-          .tooltip('fixTitle')
-          .tooltip('show');
-
-      $('.nolesson').parent().hide();
-
-      for (var i = 0; i < nodays.length; i++) {
-        if (typeof nodays[i] !== 'undefined') {
-          $('#dayli'+nodays[i]).hide();
-        };
-
-      };
-    }
-  else 
-  {
-     $('#toggledays').attr('data-original-title', 'Απόκρυψη ημερών χωρίς μάθημα')
-          .tooltip('fixTitle')
-          .tooltip('show');
-
-      $('.nolesson').parent().show();  
-
-      for (var i = 0; i < nodays.length; i++) {
-        if (typeof nodays[i] !== 'undefined') {
-          $('#dayli'+nodays[i]).show();
-        };
-
-      };
-    };
-}
-
 
    $(document).ready(function() {
+
+    //Menu current active links and Title
+    // $('#menu-operation').addClass('active');
+    $('#menu-student').addClass('active');
+    $('#menu-header-title').text('Καρτέλα Μαθητή');
 
      $('#help').popover({
         placement:'bottom',
@@ -62,9 +34,36 @@ function toggledays(togglecontrol) {
      
      for (var i = 0; i < nodays.length; i++) {
         if (typeof nodays[i] !== 'undefined') {
-          $('#dayli'+nodays[i]).hide();
+          $('#dayli'+nodays[i]).addClass('disabled');
         };
       };
+
+      <?php for ($i=1; $i <= 7 ; $i++):?>
+        $("#dayli<?php echo $i?>").on('click', function(e){
+          e.preventDefault();
+          $(".nav.nav-pills li a").each(function(){
+            $(this).removeClass('active');
+          });
+          $('#toggledays').removeClass('active');
+          $(this).addClass('active');
+          $(".panel").parent().hide();
+          $("#day<?php echo $i?>").show();
+        })
+       <?php endfor;?>
+
+       $('#toggledays').attr('data-original-title', 'Εμφάνιση προγράμματος όλων των ημερών')
+          .tooltip('fixTitle')
+          // .tooltip('show')
+          .on('click', function(e){
+            e.preventDefault();
+            $(this).addClass('active');
+            $(".nav.nav-pills li a").each(function(){
+              $(this).removeClass('active');
+            });
+            $('.panel:not(.nolesson)').parent().each(function(){
+              $(this).show();
+            })
+          })
 
      $('.footable').footable();
 
@@ -109,79 +108,10 @@ function toggledays(togglecontrol) {
 <body>
  <div class="wrapper"> <!--body wrapper for css sticky footer-->
 
-    <div class="navbar navbar-inverse navbar-top">
-      <div class="container">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="<?php echo base_url()?>">TuitionWeb</a>
-     </div>
-
-      <div class="navbar-collapse collapse" role="navigation">
-        <ul class="nav navbar-nav">
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="active"><a href="<?php echo base_url('student')?>">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url('exam')?>">Διαγωνίσματα</a></li>
-                <!-- <li><a href="<?php echo base_url()?>files">Αρχεία</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li> -->
-                <!-- <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li> -->
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Οργάνωση/Διαχείριση<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('staff')?>">Προσωπικό</a></li>
-                <li><a href="<?php echo base_url('section')?>">Τμήματα</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit')?>">Πρόγραμμα Σπουδών</a></li>
-                <li><a href="<?php echo base_url('curriculum/edit/tutorsperlesson')?>">Μαθήματα-Διδάσκωντες</a></li>
-                <li><a href="<?php echo base_url()?>">Στοιχεία Φροντιστηρίου</a></li>
-              </ul>
-            </li>
-           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Συγκεντρωτικές Αναφορές<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url('reports')?>">Αναφορές</a></li>
-                <li><a href="<?php echo base_url('history')?>">Ιστορικό</a></li>
-                <li><a href="<?php echo base_url('telephones')?>">Τηλ. Κατάλογοι</a></li>
-                <li><a href="<?php echo base_url('finance')?>">Οικονομικά</a></li>
-              </ul>
-            </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
-                <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url('student/logout')?>">Αποσύνδεση</a></li>
-              </ul>
-            </li>
-        </ul>
-      </div><!--/.navbar-collapse -->
-    </div>
-  </div>
-
-
-<!-- Subhead
-================================================== -->
-<div class="jumbotron subhead">
-  <div class="container">
-    <h1>Καρτέλα Μαθητή</h1>
-    <p class="leap">Πρόγραμμα διαχείρισης φροντιστηρίου.</p>
-    <p style="font-size:13px; margin-top:15px; margin-bottom:-15px;">
-      <?php 
-      $s=$this->session->userdata('startsch');
-      echo 'Διαχειριστική Περίοδος: '.$s.'-'.($s + 1);
-      ?>
-    </p>  
-  </div>
-</div>
-
+    <!-- Menu start -->
+    <!-- dirname(__DIR__) gives the path one level up by default -->
+    <?php include(dirname(__DIR__).'/include/menu.php');?> 
+    <!-- Menu end -->
 
 <!-- main container
 ================================================== -->
@@ -195,7 +125,7 @@ function toggledays(togglecontrol) {
           <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> </li>
           <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Φοίτηση</a> </li>
           <li class="active">Εβδομαδιαίο Πρόγραμμα</li>
-          <li class="dash"><i class="icon-dashboard icon-small"></i></li>
+          <!-- <li class="dash"><i class="icon-dashboard icon-small"></i></li> -->
         </ul>
       </div>
       
@@ -219,7 +149,7 @@ function toggledays(togglecontrol) {
         <div class="col-md-12">
           <div class="btn-toolbar" style="margin:15px 0px;">
             <a class="btn btn-default" href="<?php echo base_url();?>student/card/<?php echo $student['id']?>/attendance"><i class="icon-chevron-left"></i> πίσω</a>
-            <button type="button" id="toggledays" data-toggle="button" class="btn btn-default" onclick="toggledays(this)"><i class="icon-calendar"></i></button>
+            <a class="btn btn-default active" id="toggledays" href="#"><i class="icon-calendar"></i></a>
             <button type="button" class="btn btn-default pull-right" id="help">Βοήθεια</button>            
           </div>
         </div>
@@ -232,8 +162,8 @@ function toggledays(togglecontrol) {
         <div class="col-md-8">
           <ul class="nav nav-pills" >
             <?php for ($i=1; $i <= 7 ; $i++):?>
-            <li <?php if(date('N')==$i) echo ' class="active"'?>>
-                <a id="dayli<?php echo $i?>" href="#day<?php echo $i?>"><?php echo $day[$i];?></a>
+            <li>
+                <a class="btn btn-default" id="dayli<?php echo $i?>" href="#"><?php echo $day[$i];?></a>
             </li>
             <?php endfor;?>
           </ul>
@@ -249,9 +179,9 @@ function toggledays(togglecontrol) {
 			      				Δεν έχει εισαχθεί το πρόγραμμα για το συγκεκριμένο μαθητή!
 			      			</p>
 			      		<?php else:?>
-			      		<?php $i=$program[0]['priority'];?>
-
-                <?php $k=0;?>
+                <?php $l=0; while($program[$l]['priority']==null) $l++; 
+                  $i=$program[$l]['priority'];?>
+                <?php $k=$l;?>
                 <?php for ($j=1; $j<=7 ; $j++):?>
 							    <div id="day<?php echo $j;?>" >
                   <?php if($j<$i || $k==count($program)):?>

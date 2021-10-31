@@ -7,14 +7,14 @@
 						Designed and build by <a href="mailto:nikiforakis.m@gmail.com">Nikiforakis Manos</a><br>
 						<!-- Build with <a href="http://ellislab.com/codeigniter">CodeIgniter</a> 
 						and <a href="http://getbootstrap.com/">Bootstrap</a>. -->
-						Icons by <a href="http://fortawesome.github.io/Font-Awesome/3.2.1/">
+						Icons by <a href="https://fontawesome.com/v3.2.1/icons/">
 						<i class="icon-flag"> </i>Font Awesome Icons</a>
 					</small>
 				</div>
 				<div class="col-lg-3 col-sm-4 col-xs-12">
 					<div class="social">
-						<span><i class="icon-facebook-sign icon-2x"></i> facebook</span>
-						<span><i class="icon-twitter-sign icon-2x"></i> twitter</span>
+						<a id="facebookurl" href="#"><span><i class="icon-facebook-sign icon-2x"></i> facebook</span></a>
+						<a id="twitterurl" href="#"><span><i class="icon-twitter-sign icon-2x"></i> twitter</span></a>
 					</div>
 				</div>			
 			</div>
@@ -35,6 +35,7 @@
 <script src="<?php echo base_url('assets/select2/select2_locale_el.js')?>"></script>
 
 <script type="text/javascript">
+
 $(document).keydown(function(event) {
         if (event.ctrlKey==true && (event.which == '39')) { //ctrl + right arrow
             event.preventDefault();
@@ -44,6 +45,19 @@ $(document).keydown(function(event) {
 
 
 $(document).ready(function(){
+		$.ajax({
+			url:"<?php echo base_url()?>welcome/social_media",
+			dataType: 'json',
+			success: function(data, page){
+				if(data.facebookurl!=null){
+					$('#facebookurl').attr("href", data.facebookurl);
+				}
+				if(data.twitterurl!=null){
+					$('#twitterurl').attr("href", data.twitterurl);
+				}
+			}
+		});
+
 	   $('#selectbox').select2({
 	    minimumInputLength: 2,
 	    ajax: {
@@ -63,6 +77,13 @@ $(document).ready(function(){
 	   $('#footerModal').on('shown.bs.modal', function(){
 			$('#selectbox').select2("open");
 	   });
+
+	   $('#selectbox').on('change', function(){
+			$(".alert").hide();
+			$('.alert > p > span').remove();
+			$('.alert > p > a').remove();
+			id=$(this).val();
+	   })
 });
 
 
@@ -84,6 +105,37 @@ function fastgo(section){
 		  break;
 		}
 }
+
+function resubscribe(){
+	id=$('#selectbox').val();
+	
+	$.ajax({
+		url: "<?php echo base_url()?>student/resubscribe",
+		method: 'post',
+        data: {regid: id},
+     	dataType: 'json',
+     	success: function(response){
+			console.log(response);
+			if (response.success=='true'){
+				// $('#selectbox').select2("val", "");
+				$('.alert > p').append('<span>Η επανεγγραφή ήταν επιτυχής! Μπορείτε να μεταβείτε στην καρτέλα του μαθητή πατώντας:</span>');
+				$('.alert > p').append('<a href=<?php echo base_url();?>student/card/'+response.regid+' class="alert-link"> εδώ</a>');
+				$('#resultmsg').removeClass();
+				$('#resultmsg').addClass('alert');
+				$('#resultmsg').addClass('alert-success');
+				$(".alert").fadeIn();
+			}
+			else {
+				$('.alert > p').append('<span>ΣΦΑΛΜΑ: Η επανεγγραφή ΔΕΝ ήταν επιτυχής. </span>');
+				$('#resultmsg').removeClass();
+				$('#resultmsg').addClass('alert');
+				$('#resultmsg').addClass('alert-danger');
+				$(".alert").fadeIn();
+			}
+		 }
+	})
+}
+
 </script>
 
 <style type="text/css">
@@ -115,7 +167,12 @@ function fastgo(section){
 		</div>
 		<div class="modal-footer">
 			<!-- <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> -->
-			<button class="btn btn-primary">Επανεγγραφή</button>
+			<button class="btn btn-primary" onclick="resubscribe();">Επανεγγραφή</button>
+			<div class="alert alert-success" role="alert" id="resultmsg" style="display:none; margin-top:10px;">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      			<p style="text-align:left;"> </p> 
+			</div>
+
 		</div>
 		</div>
 	</div>

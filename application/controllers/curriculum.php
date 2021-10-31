@@ -109,6 +109,18 @@ public function delcataloglesson()
 
 }
 
+public function delclass()
+{
+		$this->load->model('curriculum/courselessons_model','', TRUE);    
+        header('Content-Type: application/x-json; charset=utf-8');
+        echo(json_encode($this
+						->courselessons_model
+						->delclass($this->input->post('jsclassid'))
+						)
+			);
+
+}
+
 
 	public function index()
 	{
@@ -145,9 +157,9 @@ public function delcataloglesson()
 
 		if(!empty($_POST))
 		{
-		// $this->load->library('firephp');
-		// $this->firephp->info($_POST);
-		$updatedata=array();			
+			$this->load->model('curriculum/courselessons_model');
+			if($this->input->post('class_name')!=0 && !empty($_POST['course'])){
+			if(isset($_POST['class_name_text'])) unset($_POST['class_name_text']);
 			foreach ($_POST as $key => $value) {
 				switch ($key) {
 					case 'course':
@@ -158,7 +170,9 @@ public function delcataloglesson()
 					case 'title':
 						foreach ($value as $courseid2 => $lessondata) {
 							foreach ($lessondata as $lessonid => $cataloglessonid) {
-								$lesson[]=array('id'=>$lessonid, 'course_id'=>$courseid2, 'cataloglesson_id'=>$cataloglessonid, 'hours'=>(!empty($_POST['hours'][$lessonid]))?$_POST['hours'][$lessonid]:null);
+								if(!empty($cataloglessonid)){ //no meaning to store an empty lesson for a course!
+									$lesson[]=array('id'=>$lessonid, 'course_id'=>$courseid2, 'cataloglesson_id'=>(!empty($cataloglessonid)?$cataloglessonid:null), 'hours'=>(!empty($_POST['hours'][$lessonid]))?$_POST['hours'][$lessonid]:null);
+								}
 							}							
 						}
 						break;					
@@ -167,11 +181,18 @@ public function delcataloglesson()
 						break;
 				}
 			 }
-		$updatedata = array('coursedata'=>$course, 'lessondata'=>$lesson);
-		// $this->firephp->info($updatedata);
+			$this->courselessons_model->insertupdatedata($course, $lesson);
+			} 
+			else 
+			{
+				$this->load->library('firephp');
+				$this->firephp->info($this->input->post('class_name'));
+				$this->firephp->info($this->input->post('class_name_text'));
+				$classid = $this->input->post('class_name');
+				$this->courselessons_model->updateclass($this->input->post('class_name'),$this->input->post('class_name_text'));
+				$data['class'] = $this->curriculum_model->get_classes();
+			}
 
-		$this->load->model('curriculum/courselessons_model');
-		$this->courselessons_model->insertupdatedata($course, $lesson);
 		}
 
 		$this->load->view('include/header');
@@ -191,8 +212,6 @@ public function delcataloglesson()
 		$data['user'] = $user;
 		$this->load->model('curriculum/tutorsperlesson_model');
    		
-   		// $this->load->library('firephp');		
-		
 		$lessons = $this->tutorsperlesson_model->get_cataloglessons();
 		if($lessons){$data['lesson'] = $lessons;}
 		
@@ -219,26 +238,12 @@ public function delcataloglesson()
 			if($alltutors){$data['alltutors'] = $alltutors;}
 		}
 		
-		// $this->firephp->info($lessons);
-		// $this->firephp->info($tutors);
-		// $this->firephp->info($alltutors);
-
 		$this->load->view('include/header');
 		$this->load->view('curriculum/tutorsperlesson', $data);
 		$footer_data['regs']=false;
 		$this->load->view('include/footer', $footer_data);
 	}
 	
-
-
-	public function logout()
-	{
-		$this->session->destroy();
-
-		$this->load->view('include/header');		
-		$this->load->view('login');
-		$this->load->view('include/footer');
-	}
 
 }
 

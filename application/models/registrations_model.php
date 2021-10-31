@@ -13,9 +13,10 @@ class Registrations_model extends CI_Model {
    		->db
          ->select(array('registration.id','registration.name','registration.surname','registration.std_book_no','class.class_name','course.course'))
          ->from('registration')
-         ->join('vw_schoolyear_reg_ids','registration.id=vw_schoolyear_reg_ids.id','right')
+         ->join('term', 'registration.term_id=term.id')
          ->join('class','registration.class_id=class.id', 'left')
          ->join('course','registration.course_id=course.id', 'left')
+         ->where('term.active', 1)
    		->get();
 
    	if ($query->num_rows() > 0) 
@@ -36,8 +37,11 @@ class Registrations_model extends CI_Model {
 
    public function newreg()
    {
+      //get active term
+      $termid = $this->db->select('term.id')->where('term.active',1)->get('term')->row()->id;
+      
       //insert new record in registration table
-      $data = array('id' => 'null' );
+      $data = array('id' => 'null', 'term_id' => $termid );
       $this->db->insert('registration', $data);
       $regid = $this->db->insert_id();
 
@@ -75,6 +79,30 @@ class Registrations_model extends CI_Model {
          };
 
       };
+   }
+
+   public function resubscribe($regid){
+   
+      //get active term
+      $termid = $this->db->select('term.id')->where('term.active',1)->get('term')->row()->id;
+
+      //copy anything from registration that remains the same
+      $MySQL1 = "INSERT INTO `registration` ";
+      $MySQL1 = $MySQL1."(`id`, `surname`, `name`, `address`, `region`, `class_id`, `course_id`, `month_price`, `confirm`, `notes`, `fathers_name`, `mothers_name`, `apy_receiver`, `apy_to_std`, `std_book_no`, `start_lessons_dt`, `del_lessons_dt`, `reg_dt`, `term_id`) ";
+      $MySQL1 = $MySQL1."SELECT NULL, `surname`, `name`, `address`, `region`, NULL, NULL, NULL, `confirm`, NULL, `fathers_name`, `mothers_name`, `apy_receiver`, `apy_to_std`, NULL, NULL, NULL,  CURDATE(), '".$termid."' ";
+      $MySQL1 = $MySQL1."FROM `registration` WHERE `id` = '".$regid.";' ";
+      $this->db->query($MySQL1);
+
+      $newregid = $this->db->insert_id();
+
+      //copy anything from contact that remains the same
+      $MySQL2 = "INSERT INTO `contact` ";
+      $MySQL2 = $MySQL2."(`id`, `mothers_mobile`, `fathers_mobile`, `std_mobile`, `home_tel`, `work_tel`, `reg_id`) ";
+      $MySQL2 = $MySQL2."SELECT NULL, `mothers_mobile`, `fathers_mobile`, `std_mobile`, `home_tel`, `work_tel`, '".$newregid."' ";
+      $MySQL2 = $MySQL2."FROM `contact` WHERE `reg_id` = '".$regid."' ";
+      $this->db->query($MySQL2);
+
+      return $newregid;
    }
 
 }

@@ -8,12 +8,16 @@ class History_model extends CI_Model {
    }
 
    public function get_apyhistorydata()
+   // if a recent apy is due to a previous term it will not show up here!!! 
+   // for a example if one pays for a previous term and the apy is issued with the current date and number!!
    {
     $query=$this->db
     ->select(array('registration.surname', 'registration.name', 'payment.apy_no', 'payment.apy_dt', 'payment.amount', 'payment.is_credit', 'payment.reg_id', 'payment.month_range', 'payment.notes' ))
     ->from('payment')
     ->join('registration', 'registration.id=payment.reg_id')
-    ->join('vw_schoolyear_reg_ids', 'vw_schoolyear_reg_ids.id = registration.id')
+    ->join('term', 'term.id=registration.term_id')
+    ->where('term.active', 1)
+    ->order_by('payment.apy_no', 'desc')
     ->get();
 
 

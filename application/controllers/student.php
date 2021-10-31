@@ -78,6 +78,26 @@ public function delreg($id){
 }
 
 
+public function resubscribe(){ 
+	header('Content-Type: application/x-json; charset=utf-8');
+	$data=$this->input->post();
+	// $this->load->library('firephp');
+	// $this->firephp->info($data);
+	if(isset($data['regid'])){
+		$this->load->model('registrations_model');
+		$newregid = $this->registrations_model->resubscribe($data['regid']);
+		if($newregid){
+			$result=array('success'=>'true', 'regid'=>$newregid);
+		}
+		else {
+			$result=array('success'=>'false');
+		}
+	}
+	echo json_encode($result);
+} 
+
+
+
 public function cancel($form=null, $id=null){
 	if (is_null($form) || is_null($id)) show_404();
 	if ($form=='card'){
@@ -170,7 +190,6 @@ public function card($id, $subsection=null, $innersubsection=null) {
 		$date_fields = array('start_lessons_dt','del_lessons_dt','reg_dt');
 		foreach ($_POST as $key => $value) 
 		{
-			
 			if (in_array($key,$date_fields))
 			{
 				$value = implode('-', array_reverse(explode('-', $value)));	
@@ -209,6 +228,8 @@ public function contact($id, $student, $user) {
 		{
 			$contact[$key]=$value;
 		};
+		// $this->load->library('firephp');
+		// $this->firephp->info(array($contact, $id));
 		$this->contact_model->update_contact_data($id, $contact);
 	}
 	else 
@@ -245,6 +266,7 @@ public function attendance($id, $innersubsection=null, $student, $user) {
 	$attendance_general = $this->attendance_model->get_attendance_general_data($id);
 	//$progress = $this->attendance_model->get_progress_data($id);
 	$absences_count = $this->attendance_model->count_absences($id);
+	$exams = $this->attendance_model->get_future_exams($id);
 
 	$data['absences_count']=$absences_count;
 	// $this->load->library('firephp');
@@ -272,7 +294,9 @@ public function attendance($id, $innersubsection=null, $student, $user) {
 		$data['dayprogram'] = $dayprogram;
 	}
 
-
+	if($exams){
+		$data['exams'] = $exams;
+	}
 
 	$this->load->view('include/header');
 
@@ -478,18 +502,24 @@ public function finance($id, $innersubsection=null, $student, $user) {
 	public function payment_batch_actions($action){
 		header('Content-Type: application/x-json; charset=utf-8');
 		$this->load->model('student/finance_model','', TRUE);
-		//$this->load->library('firephp');
- 		if ($action=='delete'){
+		// $this->load->library('firephp');
+		// $this->firephp->info($this->input->post());
+		if ($action=='delete'){
 	 		foreach ($this->input->post('select') as $payid => $value) {		
 				$this->finance_model->del_payment($payid);
 			};	
  		}
- 		else
- 		{
+ 		elseif ($action=='cancel'){
  			foreach ($this->input->post('select') as $payid => $value) {
 				$this->finance_model->cancel_payment($payid);
 			};		
- 		};
+ 		} 
+		else { // action=='move'
+			$regid = $this->input->post('regid');
+			foreach ($this->input->post('select') as $payid => $value) {
+				$this->finance_model->move_payment($payid, $regid);
+			};	
+		}
  		//MAYBE I'LL HAVE A TRY STATEMENT INSTEAD OF RETURNING SUCCESS...
  		$result=array('success'=>'true');
 		echo json_encode($result);
@@ -786,15 +816,5 @@ public function finance($id, $innersubsection=null, $student, $user) {
 
 //----------------------------END OF PAYMENT CHANGES--------------------------
 
-
-	public function logout()
-	{
-
-		$this->session->destroy();
-
-		$this->load->view('include/header');		
-		$this->load->view('login');
-		$this->load->view('include/footer');
-	}
 
 }
