@@ -50,25 +50,25 @@ $active_record = TRUE;
 
 // $db['default']['hostname'] = '10.185.9.101'; //for lan access without ssh (using tcpip)
 
-$db['default']['hostname'] = '127.0.0.1'; //for remote server access with ssh (using unix socket)
+$db['default']['hostname'] = 'mysql-server'; //for remote server access with ssh (using unix socket)
 //$db['default']['database'] = 'emnik_tuition'; 
 //$db['default']['port'] = '3307'; //for ssh port forwarding
 
 $db['default']['database'] = 'tuition_management';
 $db['default']['port'] = '3306';
 
-$db['default']['username'] = 'emnik_tuition';
-$db['default']['password'] = 'chalkidiki';
+$db['default']['username'] = 'root';
+$db['default']['password'] = 'secret';
 
 
-$db['default']['dbdriver'] = 'mysql';
+$db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
 $db['default']['db_debug'] = TRUE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = '';
 $db['default']['char_set'] = 'utf8';
-$db['default']['dbcollat'] = 'utf8_general_ci';
+$db['default']['dbcollat'] = 'utf8_unicode_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;

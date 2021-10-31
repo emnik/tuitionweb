@@ -29,7 +29,8 @@ class Login_model extends CI_Model
 			//->where('password', $password_sha1)
 			->bracket('open')
 			->where('expires >', date('Y-m-d', now()))
-			->or_where('expires','0000-00-00')
+			->or_where('expires',NULL)
+			->or_where('expires', '0000-00-00')
 			->bracket('close')
 			->limit(1)
 			->get('user');

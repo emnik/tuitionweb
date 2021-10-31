@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) die();
 
 Class Curriculum extends CI_Controller {
-	
+
 public function __construct() {
 		
 		parent::__construct();
@@ -170,6 +170,7 @@ public function delcataloglesson()
 		$updatedata = array('coursedata'=>$course, 'lessondata'=>$lesson);
 		// $this->firephp->info($updatedata);
 
+		$this->load->model('curriculum/courselessons_model');
 		$this->courselessons_model->insertupdatedata($course, $lesson);
 		}
 

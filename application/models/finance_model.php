@@ -147,7 +147,8 @@ class Finance_model extends CI_Model
 
     public function delzerodebts(){
     	//delete debts with zero amount!
-    	$this->db->delete('debt',array('amount'=>'0'));
+		$this->db->delete('debt',array('amount'=>'0'));
+		$this->db->delete('debt',array('amount'=> NULL));
     }
 
 

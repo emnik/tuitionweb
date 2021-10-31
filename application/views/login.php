@@ -52,7 +52,7 @@
             </div>
 
             <div class="panel-body">
-              <form action="<?php echo base_url()?>login" method="post" accept-charset="utf-8">
+              <form action="<?php echo base_url('login')?>" method="post" accept-charset="utf-8">
                 <div class="form-group col-sm-12">
                   <!-- <label>Όνομα χρήστη</label> -->
                   <input type="text" class="form-control input-lg" placeholder="Όνομα χρήστη" name="username"></input>

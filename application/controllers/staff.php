@@ -203,60 +203,60 @@ public function teachingplan($id, $innersubsection=null, $employee, $user){
 	};
 
 
-	$examdata = $this->teachingplan_model->get_exams_by_employeeid($id, $this->session->userdata('startsch'));
-	if($examdata)
-	{
-		//get the paricipants and merge the results with the examdata
-		foreach ($examdata as $row) {
-			$examids[]=$row['id'];
-			$participants = $this->teachingplan_model->get_participants($examids, $id);
-			if($participants)
-			{
-				$participants_list=array();
-				foreach ($participants as $key => $value) {
-					$participants_list[$key]="";
-					foreach ($value as $subkey => $subvalue) {
-						if($participants_list[$key]=="")
-						{
-							$participants_list[$key]=$subvalue;	
-						}
-						else
-						{
-							$participants_list[$key]=$participants_list[$key].', '.$subvalue;
-						}
-					}
-				}
-				foreach ($participants_list as $key1 => $value1) {
-					foreach ($examdata as $key2 => $value2) {
-						if($value2['id']==$key1)
-						{
-							$examdata[$key2]['sections'] = $value1;
-						}
-					}
-				}
-				$data['participants']=$participants;
-			}
-		}
+	// $examdata = $this->teachingplan_model->get_exams_by_employeeid($id, $this->session->userdata('startsch'));
+	// if($examdata)
+	// {
+	// 	//get the paricipants and merge the results with the examdata
+	// 	foreach ($examdata as $row) {
+	// 		$examids[]=$row['id'];
+	// 		$participants = $this->teachingplan_model->get_participants($examids, $id);
+	// 		if($participants)
+	// 		{
+	// 			$participants_list=array();
+	// 			foreach ($participants as $key => $value) {
+	// 				$participants_list[$key]="";
+	// 				foreach ($value as $subkey => $subvalue) {
+	// 					if($participants_list[$key]=="")
+	// 					{
+	// 						$participants_list[$key]=$subvalue;	
+	// 					}
+	// 					else
+	// 					{
+	// 						$participants_list[$key]=$participants_list[$key].', '.$subvalue;
+	// 					}
+	// 				}
+	// 			}
+	// 			foreach ($participants_list as $key1 => $value1) {
+	// 				foreach ($examdata as $key2 => $value2) {
+	// 					if($value2['id']==$key1)
+	// 					{
+	// 						$examdata[$key2]['sections'] = $value1;
+	// 					}
+	// 				}
+	// 			}
+	// 			$data['participants']=$participants;
+	// 		}
+	// 	}
 
-		$data['exam']=$examdata;
-	}
+	// 	$data['exam']=$examdata;
+	// }
 
-	$supervisor = $this->teachingplan_model->get_supervisor_dates($this->session->userdata('startsch'),$id);
-	if($supervisor)
-	{
-		$supervisor_dates="";
-		foreach ($supervisor as $key => $value) {
-			if($supervisor_dates=="")
-			{
-				$supervisor_dates='<strong>'.implode('-', array_reverse(explode('-', $value))).'</strong>';
-			}
-			else
-			{
-				$supervisor_dates = $supervisor_dates.' , <strong>'.implode('-', array_reverse(explode('-', $value))).'</strong>';
-			}
-		}
-		$data['supervisor'] = $supervisor_dates;
-	}
+	// $supervisor = $this->teachingplan_model->get_supervisor_dates($this->session->userdata('startsch'),$id);
+	// if($supervisor)
+	// {
+	// 	$supervisor_dates="";
+	// 	foreach ($supervisor as $key => $value) {
+	// 		if($supervisor_dates=="")
+	// 		{
+	// 			$supervisor_dates='<strong>'.implode('-', array_reverse(explode('-', $value))).'</strong>';
+	// 		}
+	// 		else
+	// 		{
+	// 			$supervisor_dates = $supervisor_dates.' , <strong>'.implode('-', array_reverse(explode('-', $value))).'</strong>';
+	// 		}
+	// 	}
+	// 	$data['supervisor'] = $supervisor_dates;
+	// }
 
 
 	// $this->load->library('firephp');

@@ -109,7 +109,7 @@ function get_section_students($section_id){
 	{
 
 		$query = $this->db->distinct()
-						  ->select(array('exam_schedule.id','exam_schedule.date','catalog_lesson.title', 'class.class_name' ,'course.course'))
+						  ->select(array('catalog_lesson.title', 'class.class_name' ,'course.course'))
 						  ->from('section')
 						  ->join('lesson_tutor', 'section.tutor_id = lesson_tutor.id')
 						  ->join('employee', 'lesson_tutor.employee_id = employee.id')
@@ -117,7 +117,7 @@ function get_section_students($section_id){
 						  ->join('lesson', 'section.lesson_id = lesson.id')
 						  ->join('course', 'lesson.course_id = course.id')
 						  ->join('class', 'course.class_id = class.id')
-						  ->join('exam_schedule', 'exam_schedule.lesson_id=section.lesson_id')
+						//   ->join('exam_schedule', 'exam_schedule.lesson_id=section.lesson_id')
 						  ->where('employee.id', $id)
 						  ->where('section.schoolyear', $startsch)
 						  ->get();

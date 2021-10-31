@@ -1,9 +1,15 @@
-<!--<link href="<?php echo base_url('assets/css/demo_table.css') ?>" rel="stylesheet">-->
+
+
+<!-- <script src="<?php echo base_url('assets/js/jquery.dataTables.min.js') ?>"></script> -->
+<!-- <script src="<?php echo base_url('assets/js/dataTables.bootstrap.js') ?>"></script>  -->
+
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js" ></script> -->
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap.min.js"></script>
+<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> -->
+<!-- <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap.min.css" rel="stylesheet"> -->
+
 <link href="<?php echo base_url('assets/css/dataTables.bootstrap.css') ?>" rel="stylesheet">
-
-<script src="<?php echo base_url('assets/js/jquery.dataTables.min.js') ?>"></script>
-<script src="<?php echo base_url('assets/js/dataTables.bootstrap.js') ?>"></script>
-
 
 <script type="text/javascript">
 
@@ -32,9 +38,10 @@ $(document).ready(function() {
         var anSelected = fnGetSelected( oTable );
         if ( anSelected.length !== 0 ) {
             var aRow=anSelected[0];
-            var id=oTable.fnGetData( aRow, 0 );
+              // var id=oTable.fnGetData( aRow, 0 );
+            var id=oTable.row(aRow).data()[0];
             window.open ('student/card/'+id,'_self',false);
-            //alert(id);
+            // alert(id);
         }
         else
         {
@@ -55,7 +62,8 @@ $(document).ready(function() {
             if (r==true)
             {
                 var aRow=anSelected[0];
-                var id=oTable.fnGetData( aRow, 0 );
+                // var id=oTable.fnGetData( aRow, 0 );
+                var id=oTable.row(aRow).data()[0];
                 window.open ('student/delreg/'+id,'_self',false);  
             }
          }
@@ -66,43 +74,32 @@ $(document).ready(function() {
     });
 
     /* Init the table */
-    oTable = $('#stdbook').dataTable( {
-    //"sDom": "<'row'<'col-md-6'l><'col-md-6' f> r>t<'row'<'col-md-6'i><'col-md-6'p>>",
-    "sDom": "<'row'<'col-xs-6 pull-left' l><'col-xs-6 pull-right' f> r><'row'<'col-md-12't>><'row'<'col-md-6'i><'col-md-6'p>>",
-    "sPaginationType": "bootstrap",
-    "aoColumnDefs": [
-      { "bVisible": false, "aTargets": [0] }, //hide id column
-      { "bSearchable": false, "aTargets": [4,5] }  //don't filter class name and course
+    oTable = $('#stdbook').DataTable( {
+      "responsive" : true,
+    // "sDom": "<'row'<'col-xs-6 pull-left' l><'col-xs-6 pull-right' f> r><'row'<'col-md-12't>><'row'<'col-md-6'i><'col-md-6'p>>",
+    // "sPaginationType": "bootstrap",
+    "columnDefs": [
+      { "visible": false, "targets": [0,1] }, //hide id and mathitologio columns
+      { "searchable": true, "targets": [4,5] }  //don't filter class name and course
       //they will be filtered via input boxes in the table footer!
     ],
-    "oLanguage": {
-              "oPaginate": {
-                  "sFirst":    "Πρώτη",
-                  "sPrevious": "",
-                  "sNext":     "",
-                  "sLast":     "Τελευταία"
+    "language": {
+              "paginate": {
+                  "first":    "Πρώτη",
+                  "previous": "",
+                  "next":     "",
+                  "last":     "Τελευταία"
               },
-              "sInfo": "Εμφανίζονται οι _START_ έως _END_ από τους _TOTAL_ μαθητές",
-              "sInfoEmpty": "Εμφάνιζονται 0 εγγραφές",
-              "sInfoFiltered": "Φιλτράρισμα από _MAX_ συνολικούς μαθητές",
-              //"sLengthMenu": "_MENU_ μαθητές ανά σελίδα",
-              "sLengthMenu": "_MENU_",
-              "sLoadingRecords": "Φόρτωση μαθητολογίου...",
-              "sProcessing": "Επεξεργασία...",   
-              //"sSearch": "Εύρεση μαθητή:",
-              "sSearch": "",
-              "sZeroRecords": "Δεν βρέθηκαν εγγραφές"
-              
-              // ΑΛΛΕΣ ΕΠΙΛΟΓΕΣ
-              
-              // "oAria": {
-              //    "sSortAscending": "",
-              //   "sSortDescending": ""
-              // },
-              // "sEmptyTable": " πίνακας είναι κενός",
-              // "sInfoPostFix": "",
-              // "sInfoThousands": ",",
-              // "sUrl": "",
+              "info": "Εμφανίζονται οι _START_ έως _END_ από τους _TOTAL_ μαθητές",
+              "infoEmpty": "Εμφάνιζονται 0 εγγραφές",
+              "infoFiltered": "Φιλτράρισμα από _MAX_ συνολικούς μαθητές",
+              //"lengthMenu": "_MENU_ μαθητές ανά σελίδα",
+              "lengthMenu": "_MENU_",
+              "loadingRecords": "Φόρτωση μαθητολογίου...",
+              "processing": "Επεξεργασία...",   
+              //"search": "Εύρεση μαθητή:",
+              "search": "",
+              "zeroRecords": "Δεν βρέθηκαν εγγραφές"
             }
 
        } );
@@ -111,7 +108,7 @@ $(document).ready(function() {
       $('#myModal').modal('show');
     <?php endif;?>
 
-   //bootstrap3 style fixes until datatables 1.10 is released with bootstrap3 support
+   //bootstrap3 style enchancements! 
 
    $('#stdbook_filter').find('input').addClass("form-control");
    $('#stdbook_filter label').contents().unwrap();
@@ -121,9 +118,9 @@ $(document).ready(function() {
    $('#stdbook_filter').append(fgroupDiv);
    $('#stdbook_filter').find('input').prependTo('#fgroupDiv');
    $('#stdbook_filter').find('input').attr('id','inputid');
-   $('#stdbook_filter').find('input').css({'max-width':'180px'});
+   $('#stdbook_filter').find('input').css({'margin-bottom':'10px'});
    var $searchlabel = $("<label>").attr('for', "#inputid");
-   $searchlabel.css({'margin-top':'5px','margin-bottom':'5px','margin-left':'0px', 'margin-right':'10px'})
+   $searchlabel.css({'margin-top':'0px','margin-bottom':'5px','margin-left':'0px', 'margin-right':'10px'})
    $searchlabel.addClass('pull-left');
    $searchlabel.text('Αναζήτηση:');
    $searchlabel.insertBefore('#inputid');
@@ -146,7 +143,6 @@ $(document).ready(function() {
    $sellabel.text('Μαθητές/σελ.: ');
    $sellabel.insertBefore('#selectid');
 
-   $('#stdbook_filter').parent().parent().css({'padding-bottom':'8px'});
 
 
 // HIDING COLUMNS FOR RESPONSIVE VIEW:
@@ -161,37 +157,46 @@ function resizeWindow(e)
 
     if(newWindowWidth > 1024)
     {
-      oTable.fnSetColumnVis( 1, true );
-      oTable.fnSetColumnVis( 4, true );
-      oTable.fnSetColumnVis( 5, true );
+      // oTable.fnSetColumnVis( 1, true );
+      // oTable.fnSetColumnVis( 4, true );
+      oTable.column(4).visible(true);
+      oTable.column(5).visible(true);
+      // oTable.fnSetColumnVis( 5, true );
     }
     else if((newWindowWidth >= 600) && (newWindowWidth <= 1024))
     {
-      oTable.fnSetColumnVis( 1, true );
-      oTable.fnSetColumnVis( 4, true );
-      oTable.fnSetColumnVis( 5, false );
+      // oTable.fnSetColumnVis( 1, true );
+      // oTable.fnSetColumnVis( 4, true );
+      // oTable.fnSetColumnVis( 5, false );
+      oTable.column(4).visible(true);
+      oTable.column(5).visible(false);
     }
     else if((newWindowWidth >= 440) && (newWindowWidth < 600))
     {
-      oTable.fnSetColumnVis( 1, true );
-      oTable.fnSetColumnVis( 4, false );
-      oTable.fnSetColumnVis( 5, false );
+      // oTable.fnSetColumnVis( 1, true );
+      // oTable.fnSetColumnVis( 4, false );
+      // oTable.fnSetColumnVis( 5, false );
+      oTable.column(4).visible(false);
+      oTable.column(5).visible(false);
     }
     else if(newWindowWidth < 440)
     {
-      oTable.fnSetColumnVis( 1, false );
-      oTable.fnSetColumnVis( 4, false );
-      oTable.fnSetColumnVis( 5, false );
+      // oTable.fnSetColumnVis( 1, false );
+      // oTable.fnSetColumnVis( 4, false );
+      // oTable.fnSetColumnVis( 5, false );
+      oTable.column(4).visible(false);
+      oTable.column(5).visible(false);
     }
 
 };
 
   //INDIVIDUAL COLUMN FILTERING
-  //To filter individual columns we add the input keys tou the table footer (see table code)
+  //To filter individual columns we add the input keys to the table footer (see table code)
 
   $("tfoot input").keyup( function () {
     /* Filter on the column (the index) of this element */
-    oTable.fnFilter( this.value, $("tfoot input").index(this)+4);//+4 is needed for getting the right  column index because I don't have input in every column!!! 
+    //oTable.fnFilter( this.value, $("tfoot input").index(this)+4);//+4 is needed for getting the right  column index because I don't have input in every column!!! 
+    oTable.column($("tfoot input").index(this)+4).search(this.value).draw();
   } );
   
   /*
@@ -221,6 +226,7 @@ function resizeWindow(e)
   $('li.dash').click(function(){
     $('#footerModal').modal();
   });
+
 
 } ); //end of document(ready) function
  
@@ -253,18 +259,18 @@ function resizeWindow(e)
            <li class="dropdown">
               <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li class="active"><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a></li>
-                <li><a href="<?php echo base_url()?>files">Αρχεία</a></li>
-                <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li>
-                <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li>
+                <li class="active"><a href="<?php echo base_url('student')?>">Μαθητολόγιο</a></li>
+                <li><a href="<?php echo base_url('exam')?>">Διαγωνίσματα</a></li>
+                <!-- <li><a href="<?php echo base_url()?>files">Αρχεία</a></li> -->
+                <!-- <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li> -->
+                <!-- <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li> -->
               </ul>
             </li>
            <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Οργάνωση/Διαχείριση<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-                <li><a href="<?php echo base_url()?>section">Τμήματα</a></li>
+                <li><a href="<?php echo base_url('staff')?>">Προσωπικό</a></li>
+                <li><a href="<?php echo base_url('section')?>">Τμήματα</a></li>
                 <li><a href="<?php echo base_url('curriculum/edit')?>">Πρόγραμμα Σπουδών</a></li>
                 <li><a href="<?php echo base_url('curriculum/edit/tutorsperlesson')?>">Μαθήματα-Διδάσκωντες</a></li>
                 <li><a href="<?php echo base_url()?>">Στοιχεία Φροντιστηρίου</a></li>
@@ -273,10 +279,10 @@ function resizeWindow(e)
            <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Συγκεντρωτικές Αναφορές<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url()?>">Αναφορές</a></li>
-                <li><a href="<?php echo base_url()?>">Ιστορικό</a></li>
-                <li><a href="<?php echo base_url()?>">Τηλ. Κατάλογοι</a></li>
-                <li><a href="<?php echo base_url()?>finance">Οικονομικά</a></li>
+                <li><a href="<?php echo base_url('reports')?>">Αναφορές</a></li>
+                <li><a href="<?php echo base_url('history')?>">Ιστορικό</a></li>
+                <li><a href="<?php echo base_url('telephones')?>">Τηλ. Κατάλογοι</a></li>
+                <li><a href="<?php echo base_url('finance')?>">Οικονομικά</a></li>
               </ul>
             </li>
         </ul>
@@ -286,7 +292,7 @@ function resizeWindow(e)
               <ul class="dropdown-menu">
                 <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url()?>student/logout">Αποσύνδεση</a></li>
+                <li><a href="<?php echo base_url('student/logout')?>">Αποσύνδεση</a></li>
               </ul>
             </li>
         </ul>

@@ -6,7 +6,32 @@ class Finance extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		
+		$session_user = $this->session->userdata('is_logged_in');
+		if(!empty($session_user))
+		{
+			// get the group and redirect to appropriate controller
+				$this->load->model('login_model');
+				$grp = $this
+					->login_model
+					->get_user_group($this->session->userdata('user_id'));
+				
+				switch ($grp->name)
+				{
+					case 'admin':
+						// redirect('welcome');
+						break;
+					// case 'tutor':
+					// 	redirect('tutor');
+					// 	break;
+					// case 'parent':
+					// 	redirect('parent');
+					// 	break;
+				}
+		}
+		else
+		{
+			redirect('login');
+		}
 	}
 	
 

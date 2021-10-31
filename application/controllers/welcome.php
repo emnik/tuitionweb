@@ -110,8 +110,19 @@ public function index() {
 			case 'submit6': // Διαγωνίσματα
 				redirect('exam');
 				break;
+
+			case 'submit7': // Τηλεφωνικοί Κατάλογοι
+				redirect('telephones');
+				break;
+
+			case 'submit8': // Ιστορικό
+				redirect('history');
+				break;		
+
+			case 'submit9': // Ιστορικό
+				redirect('reports');
+				break;							
 		}
-		
 	}
 	
 	$this->load->view('include/header');

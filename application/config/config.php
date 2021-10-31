@@ -1,5 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+date_default_timezone_set('Europe/Athens');
+
+ob_start();
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -14,7 +18,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost:8080/tuitionweb/';
+$config['base_url']	= 'http://192.168.0.12:8080/tuitionweb/';
 // $config['base_url']	= 'http://10.185.9.101/tuitionweb/';
 
 /*
@@ -261,12 +265,12 @@ $config['encryption_key'] = 'E48K+BVqggS86xf7qncvAElbvV3/g8k=';
 | 'sess_time_to_update'		= how many seconds between CI refreshing Session Information
 |
 */
-$config['sess_cookie_name']		= 'ci_session';
+$config['sess_cookie_name']		= 'cisession';
 $config['sess_expiration']		= 7200;
 $config['sess_expire_on_close']	= TRUE;
 $config['sess_encrypt_cookie']	= TRUE;
 $config['sess_use_database']	= FALSE;
-$config['sess_table_name']		= 'ci_sessions';
+$config['sess_table_name']		= 'cisessions';
 $config['sess_match_ip']		= FALSE;
 $config['sess_match_useragent']	= TRUE;
 $config['sess_time_to_update']	= 300;
@@ -283,7 +287,7 @@ $config['sess_time_to_update']	= 300;
 |
 */
 $config['cookie_prefix']	= "";
-$config['cookie_domain']	= "";
+$config['cookie_domain']	= str_replace("http://","",str_replace("https://","", $config['base_url']));
 $config['cookie_path']		= "/";
 $config['cookie_secure']	= FALSE;
 

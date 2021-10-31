@@ -142,7 +142,7 @@
             </div>
 
             <div class="col-sm-3 col-xs-6 welcome">
-              <button type="submit" class="btn-link" name="submit" value="submit6">
+              <button disabled type="submit" class="btn-link" name="submit" value="submit6">
                 <i class="icon-pencil icon-4x"></i>
                 <h4>Διαγωνίσματα</h4>
               </button>
@@ -155,7 +155,7 @@
             <div class="clearfix visible-xs"></div>
             
            
-            <div class="col-sm-3 col-xs-6 welcome">
+            <!-- <div class="col-sm-3 col-xs-6 welcome">
               <button disabled type="submit" class="btn-link" name="submit" value="submit8">
                 <i class="icon-paper-clip icon-4x"></i>
                 <h4>Αρχεία</h4>
@@ -163,7 +163,7 @@
               <div class="small">
                     Διαχείριση αρχείων
               </div>
-            </div>
+            </div> -->
 
             <div class="col-sm-3 col-xs-6 welcome">
               <button disabled type="submit" class="btn-link" name="submit" value="submit9">
@@ -176,7 +176,8 @@
               </div>
             </div>
 
-              <div class="col-sm-3 col-sm-pull-6 col-xs-6 welcome">
+              <div class="col-sm-3 col-xs-6 welcome">
+              <!-- <div class="col-sm-3 col-sm-pull-6 col-xs-6 welcome"> -->
                 <button disabled type="submit" class="btn-link" name="submit" value="submit9">
                   <i class="icon-bullhorn icon-4x"></i>
                   <h4>Ανακοινώσεις</h4>
@@ -270,7 +271,7 @@
             </div>
 
             <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
-              <button disabled type="submit" class="btn-link" name="submit" value="submit5">
+              <button type="submit" class="btn-link" name="submit" value="submit9">
                 <i class="icon-bookmark-empty icon-4x"></i>
                 <h4>Αναφορές</h4>
               </button>
@@ -285,7 +286,7 @@
 
 
             <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
-              <button disabled type="submit" class="btn-link" name="submit" value="submit7">
+              <button type="submit" class="btn-link" name="submit" value="submit8">
                 <i class="icon-time icon-4x"></i>
                 <h4>Ιστορικό</h4>
               </button>
@@ -298,7 +299,7 @@
             <div class="clearfix visible-xs"></div>
 
             <div class="col-sm-3 col-xs-6 welcome" style="display: none;">
-              <button disabled type="submit" class="btn-link" name="submit" value="submit7">
+              <button type="submit" class="btn-link" name="submit" value="submit7">
                 <i class="icon-phone icon-4x"></i>
                 <h4>Τηλ. Κατάλογοι</h4>
               </button>

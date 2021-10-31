@@ -28,30 +28,30 @@
            <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a></li>
-                <li><a href="<?php echo base_url()?>files">Αρχεία</a></li>
-                <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li>
-                <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li>
+                <li><a href="<?php echo base_url('student')?>">Μαθητολόγιο</a></li>
+                <li><a href="<?php echo base_url('exam')?>">Διαγωνίσματα</a></li>
+                <!-- <li><a href="<?php echo base_url()?>files">Αρχεία</a></li> -->
+                <!-- <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li> -->
+                <!-- <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li> -->
               </ul>
             </li>
            <li class="dropdown">
               <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Οργάνωση/Διαχείριση<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li class="active"><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-                <li><a href="<?php echo base_url()?>section">Τμήματα</a></li>
-                <li><a href="<?php echo base_url()?>curriculum/edit">Πρόγραμμα Σπουδών</a></li>
-                <li><a href="<?php echo base_url()?>curriculum/edit/tutorsperlesson">Μαθήματα-Διδάσκωντες</a></li>
+                <li class="active"><a href="<?php echo base_url('staff')?>">Προσωπικό</a></li>
+                <li><a href="<?php echo base_url('section')?>">Τμήματα</a></li>
+                <li><a href="<?php echo base_url('curriculum/edit')?>">Πρόγραμμα Σπουδών</a></li>
+                <li><a href="<?php echo base_url('curriculum/edit/tutorsperlesson')?>">Μαθήματα-Διδάσκωντες</a></li>
                 <li><a href="<?php echo base_url()?>">Στοιχεία Φροντιστηρίου</a></li>
               </ul>
             </li>
            <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Συγκεντρωτικές Αναφορές<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url()?>">Αναφορές</a></li>
-                <li><a href="<?php echo base_url()?>">Ιστορικό</a></li>
-                <li><a href="<?php echo base_url()?>">Τηλ. Κατάλογοι</a></li>
-                <li><a href="<?php echo base_url()?>finance">Οικονομικά</a></li>
+                <li><a href="<?php echo base_url('reports')?>">Αναφορές</a></li>
+                <li><a href="<?php echo base_url('history')?>">Ιστορικό</a></li>
+                <li><a href="<?php echo base_url('telephones')?>">Τηλ. Κατάλογοι</a></li>
+                <li><a href="<?php echo base_url('finance')?>">Οικονομικά</a></li>
               </ul>
             </li>
         </ul>
@@ -61,7 +61,7 @@
               <ul class="dropdown-menu">
                 <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url()?>staff/logout">Αποσύνδεση</a></li>
+                <li><a href="<?php echo base_url('staff/logout')?>">Αποσύνδεση</a></li>
               </ul>
             </li>
         </ul>

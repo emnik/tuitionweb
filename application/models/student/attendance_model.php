@@ -113,7 +113,7 @@ public function get_attendance_general_data($id){
 
 			//4.get all possible sections
 			$subquery1 = $this->db->distinct()
-								->select(array('CONCAT_WS(" ",`section`.`section`,`catalog_lesson`.`title`) as section_title', 'section.id'))
+								->select(array('CONCAT_WS(" ",`section`.`section`,`catalog_lesson`.`title`) as section_title', 'section.id', 'section.section'))
 								->from('section')
 								->join('lesson_tutor','section.tutor_id = lesson_tutor.id')
 								->join('catalog_lesson','lesson_tutor.cataloglesson_id = catalog_lesson.id')

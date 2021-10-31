@@ -1,15 +1,21 @@
-<link href="<?php echo base_url('assets/css/dataTables.bootstrap.css') ?>" rel="stylesheet">
+<!-- <link href="<?php echo base_url('assets/css/dataTables.bootstrap.css') ?>" rel="stylesheet"> -->
 <link href="<?php echo base_url('assets/tabletools/css/TableTools.css') ?>" rel="stylesheet">
 
-<script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/js/jquery.dataTables.min.js') ?>"></script>
-<script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/js/dataTables.bootstrap.js') ?>"></script>
-<script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/js/jquery.dataTables.rowGrouping.js') ?>"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jszip-2.5.0/dt-1.10.22/b-1.6.4/b-colvis-1.6.4/b-html5-1.6.4/b-print-1.6.4/fc-3.3.1/r-2.2.6/rg-1.1.2/sl-1.3.1/datatables.min.js"></script>
 
-<script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/tabletools/js/ZeroClipboard.js') ?>"></script> 
-<script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/tabletools/js/TableTools.min.js') ?>"></script>
+<!-- For date formating -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- <link href="<?php echo base_url('assets/css/dataTables.bootstrap.css') ?>" rel="stylesheet"> -->
+<link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap.min.css" rel="stylesheet">
+
 
 <style type="text/css">
-  .dataTables_processing{padding-left: 16px;}
+  /* .dataTables_processing{padding-left: 16px;} */
+  .dtrg-group.dtrg-start{background-color:lightgray;}
 </style>
 
 <script type="text/javascript">
@@ -38,6 +44,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
   $('#btnschoolyearupdate').click(function(){
         var selected_chkboxes = $('form').find(':input[type="checkbox"]:checked');
         var sData = selected_chkboxes.serialize();
+        console.log(sData);
         $.ajax({  
               type: "POST",  
               data: sData,
@@ -74,175 +81,203 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
     });
 
 
-  oTable1 = $('#tbl1').dataTable({
-    "sDom": "<'row'<'col-xs-6 pull-left' l><'col-xs-6 pull-right' f> r><'row'<'col-md-12'Tt>><'row'<'col-md-6'i><'col-md-6'p>>",
-    "oTableTools": {"sSwfPath": "../assets/tabletools/swf/copy_csv_xls_pdf.swf",
-                    "aButtons": [ 
-                                { "sExtends" : "copy",
-                                  "mColumns": [ 0, 1, 2]
-                                },
-                                { "sExtends" : "xls",
-                                  "sCharSet": "utf16le",
-                                  "mColumns": [ 0, 1, 2],
-                                  "sFileName": "Οφειλές ανά μήνα.xls"
-                                },
-                                // { //tabletools use AlivePDF library and does not support greek or unicode characters!!!
-                                //   "sExtends" : "pdf",
-                                //   "sCharSet": "utf8"
-                                // },
-                                { "sExtends" : "print"
-                                }
-                                ]
-                     },
-    "sPaginationType": "bootstrap",
-  	"bProcessing": true,
-  	"aaData":[],
-    "aoColumns": [
-    { "mData": "student" },
-    { "mData": "amount",
-      "mRender": function (data, type, full) {
-                if (data == null) {data=0};
-                return data+'€';},
-              "sType": "currency"},
-    { "mData": "name" },
-    { "mData": "priority" }
-		],
-    "oLanguage": {
-          "oPaginate": {
-              "sFirst":    "Πρώτη",
-              "sPrevious": "",
-              "sNext":     "",
-              "sLast":     "Τελευταία"
+  oTable1 = $('#tbl1').DataTable({
+    "buttons": [
+        // 'copy', 
+        {
+          extend: 'copy',
+            exportOptions: {
+            orthogonal: "exportCopy"
+          }
+        },
+        // 'excel', 
+        {
+          extend: 'excel',
+            exportOptions: {
+            orthogonal: "exportExcel"
+          }
+        },
+        // 'pdf', 
+        {
+          extend: 'pdf',
+          // add title to pdf
+          // title: function () { return "Ιστορικό ΑΠΥ"; },
+          exportOptions: {
+            orthogonal: "exportPdf"
+          }
+        },
+        // 'print'
+        {
+          extend: 'print',
+            exportOptions: {
+            orthogonal: "exportPrint"
+          }
+        },
+        ],
+    dom: 'Bfrtip',
+    "processing": true,
+    "columns": [
+    { "data": "student" },
+    { "data": "amount",
+      "render": function (data, type, row, meta) {
+                if (data == null) {data='0'};
+                if (type ==="display" || type ==="exportPdf" || type ==="exportPrint" ){
+                    return data+'€';
+                }
+                else 
+                {
+                    return data;
+                }
+              }
+            },
+    { "data": "name" },
+    { "data": "priority" }
+    ],
+    order: [[3, 'asc']],
+    rowGroup: {
+      dataSrc: "name"
+    },
+    columnDefs: [ {
+            targets: [ 2,3 ],
+            visible: false
+        } ],
+    "language": {
+          "paginate": {
+              "first":    "Πρώτη",
+              "previous": "",
+              "next":     "",
+              "last":     "Τελευταία"
           },
-          "sInfo": "Εμφανίζονται οι _START_ έως _END_ από τις _TOTAL_ οφειλές",
-          "sInfoEmpty": "Εμφάνιζονται 0 οφειλές",
-          "sInfoFiltered": "Φιλτράρισμα από _MAX_ συνολικά οφειλές",
-          "sLengthMenu": "_MENU_",
-          "sLoadingRecords": "Φόρτωση καταλόγου οφειλών...",
-          "sProcessing": "Επεξεργασία...",   
-          "sSearch": "",
-          "sZeroRecords": "Δεν βρέθηκαν οφειλές"
+          "info": "Εμφανίζονται οι _START_ έως _END_ από τις _TOTAL_ οφειλές",
+          "infoEmpty": "Εμφάνιζονται 0 οφειλές",
+          "infoFiltered": "Φιλτράρισμα από _MAX_ συνολικά οφειλές",
+          "lengthMenu": "_MENU_",
+          "loadingRecords": "Φόρτωση καταλόγου οφειλών...",
+          "processing": "Επεξεργασία...",   
+          "search": "Αναζήτηση:",
+          "zeroRecords": "Δεν βρέθηκαν οφειλές"
         }
-  }).rowGrouping({iGroupingColumnIndex:2,
-              bHideGroupingColumn:true,
-              iGroupingOrderByColumnIndex:3,
-              bHideGroupingOrderByColumn:true,//default:true 
-							sGroupBy: "name"});
-
+  })
 
  $('#link1').on('click', clicklink1);
+ $('#tbl1').css('width','100%');
 
 //------------------------------------------------------------------------------------
 
 
-  oTable2 = $('#tbl2').dataTable({
-    "sDom": "<'row'<'col-xs-6 pull-left' l><'col-xs-6 pull-right' f> r><'row'<'col-md-12'Tt>><'row'<'col-md-6'i><'col-md-6'p>>",
-    "oTableTools": {"sSwfPath": "../assets/tabletools/swf/copy_csv_xls_pdf.swf",
-                    "aButtons": [ 
-                                { "sExtends" : "copy",
-                                  "mColumns": [ 0, 1, 2]
-                                },
-                                { "sExtends" : "xls",
-                                  "sCharSet": "utf16le",
-                                  "mColumns": [ 0, 1, 2],
-                                  "sFileName": "Οφειλές στο σύνολο των μηνών ανά μαθητή.xls"
-                                },
-                                // { //tabletools use AlivePDF library and does not support greek or unicode characters!!!
-                                //   "sExtends" : "pdf",
-                                //   "sCharSet": "utf8"
-                                // },
-                                { "sExtends" : "print"
-                                }
-                                ]
-                     },
-    "sPaginationType": "bootstrap",
-    "bProcessing": true,
-    "aaData":[],
-    "aoColumns": [
-    { "mData": "student" },
-    { "mData": "totaldebt",
-      "mRender": function (data, type, full) {
-                if (data == null) {data=0};
-                return data+'€';},
-       "sType": "currency"},
-    { "mData": "months" }
+  oTable2 = $('#tbl2').DataTable({
+    "buttons": [
+        // 'copy', 
+        {
+          extend: 'copy',
+            exportOptions: {
+            orthogonal: "exportCopy"
+          }
+        },
+        // 'excel', 
+        {
+          extend: 'excel',
+            exportOptions: {
+            orthogonal: "exportExcel"
+          }
+        },
+        // 'pdf', 
+        {
+          extend: 'pdf',
+          // add title to pdf
+          // title: function () { return "Ιστορικό ΑΠΥ"; },
+          exportOptions: {
+            orthogonal: "exportPdf"
+          }
+        },
+        // 'print'
+        {
+          extend: 'print',
+            exportOptions: {
+            orthogonal: "exportPrint"
+          }
+        },
+        ],
+    dom: 'Bfrtip',
+    "processing": true,
+     "columns": [
+    { "data": "student" },
+    { "data": "totaldebt",
+      "render": function (data, type, row, meta) {
+                if (data == null) {data='0'};
+                if (type ==="display" || type ==="exportPdf" || type ==="exportPrint" ){
+                    return data+'€';
+                }
+                else 
+                {
+                  return data;
+                }
+              }
+            },
+    { "data": "months"}
     ],
-    "oLanguage": {
-          "oPaginate": {
-              "sFirst":    "Πρώτη",
-              "sPrevious": "",
-              "sNext":     "",
-              "sLast":     "Τελευταία"
+    order: [[2, 'desc']],
+    rowGroup: {
+      dataSrc: "months"
+    },
+    columnDefs: [ {
+            targets: [ 2 ],
+            visible: false
+        } ],
+    "language": {
+          "paginate": {
+              "first":    "Πρώτη",
+              "previous": "",
+              "next":     "",
+              "last":     "Τελευταία"
           },
-          "sInfo": "Εμφανίζονται οι _START_ έως _END_ από τις _TOTAL_ εγγραφές",
-          "sInfoEmpty": "Εμφάνιζονται 0 εγγραφές",
-          "sInfoFiltered": "Φιλτράρισμα από _MAX_ συνολικά εγγραφές",
-          "sLengthMenu": "_MENU_",
-          "sLoadingRecords": "Φόρτωση καταλόγου ...",
-          "sProcessing": "Επεξεργασία...",   
-          "sSearch": "",
-          "sZeroRecords": "Δεν βρέθηκαν οφειλές"
+          "info": "Εμφανίζονται οι _START_ έως _END_ από τις _TOTAL_ εγγραφές",
+          "infoEmpty": "Εμφάνιζονται 0 εγγραφές",
+          "infoFiltered": "Φιλτράρισμα από _MAX_ συνολικά εγγραφές",
+          "lengthMenu": "_MENU_",
+          "loadingRecords": "Φόρτωση καταλόγου ...",
+          "processing": "Επεξεργασία...",   
+          "search": "Αναζήτηση:",
+          "zeroRecords": "Δεν βρέθηκαν οφειλές"
         }
-  }).rowGrouping({iGroupingColumnIndex:2,
-              bHideGroupingColumn:true,
-              sGroupingColumnSortDirection: "desc",
-              iGroupingOrderByColumnIndex:2,
-              bHideGroupingOrderByColumn:true,//default:true 
-              sGroupBy: "name"});
-
+  })
 
   $('#link2').on('click', clicklink2);
+  $('#tbl2').css('width','100%');
 
-//------------------------------------------------------------------------------------
+// //------------------------------------------------------------------------------------
 
-    oTable3 = $('#tbl3').dataTable( {
-        "bProcessing": true,
-        "aaData":[], 
-        "aoColumns": [
-            { "mData": "Μήνας",
-              "sClass":"col-md-3"},
-            { "mData": "Εισπράξεις",
-              "sClass":"col-md-3",
-              "mRender": function (data, type, full) {
+    oTable3 = $('#tbl3').DataTable( {
+        "responsive": true,
+        "processing": true,
+        // "aaData":[], 
+        "columns": [
+            { "data": "Μήνας",
+              "class":"col-md-3"},
+            { "data": "Εισπράξεις",
+              "class":"col-md-3",
+              "render": function (data, type, row, meta) {
                 return data+'€';
               }
             },
-            { "mData": "Οφειλές",
-            "sClass":"col-md-3",
-             "mRender": function (data, type, full) {
+            { "data": "Οφειλές",
+            "class":"col-md-3",
+             "render": function (data, type, row, meta) {
                 return data+'€';
               }
             },
-            { "mData": "Τζίρος",
-            "sClass":"col-md-3",
-             "mRender": function (data, type, full) {
+            { "data": "Τζίρος",
+            "class":"hidden-xs col-md-3",
+             "render": function (data, type, row, meta) {
                 return data+'€';
              }},
              ],
-        "sDom": "<'row'<'col-md-12'rTt>>",
-        "oTableTools": {"sSwfPath": "../assets/tabletools/swf/copy_csv_xls_pdf.swf",
-                "aButtons": [ 
-                            { "sExtends" : "copy",
-                              "mColumns": [ 0, 1, 2, 3]
-                            },
-                            { "sExtends" : "xls",
-                              "sCharSet": "utf16le",
-                              "mColumns": [ 0, 1, 2, 3],
-                              "sFileName": "Σύνοψη ανα μήνα.xls"
-                            },
-                            // { //tabletools use AlivePDF library and does not support greek or unicode characters!!!
-                            //   "sExtends" : "pdf",
-                            //   "sCharSet": "utf8"
-                            // },
-                            { "sExtends" : "print"
-                            }
-                            ]
-                 },
-        "bSort": false,
-        "bFilter": false,
-        "bPaginate": false,
-        "oLanguage": {"sZeroRecords": "Δεν βρέθηκαν εγγραφές"},
-        "fnFooterCallback": function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
+        // "dom": "<'row'<'col-md-12'rTt>>",
+        "sort": false,
+        "filter": false,
+        "paginate": false,
+        "language": {"zeroRecords": "Δεν βρέθηκαν εγγραφές"},
+        "footerCallback": function ( nRow, aaData, iStart, iEnd, aiDisplay ) {
             /*
              * Calculate the total market share for all browsers in this table (ie inc. outside
              * the pagination)
@@ -267,81 +302,41 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
      } );
 
     $('#link3').on('click', clicklink3);
+    $('#tbl3').css('width','100%');
 //------------------------------------------------------------------------------------
 
    //bootstrap3 style fixes until datatables 1.10 is released with bootstrap3 support
 
-   $('#tbl1_filter').find('input').addClass("form-control");
-   $('#tbl1_filter label').contents().unwrap();
-   var fgroupDiv1 = document.createElement('div');
-   fgroupDiv1.id="fgroupDiv1";
-   fgroupDiv1.className = 'form-group pull-right';
-   $('#tbl1_filter').append(fgroupDiv1);
-   $('#tbl1_filter').find('input').prependTo('#fgroupDiv1');
-   $('#tbl1_filter').find('input').attr('id','inputid1');
-   $('#tbl1_filter').find('input').css({'max-width':'180px'});
-   var $searchlabel = $("<label>").attr('for', "#inputid1");
-   $searchlabel.css({'margin-top':'5px','margin-bottom':'5px','margin-left':'0px', 'margin-right':'10px'})
-   $searchlabel.addClass('pull-left');
-   $searchlabel.text('Αναζήτηση:');
-   $searchlabel.insertBefore('#inputid1');
 
-   $('#tbl1_length').find('select').addClass("form-control");
-   $('#tbl1_length label').contents().unwrap();
-   var lgroupDiv1 = document.createElement('div');
-   lgroupDiv1.id="lgroupDiv1";
-   lgroupDiv1.className = 'form-group pull-left';
-   var innerlgroupDiv1 = document.createElement('div');
-   innerlgroupDiv1.id="innerlgroupDiv1"
-   innerlgroupDiv1.className = 'clearfix';
-   $('#tbl1_length').append(lgroupDiv1);
-   $('#lgroupDiv1').append(innerlgroupDiv1);
-   $('#tbl1_length').find('select').prependTo('#innerlgroupDiv1');
-   $('#tbl1_length').find('select').attr('id','selectid1');
-   $('#tbl1_length').find('select').css('max-width','75px');
-   var $sellabel = $("<label>").attr('for', "#selectid1");
-   $sellabel.css({'min-width':'110px', 'margin-top':'5px'});
-   $sellabel.text('Οφειλές/σελ.: ');
-   $sellabel.insertBefore('#selectid1');
+$('#tbl1_filter').addClass("pull-left");
+$('#tbl1_length').css({"margin-top":"10px"});
+$('#tbl1_search').addClass("pull-left");
+$('#tbl1_length').css({"text-align":"left"});
 
-   $('#tbl1_filter').parent().parent().css({'padding-bottom':'8px'});
+$('#tbl2_filter').addClass("pull-left");
+$('#tbl2_length').css({"margin-top":"10px"});
+$('#tbl2_search').addClass("pull-left");
+$('#tbl2_length').css({"text-align":"left"});
 
-   $('#tbl2_filter').find('input').addClass("form-control");
-   $('#tbl2_filter label').contents().unwrap();
-   var fgroupDiv2= document.createElement('div');
-   fgroupDiv2.id="fgroupDiv2";
-   fgroupDiv2.className = 'form-group pull-right';
-   $('#tbl2_filter').append(fgroupDiv2);
-   $('#tbl2_filter').find('input').prependTo('#fgroupDiv2');
-   $('#tbl2_filter').find('input').attr('id','inputid2');
-   $('#tbl2_filter').find('input').css({'max-width':'180px'});
-   var $searchlabel = $("<label>").attr('for', "#inputid2");
-   $searchlabel.css({'margin-top':'5px','margin-bottom':'5px','margin-left':'0px', 'margin-right':'10px'})
-   $searchlabel.addClass('pull-left');   
-   $searchlabel.text('Αναζήτηση:');
-   $searchlabel.insertBefore('#inputid2');
+$(".dt-buttons").css({"margin-bottom":"10px"})
 
-   $('#tbl2_length').find('select').addClass("form-control");
-   $('#tbl2_length label').contents().unwrap();
-   var lgroupDiv2= document.createElement('div');
-   lgroupDiv2.id="lgroupDiv2"
-   lgroupDiv2.className = 'form-group pull-left';
-   var innerlgroupDiv2= document.createElement('div');
-   innerlgroupDiv2.id="innerlgroupDiv2"
-   innerlgroupDiv2.className = 'clearfix';
-   $('#tbl2_length').append(lgroupDiv2);
-   $('#lgroupDiv2').append(innerlgroupDiv2);
-   $('#tbl2_length').find('select').prependTo('#innerlgroupDiv2');
-   $('#tbl2_length').find('select').attr('id','selectid2');
-   $('#tbl2_length').find('select').css('max-width','75px');
-   var $sellabel = $("<label>").attr('for', "#selectid2");
-   $sellabel.css({'min-width':'110px', 'margin-top':'5px'});
-   $sellabel.text('Εγγραφές/σελ.: ');
-   $sellabel.insertBefore('#selectid2');
 
-   $('#tbl2_filter').parent().parent().css({'padding-bottom':'8px'});
+$(window).on("resize", function (e) {
+        checkScreenSize();
+    });
+    checkScreenSize();
 
-     
+    function checkScreenSize(){
+        var newWindowWidth = $(window).width();
+        if (newWindowWidth < 481) {
+            $(".dt-buttons").removeClass("pull-right");
+        }
+        else
+        {
+            $(".dt-buttons").addClass("pull-right");
+        }
+    }
+
 }) //end of (document).ready(function())
 
 function clicklink1(){
@@ -350,9 +345,8 @@ function clicklink1(){
               url: "<?php echo base_url()?>finance/getschoolreport1data",  
               success: function(data) {  
                    if (data!=false){
-                      oTable1.fnClearTable();
-                      oTable1.fnAddData(data.aaData);
-                      resizeFlashTableToolsBtn();
+                      oTable1.clear();
+                      oTable1.rows.add(data.aaData).draw();
               $('#link1').off('click');
               }
               }
@@ -367,9 +361,8 @@ function clicklink2(){
               url: "<?php echo base_url()?>finance/getschoolreport2data",  
               success: function(data) {  
                    if (data!=false){
-                      oTable2.fnClearTable();
-                      oTable2.fnAddData(data.aaData);
-                      resizeFlashTableToolsBtn();
+                      oTable2.clear();
+                      oTable2.rows.add(data.aaData).draw();
               $('#link2').off('click');
             }
               }
@@ -383,54 +376,13 @@ function clicklink3(){
               url: "<?php echo base_url();?>finance/getschfinancedata",  
               success: function(data) {  
                    if (data!=false){
-                      oTable3.fnClearTable();
-                      oTable3.fnAddData(data.aaData);
-                      resizeFlashTableToolsBtn();
+                      oTable3.clear();
+                      oTable3.rows.add(data.aaData).draw();
               $('#link3').off('click');
             }
               }
           });
   };
-
-
-function resizeFlashTableToolsBtn(){
-       //the following is needed when the table is hidden on load!
-      //see http://stackoverflow.com/questions/11848593/datatables-tabletools-multiple-tables-on-the-same-page/18588847#18588847
-      var tableInstances = TableTools.fnGetMasters(), instances = tableInstances.length;
-      while (instances--)
-      {
-          var dataTable = tableInstances[instances];
-          if (dataTable.fnResizeRequired())
-          {
-              dataTable.fnResizeButtons();
-          }
-      }
-}
-
-// Set the classes that TableTools uses to something suitable for Bootstrap
-$.extend( true, $.fn.DataTable.TableTools.classes, {
-  "container": "DTTT_container btn-group",
-  "buttons": {
-    "normal": "btn btn-default btn-sm",
-    "disabled": "btn disabled"
-  },
-  "collection": {
-    "container": "ul DTTT_dropdown dropdown-menu",
-    "buttons": {
-      "normal": "",
-      "disabled": "disabled"
-    }
-  }
-} );
-
-// Have the collection use a bootstrap compatible dropdown
-$.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
-  "collection": {
-    "container": "ul",
-    "button": "li",
-    "liner": "a"
-  }
-} );
 
 </script>
 
@@ -455,18 +407,18 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
            <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Λειτουργία<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a></li>
-                <li><a href="<?php echo base_url()?>exam">Διαγωνίσματα</a></li>
-                <li><a href="<?php echo base_url()?>files">Αρχεία</a></li>
-                <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li>
-                <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li>
+                <li><a href="<?php echo base_url('student')?>">Μαθητολόγιο</a></li>
+                <li><a href="<?php echo base_url('exam')?>">Διαγωνίσματα</a></li>
+                <!-- <li><a href="<?php echo base_url()?>files">Αρχεία</a></li> -->
+                <!-- <li><a href="<?php echo base_url()?>cashdesk">Ταμείο</a></li> -->
+                <!-- <li><a href="<?php echo base_url()?>announcements">Ανακοινώσεις</a></li> -->
               </ul>
             </li>
            <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Οργάνωση/Διαχείριση<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url()?>staff">Προσωπικό</a></li>
-                <li><a href="<?php echo base_url()?>section">Τμήματα</a></li>
+                <li><a href="<?php echo base_url('staff')?>">Προσωπικό</a></li>
+                <li><a href="<?php echo base_url('section')?>">Τμήματα</a></li>
                 <li><a href="<?php echo base_url('curriculum/edit')?>">Πρόγραμμα Σπουδών</a></li>
                 <li><a href="<?php echo base_url('curriculum/edit/tutorsperlesson')?>">Μαθήματα-Διδάσκωντες</a></li>
                 <li><a href="<?php echo base_url()?>">Στοιχεία Φροντιστηρίου</a></li>
@@ -475,10 +427,10 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
            <li class="dropdown">
               <a href="#" class="dropdown-toggle active" data-toggle="dropdown">Συγκεντρωτικές Αναφορές<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="<?php echo base_url()?>">Αναφορές</a></li>
-                <li><a href="<?php echo base_url()?>">Ιστορικό</a></li>
-                <li><a href="<?php echo base_url()?>">Τηλ. Κατάλογοι</a></li>
-                <li class="active"><a href="<?php echo base_url()?>finance">Οικονομικά</a></li>
+                <li><a href="<?php echo base_url('reports')?>">Αναφορές</a></li>
+                <li><a href="<?php echo base_url('history')?>">Ιστορικό</a></li>
+                <li><a href="<?php echo base_url('telephones/students')?>">Τηλ. Κατάλογοι</a></li>
+                <li class="active"><a href="<?php echo base_url('finance')?>">Οικονομικά</a></li>
               </ul>
             </li>
         </ul>
@@ -488,7 +440,7 @@ $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
               <ul class="dropdown-menu">
                 <li class="dropdown-header"><?php echo $user->surname.' '.$user->name;?></li>
                 <li><a href="#">Αλλαγή κωδικού</a></li>
-                <li><a href="<?php echo base_url()?>finance/logout">Αποσύνδεση</a></li>
+                <li><a href="<?php echo base_url('finance/logout')?>">Αποσύνδεση</a></li>
               </ul>
             </li>
         </ul>

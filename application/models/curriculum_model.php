@@ -13,7 +13,7 @@ class Curriculum_model extends CI_Model {
       $query=$this
          ->db
          ->select('*')
-         ->order_by('priority')
+         ->order_by('id')
          ->get('class');
 
 
