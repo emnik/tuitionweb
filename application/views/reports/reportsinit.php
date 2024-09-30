@@ -76,13 +76,14 @@
 
                     <div class="col-sm-3 col-xs-6 welcome">
                         <button type="submit" class="btn-link" name="submit" value="submit7">
-                            <i class="icon-phone icon-4x"></i>
-                            <h4>Τηλ. Κατάλογοι</h4>
+                            <i class="icon-comments-alt icon-4x"></i>
+                            <h4>Επικοινωνία</h4>
                         </button>
                         <div class="small">
-                            Μαθητών /
-                            Προσωπικού /
-                            Ομαδικά SMS / Επαφές Google
+                        Τηλεφωνικοί Κατάλογοι
+                        Μαθητών /
+                        Προσωπικού /
+                        Ομαδικά SMS / Επαφές Google, Λίστα Ηλ. Ταχυδρομείου
                         </div>
                     </div>
 

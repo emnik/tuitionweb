@@ -38,7 +38,7 @@ $(document).ready(function(){
   //Menu current active links and Title
   $('#menu-reports-summary').addClass('active');
   $('#menu-telephones').addClass('active');
-  $('#menu-header-title').text('Τηλεφωνικοί Κατάλογοι');
+  $('#menu-header-title').text('Επικοινωνία');
 
 // add sorting methods for currency columns
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
@@ -335,7 +335,7 @@ function clicklink1(){
 	      <ul class="breadcrumb">
 	        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
           <li class="active"><a href="<?php echo base_url('reports/initial')?>">Συγκεντρωτικές Αναφορές</a></li>
-	        <li class="active">Τηλ. Κατάλογοι</li>
+	        <li class="active">Επικοινωνία</li>
 	      </ul>
       </div>
       
@@ -348,6 +348,7 @@ function clicklink1(){
     <ul class="nav nav-tabs">
         <li class="active"><a href="<?php echo base_url('telephones')?>">Τηλέφωνα</a></li>
         <li><a href="<?php echo base_url('telephones/exports')?>">Ομαδικά SMS / Επαφές Google</a></li>
+        <li><a href="<?php echo base_url('mailinglist')?>">Λίστα Ηλ. Ταχυδρομείου</a></li>
       </ul>
 
       <p></p>

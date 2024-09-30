@@ -47,7 +47,7 @@ $(document).ready(function(){
       var r = confirm('Πρόκειται να διαγράψετε '+count+' μαθήματα. Η ενέργεια αυτή δεν αναιρείται. Θέλετε να συνεχίσετε;');
       if (r==true){
         var sData = oTable.$('input').serialize();
-        sData = sData+'&'+'stdid='+<?php echo $student['id']?>;
+        sData = sData+'&'+'stdid='+<?php echo (isset($student['id']) ? $student['id'] : '')?>;
         //console.log(sData);
         $.ajax({  
                   type: "POST",  
@@ -133,7 +133,7 @@ $(document).ready(function(){
         sectionName = $('#sectiongroups').val();
         var sData={
           'sectionName':sectionName,
-          'stdid':"<?php echo $student['id']?>"
+          'stdid':"<?php echo (isset($student['id']) ? $student['id'] : '')?>"
         };
         var c = confirm("Πρόκειται να εισάγετε το μαθητή σε όλα τα μαθήματα του τμήματος "+sectionName+". Θέλετε να συνεχίσετε;" );
         if (c==true){
@@ -309,28 +309,28 @@ function noprograminfo(){
         <ul class="breadcrumb">
           <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
           <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> </li>
-          <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> </li>
-          <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Φοίτηση</a> </li>
+          <li><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>">Καρτέλα μαθητή</a> </li>
+          <li><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/attendance">Φοίτηση</a> </li>
           <li class="active">Διαχείριση</li>
           <!-- <li class="dash"><i class="icon-dashboard icon-small"></i></li> -->
         </ul>
       </div>
       
       <p>
-        <h3><?php echo $student['surname'].' '.$student['name']?></h3>
+        <h3><?php echo (isset($student['surname']) ? $student['surname'] : '') . ' ' . (isset($student['name']) ? $student['name'] : '');?></h3>
       </p>
       
 
       <ul class="nav nav-tabs">
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Στοιχεία</a></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/contact">Επικοινωνία</a></li>
-        <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Φοίτηση</a></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a></li>
+        <li><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>">Στοιχεία</a></li>
+        <li><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/contact">Επικοινωνία</a></li>
+        <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/attendance">Φοίτηση</a></li>
+        <li><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/finance">Οικονομικά</a></li>
       </ul>
      
       <ul class="nav nav-pills" style="margin:15px 0px;">
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Σύνοψη</a></li>
-        <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/manage">Διαχείριση</a></li>
+        <li><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/attendance">Σύνοψη</a></li>
+        <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/attendance/manage">Διαχείριση</a></li>
       </ul>
 
 

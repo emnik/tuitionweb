@@ -19,6 +19,10 @@
 
    <link href="<?php echo base_url('assets/css/custom.css') ?>" rel="stylesheet">
 
+   <!-- CKeditor -->
+   <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.css">
+   <link href="<?php echo base_url('assets/css/ckeditor.css') ?>" rel="stylesheet">
+
    <!-- Fonts -->
    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 
@@ -33,6 +37,7 @@
    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script> -->
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   
+   
    <script src="<?php echo base_url('assets/FooTable-2/js/footable.js') ?>"></script>
  
 

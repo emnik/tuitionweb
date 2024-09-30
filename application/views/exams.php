@@ -190,9 +190,9 @@ $(document).ready(function() {
                       <tr>
                         <td><?php echo $data["id"];?></td>
                         <td><?php echo $data["name"];?></td>
-                        <td><?php echo implode('-', array_reverse(explode('-', $data['date'])));?></td>
-                        <td><?php echo date('H:i', strtotime($data['start']))?></td>
-                        <td><?php echo date('H:i', strtotime($data['end']))?></td>
+                        <td><?php echo (!empty($data['date'])?implode('-', array_reverse(explode('-', $data['date']))):'');?></td>
+                        <td><?php echo (!empty($data['start'])?date('H:i', strtotime($data['start'])):'');?></td>
+                        <td><?php echo (!empty($data['end'])?date('H:i', strtotime($data['end'])):'');?></td>
                       </tr>            
                     <?php endforeach;?>
                   <?php endif;?>

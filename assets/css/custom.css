@@ -650,7 +650,7 @@ li.select2-search-choice {
 /* adjust body when menu is open */
 
 body.slide-active {
-  overflow-x: hidden
+  overflow-x: hidden;
 }
 
 /*first child of #page-content so it doesn't shift around*/

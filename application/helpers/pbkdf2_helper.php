@@ -7,7 +7,7 @@
 
 // These constants may be changed without breaking existing hashes.
 define("PBKDF2_HASH_ALGORITHM", "sha256");
-define("PBKDF2_ITERATIONS", 50000);
+define("PBKDF2_ITERATIONS", 20000);
 define("PBKDF2_SALT_BYTES", 24);
 define("PBKDF2_HASH_BYTES", 24);
 
@@ -20,7 +20,9 @@ define("HASH_PBKDF2_INDEX", 3);
 function create_hash($password)
 {
     // format: algorithm:iterations:salt:hash
-    $salt = base64_encode(mcrypt_create_iv(PBKDF2_SALT_BYTES, MCRYPT_DEV_URANDOM));
+    // $salt = base64_encode(mcrypt_create_iv(PBKDF2_SALT_BYTES, MCRYPT_DEV_URANDOM));
+    $salt_bytes = PBKDF2_HASH_BYTES;
+    $salt = base64_encode(openssl_random_pseudo_bytes($salt_bytes));
     return PBKDF2_HASH_ALGORITHM . ":" . PBKDF2_ITERATIONS . ":" .  $salt . ":" . 
         base64_encode(pbkdf2(
             PBKDF2_HASH_ALGORITHM,

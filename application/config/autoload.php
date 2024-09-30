@@ -39,6 +39,27 @@
 
 $autoload['packages'] = array();
 
+/*
+| -------------------------------------------------------------------
+|  Auto-load Drivers
+| -------------------------------------------------------------------
+| These classes are located in system/libraries/ or in your
+| application/libraries/ directory, but are also placed inside their
+| own subdirectory and they extend the CI_Driver_Library class. They
+| offer multiple interchangeable driver options.
+|
+| Prototype:
+|
+|	$autoload['drivers'] = array('cache');
+|
+| You can also supply an alternative property name to be assigned in
+| the controller:
+|
+|	$autoload['drivers'] = array('cache' => 'cch');
+|
+*/
+$autoload['drivers'] = array();
+
 
 /*
 | -------------------------------------------------------------------
@@ -96,8 +117,10 @@ $autoload['config'] = array();
 |
 */
 
-$autoload['language'] = array();
-
+$autoload['language'] = array(); //this is for custom translation files NOT the default language!
+// As I've set the default language as greek in application/config/config.php
+// the statement below will autoload application/language/greek/fieldnames_lang file!
+// $autoload['language'] = array('fieldnames'); 
 
 /*
 | -------------------------------------------------------------------

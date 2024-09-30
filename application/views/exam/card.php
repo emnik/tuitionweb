@@ -439,7 +439,7 @@
                                                 <div class="col-md-12 col-xs-12">
                                                     <div class="form-group">
                                                         <label>Όνομα</label>
-                                                        <input disabled class="form-control" id="name" type="text" placeholder="Κύκλος [Α-Δ] - Ομάδα Διαγωνισμάτων #" name="name" value="<?php echo $examcard['name'];?>">
+                                                        <input disabled class="form-control" id="name" type="text" placeholder="Κύκλος [Α-Δ] - Ομάδα Διαγωνισμάτων #" name="name" value="<?php echo (!empty($examcard['name'])?$examcard['name']:'');?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -447,19 +447,19 @@
                                                 <div class="col-md-4 col-xs-12">
                                                     <div class="form-group datecontainer">
                                                         <label>Ημερομηνία</label>
-                                                        <input disabled class="form-control" id="date" type="text" placeholder="" name="date" value="<?php echo implode('-', array_reverse(explode('-', $examcard['date']))); ?>">
+                                                        <input disabled class="form-control" id="date" type="text" placeholder="" name="date" value="<?php echo (!empty($examcard['date'])?implode('-', array_reverse(explode('-', $examcard['date']))):''); ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4 col-xs-6">
                                                     <div class="form-group timecontainer">
                                                         <label>Ώρα έναρξης</label>
-                                                        <input disabled class="form-control" id="start" type="text" placeholder="" name="start" value="<?php echo date('H:i', strtotime($examcard['start'])); ?>">
+                                                        <input disabled class="form-control" id="start" type="text" placeholder="" name="start" value="<?php echo (!empty($examcard['start'])?date('H:i', strtotime($examcard['start'])):''); ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4 col-xs-6">
                                                     <div class="form-group timecontainer">
                                                         <label>Ώρα Λήξης</label>
-                                                        <input disabled class="form-control" id="end" type="text" placeholder="" name="end" value="<?php echo date('H:i', strtotime($examcard['end'])); ?>">
+                                                        <input disabled class="form-control" id="end" type="text" placeholder="" name="end" value="<?php echo (!empty($examcard['end'])?date('H:i', strtotime($examcard['end'])):''); ?>">
                                                     </div>
                                                 </div>                                                
                                                 <div class="col-md-12">

@@ -200,7 +200,7 @@
                       </div>
                       <h3>
                         Τάξεις:
-                        <?php echo $stats['classcount']; ?>
+                        <?php echo (!empty($stats['classcount'])?$stats['classcount']:'0'); ?>
                       </h3>
                     </div>
                     <div class="col-xs-6 col-md-3 stats">
@@ -210,7 +210,7 @@
                       </div>
                     <h3>
                         Τμήματα:
-                        <?php echo $stats['sectionscount']; ?>
+                        <?php echo (!empty($stats['sectionscount'])?$stats['sectionscount']:'0'); ?>
                         </h3>
                     </div>
                     <div class="col-xs-6 col-md-3 stats">
@@ -220,7 +220,7 @@
                       </div>
                       <h3>
                         Μαθητές:
-                        <?php echo $stats['stdcount']; ?>
+                        <?php echo (!empty($stats['stdcount'])?$stats['stdcount']:'0'); ?>
                       </h3>
                     </div>
                     <div class="col-xs-6 col-md-3 stats">
@@ -230,7 +230,7 @@
                       </div>
                       <h3>
                         Εβδομαδιαίες Ώρες:
-                        <?php echo $stats['hourscount']; ?>
+                        <?php echo (!empty($stats['hourscount'])?$stats['hourscount']:'0'); ?>
                       </h3>
                     </div>
                   </div>

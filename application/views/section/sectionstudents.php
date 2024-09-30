@@ -295,7 +295,7 @@
           </div>
 
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-12">
               <ul class="pager">
                 <li class="previous <?php if (empty($prevnext['prev'])) {
@@ -310,7 +310,7 @@
                                         }; ?>><a href="<?php echo base_url('/section/card/' . $prevnext['next']); ?>">Επόμενο <i class="icon-chevron-right"></i></a></li>
               </ul>
             </div>
-          </div>
+          </div> -->
 
 
         </div>

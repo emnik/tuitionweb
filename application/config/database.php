@@ -46,32 +46,34 @@
 */
 
 $active_group = 'default';
-$active_record = TRUE;
+$query_builder = TRUE;
 
-// $db['default']['hostname'] = '10.185.9.101'; //for lan access without ssh (using tcpip)
+$db['default'] = array(
+	'dsn'	=> '',
+	'hostname' => 'mysql-server',
+	'port' => '3306',
+	'username' => 'root',
+	'password' => 'secret',
+	'database' => 'tuition_management',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_unicode_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
 
-$db['default']['hostname'] = 'mysql-server'; //for remote server access with ssh (using unix socket)
+
 //$db['default']['database'] = 'emnik_tuition'; 
 //$db['default']['port'] = '3307'; //for ssh port forwarding
-
-$db['default']['database'] = 'tuition_management';
-$db['default']['port'] = '3306';
-
-$db['default']['username'] = 'root';
-$db['default']['password'] = 'secret';
-
-
-$db['default']['dbdriver'] = 'mysqli';
-$db['default']['dbprefix'] = '';
-$db['default']['pconnect'] = TRUE;
-$db['default']['db_debug'] = TRUE;
-$db['default']['cache_on'] = FALSE;
-$db['default']['cachedir'] = '';
-$db['default']['char_set'] = 'utf8';
-$db['default']['dbcollat'] = 'utf8_unicode_ci';
-$db['default']['swap_pre'] = '';
-$db['default']['autoinit'] = TRUE;
-$db['default']['stricton'] = FALSE;
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

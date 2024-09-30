@@ -128,11 +128,16 @@
                             </div>
                             <div class="panel-body">
                                 <div class="row">
-                                    <div class="col-md-3 col-sm-6 form-group">
+                                    <div class="col-md-6 col-sm-6 form-group">
                                         <label>Κωδ. Φροντιστηρίου(id)</label>
                                         <input disabled class="form-control" type="text" id="schoolid" placeholder="Αυτόματα" name="id" value="<?php echo $school['id']; ?>">
                                     </div>
+                                    <div class="col-md-6 col-sm-6 form-group">
+                                        <label>Αριθμός άδειας ΕΟΠΠΕΠ</label>
+                                        <input disabled class="form-control" type="text" id="licence" placeholder="" name="licence" value="<?php echo $school['licence']; ?>">
+                                    </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-md-6 col-sm-6">
                                         <div class="form-group">
@@ -177,6 +182,29 @@
                                     </div>
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Λόγότυπο (URL)</label>
+                                            <input disabled class="form-control" type="text" id="logourl" placeholder="" name="logourl" value="<?php echo $school['logourl']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Προεπισκόπιση:</label>
+                                            <img class="pull-right" src="<?php echo $school['logourl'];?>" alt="logo">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label>Υπηρεσίες</label>
+                                            <input disabled class="form-control" type="text" id="services" placeholder="" name="services" value="<?php echo $school['services']; ?>">
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div> <!-- end of panel-body -->
                         </div> <!-- end of panel -->
@@ -213,6 +241,16 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label>ΓΕΜΗ</label>
+                                                    <input disabled class="form-control" type="text" id="gemi" placeholder="" name="gemi" value="<?php echo $school['gemi']; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div> <!-- end of panel-body -->
                                 </div> <!-- end of panel -->
                             </div>
@@ -251,17 +289,46 @@
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
                                                 <div class="form-group">
+                                                    <label>Google maps</label>
+                                                    <input disabled type="text" class="form-control" placeholder="" id="googlemapsurl" name="googlemapsurl" value="<?php echo $school['googlemapsurl']; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Viber (invite link)</label>
+                                                     <input disabled type="text" class="form-control" placeholder="" id="viberinvite" name="viberinvite" value="<?php echo $school['viberinvite']; ?>">
+                                                </div>
+                                            </div>
+                                        </div>                                        
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
                                                     <label>facebook</label>
                                                     <input disabled type="text" class="form-control" placeholder="" id="facebookurl" name="facebookurl" value="<?php echo $school['facebookurl']; ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
                                                 <div class="form-group">
-                                                    <label>twitter</label>
-                                                    <input disabled type="text" class="form-control" placeholder="" id="twitterurl" name="twitterurl" value="<?php echo $school['twitterurl']; ?>">
+                                                    <label>Instagram</label>
+                                                    <input disabled type="text" class="form-control" placeholder="" id="instagramurl" name="instagramurl" value="<?php echo $school['instagramurl']; ?>">
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Tik Tok</label>
+                                                    <input disabled type="text" class="form-control" placeholder="" id="tiktokurl" name="tiktokurl" value="<?php echo $school['tiktokurl']; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label>X (twitter)</label>
+                                                    <input disabled type="text" class="form-control" placeholder="" id="twitterurl" name="twitterurl" value="<?php echo $school['twitterurl']; ?>">
+                                                </div>
+                                            </div>
+                                        </div>                                        
                                     </div> <!-- end  of panel-body -->
                                 </div> <!-- end of panel -->
                             </div>

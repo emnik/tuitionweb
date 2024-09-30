@@ -12,16 +12,39 @@
  * CodeIgniter base_url function to support
  * CDN'ized content.
  */
+
+/**
+ * // base_url function for PHP versions prior to 7.0
+ * 
+ * function base_url($uri = null)
+ * {
+ *    $CI =& get_instance();
+ * 
+ *    $cdn = $CI->config->item('cdn_url');
+ *    if (!empty($cdn))
+ *       return $cdn . $uri;
+ * 
+ *    return $CI->config->base_url($uri);
+ * }
+ * 
+  */
+
+// base_url function for PHP versions > 7.0
 function base_url($uri = null)
 {
    $CI =& get_instance();
 
    $cdn = $CI->config->item('cdn_url');
+   
+   // Ensure $uri is a string (even if it's null, convert it to an empty string)
+   $uri = $uri ?? '';
+
    if (!empty($cdn))
       return $cdn . $uri;
 
    return $CI->config->base_url($uri);
 }
+
 
 /*
  * is_active

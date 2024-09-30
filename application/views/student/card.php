@@ -237,20 +237,20 @@
                 <div class="row">
                   <div class="col-md-3 col-sm-6 form-group">
                     <label>Κωδ.μαθητή(id)</label>
-                    <input disabled class="form-control" type="text" placeholder="" name="id" value="<?php echo $regcard['id']; ?>">
+                    <input disabled class="form-control" type="text" placeholder="" name="id" value="<?php echo (!empty($regcard['id'])?$regcard['id']:''); ?>">
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 col-sm-6">
                     <div class="form-group">
                       <label>Όνομα</label>
-                      <input disabled class="form-control" id="name" type="text" placeholder="" name="name" value="<?php echo $regcard['name']; ?>">
+                      <input disabled class="form-control" id="name" type="text" placeholder="" name="name" value="<?php echo (!empty($regcard['name'])?$regcard['name']:''); ?>">
                     </div>
                   </div>
                   <div class="col-md-6 col-sm-6">
                     <div class="form-group">
                       <label>Επίθετο</label>
-                      <input disabled class="form-control" id="surname" type="text" placeholder="" name="surname" value="<?php echo $regcard['surname']; ?>">
+                      <input disabled class="form-control" id="surname" type="text" placeholder="" name="surname" value="<?php echo (!empty($regcard['surname'])?$regcard['surname']:''); ?>">
                     </div>
                   </div>
                 </div>
@@ -258,13 +258,13 @@
                   <div class="col-md-6 col-sm-6">
                     <div class="form-group">
                       <label>Πατρώνυμο</label>
-                      <input disabled class="form-control" id="fathersname" type="text" placeholder="" name="fathers_name" value="<?php echo $regcard['fathers_name']; ?>">
+                      <input disabled class="form-control" id="fathersname" type="text" placeholder="" name="fathers_name" value="<?php echo (!empty($regcard['fathers_name'])?$regcard['fathers_name']:''); ?>">
                     </div>
                   </div>
                   <div class="col-md-6 col-sm-6">
                     <div class="form-group">
                       <label>Μητρώνυμο</label>
-                      <input disabled class="form-control" type="text" placeholder="" name="mothers_name" value="<?php echo $regcard['mothers_name']; ?>">
+                      <input disabled class="form-control" type="text" placeholder="" name="mothers_name" value="<?php echo (!empty($regcard['mothers_name'])?$regcard['mothers_name']:''); ?>">
                     </div>
                   </div>
                 </div>
@@ -273,7 +273,7 @@
                   <div class="col-md-6 col-sm-6">
                     <div class="form-group">
                       <label>Διεύθυνση</label>
-                      <input disabled class="form-control" type="text" placeholder="" name="address" value="<?php echo $regcard['address']; ?>">
+                      <input disabled class="form-control" type="text" placeholder="" name="address" value="<?php echo (!empty($regcard['address'])?$regcard['address']:''); ?>">
                     </div>
                   </div>
                   <div class="col-md-6 col-sm-6">
@@ -329,12 +329,12 @@
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                    <!-- <div class="form-group"> -->
+                    <div class="form-group">
                     <label>Παρατηρήσεις</label>
-                    <textarea disabled class="form-control" rows="3" name="notes">
-                      <?php echo $regcard['notes']; ?>
+                    <textarea disabled class="form-control" rows="3" cols="1" name="notes">
+                      <?php echo (!empty($regcard['notes'])?$regcard['notes']:''); ?>
                     </textarea>
-                    <!-- </div> -->
+                    </div>
                   </div>
                 </div>
               </div> <!-- end of panel-body -->
@@ -362,14 +362,14 @@
                         <div class="form-group">
                           <label>Αρ. Μαθητολογίου</label>
                           <div>
-                            <input disabled type="text" class="form-control" placeholder="" name="std_book_no" value="<?php echo $regcard['std_book_no']; ?>">
+                            <input disabled type="text" class="form-control" placeholder="" name="std_book_no" value="<?php echo (!empty($regcard['std_book_no'])?$regcard['std_book_no']:''); ?>">
                           </div>
                         </div>
                       </div>
                       <div class="col-md-6 col-sm-6">
                         <div class="form-group datecontainer">
                           <label>Ημ/νία εγγραφής</label>
-                          <input disabled type="text" class="form-control" placeholder="" name="reg_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['reg_dt']))); ?>">
+                          <input disabled type="text" class="form-control" placeholder="" name="reg_dt" value="<?php echo (!empty($regcard['reg_dt'])?implode('-', array_reverse(explode('-', $regcard['reg_dt']))):''); ?>">
                         </div>
                       </div>
                     </div>
@@ -377,13 +377,26 @@
                       <div class="col-md-6 col-sm-6">
                         <div class="form-group datecontainer">
                           <label>Ημ/νία έναρξης</label>
-                          <input disabled type="text" class="form-control" placeholder="" name="start_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['start_lessons_dt']))); ?>">
+                          <input disabled type="text" class="form-control" placeholder="" name="start_lessons_dt" value="<?php echo (!empty($regcard['start_lessons_dt'])?implode('-', array_reverse(explode('-', $regcard['start_lessons_dt']))):''); ?>">
                         </div>
                       </div>
                       <div class="col-md-6 col-sm-6">
                         <div class="form-group datecontainer">
                           <label>Ημ/νία διαγραφής</label>
-                          <input disabled type="text" class="form-control" placeholder="" name="del_lessons_dt" value="<?php echo implode('-', array_reverse(explode('-', $regcard['del_lessons_dt']))); ?>">
+                          <!-- <input disabled type="text" class="form-control" placeholder="" name="del_lessons_dt" value="<?php echo (!empty($regcard['del_lessons_dt'])?implode('-', array_reverse(explode('-', $regcard['del_lessons_dt']))):''); ?>"> -->
+                          <input disabled type="text" class="form-control" placeholder="" name="del_lessons_dt" 
+                          value="<?php 
+                              if (!empty($regcard['del_lessons_dt'])) {
+                                  $date_parts = explode('-', $regcard['del_lessons_dt']);
+                                  if (count($date_parts) === 3) {
+                                      echo implode('-', array_reverse($date_parts)); // Convert from YYYY-MM-DD to DD-MM-YYYY
+                                  } else {
+                                      echo $regcard['del_lessons_dt']; // If it's not a valid date format, show it as is
+                                  }
+                              } else {
+                                  echo ''; // Show nothing if date is not set or empty
+                              }
+                          ?>">                        
                         </div>
                       </div>
                     </div>

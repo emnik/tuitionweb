@@ -9,32 +9,16 @@
 </style>
 
 <script type="text/javascript">
-  var addedyear = false;
   $(document).ready(function() {
     
     //Menu current active links and Title
     $('#menu-operation').addClass('active');
     $('#menu-header-title').text('<?php echo $school['distinctive_title']?>');
 
-    // $('.group2').toggle();
-    // $('.group2').parent().parent().siblings().toggle();
+    $('.group4').toggle();
+    $('.group4').parent().parent().siblings().toggle();
 
     $('#schoolyearcombo').on('change', function() {
-      // var sel = $(this).find('option:selected').val();
-      // var prevpos = $(this).find('option:selected').prevAll().size() - 1;
-      // var prevval = $(this).find('option:eq(' + prevpos + ")").val();
-      // if (sel == "addnextschoolyear") {
-      //   if (addedyear == false) {
-      //     addedyear = true;
-      //     var o = new Option((parseInt(prevval, 10) + 1) + "-" + (parseInt(prevval, 10) + 2), parseInt(prevval, 10) + 1);
-      //     $(this).find('option:selected').before(o);
-      //     $(this).val(parseInt(prevval, 10) + 1);
-      //   } else {
-      //     alert("Δεν μπορείτε να προσθέσετε περισσότερα του ενός έτη τη φορά.")
-      //     $(this).val(parseInt(prevval, 10));
-      //   }
-      // };
-      // console.log(sel);
       $('form[name="main"]').submit();
     });
 
@@ -65,32 +49,30 @@
 
         <div class="col-md-4">
           <!-- form container -->
+          <div class="row" style="padding:15px 15px;">
+            <form name="main" class="form" action="<?php echo base_url('welcome');?>" method="post" accept-charset="utf-8">
+                <fieldset>
+                  <legend>Διαχειριστική Περίοδος</legend>
+                  <div class="form-horizontal">
+                    <div class="control-group col-xs-10" style="padding-left: 0px;">
+                      <label class="control-label">Επιλέξτε: </label>
+                        <select class="form-control input-md" name="startschoolyear" id="schoolyearcombo">
+                          <?php foreach($schoolyears as $data):?>
+                            <option value="<?php echo $data['id'];?>" <?php if($data['active']==1) echo "selected = 'selected'";?>>
+                              <?php echo $data['name'];?>
+                            </option>                        
+                          <?php endforeach;?>
+                            }
+                          <!-- <option value="addnextschoolyear">Προσθήκη επόμενου σχ. έτους</option> -->
+                        </select>
+                    </div>
+                  <div class="control-group col-xs-2" style="margin-top: 26px; padding:0;" >
+                   <button type="submit" name="submitbtn" value="submit0" class="btn btn-default btn-md pull-right" id="editermsbtn"><i class="icon icon-cogs"></i></button>
+                </fieldset>
+          </div> <!--end of row-->
 
-          <form name="main" class="form" action="<?php echo base_url('welcome');?>" method="post" accept-charset="utf-8">
-            <fieldset>
-              <legend>Διαχειριστική Περίοδος</legend>
-              <div class="form-horizontal">
-              <div class="control-group col-xs-10" style="padding-left: 0px;">
-                <label class="control-label">Επιλέξτε: </label>
-                  <select class="form-control input-md" name="startschoolyear" id="schoolyearcombo">
-                    <?php foreach($schoolyears as $data):?>
-                      <option value="<?php echo $data['id'];?>" <?php if($data['active']==1) echo "selected = 'selected'";?>>
-                        <?php echo $data['name'];?>
-                      </option>                        
-                    <?php endforeach;?>
-                      }
-                    <!-- <option value="addnextschoolyear">Προσθήκη επόμενου σχ. έτους</option> -->
-                  </select>
-              </div>
-              <div class="control-group col-xs-2" style="margin-top: 26px;" >
-              <button type="submit" name="submitbtn" value="submit0" class="btn btn-default btn-md pull-right" id="editermsbtn"><i class="icon icon-cogs"></i></button>
-              </div>
-              </div>
-            </fieldset>
-
-        </div>
-        <!--end of form container-->
-
+        </div> <!--end of col-md-4-->
+        
         <div class="col-md-8">
           <!-- submit buttons -->
 
@@ -225,11 +207,11 @@
                 Στοιχεία Φροντιστηρίου / Φορολογικά / Διαδύκτιο
               </div>
             </div>
+                    </div>
 
-          </div>
           <!--end of second row-->
 
-          <div class="row" style="margin-bottom:20px;">
+          <div class="row">
             <!--third row-->
             <div class="col-xs-12">
               <div class="welcome-title">
@@ -268,13 +250,14 @@
 
             <div class="col-sm-3 col-xs-6 welcome">
               <button type="submit" class="btn-link" name="submitbtn" value="submit7">
-                <i class="icon-phone icon-4x"></i>
-                <h4>Τηλ. Κατάλογοι</h4>
+                <i class="icon-comments-alt icon-4x"></i>
+                <h4>Επικοινωνία</h4>
               </button>
               <div class="small">
+                Τηλεφωνικοί Κατάλογοι
                 Μαθητών /
                 Προσωπικού /
-                Ομαδικά SMS / Επαφές Google
+                Ομαδικά SMS / Επαφές Google, Λίστα Ηλ. Ταχυδρομείου
               </div>
             </div>
 
@@ -292,6 +275,60 @@
 
           </div>
           <!--end of third row-->
+
+
+
+
+
+          <div class="row" style="margin-bottom:20px;">
+            <!--forth row-->
+            <div class="col-xs-12">
+              <div class="welcome-title">
+                <span class="icon group4"><i class="icon-minus"></i></span>
+                <span class="icon group4" style="display:none"><i class="icon-plus"></i></span>
+                Διαχείριση εφαρμογής / Ρυθμίσεις
+              </div>
+            </div>
+
+            <div class="col-sm-3 col-xs-6 welcome" >
+              <button type="submit" class="btn-link" name="submitbtn" value="submit13">
+                <i class="icon-shield icon-4x"></i>
+                <h4>Λογαριασμοί χρηστών</h4>
+              </button>
+              <div class="small">
+                Λογαριασμοί πρόσβασης χρηστών
+              </div>
+            </div>     
+            
+            <div class="col-sm-3 col-xs-6 welcome" >
+              <button type="submit" class="btn-link" name="submitbtn" value="submit14">
+                <i class="icon-puzzle-piece icon-4x"></i>
+                <h4>Contact Services Configuration</h4>
+              </button>
+              <div class="small">
+                Ρυθμίσεις για αποστολή SMS / Email / ...
+              </div>
+            </div>            
+
+            <div class="col-sm-3 col-xs-6 welcome" >
+              <button disabled type="submit" class="btn-link" name="submitbtn" value="submit15">
+                <i class="icon-book icon-4x"></i>
+                <h4>GDPR</h4>
+              </button>
+              <div class="small">
+                Ενέργειες GDPR / Αποστολή / Διαγραφή / ... αποθηκευμένων δεδομένων
+              </div>
+            </div>                
+            
+          </div>
+
+
+
+          </div>
+          <!--end of forth row-->
+
+
+
 
         </div> <!-- end of submit buttons -->
         </form>

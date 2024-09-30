@@ -81,6 +81,11 @@
         complete: function() {
           $('#btnschoolyearupdate').button('reset');
           $('#schmessage').html('<span class="icon"><i class="icon-info-sign"> </i> Τα οικονομικά στοιχεία για τη διαχειριστική περίοδο ενημερώθηκαν με τα τελευταία δεδομένα!</span>');
+          if($('input[name="chkCreditState"]:checked').val()==1){
+            $('#creditmessage').removeClass('hidden');
+          } else {
+            $('#creditmessage').addClass('hidden');
+          }
         }
       });
 
@@ -511,11 +516,18 @@
                     Να συμπεριληφθεί και ο τρέχων μήνας στον υπολογισμό οφειλών
                   </label>
                 </div>
+                <div class="checkbox">
+                  <label>
+                    <input id="chkCreditState" type="checkbox" value="1" name="chkCreditState">
+                    Οι επί πιστώσει αποδείξεις να <b>μη</b> συμπεριλαμβάνονται στις οφειλές
+                  </label>
+                </div>                
                 <button id="btnschoolyearupdate" type="button" data-loading-text="Ανανέωση..." class="btn btn-primary btn-lg pull-right">Ανανέωση Τώρα</button>
               </div>
             </div>
           </form>
           <h4>Αναφορές</h4>
+          <div id="creditmessage" class="alert  alert-danger hidden"><span class="icon"><i class="icon-warning-sign"> </i> Εμφανίζονται μόνο οι οφειλές για τις οποίες ΔΕΝ έχουν κοπεί αποδείξεις!</span></div>
           <div class="panel-group" id="accordion">
 
             <div class="panel panel-default">

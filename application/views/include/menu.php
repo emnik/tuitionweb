@@ -32,8 +32,11 @@
                         <li class="dropdown-header">Συγκεντρωτικές Αναφορές</li>
                         <li id="menu-reports"><a href="<?php echo base_url('reports') ?>">Αναφορές</a></li>
                         <li id="menu-history"><a href="<?php echo base_url('history') ?>">Ιστορικό</a></li>
-                        <li id="menu-telephones"><a href="<?php echo base_url('telephones') ?>">Τηλ. Κατάλογοι</a></li>
+                        <li id="menu-telephones"><a href="<?php echo base_url('telephones') ?>">Επικοινωνία</a></li>
                         <li id="menu-fincance"><a href="<?php echo base_url('finance') ?>">Οικονομικά</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Διαχείριση Εφαρμογής</li>
+                        <li id="menu-users"><a href="<?php echo base_url('user') ?>">Λογαριασμοί χρηστών</a></li>
                     </ul>
                 </li>
             </ul>
@@ -42,7 +45,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-header"><?php echo $user->surname . ' ' . $user->name; ?></li>
-                        <li><a href="#">Αλλαγή κωδικού</a></li>
+                        <li><a href="<?php echo base_url('user/card/'.$this->session->userdata('user_id')) ?>">Αλλαγή κωδικού</a></li>
                         <li><a href="<?php echo base_url('welcome/logout') ?>">Αποσύνδεση</a></li>
                     </ul>
                 </li>

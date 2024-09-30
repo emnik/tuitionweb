@@ -31,7 +31,7 @@ $(document).ready(function(){
 
 	$('#savedayabsence').on('click', function(){
 		var sData = oTable.$('input').serialize();
-		sData = sData+'&'+'stdid='+<?php echo $student['id'];?>;
+		sData = sData+'&'+'stdid='+<?php echo (isset($student['id']) ? $student['id'] : '');?>;
     $.ajax({  
               type: "POST",  
               url: "<?php echo base_url()?>student/updatedayabsencedata",  
@@ -55,7 +55,7 @@ $(document).ready(function(){
     oTable = $('#absencestable').dataTable( {
     "bProcessing": false,
     //"aaData": sData,
-    "sAjaxSource": "<?php echo base_url();?>student/getabsencesdata/<?php echo $student['id']?>/",
+    "sAjaxSource": "<?php echo base_url();?>student/getabsencesdata/<?php echo (isset($student['id']) ? $student['id'] : '')?>/",
     //"aoColumnDefs": [/*stdlesson_id*/{ "bVisible": false, "aTargets": [5] }],
     "aoColumns": [
             { "mData": "title",
@@ -242,7 +242,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 
     function get_absences_count(){
         //post_url is the controller function where I want to post the data
-        var post_url = "<?php echo base_url()?>student/get_absences_count/<?php echo $student['id'];?>";
+        var post_url = "<?php echo base_url()?>student/get_absences_count/<?php echo (isset($student['id']) ? $student['id'] : '');?>";
         $.ajax({
           type: "POST",
           url: post_url,
@@ -279,7 +279,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
         <ul class="breadcrumb">
           <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
           <li><a href="<?php echo base_url()?>student">Μαθητολόγιο</a> </li>
-          <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Καρτέλα μαθητή</a> </li>
+          <li><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>">Καρτέλα μαθητή</a> </li>
           <li class="active">Φοίτηση</li>
           <!-- <li class="dash"><i class="icon-dashboard icon-small"></i></li> -->
           </span>
@@ -292,10 +292,10 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
       
 
       <ul class="nav nav-tabs">
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>">Στοιχεία</a></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/contact">Επικοινωνία</a></li>
-        <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Φοίτηση</a></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/finance">Οικονομικά</a></li>
+        <li><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>">Στοιχεία</a></li>
+        <li><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/contact">Επικοινωνία</a></li>
+        <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/attendance">Φοίτηση</a></li>
+        <li><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/finance">Οικονομικά</a></li>
       </ul>
 
       <?php if($student['active']==0):?>
@@ -305,8 +305,8 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
       <?php endif;?>      
 
       <ul class="nav nav-pills" style="margin:10px 0px;">
-        <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance">Σύνοψη</a></li>
-        <li><a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/manage">Διαχείριση</a></li>
+        <li class="active"><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/attendance">Σύνοψη</a></li>
+        <li><a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/attendance/manage">Διαχείριση</a></li>
       </ul>
 
 
@@ -363,7 +363,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 				      	<div class="row">
 			      			<div class="col-md-12">	
 			      				<!-- onclick="return false;" is needed as an a tag can't be disabled by the disabled property. I'm using the property just for it's css -->
-			      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/program" class="btn btn-default btn-sm pull-right" <?php if(empty($program)) echo 'disabled="disabled" onclick="return false;"';?> >Εβδομαδιαίο πρόγραμμα</a>
+			      				<a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/attendance/program" class="btn btn-default btn-sm pull-right" <?php if(empty($program)) echo 'disabled="disabled" onclick="return false;"';?> >Εβδομαδιαίο πρόγραμμα</a>
 			      			</div>
 			      		</div>
 				      </div>
@@ -412,7 +412,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
 		      		<?php endif;?>
 				      	<div class="row">
 			      			<div class="col-md-12">	
-			      				<a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/manage" class="btn btn-default btn-sm pull-right">Διαχείριση</a>
+			      				<a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/attendance/manage" class="btn btn-default btn-sm pull-right">Διαχείριση</a>
 				   			</div>
 				   		</div>
   				    </div>
@@ -448,7 +448,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
                         </p>
                         <div class="row">
                           <div class="col-md-12">	
-                            <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" class="btn  btn-default btn-sm pull-right">Απουσιολόγιο</a>
+                            <a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/attendance/absences" class="btn  btn-default btn-sm pull-right">Απουσιολόγιο</a>
                           </div>
                         </div>
                       <?php endif;?>
@@ -474,7 +474,7 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
                       <div class="row">
                         <div class="col-md-12">	
                           <button class="btn  btn-warning btn-sm" id="savedayabsence" >Αποθήκευση</button>
-                          <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/absences" class="btn  btn-default btn-sm pull-right">Απουσιολόγιο</a>
+                          <a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/attendance/absences" class="btn  btn-default btn-sm pull-right">Απουσιολόγιο</a>
                         </div>
                       </div>
                     <?php endif;?>
@@ -546,13 +546,13 @@ $.fn.dataTableExt.oApi.fnReloadAjax = function ( oSettings, sNewSource, fnCallba
                           <p class="text-info">
                             Δεν υπάρχουν δεδομένα για την πρόοδο του μαθητή!
                           </p>
-                          <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right disabled" onclick="return false;" >Βαθμολόγιο</a>
+                          <a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/attendance/progress" class="btn btn-default btn-sm pull-right disabled" onclick="return false;" >Βαθμολόγιο</a>
                         </div>
                       </div>
                     <?php else:?>
                       <div class="row">
                         <div class="col-md-12">  
-                          <a href="<?php echo base_url()?>student/card/<?php echo $student['id']?>/attendance/progress" class="btn btn-default btn-sm pull-right" >Βαθμολόγιο</a>
+                          <a href="<?php echo base_url()?>student/card/<?php echo (isset($student['id']) ? $student['id'] : '')?>/attendance/progress" class="btn btn-default btn-sm pull-right" >Βαθμολόγιο</a>
                         </div>
                       </div>
                     <?php endif;?>

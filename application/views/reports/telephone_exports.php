@@ -5,7 +5,7 @@
   //Menu current active links and Title
   $('#menu-reports-summary').addClass('active');
   $('#menu-telephones').addClass('active');
-  $('#menu-header-title').text('Τηλεφωνικοί Κατάλογοι');
+  $('#menu-header-title').text('Επικοινωνία');
 
         $('#selectClass').select2({
             data: <?php echo $classes; ?>,
@@ -92,7 +92,7 @@
                 <ul class="breadcrumb">
                     <li><a href="<?php echo base_url() ?>"><i class="icon-home"> </i> Αρχική </a></li>
                     <li class="active"><a href="<?php echo base_url('reports/initial') ?>">Συγκεντρωτικές Αναφορές</a></li>
-                    <li class="active">Τηλ. Κατάλογοι</li>
+                    <li class="active">Επικοινωνία</li>
                 </ul>
             </div>
 
@@ -100,6 +100,7 @@
             <ul class="nav nav-tabs">
                 <li><a href="<?php echo base_url('telephones') ?>">Τηλέφωνα</a></li>
                 <li class="active"><a href="<?php echo base_url('telephones/exports') ?>">Ομαδικά SMS / Επαφές Google</a></li>
+                <li><a href="<?php echo base_url('mailinglist')?>">Λίστα Ηλ. Ταχυδρομείου</a></li>
             </ul>
 
             <p></p>

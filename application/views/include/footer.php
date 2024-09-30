@@ -27,12 +27,16 @@
 
 <?php if(!empty($regs) and $regs===true):?>
 
-<!-- Using https://github.com/ivaynberg/select2 -->
-<!-- with https://github.com/t0m/select2-bootstrap-css -->
-<link href="<?php echo base_url('assets/select2/select2.css')?>" rel="stylesheet">
+<!-- LOCAL select 2 (older version) -->
+<!-- <link href="<?php echo base_url('assets/select2/select2.css')?>" rel="stylesheet">
 <link href="<?php echo base_url('assets/select2/select2-bootstrap.css')?>" rel="stylesheet">
 <script src="<?php echo base_url('assets/select2/select2.js')?>"></script>
-<script src="<?php echo base_url('assets/select2/select2_locale_el.js')?>"></script>
+<script src="<?php echo base_url('assets/select2/select2_locale_el.js')?>"></script> -->
+
+<!-- CDN for select2 Newer Version -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
 <script type="text/javascript">
 
@@ -45,6 +49,10 @@ $(document).keydown(function(event) {
 
 
 $(document).ready(function(){
+	// $('#resubscribebtn').removeClass('enabled');
+	// $('#resubscribebtn').addClass('disabled');
+	$('#resubscribebtn').attr('disabled', 'disabled');
+	
 		$.ajax({
 			url:"<?php echo base_url()?>welcome/social_media",
 			dataType: 'json',
@@ -62,6 +70,7 @@ $(document).ready(function(){
 	    minimumInputLength: 2,
 	    ajax: {
 	      url: "<?php echo base_url()?>welcome/user_list",
+		  cache: false,
 	      dataType: 'json',
 	      data: function (term, page) {
 	        return {
@@ -69,8 +78,13 @@ $(document).ready(function(){
 	        };
 	      },
 	      results: function (data, page) {
-	        return { results: data }; //data needs to be {{id:"",text:""},{id:"",text:""}}...
-	      }
+			// $('#resubscribebtn').removeAttr('disabled');
+			return { results: data }; //data needs to be {{id:"",text:""},{id:"",text:""}}...
+		},
+		  error: function (jqXHR, status, error) {
+        	console.log(error + ": " + jqXHR.responseText);
+        	return { results: [] }; // Return dataset to load after error
+   		  }
 	    }
 	  });
 
@@ -83,6 +97,9 @@ $(document).ready(function(){
 			$('.alert > p > span').remove();
 			$('.alert > p > a').remove();
 			id=$(this).val();
+			if (id!=""){
+				$('#resubscribebtn').removeAttr('disabled');
+			}
 	   })
 });
 
@@ -126,7 +143,12 @@ function resubscribe(){
 				$(".alert").fadeIn();
 			}
 			else {
-				$('.alert > p').append('<span>ΣΦΑΛΜΑ: Η επανεγγραφή ΔΕΝ ήταν επιτυχής. </span>');
+				if (response.reason=='sameSchYear'){
+					$('.alert > p').append('<span>ΣΦΑΛΜΑ: Προσπαθείτε να επαννεγράψετε μαθητή στην ίδια διαχειριστική περίοδο! <a href=<?php echo base_url();?>term class="alert-link">Δημιουργήστε μια νέα</a>, επιλέξτε τη και κάντε από εκεί την επαννεγραφή. </span>');	
+				}
+				else {
+					$('.alert > p').append('<span>ΣΦΑΛΜΑ: Η επανεγγραφή ΔΕΝ ήταν επιτυχής. </span>');
+				}
 				$('#resultmsg').removeClass();
 				$('#resultmsg').addClass('alert');
 				$('#resultmsg').addClass('alert-danger');
@@ -151,11 +173,11 @@ function resubscribe(){
       <div class="modal-content">	
 		<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3 id="footerModalLabel">Γρήγορη εναλλαγή μαθητή</h3>
+				<h3 id="footerModalLabel">Αναζήτηση μαθητή</h3>
 		</div>
 		<div class="modal-body">
 			 <div class="form-group">
-			 	<label for="single" class="control-label">Επιλέξτε μαθητή/μαθήτρια:</label>
+			 	<label for="single" class="control-label">Γράψτε επώνυμο ή όνομα ή τηλέφωνο:</label>
  			 	<input class="form-control" id="selectbox" type="hidden" name="optionvalue" />
 			 </div>
 			<div class="btn-group">
@@ -167,7 +189,7 @@ function resubscribe(){
 		</div>
 		<div class="modal-footer">
 			<!-- <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> -->
-			<button class="btn btn-primary" onclick="resubscribe();">Επανεγγραφή</button>
+			<button id="resubscribebtn" class="btn btn-primary" onclick="resubscribe();">Επανεγγραφή για το <?php echo $this->session->userdata('startsch');?></button>
 			<div class="alert alert-success" role="alert" id="resultmsg" style="display:none; margin-top:10px;">
 				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       			<p style="text-align:left;"> </p> 

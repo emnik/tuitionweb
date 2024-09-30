@@ -202,6 +202,15 @@ function makephonecall(phonenum){
                   <input disabled  type="text" class="form-control" placeholder="" name="work_tel" value="<?php if(!empty($contact)) {if (!is_null($contact['work_tel'])) echo $contact['work_tel'];}?>">
                 </div>
               </div>
+              <div class="form-group col-sm-6">
+                <label>email επικοινωνίας</label>
+                <div class="input-group">
+                  <span class="input-group-btn">
+                     <span class="btn btn-default disabled"><span class="icon"><i class="icon-envelope-alt"></i></span></span>
+                  </span>
+                  <input disabled  type="text" class="form-control" placeholder="" name="email" value="<?php if(!empty($contact)) {if (!is_null($contact['email'])) echo $contact['email'];}?>">
+                </div>
+              </div>              
             </div>
           </div>
         </div><!--end of mainform-->
