@@ -19,14 +19,5 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'firephp/firephp-core' => array(
-            'pretty_version' => 'v0.5.3',
-            'version' => '0.5.3.0',
-            'reference' => '2585b6868fe7d3a9d1432b738c3cc547444d0348',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../firephp/firephp-core',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
     ),
 );
