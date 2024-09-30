@@ -64,9 +64,6 @@ class Mailinglist extends CI_Controller
 			$data['classes'] = $classes;
 		}
 
-		// $this->load->library('Firephp_lib');
-		// $this->firephp_lib->dump('data', $classes);
-
 		$data['signature'] = $this->generate_signature($note);
 
 		$this->load->view('include/header');
@@ -100,9 +97,6 @@ class Mailinglist extends CI_Controller
 				$data['mailsettings'] = $settings;
 			}
 		}
-
-		// $this->load->library('Firephp_lib');
-		// $this->firephp_lib->log($cc, 'cc recipients');
 
 		$this->load->view('include/header');
 		$this->load->view('reports/mailing_list_settings', $data);
@@ -167,15 +161,9 @@ class Mailinglist extends CI_Controller
 			$cc_email_list = null;
 		}
 
-		// $this->load->library('Firephp_lib');
-		// $this->firephp_lib->log($cc, 'cc recipients');
-
 		$this->load->model('reports/Mailinglist_model');
 		$email_list = $this->Mailinglist_model->get_emails();
 				
-		// $this->load->library('Firephp_lib');
-		// $this->firephp_lib->dump('post', $email_list);
-
 		// Load the GraphEmailLibrary
 		$this->load->library('GraphEmailLibrary');
 
@@ -196,20 +184,44 @@ class Mailinglist extends CI_Controller
 		$email_signature = $this->generate_signature($note);
 
 		// Append the signature to the email body
-		$email_body .= $email_signature;
+		$email_content = $email_body . $email_signature;
 
 		// Use the library to send the email
-		$result = $this->graphemaillibrary->send_emails($email_subject, $email_body, $recipient_emails, $cc_recipient_emails, $sender_email, $replyto_email);
+		$result = $this->graphemaillibrary->send_emails($email_subject, $email_content, $recipient_emails, $cc_recipient_emails, $sender_email, $replyto_email);
 		// $result = array( //testing
 		// 	'status' => 'success',
 		// 	'message' => 'testing'
 		// );
-		// $this->load->library('Firephp_lib');
-		// $this->firephp_lib->log($result, 'result');
+
+		// If mail sending was a success, store the data to the mail_history table
+		$res = json_decode($result);
+		if ($res->status==='success'){
+			if(!empty($cc_recipient_emails)){
+				$recipients = array_merge($recipient_emails, $cc_recipient_emails);
+			} else {
+				$recipients = $recipient_emails;
+			}
+			// Extract the email addresses (first element of each inner array)
+			$emailArray = array_map(function($recipient) {
+				return $recipient['email']; 
+			}, $recipients);
+
+			$historyData = array(
+				'subject' => $email_subject,
+				'content' => $email_body,
+				'recipients' => implode(',', $emailArray)
+			);
+			$this->addToMailHistory($historyData);
+		}
 		header('Content-Type: application/json');
 		echo $result; // $result is a JSON object
 	}
 
+	public function addToMailHistory($maildata){
+	
+		$this->load->model('reports/Mailinglist_model');
+		$this->Mailinglist_model->add_to_mail_history($maildata);
+	}
 
 	// Generate the CSV File for download the mailing list with the selected classes!
 	public function getMailinglistData()

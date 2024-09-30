@@ -32,8 +32,6 @@ class Studentscount_model extends CI_Model {
     {
          return false;
     }
-   //  $this->load->library('firephp');
-   //  $this->firephp->info($res);
    }
 
    public function get_stdcountperlesson()
@@ -67,8 +65,6 @@ class Studentscount_model extends CI_Model {
     {
          return false;
     }
-   //  $this->load->library('firephp');
-   //  $this->firephp->info($res);
    }
 
    public function get_classes()
@@ -83,9 +79,6 @@ class Studentscount_model extends CI_Model {
       }
       array_push($output, array('id' => end($output)['id']+1, 'text'=> 'Όλα'));
 
-      // $this->load->library('firephp');
-      // $this->firephp->info($output);
-      
       return $output;
     }
     else 

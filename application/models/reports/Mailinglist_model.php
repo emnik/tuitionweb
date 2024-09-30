@@ -116,4 +116,8 @@ public function get_settings() {
       }
    }
 
+   public function add_to_mail_history($data){
+      $this->db->insert('mail_history', $data);
+   }
+
 }
