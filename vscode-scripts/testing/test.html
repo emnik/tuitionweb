@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div class="col-xs-12 form-group">
+      <label>Κείμενο υποσημείωσης (html):</label>
+      <div class="alert alert-info" role="alert">
+        <span class="icon"> <i class="icon-info-sign"></i></span>
+        Η υποσημείωση μπαίνει <b>προεραιτικά</b> (με μικρή γραμματοσειρά) μετά
+        την υπογραφή στο τέλος του μηνύματος. Μπορείτε να αφήσετε το πεδίο αυτό
+        κενό.
+      </div>
+      <textarea
+        disabled
+        class="form-control"
+        name="note"
+        id="note"
+        rows="3"
+        cols="1"
+        placeholder=""
+      >
+<?php echo !empty($mailsettings['note']) ? $mailsettings['note'] : ''; ?></textarea
+      >
+    </div>
+  </body>
+</html>

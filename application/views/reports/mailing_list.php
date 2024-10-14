@@ -19,12 +19,12 @@ span.select2.select2-container.select2-container--default{
 </script>
 
 <!-- ATTENTION Need to Add type="module" to the script tag below to work! Otherwise it doesn't work!!! -->
-<script type="module" src="<?php echo base_url('assets/js/ckeditor.js') ?>"></script>
+<script type="module" src="<?php echo base_url('assets/js/ckeditor.js'); ?>"></script>
 
 <script type="module">
     // Added exports to the ckeditor.js to be able to initialize the editor here
     // I need this to access the editor instance so that I have access to the editor.getData() function
-    import { ClassicEditor, editorConfig } from '<?php echo base_url('assets/js/ckeditor.js') ?>';
+    import { ClassicEditor, editorConfig } from '<?php echo base_url('assets/js/ckeditor.js'); ?>';
     
     let editorInstance; // Declare the editor instance variable
 
@@ -177,6 +177,7 @@ span.select2.select2-container.select2-container--default{
         $('#menu-header-title').text('Επικοινωνία');
 
         $('#selectClass').select2({
+            // width: 'resolve',
             closeOnSelect: false,
             readonly: true,
             placeholder: "Επιλογή τάξεων",
@@ -192,11 +193,11 @@ span.select2.select2-container.select2-container--default{
 
 
         $("button[id='getMailinglistData']").click(function() {
-            window.location = '<?php echo base_url() ?>mailinglist/getMailinglistData';
+            window.location = '<?php echo base_url(); ?>mailinglist/getMailinglistData';
         })
 
         $('#signature-label').popover({
-            content: 'Τα στοιχεία για την υπογραφή ανακτώνται αυτόματα απο την καρτέλα <a href="<?php echo base_url("school");?>" target="_blank">Στοιχεία Φροντιστηρίου</a>.<br>Μπορείτε να επεξεργαστείτε την υποσημείωση από τις <a href="mailinglist/settings">Ρυθμίσεις</a>.',
+            content: 'Τα στοιχεία για την υπογραφή ανακτώνται αυτόματα απο την καρτέλα <a href="<?php echo base_url('school'); ?>" target="_blank">Στοιχεία Φροντιστηρίου</a>.<br>Μπορείτε να επεξεργαστείτε την υποσημείωση από τις <a href="mailinglist/settings">Ρυθμίσεις</a>.',
             html: true,
             placement: 'right'
         });
@@ -219,7 +220,7 @@ span.select2.select2-container.select2-container--default{
 
     <!-- Menu start -->
     <!-- dirname(__DIR__) gives the path one level up by default -->
-    <?php include(dirname(__DIR__).'/include/menu.php');?> 
+    <?php include dirname(__DIR__).'/include/menu.php'; ?> 
     <!-- Menu end -->
 
         <!-- main container
@@ -229,17 +230,17 @@ span.select2.select2-container.select2-container--default{
 
             <div>
                 <ul class="breadcrumb">
-                    <li><a href="<?php echo base_url() ?>"><i class="icon-home"> </i> Αρχική </a></li>
-                    <li class="active"><a href="<?php echo base_url('reports/initial') ?>">Συγκεντρωτικές Αναφορές</a></li>
+                    <li><a href="<?php echo base_url(); ?>"><i class="icon-home"> </i> Αρχική </a></li>
+                    <li class="active"><a href="<?php echo base_url('reports/initial'); ?>">Συγκεντρωτικές Αναφορές</a></li>
                     <li class="active">Επικοινωνία</li>
                 </ul>
             </div>
 
 
             <ul class="nav nav-tabs">
-                <li><a href="<?php echo base_url('telephones') ?>">Τηλέφωνα</a></li>
-                <li><a href="<?php echo base_url('telephones/exports') ?>">Ομαδικά SMS / Επαφές Google</a></li>
-                <li class="active"><a href="<?php echo base_url('mailinglist')?>">Λίστα Ηλ. Ταχυδρομείου</a></li>
+                <li><a href="<?php echo base_url('telephones'); ?>">Τηλέφωνα</a></li>
+                <li><a href="<?php echo base_url('telephones/exports'); ?>">Ομαδικά SMS / Επαφές Google</a></li>
+                <li class="active"><a href="<?php echo base_url('mailinglist'); ?>">Λίστα Ηλ. Ταχυδρομείου</a></li>
             </ul>
 
             <p></p>
@@ -255,31 +256,31 @@ span.select2.select2-container.select2-container--default{
                                 Λίστα Ηλ. Ταχυδρομείου
                             </h4>
                             <div class="buttons">
-                                <button enabled id="configbtn" type="button" class="btn btn-default btn-sm pull-right" data-toggle="button" onclick="window.location = '<?php echo base_url('mailinglist/settings')?>'"><i class="icon-cogs"></i> Ρυθμίσεις </button>
+                                <button enabled id="configbtn" type="button" class="btn btn-default btn-sm pull-right" data-toggle="button" onclick="window.location = '<?php echo base_url('mailinglist/settings'); ?>'"><i class="icon-cogs"></i> Ρυθμίσεις </button>
                             </div>
                         </div>
                         <div class="panel-body">
                                 <div class="row">
                                     <div class='col-xs-12'>
-                                        <?php if($config==='error'):?>
+                                        <?php if ('error' === $config) { ?>
                                             <div class="alert alert-danger" role="alert">
                                                 Η αποστολή email πραγματοποιείται μέσω εφόσον έχει ρυθμιστεί το <a href="contact_config" target="_blank">αντίστοιχο υποσύστημα</a>!
                                                 Σε διαφορετική περίπτωση μπορείτε να δημιουργήσετε τη λίστα διευθύνσεων επιλέγοντας τις επιθυμητές τάξεις και να κατεβάσετε το αντίστοιχο αρχείο 
                                                 (σε μορφή CSV) πατώντας Download file για εισαγωγή της λίστας ηλ. ταχυδρομείου σε εξωτερική εφαρμογή και αποστολή των email από εκεί.
                                             </div>
-                                        <?php endif;?>
-                                        <?php if($config==='success' & empty($sender)):?>
+                                        <?php }?>
+                                        <?php if ('success' === $config & empty($sender)) { ?>
                                             <div class="alert alert-danger" role="alert">
                                                 Το email αποστολέα δεν έχει καθοριστεί! Παρακαλώ εισάγετέ το στην καρτέλα <a href="mailinglist/settings">Ρυθμίσεις</a> για να είναι δυνατή η αποστολή email!
                                                 Σε διαφορετική περίπτωση <b>μπορείτε να κατεβάσετε το αντίστοιχο αρχείο (σε μορφή CSV) πατώντας Download file</b> για εισαγωγή της λίστας ηλ. ταχυδρομείου
                                                 σε εξωτερική εφαρμογή και αποστολή των email από εκεί.                                          
                                             </div>
-                                        <?php endif?>
-                                        <?php if($config==='success' & !empty($sender)):?>
+                                        <?php }?>
+                                        <?php if ('success' === $config & !empty($sender)) { ?>
                                             <p>
-                                                Αποστολή email με επιλογή τάξεων μέσω Microsoft Web Services. Aποστολέας: <a class="label label-success" href="mailinglist/settings"><?php echo $sender;?></a>
+                                                Αποστολή email με επιλογή τάξεων μέσω Microsoft Web Services. Aποστολέας: <a class="label label-success" href="mailinglist/settings"><?php echo $sender; ?></a>
                                             </p>
-                                        <?php endif;?>
+                                        <?php }?>
                                     </div>
                                 </div>
                                 <form id='MailinglistOptions' method="post" accept-charset="utf-8">
@@ -288,19 +289,19 @@ span.select2.select2-container.select2-container--default{
                                         <label>Επιλογή Τάξεων:</label>
                                     </div>
                                     <div class="col-xs-12">
-                                        <select class="form-control" id='selectClass' name="classes[]" multiple="multiple">
-                                            <?php if (!empty($classes)) : ?>
-                                                <?php foreach ($classes as $class): ?>
+                                        <select class="form-control" id='selectClass' name="classes[]" multiple="multiple" >
+                                            <?php if (!empty($classes)) { ?>
+                                                <?php foreach ($classes as $class) { ?>
                                                     <option value="<?php echo $class['id']; ?>"><?php echo $class['text']; ?></option>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
+                                                <?php } ?>
+                                            <?php } ?>
                                     </select>
                                     </div>
                                     <div class='col-xs-12' style="margin-top:10px;">
                                         <button class="pull-right btn btn-primary" id='getMailinglistData' type='button'>Download file</button>
                                     </div>
                                 </div>
-                                <?php if(!empty($sender) & $config=='success'):?>
+                                <?php if (!empty($sender) & 'success' == $config) { ?>
                                 <div class="row">
                                     <div class="col-xs-12 form-group" >
                                         <label>Κοινοποίηση σε:</label>
@@ -324,7 +325,7 @@ span.select2.select2-container.select2-container--default{
                                 <div class="row">
                                     <div class='col-xs-12  form-group' >    
                                         <label>Προεπισκόπιση Υπογραφής: <i style="cursor:pointer;" class="icon-question-sign" id="signature-label"></i></label>
-                                        <?php echo $signature;?>
+                                        <?php echo $signature; ?>
                                     </div>
                                 </div>
 
@@ -340,7 +341,7 @@ span.select2.select2-container.select2-container--default{
                                     </div>
                                  </div>
                             </form>
-                            <?php endif; //sender address check?> 
+                            <?php } // sender address check?> 
                         </div>
                     </div>
                 </div>

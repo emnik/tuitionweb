@@ -98,10 +98,7 @@ public function get_settings() {
       } else {
          $id = null;
       }
-      
 
-      $this->load->library('Firephp_lib');
-		$this->firephp_lib->log($id, 'id');
 
       foreach($mailsettings as $key => $value){
          if ($value === "") $mailsettings[$key] = null;

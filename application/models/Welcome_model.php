@@ -81,6 +81,7 @@ class Welcome_model extends CI_Model {
          ->order_by('termid', 'DESC');
       };
       
+      //$test_query = $this->db->get_compiled_select();
       $query=$this->db->get();
 
       if ($query->num_rows() > 0) 

@@ -28,10 +28,10 @@
 <?php if(!empty($regs) and $regs===true):?>
 
 <!-- LOCAL select 2 (older version) -->
-<!-- <link href="<?php echo base_url('assets/select2/select2.css')?>" rel="stylesheet">
-<link href="<?php echo base_url('assets/select2/select2-bootstrap.css')?>" rel="stylesheet">
-<script src="<?php echo base_url('assets/select2/select2.js')?>"></script>
-<script src="<?php echo base_url('assets/select2/select2_locale_el.js')?>"></script> -->
+<!-- <link href="<?php //echo base_url('assets/select2/select2.css')?>" rel="stylesheet">
+<link href="<?php // echo base_url('assets/select2/select2-bootstrap.css')?>" rel="stylesheet">
+<script src="<?php //echo base_url('assets/select2/select2.js')?>"></script>
+<script src="<?php //echo base_url('assets/select2/select2_locale_el.js')?>"></script> -->
 
 <!-- CDN for select2 Newer Version -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -66,27 +66,60 @@ $(document).ready(function(){
 			}
 		});
 
-	   $('#selectbox').select2({
-	    minimumInputLength: 2,
-	    ajax: {
-	      url: "<?php echo base_url()?>welcome/user_list",
-		  cache: false,
-	      dataType: 'json',
-	      data: function (term, page) {
-	        return {
-	          q: term //sends the typed letters to the controller
-	        };
-	      },
-	      results: function (data, page) {
-			// $('#resubscribebtn').removeAttr('disabled');
-			return { results: data }; //data needs to be {{id:"",text:""},{id:"",text:""}}...
-		},
-		  error: function (jqXHR, status, error) {
-        	console.log(error + ": " + jqXHR.responseText);
-        	return { results: [] }; // Return dataset to load after error
-   		  }
-	    }
-	  });
+	//    $('#selectbox').select2({
+	//     minimumInputLength: 2,
+	//     ajax: {
+	//       url: "<?php //echo base_url()?>welcome/user_list",
+	// 	  cache: false,
+	//       dataType: 'json',
+	//       data: function (term, page) {
+	//         return {
+	//           q: term //sends the typed letters to the controller
+	//         };
+	//       },
+	//       results: function (data, page) {
+	// 		// $('#resubscribebtn').removeAttr('disabled');
+	// 		console.log(data);
+	// 		return { results: data }; //data needs to be {{id:"",text:""},{id:"",text:""}}...
+	// 	},
+	// 	  error: function (jqXHR, status, error) {
+    //     	console.log(error + ": " + jqXHR.responseText);
+    //     	return { results: [] }; // Return dataset to load after error
+   	// 	  }
+	//     }
+	//   });
+
+	$('#selectbox').select2({
+	dropdownParent: $('#footerModal'),
+	width: 'resolve',
+    minimumInputLength: 2,
+    ajax: {
+        url: "<?php echo base_url('welcome/user_list'); ?>",
+        dataType: 'json',
+        delay: 250,
+        data: function(params) {
+            return { q: params.term };
+        },
+        processResults: function(data) {
+            console.log(data);  // Inspect the returned JSON
+
+            return {
+                results: data  // Use the grouped structure directly
+            };
+        },
+        cache: true
+    },
+    placeholder: 'όνομα / επώνυμο / τηλέφωνο / τελευταία ψηφία τηλεφώνου',
+    allowClear: false
+});
+
+	// Manually set the selected value when an option is chosen
+	$('#selectbox').on('select2:select', function (e) {
+    	// Manually set and trigger change
+		var data = e.params.data;
+    	console.log('Selected:', data);
+		$(e.currentTarget).find("option[value='" + data.id + "']").attr('selected','selected');
+	});
 
 	   $('#footerModal').on('shown.bs.modal', function(){
 			$('#selectbox').select2("open");
@@ -106,7 +139,8 @@ $(document).ready(function(){
 
 function fastgo(section){
 	id=$('#selectbox').val();
-	switch(section)
+	if (id!=""){
+		switch(section)
 		{
 		case 'card':
 		  window.location.href = '<?php echo base_url();?>student/card/'+id;
@@ -121,6 +155,7 @@ function fastgo(section){
 		  window.location.href = '<?php echo base_url();?>student/card/'+id+'/finance';
 		  break;
 		}
+	}
 }
 
 function resubscribe(){
@@ -173,12 +208,12 @@ function resubscribe(){
       <div class="modal-content">	
 		<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3 id="footerModalLabel">Αναζήτηση μαθητή</h3>
+				<h3 id="footerModalLabel">Αναζήτηση μαθητή</h3><b>(Ctrl+rightarrow)</b>
 		</div>
 		<div class="modal-body">
 			 <div class="form-group">
-			 	<label for="single" class="control-label">Γράψτε επώνυμο ή όνομα ή τηλέφωνο:</label>
- 			 	<input class="form-control" id="selectbox" type="hidden" name="optionvalue" />
+			 	<label for="single" class="control-label">Αναζήτηση:</label>
+ 			 	<input class="form-control" id="selectbox" type="hidden" name="optionvalue" style="width:100%"/>
 			 </div>
 			<div class="btn-group">
 			    <a class="btn btn-sm btn-default" href="#" onclick="fastgo('card');">Στοιχεία</a>

@@ -2,4 +2,5 @@
 .swp
 application/cache
 application/logs
+node_modules
 remote_mysql.log

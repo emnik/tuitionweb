@@ -35,35 +35,46 @@ public function __construct() {
 		}
 	}
 
-public function user_list(){
-	header('Content-Type: application/x-json; charset=utf-8');
-	$this->load->model('welcome_model');
-	$termid = $this->welcome_model->get_termid();
-	$list=$this->welcome_model->get_student_names_ids($this->input->get('q'));
-	if ($list) {
-		// foreach ($list as $stud) {
-		// 	$data[]=array("id"=>$stud['id'],"text"=>$stud['stdname']);
-		// }
-		$currentStds=[];
-		$prevStds=[];
-		foreach ($list as $stud) {
-			if ($stud['termid']==$termid){
-				$currentStds[] = array("id"=>$stud['id'],"text"=>$stud['stdname']);
-			} else {
-				$prevStds[] = array("id"=>$stud['id'],"text"=>$stud['stdname'].'-'.$stud['termname']);
-			}
-		}
-		$data[0]=array("text"=>"Επιλεγμένη διαχ. περίοδος", "children"=>$currentStds);
-		$data[1]=array("text"=>"Υπόλοιπες διαχ. περίοδοι", "children"=>$prevStds);
-		// $this->load->library('firephp');
-		// $this->firephp->info($data);
-	}
-	else
-	{
-		$data=array("id"=>"0","text"=>"Κανένα αποτέλεσμα...");
-	}
-	// echo(json_encode($data, JSON_UNESCAPED_UNICODE ));
-	echo(json_encode($data));
+public function user_list() {
+    $this->load->model('welcome_model');
+
+    $termid = $this->welcome_model->get_termid();
+    $list = $this->welcome_model->get_student_names_ids($this->input->get('q'));
+
+    if ($list) {
+        $currentStds = [];
+        $prevStds = [];
+
+        foreach ($list as $stud) {
+            $studentData = [
+                "id" => $stud['id'],
+                "text" => $stud['stdname']
+            ];
+
+            // Group students based on the term
+            if ($stud['termid'] == $termid) {
+                $currentStds[] = $studentData;
+            } else {
+                $studentData['text'] .= ' - ' . $stud['termname']; // Add term name for previous students
+                $prevStds[] = $studentData;
+            }
+        }
+
+        // Organize data into Select2 nested structure
+        $data = [
+            ["text" => "Επιλεγμένη διαχ. περίοδος", "children" => $currentStds],
+            ["text" => "Υπόλοιπες διαχ. περίοδοι", "children" => $prevStds]
+        ];
+    } else {
+        $data = [[
+            "id" => "0",
+            "text" => "Κανένα αποτέλεσμα..."
+        ]];
+    }
+
+    // Send the response as JSON with UTF-8 encoding
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
 }
 
 

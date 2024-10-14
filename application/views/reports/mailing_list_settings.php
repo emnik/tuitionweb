@@ -33,7 +33,9 @@ $(document).ready(function() {
         });
 
         $('#cancelbtn').click(function() {
-            window.open("<?php echo base_url('mailinglist/settings')?>", '_self', false);
+            window.open("<?php echo base_url(
+                "mailinglist/settings"
+            ); ?>", '_self', false);
         });
 
         $("body").on('click', '#submitbtn', function() {
@@ -54,7 +56,7 @@ $(document).ready(function() {
 
     <!-- Menu start -->
     <!-- dirname(__DIR__) gives the path one level up by default -->
-    <?php include(dirname(__DIR__).'/include/menu.php');?> 
+    <?php include dirname(__DIR__) . "/include/menu.php"; ?> 
     <!-- Menu end -->
 
         <!-- main container
@@ -64,20 +66,30 @@ $(document).ready(function() {
 
             <div>
                 <ul class="breadcrumb">
-                    <li><a href="<?php echo base_url() ?>"><i class="icon-home"> </i> Αρχική </a></li>
-                    <li class="active"><a href="<?php echo base_url('reports/initial') ?>">Συγκεντρωτικές Αναφορές</a></li>
+                    <li><a href="<?php echo base_url(); ?>"><i class="icon-home"> </i> Αρχική </a></li>
+                    <li class="active"><a href="<?php echo base_url(
+                        "reports/initial"
+                    ); ?>">Συγκεντρωτικές Αναφορές</a></li>
                     <li class="active">Επικοινωνία</li>
                 </ul>
             </div>
 
 
             <ul class="nav nav-tabs">
-                <li><a href="<?php echo base_url('telephones') ?>">Τηλέφωνα</a></li>
-                <li><a href="<?php echo base_url('telephones/exports') ?>">Ομαδικά SMS / Επαφές Google</a></li>
-                <li class="active"><a href="<?php echo base_url('mailinglist')?>">Λίστα Ηλ. Ταχυδρομείου</a></li>
+                <li><a href="<?php echo base_url(
+                    "telephones"
+                ); ?>">Τηλέφωνα</a></li>
+                <li><a href="<?php echo base_url(
+                    "telephones/exports"
+                ); ?>">Ομαδικά SMS / Επαφές Google</a></li>
+                <li class="active"><a href="<?php echo base_url(
+                    "mailinglist"
+                ); ?>">Λίστα Ηλ. Ταχυδρομείου</a></li>
             </ul>
 
-            <button enabled id="backbtn" style="margin-top:10px; margin-bottom:10px;" type="button" class="btn btn-default" data-toggle="button" onclick="window.location = '<?php echo base_url('mailinglist')?>'"> < Επιστροφή </button>
+            <button enabled id="backbtn" style="margin-top:10px; margin-bottom:10px;" type="button" class="btn btn-default" data-toggle="button" onclick="window.location = '<?php echo base_url(
+                "mailinglist"
+            ); ?>'"> < Επιστροφή </button>
             
             <div class="row">
                 <div class="col-xs-12">
@@ -94,15 +106,25 @@ $(document).ready(function() {
                             </div>
                         </div>
                         <div class="panel-body">
-                        <form id='mainform' action="<?php echo base_url('mailinglist/settings') ?>" method="post" accept-charset="utf-8">
+                        <form id='mainform' action="<?php echo base_url(
+                            "mailinglist/settings"
+                        ); ?>" method="post" accept-charset="utf-8">
                                 <div class="row">
                                     <div class="col-sm-6 col-xs-12 form-group" >
                                         <label>Διεύθυνση Αποστολέα:</label>
-                                        <input disabled id="senderaddress" name="senderaddress" class="form-control" value="<?php echo(!empty($mailsettings['senderaddress'])?$mailsettings['senderaddress']:'');?>"></input>
+                                        <input disabled id="senderaddress" name="senderaddress" class="form-control" value="<?php echo !empty(
+                                            $mailsettings["senderaddress"]
+                                        )
+                                            ? $mailsettings["senderaddress"]
+                                            : ""; ?>"></input>
                                     </div>
                                     <div class="col-sm-6 col-xs-12 form-group" >
                                         <label>Διεύθυνση Απάντησης:</label>
-                                        <input disabled id="replytoaddress" name="replytoaddress" class="form-control" value="<?php echo(!empty($mailsettings['replytoaddress'])?$mailsettings['replytoaddress']:'');?>"></input>
+                                        <input disabled id="replytoaddress" name="replytoaddress" class="form-control" value="<?php echo !empty(
+                                            $mailsettings["replytoaddress"]
+                                        )
+                                            ? $mailsettings["replytoaddress"]
+                                            : ""; ?>"></input>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -116,7 +138,11 @@ $(document).ready(function() {
                                              Η υποσημείωση μπαίνει <b>προεραιτικά</b> (με μικρή γραμματοσειρά) μετά την υπογραφή στο τέλος του μηνύματος.
                                              Μπορείτε να αφήσετε το πεδίο αυτό κενό.
                                         </div>
-                                        <textarea disabled class="form-control" name="note" id="note" rows="3" cols="1" placeholder=""><?php echo(!empty($mailsettings['note'])?$mailsettings['note']:'');?></textarea>
+                                        <textarea disabled class="form-control" name="note" id="note" rows="3" cols="1" placeholder=""><?php echo !empty(
+                                            $mailsettings["note"]
+                                        )
+                                            ? $mailsettings["note"]
+                                            : ""; ?></textarea>
                                     </div>
                                 </div>
                             </form>
