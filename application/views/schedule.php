@@ -91,12 +91,13 @@
             placeholder: "Επιλογή καθηγητή",
         }).on('change', function() {
             var data = $('#teacher_select').select2('data');
-            if (data != null) {
-                var filter = $('.lecture-time a:not(:contains("' + data.text + '"))');
+            if (data.length > 0) {
+                var selectedText = data[0].text; // Assuming single selection
+                var filter = $('.lecture-time a:not(:contains("' + selectedText + '"))');
                 $('.lecture-time').show();
                 filter.parent().hide();
             }
-        }).on('select2-opening', function() {
+        }).on('select2:opening', function() {
             $('#class_select').val(null).trigger('change');
             if ($('#teacher_select').val() == "") {
                 $('.lecture-time').show();
@@ -114,12 +115,13 @@
             placeholder: "Επιλογή τάξης",
         }).on('change', function() {
             var data = $('#class_select').select2('data');
-            if (data != null) {
-                var filter = $('.classid' + data.id);
+            if (data.length > 0) {
+                var selectedId = data[0].id; // Assuming single selection
+                var filter = $('.classid' + selectedId);
                 $('.lecture-time').hide();
                 filter.parent().show();
             }
-        }).on('select2-opening', function() {
+        }).on('select2:opening', function() {
             $('#teacher_select').val(null).trigger('change');
             if ($('#class_select').val() == "") {
                 $('.lecture-time').show();
@@ -178,10 +180,10 @@
 
             <div class="row" id="filters">
                 <div class="col-sm-3 col-xs-6">
-                    <input type="text" class="form-control" style="margin-bottom: 10px;" id='class_select'></input>
+                    <select type="text" class="form-control" style="margin-bottom: 10px;" id='class_select'></select>
                 </div>
                 <div class="col-sm-3 col-xs-6">
-                    <input type="text" class="form-control" style="margin-bottom: 10px;" id='teacher_select'></input>
+                    <select type="text" class="form-control" style="margin-bottom: 10px;" id='teacher_select'></select>
                 </div>
                 <div class="col-sm-1 col-xs-2">
                     <button type="button" class="btn btn-success">Επαναφορά</button>

@@ -10,12 +10,16 @@
                 $(this).attr('disabled', 'disabled');
             });
             if(id=="editform1"){
-                $('#usraccess').select2('disable');
+                if ($('#usraccess').is(':visible')) {
+                    $('#usraccess').prop("disabled", true);;
+                }
             }
         } else {
             $('#' + id).closest('.panel').find(':input').removeAttr('disabled');
             if(id=="editform1"){
-                $('#usraccess').select2('enable');
+                if ($('#usraccess').is(':visible')) {
+                    $('#usraccess').prop("disabled", false);
+                }
             }
         };
 
@@ -26,9 +30,10 @@
         //Menu current active links and Title
         $('#menu-users').addClass('active');
         $('#menu-header-title').text('Λογαριασμός Χρήστη');
+        // $('#usraccess').select2();
 
         <?php if (empty($userdata['group_id'])):?>
-            $('#usraccess').parent().hide();
+                $('#usraccess').parent().hide();
         <?php else:?> 
             <?php if($groupdata[$userdata['group_id']]=='admin'):?>
                 $('#usraccess').parent().hide();
@@ -38,7 +43,7 @@
         //we must enable all form fields to submit the form with no errors!
         $("body").on('click', '#submitbtn', function() {
             $('.panel').find(':input:disabled').removeAttr('disabled');
-            $('#usraccess').select2('enable');
+            $('#usraccess').prop("disabled", false);
             
             if($('#usrpassword').val() === $('#usrpassword_check').val()) {
                 $('#usrpassword').parent().removeClass('has-error');
@@ -168,49 +173,52 @@
             });
 
             var select2dynamic = {
-                minimumInputLength: 2,
-                ajax: {
-                    dataType: 'json',
-                    data: function (term, page) {
-                        return {
-                        q: term //sends the typed letters to the controller
-                        };
-                    },
-                    results: function (data, page) {
-                        return { results: data }; //data needs to be {{id:"",text:""},{id:"",text:""}}...
-                    }
+                disabled: false,
+            minimumInputLength: 2,
+            ajax: {
+                dataType: 'json',
+                data: function (params) {
+                    return {
+                        q: params.term // Sends the typed letters to the controller
+                    };
+                },
+                processResults: function (data) {
+                    return { results: data }; // Data needs to be in the format: [{id: "", text: ""}, ...]
                 }
-            };
+            }
+        };
 
-            $('#usrgroupid').on('change', function(){
-                $('#usraccess').select2('destroy');
-                switch ($(this).find('option:selected').text()) {
-                    case 'tutor':
-                        $('#usraccess').parent().show();
-                        select2dynamic.multiple = false;
-                        select2dynamic.ajax.url = "<?php echo base_url('user/tutors_list')?>";
-                        $('#usraccess').select2(select2dynamic);
-                        break;
-                    case 'student':
-                        $('#usraccess').parent().show();
-                        select2dynamic.multiple = false;
-                        select2dynamic.ajax.url = "<?php echo base_url('user/students_list')?>";
-                        $('#usraccess').select2(select2dynamic);
-                        break;
-                    case 'parent':
-                        $('#usraccess').parent().show();
-                        select2dynamic.multiple = true;
-                        select2dynamic.ajax.url = "<?php echo base_url('user/students_list')?>";
-                        $('#usraccess').select2(select2dynamic);
-                        break;
-                    case 'admin':
-                    case '':
-                        $('#usraccess').parent().hide();
-                        break;             
-                }
-            })
-
-
+        $('#usrgroupid').on('change', function(){
+            // if ($('#usraccess').is(':visible')) {
+            //     $('#usraccess').select2('destroy');
+            // }
+            switch ($(this).find('option:selected').text()) {
+                case 'tutor':
+                    $('#usraccess').parent().show();
+                    select2dynamic.multiple = false;
+                    select2dynamic.ajax.url = "<?php echo base_url('user/tutors_list')?>";
+                    //TODO: implement user/tutors_list!
+                    $('#usraccess').select2(select2dynamic);
+                    break;
+                case 'student':
+                    $('#usraccess').parent().show();
+                    select2dynamic.multiple = false;
+                    select2dynamic.ajax.url = "<?php echo base_url('user/students_list')?>";
+                    $('#usraccess').select2(select2dynamic);
+                    break;
+                case 'parent':
+                    $('#usraccess').parent().show();
+                    select2dynamic.multiple = true;
+                    select2dynamic.ajax.url = "<?php echo base_url('user/students_list')?>";
+                    $('#usraccess').select2(select2dynamic);
+                    break;
+                case 'admin':
+                case '':
+                    $('#usraccess').parent().hide();
+                    break;             
+            }
+        })
+        
     }); //end od document.ready()
 </script>
 
@@ -304,7 +312,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Πρόσβαση στα δεδομένα των:</label>
-                                            <input disabled class="form-control" id="usraccess" type="text" placeholder="" name="dataaccess">
+                                            <select class="form-control" id="usraccess" type="text" placeholder="" name="dataaccess" style="height:32px;"></select>
                                         </div>
                                     </div>
                                 </div>

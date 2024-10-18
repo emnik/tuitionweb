@@ -89,7 +89,7 @@ class Telephones extends CI_Controller
 		$this->load->model('reports/telephones_model');
 		$classes = $this->telephones_model->get_classes();
 		if ($classes) {
-			$data['classes'] = json_encode($classes, JSON_UNESCAPED_UNICODE);
+			 $data['classes'] = json_encode($classes, JSON_UNESCAPED_UNICODE);
 		}
 
 		$this->load->view('include/header');
@@ -146,21 +146,12 @@ class Telephones extends CI_Controller
 	public function getBulkSMSData()
 	{
 		$filename = "bulkSMS_export.csv";
-		// output headers so that the file is downloaded rather than displayed
-		header('Content-Type: text/csv; charset=utf-8');
-		header("Content-Description: File Transfer");
-		header("Content-Disposition: attachment; filename=$filename");
 
 		$postdata = $this->input->post();
-
-		// $this->load->library('firephp');
-		// $this->firephp->info($postdata);
-
 		$classes = $postdata['classes'];
 		$this->load->model('reports/telephones_model');
 
 		$res = $this->telephones_model->bulkSMS_export_data($classes);
-		// $this->firephp->info($res);
 
 		// use ob_clean() to clean (erase) the output buffer. If not, I get blank lines at the start!!!
 		ob_clean();
@@ -271,6 +262,11 @@ class Telephones extends CI_Controller
 		$output['missingPhones']=$missingPhones;
 		$output['csv'] = stream_get_contents($stream);
 		$output['message'] = 'just a message';
+		
+		// output headers so that the file is downloaded rather than displayed
+		header('Content-Type: text/csv; charset=utf-8');
+		header("Content-Description: File Transfer");
+		header("Content-Disposition: attachment; filename=$filename");
 		echo json_encode($output, JSON_UNESCAPED_UNICODE);
 	}
 

@@ -271,14 +271,42 @@ $config['encryption_key'] = 'E48K+BVqggS86xf7qncvAElbvV3/g8k=';
 | 'sess_time_to_update'		= how many seconds between CI refreshing Session Information
 |
 */
-$config['sess_driver'] = 'files';
+// $config['sess_driver'] = 'files';
+// $config['sess_cookie_name'] = 'ci_session';
+// $config['sess_expiration'] = 7200;
+// $config['sess_save_path'] = sys_get_temp_dir(); //for testing - this is ephemeral storing of sessions!
+// // $config['sess_save_path'] = APPPATH . 'ci_sessions/'; //for production - this is persistant storing of sessions!
+// $config['sess_match_ip'] = TRUE;
+// $config['sess_time_to_update'] = 300;
+// $config['sess_regenerate_destroy'] = FALSE;
+
+// to use session with the database:
+// CREATE TABLE `ci_sessions` (
+//   `id` varchar(128) NOT NULL,
+//   `ip_address` varchar(45) NOT NULL,
+//   `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
+//   `data` blob NOT NULL,
+//   PRIMARY KEY (`id`),
+//   KEY `ci_sessions_timestamp` (`timestamp`)
+// );
+
+$config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = 'ci_session';
-$config['sess_expiration'] = 7200;
-$config['sess_save_path'] = sys_get_temp_dir(); //for testing - this is ephemeral storing of sessions!
-// $config['sess_save_path'] = APPPATH . 'ci_sessions/'; //for production - this is persistant storing of sessions!
-$config['sess_match_ip'] = TRUE;
-$config['sess_time_to_update'] = 300;
-$config['sess_regenerate_destroy'] = FALSE;
+$config['sess_expiration'] = 7200;  // 2 hours (for inactivity)
+$config['sess_save_path'] = 'ci_sessions';  // Table name
+$config['sess_match_ip'] = FALSE;  // Set to TRUE if you want to match the IP address for the session
+$config['sess_time_to_update'] = 300;  // Session ID regeneration interval (in seconds)
+$config['sess_regenerate_destroy'] = FALSE;  // Whether to destroy old session data on regeneration
+$config['sess_expiration'] = 0;  // Session will not expire as long as the browser is open
+//Enable Session Garbage Collection (GC)
+//Garbage collection automatically deletes expired sessions from the ci_sessions table. 
+//You need to ensure it is properly configured to prevent old sessions from piling up.
+$config['sess_gc_probability'] = 1;
+$config['sess_gc_divisor'] = 100;
+// TODO: Recommended Cron Job for Cleanup
+// 0 * * * * mysql -u your_user -p'your_password' -e "DELETE FROM ci_sessions WHERE timestamp < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 2 HOUR));"
+// This query removes sessions older than 2 hours, matching the sess_expiration setting.
+// The job runs every hour to ensure timely cleanup.
 
 /*
 |--------------------------------------------------------------------------

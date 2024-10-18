@@ -165,9 +165,6 @@ class User extends CI_Controller {
         $termid = $this->user_model->get_termid();
         $list=$this->user_model->get_student_names_ids($this->input->get('q'));
         if ($list) {
-            // foreach ($list as $stud) {
-            // 	$data[]=array("id"=>$stud['id'],"text"=>$stud['stdname']);
-            // }
             foreach ($list as $stud) {
                 if ($stud['termid']==$termid){
                     $currentStds[] = array("id"=>$stud['id'],"text"=>$stud['stdname']);
@@ -177,8 +174,6 @@ class User extends CI_Controller {
             }
             $data[0]=array("text"=>"Επιλεγμένη διαχ. περίοδος", "children"=>$currentStds);
             $data[1]=array("text"=>"Υπόλοιπες διαχ. περίοδοι", "children"=>$prevStds);
-            // $this->load->library('firephp');
-            // $this->firephp->info($data);
         }
         else
         {

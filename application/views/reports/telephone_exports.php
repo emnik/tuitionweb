@@ -1,4 +1,3 @@
-
 <script type="text/javascript">
     $(document).ready(function() {
 
@@ -7,14 +6,22 @@
   $('#menu-telephones').addClass('active');
   $('#menu-header-title').text('Επικοινωνία');
 
+  let data = <?php echo $classes; ?>;
+  console.log('Dropdown Data:', data); // Check if this logs properly
+  console.log($('#selectClass').length);
         $('#selectClass').select2({
-            data: <?php echo $classes; ?>,
+            // data: <?php //echo $classes; ?>,
+            data: data,
             multiple: true,
             closeOnSelect: false,
             readonly: true,
             // placeholder: "Επιλογή τάξεων",
         })
 
+        // $('#selectClass').on('change', function () {
+        //     let selectedValues = $(this).val();  // Get selected values as an array
+        //     console.log('Selected Values:', selectedValues);
+        // });
 
         $("button[id='getGoogleData']").click(function() {
             window.location = '<?php echo base_url() ?>telephones/getGoogleData';
@@ -22,22 +29,25 @@
 
         $("button[id='getBulkSMSData']").click(function() {
             // window.location ='<?php echo base_url() ?>telephones/getBulkSMSData';
+            
             if ($('#selectClass').val()!=""){
+                console.log($('#selectClass').val());    
                 generateFile();
             }
-            
         })
 
 
     }) //end of (document).ready(function())
 
     function generateFile() {
+        const selectedClasses =$('#selectClass').val();
+        const options = $('form#SMSoptions').serializeArray();
         $.ajax({
             type: "POST",
             url: "<?php echo base_url()?>telephones/getBulkSMSData",
             data: {
                 'options' : $('form#SMSoptions').serializeArray(),
-                'classes' : $('#selectClass').val(),
+                'classes' : selectedClasses,
                 },
             dataType: 'json',
             success: function(data) {
@@ -149,7 +159,7 @@
                                         <label>Επιλογή Τάξεων:</label>
                                     </div>
                                     <div class="col-xs-12">
-                                        <div class="form-control select2" id='selectClass' name="classes[]" multiple="multiple"></div>
+                                        <select class="form-control select2" id='selectClass' name="classes[]" multiple="multiple"></select>
                                     </div>
                                 </div>
                                 <div class="row">
