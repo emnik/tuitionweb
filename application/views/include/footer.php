@@ -213,12 +213,6 @@ function resubscribe(){
 
 </script>
 
-<style type="text/css">
-	#footerModal .modal-body {
-		/*max-height: 700px;*/
-    	overflow: visible;
-	}
-</style>
 
 <!-- I removed tabindex="-1" from the modal to make the select2 work!!! but now pressing esc doesn't close the modal!-->
 <div id="footerModal" class="modal" role="dialog" aria-labelledby="footerModalLabel" aria-hidden="true">
@@ -234,15 +228,14 @@ function resubscribe(){
  			 	<input class="form-control" id="selectbox" type="hidden" name="optionvalue" style="width:100%"/>
 			 </div>
 			<div class="btn-group">
-			    <a class="btn btn-sm btn-default" href="#" onclick="fastgo('card');">Στοιχεία</a>
-			    <a class="btn btn-sm btn-default" href="#" onclick="fastgo('contact');">Επικοινωνία</a>
-			    <a class="btn btn-sm btn-default" href="#" onclick="fastgo('attendance');">Φοίτηση</a>
-			    <a class="btn btn-sm btn-default" href="#" onclick="fastgo('finance');">Οικονομικά</a>
+			    <a class="btn btn-sm btn-modal" href="#" onclick="fastgo('card');">Στοιχεία</a>
+			    <a class="btn btn-sm btn-modal" href="#" onclick="fastgo('contact');">Επικοινωνία</a>
+			    <a class="btn btn-sm btn-modal" href="#" onclick="fastgo('attendance');">Φοίτηση</a>
+			    <a class="btn btn-sm btn-modal" href="#" onclick="fastgo('finance');">Οικονομικά</a>
 			</div>
 		</div>
 		<div class="modal-footer">
-			<!-- <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> -->
-			<button id="resubscribebtn" class="btn btn-primary" onclick="resubscribe();">Επανεγγραφή για το <?php echo $this->session->userdata('startsch');?></button>
+		<button id="resubscribebtn" class="btn btn-danger" onclick="resubscribe();">Επανεγγραφή για το <?php echo $this->session->userdata('startsch');?></button>			
 			<div class="alert alert-success" role="alert" id="resultmsg" style="display:none; margin-top:10px;">
 				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       			<p style="text-align:left;"> </p> 
