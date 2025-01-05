@@ -20,7 +20,7 @@
 			</div>
 		</div>
 	</footer>
-	
+
 	<a class="scrollup" href="#">Scroll</a>
 
 
@@ -66,28 +66,6 @@ $(document).ready(function(){
 			}
 		});
 
-	//    $('#selectbox').select2({
-	//     minimumInputLength: 2,
-	//     ajax: {
-	//       url: "<?php //echo base_url()?>welcome/user_list",
-	// 	  cache: false,
-	//       dataType: 'json',
-	//       data: function (term, page) {
-	//         return {
-	//           q: term //sends the typed letters to the controller
-	//         };
-	//       },
-	//       results: function (data, page) {
-	// 		// $('#resubscribebtn').removeAttr('disabled');
-	// 		console.log(data);
-	// 		return { results: data }; //data needs to be {{id:"",text:""},{id:"",text:""}}...
-	// 	},
-	// 	  error: function (jqXHR, status, error) {
-    //     	console.log(error + ": " + jqXHR.responseText);
-    //     	return { results: [] }; // Return dataset to load after error
-   	// 	  }
-	//     }
-	//   });
 
 	$('#selectbox').select2({
 	dropdownParent: $('#footerModal'),
@@ -134,7 +112,47 @@ $(document).ready(function(){
 				$('#resubscribebtn').removeAttr('disabled');
 			}
 	   })
-});
+
+	   
+    // Fetch themes using AJAX
+    $.ajax({
+        url: '<?php echo base_url('theme/get_themes'); ?>',  // Adjust the URL based on your controller
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Empty the dropdown before appending new items
+            $('#theme-dropdown').empty();
+            
+            // Loop through the response and add each theme to the dropdown
+            $.each(data, function(index, theme) {
+                $('#theme-dropdown').append('<li><a href="#" class="theme-option" data-theme-id="'+theme.id+'">'+theme.name+'</a></li>');
+            });
+        },
+        error: function() {
+            alert('Error loading themes.');
+        }
+    });
+    
+    // When a theme is selected
+    $(document).on('click', '.theme-option', function() {
+        var themeId = $(this).data('theme-id');
+
+        // Update the theme for the user (via AJAX or form submission)
+        $.ajax({
+            url: '<?php echo base_url('theme/set_theme'); ?>',  // Adjust the URL
+            method: 'POST',
+            data: { theme_id: themeId },
+			dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                   location.reload();  // reload the page to apply the theme
+               } else {
+                    alert('Failed to update theme.');
+                }
+            }
+        });
+    });
+}); //end of $(document).ready
 
 
 function fastgo(section){

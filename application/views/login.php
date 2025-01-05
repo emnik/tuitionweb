@@ -62,7 +62,7 @@
                   <input type="password" autocomplete="current-password" class="form-control input-lg" placeholder="Κωδικός χρήστη" name="password"></input>
                 </div>
                 <div class="form-group col-sm-12">
-                    <button type="submit" class="btn btn-success">Είσοδος</button>
+                    <button type="submit" class="btn btn-openpage">Είσοδος</button>
                 </div>
               </form>
 

@@ -30,8 +30,7 @@
         //Menu current active links and Title
         $('#menu-users').addClass('active');
         $('#menu-header-title').text('Λογαριασμός Χρήστη');
-        // $('#usraccess').select2();
-
+        
         <?php if (empty($userdata['group_id'])):?>
                 $('#usraccess').parent().hide();
         <?php else:?> 
@@ -174,19 +173,19 @@
 
             var select2dynamic = {
                 disabled: false,
-            minimumInputLength: 2,
-            ajax: {
-                dataType: 'json',
-                data: function (params) {
-                    return {
-                        q: params.term // Sends the typed letters to the controller
-                    };
-                },
-                processResults: function (data) {
-                    return { results: data }; // Data needs to be in the format: [{id: "", text: ""}, ...]
+                minimumInputLength: 2,
+                ajax: {
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            q: params.term // Sends the typed letters to the controller
+                        };
+                    },
+                    processResults: function (data) {
+                        return { results: data }; // Data needs to be in the format: [{id: "", text: ""}, ...]
+                    }
                 }
-            }
-        };
+            };
 
         $('#usrgroupid').on('change', function(){
             // if ($('#usraccess').is(':visible')) {
@@ -242,7 +241,7 @@
             <div>
                 <ul class="breadcrumb">
                     <li><a href="<?php echo base_url() ?>"><i class="icon-home"> </i> Αρχική </a></li>
-                    <li style="font-size:12px;color: #8C7D7F;">Ρυθμίσεις</li>
+                    <li>Ρυθμίσεις</li>
                     <li><a href="<?php echo base_url('user') ?>">Λογαριασμοί χρηστών</a></li>
                     <li class="active">Καρτέλα χρήστη</li>
                 </ul>
@@ -312,7 +311,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Πρόσβαση στα δεδομένα των:</label>
-                                            <select class="form-control" id="usraccess" type="text" placeholder="" name="dataaccess" style="height:32px;"></select>
+                                            <select class="form-control select2" id="usraccess" type="text" placeholder="" name="dataaccess"></select>
                                         </div>
                                     </div>
                                 </div>

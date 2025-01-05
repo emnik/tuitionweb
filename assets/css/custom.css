@@ -1,17 +1,28 @@
+@import url(http://fonts.googleapis.com/css?family=Jura:400,600|Play:400,700|Roboto:700&subset=latin,greek);
+
 /**
  * My custom CSS rules go into this file
  */
 
- :root {
-  --primary-color: #011627;
-  --secondary-color: #2d3142;
-  --accent-color: #247ba0;
-  --background-color: #56e7de;
+ /* :root {
+  Nautical Breeze
+  --primary-color: #141e26;
+  --secondary-color: #1e5067;
+  --accent-color: #159ab7;
+  --background-color: #cbd8df;
   --light-color: #ffffff;
-  --dark-color: #1a535c;
+  --light-secondary-color: #eae8fa;
+  --dark-color: #1a535c; */
+
+	/* --primary-color: #002B36;
+	--secondary-color: #073642;
+	--accent-color: #6c71c4;
+	--background-color: #586E75;
+	--light-color: #eee8d5;
+	--light-secondary-color: #fdf6e3;
+	--dark-color: #073642; */
 }
 
-@import url(http://fonts.googleapis.com/css?family=Jura:400,600|Play:400,700|Roboto:700&subset=latin,greek);
 .pager li>a, .pager li>span {
   border-radius: 10px;
   padding: 5px 14px;
@@ -76,7 +87,7 @@
 }
 
 .jumbotron.subhead {
-  margin-top: 30px;
+  padding-top: 50px;
   padding-bottom: 40px;
 }
 
@@ -115,31 +126,32 @@ body {
 /* Sticky footer based on from http://ryanfait.com/sticky-footer/ 
 --------------------------------------------------------------*/
 
-* {
+/* * {
   margin: 0;
-}
+} */
 
 html, body {
   height: 100%;
+  margin: 0;
 }
 
 .wrapper {
-  min-height: 100%;
-  height: auto !important;
-  height: 100%;
-  margin: 0 auto -110px;
+  min-height: calc(100vh - 100px - 40px);
+  margin-bottom: 40px;
 }
 
-.footer, .push {
-  height: 110px;
-}
+/* .main{
+  padding-bottom:60px;
+} */
+
 
 .footer {
+  width: 100%;
   color: var(--light-color);
-  padding: 30px 0;
-  margin-bottom: 0px;
-  margin-top: 0px;
+  padding: 20px 0;
   background-color: var(--secondary-color);
+  height: 100px;
+  clear: both;
 }
 
 .footer a {
@@ -176,13 +188,23 @@ html, body {
 Normally (without bootstrap intergration I would add the display class to the table
 and use the demo_table.css file that includes the css rules below*/
 
+.table-striped tr.odd td, .table-striped > tbody > tr:nth-of-type(2n+1) {
+  background-color: var(--light-secondary-color);
+}
+
+.table-striped tr.even td, .table-striped > tbody > tr:nth-of-type(2n) {
+  background-color: var(--light-color);
+}
+
 .table tr.odd.row_selected td {
   background-color: var(--accent-color);
+  filter:brightness(90%);
   color: var(--light-color);
 }
 
 .table tr.even.row_selected td {
   background-color: var(--accent-color);
+  filter:brightness(90%);
   color: var(--light-color);
 }
 
@@ -203,6 +225,11 @@ and use the demo_table.css file that includes the css rules below*/
 
 .breadcrumb a:hover {
   color: var(--dark-color);
+}
+
+.breadcrumb>li {
+  font-size:12px;
+  color: var(--light-color);
 }
 
 .breadcrumb li span.divider {
@@ -233,6 +260,8 @@ and use the demo_table.css file that includes the css rules below*/
   content: "";
 }
 
+
+
 /* nav tabs & pils styling 
 ---------------------------*/
 
@@ -245,19 +274,19 @@ and use the demo_table.css file that includes the css rules below*/
 }
 
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active {
-  background-color: var(--accent-color);
   color: var(--light-color);
 }
 
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover{
   background-color: var(--accent-color);
   color: var(--light-color);
-  cursor: pointer;
+  border-color: var(--accent-color);
 }
 
 .nav-tabs > li > a:hover {
   background-color: var(--accent-color);
   color: var(--light-color);
+  border-color: var(--accent-color);
 }
 
 .nav-pills>.active>a, .nav-pills>.active>a:hover, .nav-pills>.active>a:focus {
@@ -267,7 +296,7 @@ and use the demo_table.css file that includes the css rules below*/
 
 .nav.nav-pills li{
   background-color: var(--light-color);
-  border-style: solid;
+  border-style: inherit;
   border-width: thin;
   border-radius: 5px;
   border-color: var(--background-color);
@@ -301,7 +330,7 @@ ul.nav.nav-pills li a.active{
 } */
 
 .panel-body {
-  background-color: var(--light-color);
+  background: var(--light-color);
 }
 
 .panel-default>.panel-heading {
@@ -317,7 +346,6 @@ ul.nav.nav-pills li a.active{
   margin-bottom: 15px;
   font-size: 14px;
   font-family: 'Jura', sans-serif;
-  /* font-weight: 600; */
 }
 
 .panel>.panel-heading>.buttons {
@@ -361,7 +389,6 @@ ul.nav.nav-pills li a.active{
   background: var(--light-color);
   border-left: 1px solid var(--dark-color);
   border-right: 1px solid var(--dark-color);
-  /* border-top: 1px solid var(--dark-color); */
   border-bottom: 1px solid var(--dark-color);
   clear: both;
   margin-bottom: 6px;
@@ -371,7 +398,7 @@ ul.nav.nav-pills li a.active{
 }
 
 .multiplefieldset:nth-child(even) {
-  background-color: var(--background-color);
+  background-color: var(--light-secondary-color);
 }
 
 .paylegend {
@@ -473,6 +500,18 @@ https://github.com/malteo/bootstrap-collapsible-fieldset*/
   background-color: var(--accent-color);
 }
 
+label.ellipsis {
+  display: block;           /* Ensure it behaves as a block element */
+  width: 100%;              /* Take the full width of the parent col-sm-6 */
+  white-space: nowrap;      /* Prevent text wrapping */
+  overflow: hidden;         /* Hide overflowed text */
+  text-overflow: ellipsis;  /* Display ellipsis (…) */
+}
+
+.form-check-label {
+  font-weight: 400;
+}
+
 .stats {
 background-color: var(--accent-color);
 border: 10px solid var(--light-color);
@@ -534,7 +573,7 @@ height: 150px;
 
 .welcome .btn-link {
   text-decoration: none;
-  color: var(--accent-color);
+  color: var(--dark-color);
   /* text-shadow: 5px 4px 2px #cfcfcf; */
 }
 
@@ -543,8 +582,15 @@ height: 150px;
   font-weight: 600;
 } */
 
+.welcome-section-title > .icon-plus, .welcome-section-title > .icon-minus {
+  padding-right: 10px;
+  padding-left: 5px;
+} 
+
 .welcome .btn-link:enabled:hover {
-  color: var(--dark-color);
+  color: var(--accent-color);
+  filter: brightness(70%);
+  /* text-shadow: 1px 1px var(--primary-color); */
   transform: scale(1.1);
   -webkit-transform: scale(1.1);
   /* Saf3.1+, Chrome */
@@ -567,20 +613,36 @@ height: 150px;
   opacity: 0.5; /* 50% transparency */
 }
 
-.welcome-title {
+.welcome-section-title {
   cursor: pointer;
   text-align: left;
   margin-top: 20px;
   background: var(--accent-color);
-  padding: 5px 10px;
+  padding: 10px 0px 10px 10px;
+  width: 100%;
   color: var(--light-color);
   font-family: 'Jura', sans-serif;
   font-weight: 400;
   color: var(--light-color);
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -khtml-border-radius: 5px;
-  border-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.welcome-section-title.no-select {
+  cursor:default;
+  background-color: var(--primary-color);
+}
+
+.welcome-section-body {
+  background-color: var(--light-color);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.welcome-section-body.manage-period {
+  padding: 20px 15px 40px 20px;
+  background: var(--secondary-color);
+  color: var(--light-color);
 }
 
 .panel-scroll {
@@ -593,9 +655,9 @@ height: 150px;
 ---------------------------------------------------------------------*/
 
 .group {
-  background-color: var(--light-color);
+  background-color: var(--accent-color);
   font-family: 'Jura', sans-serif;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /*---------------------------------------------------------------------*/
@@ -603,26 +665,39 @@ height: 150px;
 
 /*.btn-openpage {
   background-color: var(--accent-color);
-  color: white;
+  color: var(--light-color);
 }*/
 
-.btn-openpage:hover {
-  /*background-color: 89A452;*/
-  background: url("./images/btn-bg.png") repeat scroll 0 0px, -moz-linear-gradient(center top, #99b45e 0px, #8fac54 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
-  background: url('./images/btn-bg.png') repeat scroll 0 0px, -webkit-gradient(linear, center top, center bottom, from(#99b45e), to(#8fac54)) repeat scroll 0 0 rgba(0, 0, 0, 0);
-  color: white;
+.btn-openpage:hover, .btn-reset:hover {
+  background: var(--secondary-color);
+  color: var(--light-color);
 }
 
-.btn-openpage:active {
-  /*background-color: 89A452;*/
-  background: url("./images/btn-bg.png") repeat scroll 0 0px, -moz-linear-gradient(center top, #99b45e 0px, #8fac54 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
-  background: url('./images/btn-bg.png') repeat scroll 0 0px, -webkit-gradient(linear, center top, center bottom, from(#99b45e), to(#8fac54)) repeat scroll 0 0 rgba(0, 0, 0, 0);
-  color: white;
+.btn-openpage:active, .btn-reset:active {
+  background: var(--accent-color);
+  color: var(--light-color);
 }
 
 .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
   background-color: var(--accent-color);
   border-color: var(--accent-color);
+  z-index: 0;
+}
+
+.pagination > li > a {
+  color: var(--dark-color);
+  background: var(--light-color);
+}
+
+.pagination > .disabled > a {
+  background: var(--light-color);
+}
+
+.pagination > li > a:hover, .pagination > .disabled a:hover {
+  background: var(--accent-color);
+  color: var(--light-color);
+  border-top-color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
 }
 
 a {
@@ -638,6 +713,7 @@ table th {
 fieldset legend {
   font-family: 'Roboto', sans-serif;
   font-weight: 600;
+  border-bottom-color: var(--primary-color);
 }
 
 li.select2-search-choice {
@@ -645,9 +721,8 @@ li.select2-search-choice {
   font-weight: 400;
 }
 
-.btn-success, .btn-openpage, .btn-openpage:focus, .btn-success:focus {
-  background: url('./images/btn-bg.png') repeat scroll 0 0px, -moz-linear-gradient(center top, #92AC5A 0px, #88A450 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
-  background: url('./images/btn-bg.png') repeat scroll 0 0px, -webkit-gradient(linear, center top, center bottom, from(#92AC5A), to(#88A450)) repeat scroll 0 0 rgba(0, 0, 0, 0);
+.btn-success, .btn-openpage, .btn-reset, .btn-openpage:focus, .btn-success:focus {
+   background: var(--accent-color);
   box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.07) inset, 0 1px 2px 0 rgba(0, 0, 0, 0.09), 0 0 0 rgba(0, 0, 0, 0);
   color: var(--light-color);
   font-size: 12px;
@@ -787,7 +862,7 @@ body.slide-active {
     margin: 8px 0;
     text-align: center;
     overflow: hidden;
-    /*fast clearfixer*/
+
   }
   #slide-nav .navbar-form .form-control {
     text-align: center
@@ -807,4 +882,13 @@ body.slide-active {
   .navbar-header {
     left: 0!important
   }
+}
+
+.form-control {
+  background-color: var(--light-secondary-color);
+}
+
+.form-control[disabled] {
+  background-color: var(--light-secondary-color);
+  filter:brightness(80%);
 }

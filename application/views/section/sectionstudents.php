@@ -10,7 +10,7 @@
         $(this).attr('disabled', 'disabled');
       });
       if(id=="editform2"){
-        $('#selectstdsbox').select2('disable');
+        $('#selectstdsbox').prop("disabled", true);;
       }
     } else {
       // $('#submitform1btn').removeAttr('disabled');
@@ -19,7 +19,7 @@
         $(this).removeAttr('disabled');
       });
       if(id=="editform2"){
-        $('#selectstdsbox').select2('enable');
+        $('#selectstdsbox').prop("disabled", false);
       }
     };
 
@@ -126,12 +126,13 @@
         //THIS URL GETS ALL THE STUDENTS FOR THE CURRENT SCHOOL YEAR. I SHOULD CONSTRICT IT TO SPECIFIC CLASS>COURSE !!!
         url: "<?php echo base_url() ?>section/student_list",
         dataType: 'json',
-        data: function(term, page) {
+        delay: 250,
+        data: function(params) {
           return {
-            q: term //sends the typed letters to the controller
+            q: params.term //sends the typed letters to the controller
           };
         },
-        results: function(data, page) {
+        processResults: function(data) {
           return {
             results: data
           }; //data needs to be {{id:"",text:""},{id:"",text:""}}...
@@ -275,7 +276,7 @@
                     <form id="form2" action="<?php echo base_url() ?>section/card/<?php echo $section['id'] ?>/sectionstudents/" method="post" accept-charset="utf-8" role="form">
                       <div class="form-group">
                         <label for="single" class="control-label">Επιλέξτε μαθητές/μαθήτριες:</label>
-                        <input <?php if (!empty($students)) echo 'disabled';?> class="form-control" id="selectstdsbox" type="hidden" name="newstudents" />
+                        <select <?php if (!empty($students)) echo 'disabled';?> class="form-control" id="selectstdsbox"  name="newstudents[]" style="width:100%;"></select>
                       </div>
                       <button <?php if (!empty($students)) echo 'disabled';?>  id="submitform2btn" type="submit" class="btn btn-primary pull-right">Προσθήκη στο τμήμα</button>
                     </form>

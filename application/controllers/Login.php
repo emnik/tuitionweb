@@ -7,19 +7,12 @@ class Login extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		// $this->load->library('session');
 	}
 	
 
 	public function index()
 	{
-		// $this->output->enable_profiler(TRUE);
-		// $this->load->library('firephp');
-		// $this->load->helper('language');
-
 		$session_user = $this->session->userdata('is_logged_in');
-		// $this->firephp->info($session_user);
-		// $this->firephp->info(empty($session_user));		
 
 		if(!empty($session_user))
 		{
@@ -67,9 +60,6 @@ class Login extends CI_Controller {
 							$this->input->post('password')
 						);
 
-						// $this->load->library('firephp');
-						// $this->firephp->info($res);						
-
 			$data['login_failed'] = true; // default: treat login as failed!
 
 			if ($res !== false)
@@ -81,10 +71,6 @@ class Login extends CI_Controller {
 					$data['password_failed'] = true;
 				} else {
 					$data['login_failed'] = false;
-					//get the schoolyear and store it as session variable
-					$this->load->model('welcome_model');
-					// $startsch = $this->welcome_model->get_selected_startschyear();
-					// $this->session->set_userdata(array('startsch'=>$startsch));
 
 					//logged in => set user data
 					$this

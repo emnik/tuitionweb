@@ -27,8 +27,26 @@ function toggleedit(togglecontrol, id) {
 
 }
 
-$(document).ready(function(){
+function handleEllipsis() {
+  $('.ellipsis').each(function() {
+    const $this = $(this);
 
+    // Check if the content is overflowing
+    if (this.scrollWidth > this.clientWidth) {
+      $this.tooltip(); // Initialize tooltip if ellipsis is applied
+    } else {
+      $this.tooltip('destroy'); // Destroy the tooltip if no overflow
+      $this.removeAttr('title'); // Remove title to prevent native tooltips
+    }
+  });
+}
+
+$(window).on('resize', handleEllipsis);
+
+$(document).ready(function(){
+    // tooltip for mothers name if needed
+    handleEllipsis();
+  
     //Menu current active links and Title
     $('#menu-operation').addClass('active');
     $('#menu-student').addClass('active');
@@ -176,7 +194,17 @@ function makephonecall(phonenum){
             </div>
             <div class="panel-body">
               <div class="form-group col-sm-6">
-                <label>Κινητό πατέρα <?php if(!empty($secondary)) {if (!is_null($secondary['fathers_name'])) echo '('.$secondary['fathers_name'].')';}?></label>
+                <!-- <label>Κινητό πατέρα <?php if(!empty($secondary)) {if (!is_null($secondary['fathers_name'])) echo '('.$secondary['fathers_name'].')';}?></label> -->
+                <label class="ellipsis" 
+                      data-toggle="tooltip" 
+                      data-placement="top" 
+                      title="Κινητό πατέρα <?php if (!empty($secondary)) { 
+                          if (!is_null($secondary['fathers_name'])) echo '('.$secondary['fathers_name'].')'; 
+                      } ?>">
+                    Κινητό πατέρα <?php if (!empty($secondary)) { 
+                        if (!is_null($secondary['fathers_name'])) echo '('.$secondary['fathers_name'].')'; 
+                    } ?>
+                </label>                 
                   <div class="input-group">
                     <span class="input-group-btn">
                        <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php if(!empty($contact)) {if (!is_null($contact['fathers_mobile'])) echo $contact['fathers_mobile'];}?>);"><span class="icon"><i class="icon-mobile-phone"></i></span></button>
@@ -185,7 +213,16 @@ function makephonecall(phonenum){
                   </div>
               </div>
               <div class="form-group col-sm-6">
-                <label>Κινητό μητέρας <?php if(!empty($secondary)) {if (!is_null($secondary['mothers_name'])) echo '('.$secondary['mothers_name'].')';}?></label>
+                <label class="ellipsis" 
+                      data-toggle="tooltip" 
+                      data-placement="top" 
+                      title="Κινητό μητέρας <?php if (!empty($secondary)) { 
+                          if (!is_null($secondary['mothers_name'])) echo '('.$secondary['mothers_name'].')'; 
+                      } ?>">
+                    Κινητό μητέρας <?php if (!empty($secondary)) { 
+                        if (!is_null($secondary['mothers_name'])) echo '('.$secondary['mothers_name'].')'; 
+                    } ?>
+                </label>
                 <div class="input-group">
                   <span class="input-group-btn">
                      <button type="button" class="phonecall btn btn-default" onclick="makephonecall(<?php if(!empty($contact)) {if (!is_null($contact['mothers_mobile'])) echo $contact['mothers_mobile'];}?>);"><span class="icon"><i class="icon-mobile-phone"></i></span></button>

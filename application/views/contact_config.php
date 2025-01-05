@@ -64,7 +64,7 @@
         <div>
             <ul class="breadcrumb">
             <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
-            <li style="font-size:12px;color: #8C7D7F;">Ρυθμίσεις</li>
+            <li>Ρυθμίσεις</li>
             <li class="active">Contact Services Configuration</li>
             </ul>
         </div>

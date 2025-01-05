@@ -18,6 +18,8 @@
 
    <link href="<?php echo base_url('assets/FooTable-2/css/footable.core.css') ?>" rel="stylesheet">
 
+   <!-- Themming -->
+   <link rel="stylesheet" type="text/css" href="<?php echo base_url('theme-styles'); ?>"> <!-- Set the :root CSS variables! -->
    <link href="<?php echo base_url('assets/css/custom.css') ?>" rel="stylesheet">
 
    <!-- CKeditor -->

@@ -507,7 +507,7 @@
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                    <table id="tbl1" class="table datatable">
+                                    <table id="tbl1" class="table table-striped datatable">
                                         <thead>
                                             <tr>
                                                 <th>Τάξη</th>

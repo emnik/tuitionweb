@@ -277,7 +277,8 @@ class Card_model extends CI_Model
 
     public function addstudentstosection($studentlist, $sectionid)
     {
-        $students = explode(',', $studentlist);
+        // $students = explode(',', $studentlist);
+        $students = $studentlist;
         $query = $this->db->select(array('tutor_id', 'lesson_id'))->where('id', $sectionid)->get('section');
         if ($query->num_rows() > 0) {
             $row = $query->row();

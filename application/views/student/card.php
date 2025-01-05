@@ -164,7 +164,7 @@
     <!-- main container
 ================================================== -->
 
-    <div class="container" style="margin-bottom:60px;">
+    <div class="container">
 
       <div>
         <ul class="breadcrumb">

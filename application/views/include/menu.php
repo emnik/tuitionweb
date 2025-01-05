@@ -41,6 +41,12 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Εμφάνιση<b class="caret"></b></a>
+                    <ul class="dropdown-menu" id="theme-dropdown">
+                        <!-- The theme list will be populated here -->
+                    </ul>
+                </li>   
                 <li class="navbar-right">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Χρήστης<b class="caret"></b></a>
                     <ul class="dropdown-menu">

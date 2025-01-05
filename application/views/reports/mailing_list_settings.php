@@ -135,7 +135,7 @@ $(document).ready(function() {
                                         <label>Κείμενο υποσημείωσης (html):</label>
                                         <div class="alert alert-info" role="alert">
                                             <span class="icon"><i class="icon-info-sign"></i></span>
-                                             Η υποσημείωση μπαίνει <b>προεραιτικά</b> (με μικρή γραμματοσειρά) μετά την υπογραφή στο τέλος του μηνύματος.
+                                             Η υποσημείωση μπαίνει <b>προαιρετικά</b> (με μικρή γραμματοσειρά) μετά την υπογραφή στο τέλος του μηνύματος.
                                              Μπορείτε να αφήσετε το πεδίο αυτό κενό.
                                         </div>
                                         <textarea disabled class="form-control" name="note" id="note" rows="3" cols="1" placeholder=""><?php echo !empty(

@@ -135,7 +135,13 @@
             $('#class_select').val(null).trigger('change');
             $('#teacher_select').val(null).trigger('change');
         });
+        
+        // on start set null on the filters
+        $('#class_select').val(null).trigger('change');
+        $('#teacher_select').val(null).trigger('change');
+
         <?php endif;?>
+
     }) //end of (document).ready(function())
 </script>
 
@@ -180,13 +186,13 @@
 
             <div class="row" id="filters">
                 <div class="col-sm-3 col-xs-6">
-                    <select type="text" class="form-control" style="margin-bottom: 10px;" id='class_select'></select>
+                    <select type="text" class="form-control select2" id='class_select' style="width:100%;"></select>
                 </div>
                 <div class="col-sm-3 col-xs-6">
-                    <select type="text" class="form-control" style="margin-bottom: 10px;" id='teacher_select'></select>
+                    <select type="text" class="form-control select2" id='teacher_select' style="width:100%;"></select>
                 </div>
-                <div class="col-sm-1 col-xs-2">
-                    <button type="button" class="btn btn-success">Επαναφορά</button>
+                <div class="col-sm-6 col-xs-12">
+                    <button type="button" class="btn btn-reset">Επαναφορά</button>
                 </div>
             </div>
 

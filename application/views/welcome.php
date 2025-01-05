@@ -1,31 +1,33 @@
-<style>
-  .thumbnails {
-    border: none;
-  }
-
-  .thumbnail {
-    border: none;
-  }
-</style>
-
 <script type="text/javascript">
   $(document).ready(function() {
     
     //Menu current active links and Title
     $('#menu-operation').addClass('active');
-    $('#menu-header-title').text('<?php echo $school['distinctive_title']?>');
+    $('#menu-header-title').text('<?php echo $school['distinctive_title']; ?>');
 
-    $('.group4').toggle();
-    $('.group4').parent().parent().siblings().toggle();
+    // $('.group2, .group3 .group4').toggle();
+    // $('.group2, .group3 .group4').parent().next().toggle();
 
     $('#schoolyearcombo').on('change', function() {
       $('form[name="main"]').submit();
     });
 
-    $('.welcome-title').click(function() {
-      $(this).find('.icon').toggle();
-      $(this).parent().siblings().toggle();
-    });
+    // $('.welcome-section-title:not(.no-select)').click(function() {
+    //   $(this).next().toggle();
+    //   $(this).find('.icon').toggle();
+    // });
+
+    $('.welcome-section-title:not(.no-select)').click(function () {
+    // Collapse all sections except the one that was clicked
+    $('.welcome-section-title:not(.no-select)').not(this).next('.welcome-section-body').hide();
+    $('.welcome-section-title:not(.no-select)').not(this).find('.icon-plus').show();
+    $('.welcome-section-title:not(.no-select)').not(this).find('.icon-minus').hide();
+
+    // Toggle the clicked section
+    $(this).next('.welcome-section-body').toggle();
+    $(this).find('.icon-plus').toggle();
+    $(this).find('.icon-minus').toggle();
+  });
 
   });
 </script>
@@ -37,7 +39,7 @@
     <!--body wrapper for css sticky footer-->
 
             <!-- Menu start -->
-            <?php include(__DIR__ .'/include/menu.php');?>
+            <?php include __DIR__.'/include/menu.php'; ?>
         <!-- Menu end -->
 
     <!-- main container
@@ -49,42 +51,53 @@
 
         <div class="col-md-4">
           <!-- form container -->
-          <div class="row" style="padding:15px 15px;">
-            <form name="main" class="form" action="<?php echo base_url('welcome');?>" method="post" accept-charset="utf-8">
-                <fieldset>
-                  <legend>Διαχειριστική Περίοδος</legend>
-                  <div class="form-horizontal">
-                    <div class="control-group col-xs-10" style="padding-left: 0px;">
-                      <label class="control-label">Επιλέξτε: </label>
-                        <select class="form-control input-md" name="startschoolyear" id="schoolyearcombo">
-                          <?php foreach($schoolyears as $data):?>
-                            <option value="<?php echo $data['id'];?>" <?php if($data['active']==1) echo "selected = 'selected'";?>>
-                              <?php echo $data['name'];?>
-                            </option>                        
-                          <?php endforeach;?>
-                            }
-                          <!-- <option value="addnextschoolyear">Προσθήκη επόμενου σχ. έτους</option> -->
-                        </select>
-                    </div>
-                  <div class="control-group col-xs-2" style="margin-top: 26px; padding:0;" >
-                   <button type="submit" name="submitbtn" value="submit0" class="btn btn-default btn-md pull-right" id="editermsbtn"><i class="icon icon-cogs"></i></button>
-                </fieldset>
-          </div> <!--end of row-->
-
-        </div> <!--end of col-md-4-->
-        
-        <div class="col-md-8">
-          <!-- submit buttons -->
-
           <div class="row">
-            <!--first row-->
             <div class="col-xs-12">
-              <div class="welcome-title">
-                <span class="icon group1"><i class="icon-minus"></i></span>
-                <span class="icon group1" style="display:none"><i class="icon-plus"></i></span>
-                Λειτουργία Φροντιστηρίου
+            <form name="main" class="form" action="<?php echo base_url('welcome'); ?>" method="post" accept-charset="utf-8">
+              <fieldset>
+                <div class="welcome-section-title no-select">
+                  Διαχειριστική Περίοδος
+                </div>
+
+                <div class="col-xs-12 welcome-section-body manage-period">
+                <div class="form-inline">
+                <p class="form-control-static"> Επιλέξτε:</p>
+                  <div class="form-group" >
+                    <!-- <label class="control-label">Επιλέξτε: </label> -->
+                      <select class="form-control input-md" name="startschoolyear" id="schoolyearcombo">
+                        <?php foreach ($schoolyears as $data) { ?>
+                          <option value="<?php echo $data['id']; ?>" <?php if (1 == $data['active']) {
+                              echo "selected = 'selected'";
+                          } ?>>
+                            <?php echo $data['name']; ?>
+                          </option>                        
+                        <?php } ?>
+                          }
+                      </select>
+                        </div>
+                  <div class="form-group">
+                    <button type="submit" name="submitbtn" value="submit0" class="btn btn-danger btn-md pull-right" id="editermsbtn"><i class="icon icon-edit"></i></button>
+                  </div>
+                        </div>
+              </fieldset>
+            </div> 
+          </div> <!--end of row-->
+        </div> <!--end or col-md-4-->
+  
+        <div class="col-md-7 col-md-offset-1">
+          <!-- submit buttons -->
+          <div class="row">
+            <div class="col-xs-12">
+            <!--first row-->
+            <div class="row">
+            <div class="col-xs-12">
+              <div class="welcome-section-title">
+                <i class="icon-minus"></i>
+                <i class="icon-plus" style="display:none"></i>
+                 Λειτουργία Φροντιστηρίου
               </div>
-            </div>
+
+            <div class="col-xs-12 welcome-section-body">    
             <div class="col-sm-3 col-xs-6 welcome">
               <button type="submit" class="btn-link" name="submitbtn" value="submit1">
                 <i class="icon-group icon-4x"></i>
@@ -99,7 +112,6 @@
             </div>
 
             <div class="col-sm-3 col-xs-6 welcome">
-              <!-- <div class="col-sm-3 col-sm-pull-6 col-xs-6 welcome"> -->
               <button type="submit" class="btn-link" name="submitbtn" value="submit10">
                 <i class="icon-calendar icon-4x"></i>
                 <h4>Πρόγραμμα</h4>
@@ -143,8 +155,8 @@
                 γονέων / μαθητών
               </div>
             </div>
-
-
+    </div>
+                          </div>
           </div>
           <!--end of first row-->
 
@@ -152,12 +164,13 @@
             <!--second row-->
 
             <div class="col-xs-12">
-              <div class="welcome-title">
-                <span class="icon group2"><i class="icon-minus"></i></span>
-                <span class="icon group2" style="display:none"><i class="icon-plus"></i></span>
-                Οργάνωση / Διαχείριση φροντιστηρίου
+              <div class="welcome-section-title">
+                <i class="icon-minus" style="display:none"></i>
+                <i class="icon-plus"></i>
+                 Οργάνωση / Διαχείριση φροντιστηρίου
               </div>
-            </div>
+              <div class="col-xs-12 welcome-section-body" style="display:none;">  
+            <!-- </div> -->
 
             <div class="col-sm-3 col-xs-6 welcome" >
               <button type="submit" class="btn-link" name="submitbtn" value="submit2">
@@ -207,20 +220,21 @@
                 Στοιχεία Φροντιστηρίου / Φορολογικά / Διαδύκτιο
               </div>
             </div>
+                          </div>
                     </div>
-
+                          </div>
           <!--end of second row-->
 
           <div class="row">
             <!--third row-->
             <div class="col-xs-12">
-              <div class="welcome-title">
-                <span class="icon group3"><i class="icon-minus"></i></span>
-                <span class="icon group3" style="display:none"><i class="icon-plus"></i></span>
-                Συγκεντρωτικές αναφορές
+              <div class="welcome-section-title">
+                <i class="icon-minus" style="display:none"></i>
+                <i class="icon-plus"></i>
+                 Συγκεντρωτικές αναφορές
               </div>
-            </div>
-
+            <!-- </div> -->
+            <div class="col-xs-12 welcome-section-body" style="display:none;">  
             <div class="col-sm-3 col-xs-6 welcome" >
               <button type="submit" class="btn-link" name="submitbtn" value="submit9">
                 <i class="icon-copy icon-4x"></i>
@@ -272,7 +286,7 @@
                 Οφειλες ανα σύνολο μηνών
               </div>
             </div>
-
+            <!-- </div> -->
           </div>
           <!--end of third row-->
 
@@ -283,13 +297,13 @@
           <div class="row" style="margin-bottom:20px;">
             <!--forth row-->
             <div class="col-xs-12">
-              <div class="welcome-title">
-                <span class="icon group4"><i class="icon-minus"></i></span>
-                <span class="icon group4" style="display:none"><i class="icon-plus"></i></span>
-                Διαχείριση εφαρμογής / Ρυθμίσεις
+              <div class="welcome-section-title">
+                <i class="icon-minus" style="display:none"></i>
+                <i class="icon-plus"></i>
+                 Διαχείριση εφαρμογής / Ρυθμίσεις
               </div>
-            </div>
-
+            <!-- </div> -->
+            <div class="col-xs-12 welcome-section-body" style="display:none;">  
             <div class="col-sm-3 col-xs-6 welcome" >
               <button type="submit" class="btn-link" name="submitbtn" value="submit13">
                 <i class="icon-shield icon-4x"></i>
@@ -323,11 +337,12 @@
           </div>
 
 
-
+                          </div>
+                          </div>
           </div>
           <!--end of forth row-->
-
-
+                          </div>
+                          </div>
 
 
         </div> <!-- end of submit buttons -->
@@ -338,9 +353,9 @@
 
 
 
-
+                        </div>
     </div>
     <!--end of container -->
     <div class="push"></div>
-  </div> <!-- end of body wrapper -->
-</body>
+    </div> <!-- end of body wrapper -->
+    </body>

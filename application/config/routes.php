@@ -38,9 +38,11 @@
 |
 */
 
-$route['default_controller'] = "login";
+$route['default_controller'] = "login"; // the login controller 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+$route['theme-styles'] = 'theme/load_css'; // this is : controller/function
+
 
 
 /* End of file routes.php */

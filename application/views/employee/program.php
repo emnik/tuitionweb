@@ -156,10 +156,8 @@ var nodays = new Array(7);
       </div>
 
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-xs-12">
       		<h4>Εβδομαδιαίο πρόγραμμα :</h4>
-        </div>
-        <div class="col-md-8">
           <ul class="nav nav-pills">
             <?php for ($i=1; $i <= 7 ; $i++):?>
             <li >

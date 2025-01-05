@@ -16,13 +16,13 @@
                 $(this).find('btn').attr('disabled', 'disabled');
             });
             if(id=="editform1"){
-                $('#supervisors').select2('disable');
+                $('#supervisors').prop('disabled', true);
             }
         } else {
             $('#' + id).closest('.mainform').find(':input').removeAttr('disabled');
             $(this).find('btn').removeAttr('disabled');
             if(id=="editform1"){
-                $('#supervisors').select2('enable');
+                $('#supervisors').prop('disabled', false);
             }
             
             if (newlessonc > 1) {

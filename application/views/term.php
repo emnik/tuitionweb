@@ -163,8 +163,8 @@ $(document).ready(function() {
               <tr>
                 <td><?php echo $data["id"];?></td>
                 <td><?php echo $data["name"];?></td>
-                <td><?php echo date_format(date_create($data["start"]),"d/m/Y");?></td>
-                <td><?php echo date_format(date_create($data["end"]),"d/m/Y");?></td>
+                <td><?php echo date_format(date_create(!empty($data["start"])?$data["start"]:""),"d/m/Y");?></td>
+                <td><?php echo date_format(date_create(!empty($data["end"])?$data["end"]:""),"d/m/Y");?></td>
                 <td><?php if($data["active"]==1){echo '<input type="checkbox" class="editor-active" onclick="return false;" checked>';} else {echo '<input type="checkbox" class="editor-active" onclick="return false;">';}?></td>
               </tr>            
             <?php endforeach;?>

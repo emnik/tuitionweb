@@ -156,10 +156,8 @@ var nodays = new Array(7);
       </div>
 
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-xs-12">
       		<h4>Εβδομαδιαίο πρόγραμμα :</h4>
-        </div>
-        <div class="col-md-8">
           <ul class="nav nav-pills" >
             <?php for ($i=1; $i <= 7 ; $i++):?>
             <li>
@@ -232,7 +230,7 @@ var nodays = new Array(7);
     				      						<!-- <td><?php echo $program[$k]['section'];?></td> -->
     				      						<td><?php echo $program[$k]['classroom'];?></td>
                               <td>
-                                <a style="font-weight:600;" class="btn btn-info btn-xs" href="<?php echo base_url()?>section/card/<?php echo $program[$k]['section_id'];?>">
+                                <a style="font-weight:600;" class="label label-section" href="<?php echo base_url()?>section/card/<?php echo $program[$k]['section_id'];?>">
                                   <?php echo $program[$k]['section'];?>
                                 </a>
                               </td>

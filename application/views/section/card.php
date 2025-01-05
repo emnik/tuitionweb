@@ -1,10 +1,5 @@
-<!-- <link href="<?php echo base_url('assets/bootstrap3-timepicker-0.2.6/css/bootstrap-timepicker.min.css') ?>" rel="stylesheet"> -->
-<!-- <script src="<?php echo base_url('assets/bootstrap3-timepicker-0.2.6/js/bootstrap-timepicker.min.js') ?>"></script> -->
 <link href="<?php echo base_url('assets/clockpicker-master/dist/bootstrap-clockpicker.min.css') ?>" rel="stylesheet">
 <script src="<?php echo base_url('assets/clockpicker-master/dist/bootstrap-clockpicker.min.js') ?>"></script>
-
-<style type="text/css">
-</style>
 
 
 <script type="text/javascript">
