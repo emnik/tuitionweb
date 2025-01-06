@@ -293,11 +293,12 @@ $config['encryption_key'] = 'E48K+BVqggS86xf7qncvAElbvV3/g8k=';
 $config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = 'ci_session';
 $config['sess_expiration'] = 7200;  // 2 hours (for inactivity)
+//$config['sess_expiration'] = 0;  // Session will not expire as long as the browser is open
 $config['sess_save_path'] = 'ci_sessions';  // Table name
 $config['sess_match_ip'] = FALSE;  // Set to TRUE if you want to match the IP address for the session
 $config['sess_time_to_update'] = 300;  // Session ID regeneration interval (in seconds)
 $config['sess_regenerate_destroy'] = FALSE;  // Whether to destroy old session data on regeneration
-$config['sess_expiration'] = 0;  // Session will not expire as long as the browser is open
+
 //Enable Session Garbage Collection (GC)
 //Garbage collection automatically deletes expired sessions from the ci_sessions table. 
 //You need to ensure it is properly configured to prevent old sessions from piling up.

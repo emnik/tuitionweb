@@ -7,14 +7,14 @@ class Mailinglist_model extends CI_Model {
       parent::__construct();
    }
 
-   public function get_emails(){
-      //this will propbably be merged with mailinglist_export_data() function
+   public function get_emails($data){
+      $classes = implode(", ", $data); //convert php array to string array
       $MySQL = "SELECT ";
-      // $MySQL = $MySQL."CONCAT_WS(', ', `registration`.`name`, `registration`.`surname`) AS `Name`,";
       $MySQL = $MySQL."`email` AS `email` ";
       $MySQL = $MySQL."FROM  `registration` left join `contact` ON `registration`.`id` = `contact`.`reg_id` ";
       $MySQL = $MySQL."JOIN `term` ON `registration`.`term_id`=`term`.`id` ";
       $MySQL = $MySQL."WHERE (`term`.`active` = 1) ";
+      $MySQL = $MySQL."AND (`registration`.`class_id` IN (".$classes.")) ";
       $MySQL = $MySQL."AND (`contact`.`email` IS NOT NULL) ";
       $MySQL = $MySQL."order by `registration`.`id` ASC;" ;
    
@@ -22,14 +22,18 @@ class Mailinglist_model extends CI_Model {
       return $query->result_array();
    }
 
-   public function mailinglist_export_data()
+   public function mailinglist_export_data($data)
    {
+      $classes = implode(", ", $data); //convert php array to string array
       $MySQL = "SELECT ";
-      $MySQL = $MySQL."CONCAT_WS(', ', `registration`.`name`, `registration`.`surname`) AS `Name`,";
-      $MySQL = $MySQL."`email` AS `Email` ";
+      $MySQL = $MySQL."CONCAT_WS(' ', `registration`.`name`, `registration`.`surname`) AS `Name`,";
+      $MySQL = $MySQL."`email` AS `Email`, ";
+      $MySQL = $MySQL."`class`.`class_name` AS `Class` ";
       $MySQL = $MySQL."FROM  `registration` left join `contact` ON `registration`.`id` = `contact`.`reg_id` ";
       $MySQL = $MySQL."JOIN `term` ON `registration`.`term_id`=`term`.`id` ";
+      $MySQL = $MySQL."JOIN `class` ON `registration`.`class_id`=`class`.`id` ";
       $MySQL = $MySQL."WHERE (`term`.`active` = 1) ";
+      $MySQL = $MySQL."AND (`registration`.`class_id` IN (".$classes.")) ";
       $MySQL = $MySQL."AND (`contact`.`email` is not NULL) ";
       $MySQL = $MySQL."order by `registration`.`id` ASC;" ;
    

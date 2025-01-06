@@ -68,6 +68,14 @@ span.select2.select2-container.select2-container--default{
     function prepareData(){
         let submit=true;
         let err_message='';
+
+        // Check if there are receipients!
+        if ($('#customaddress').val()===null && $('#selectClass').val()===null) {
+            submit = false;
+            err_message += "Η λίστα παραληπτών (τάξεις ή/και κοινοποίηση) δεν μπορεί να είναι κενή!" + "<br>";
+        };
+
+
         // Serialize the form
         var formData = $('#MailinglistOptions').serializeArray();
         
@@ -192,9 +200,21 @@ span.select2.select2-container.select2-container--default{
         });
 
 
+        // $("button[id='getMailinglistData']").click(function() {
+        //     window.location = '<?php echo base_url(); ?>mailinglist/getMailinglistData';
+        // })
+
         $("button[id='getMailinglistData']").click(function() {
-            window.location = '<?php echo base_url(); ?>mailinglist/getMailinglistData';
-        })
+            // Get the selected values from the selectClass element
+            var selectedClasses = $('#selectClass').val(); // This will return an array of selected values
+
+            // Construct the URL with the selected classes as part of the path
+            var baseUrl = '<?php echo base_url(); ?>mailinglist/getMailinglistData';
+            var url = baseUrl + '/' + encodeURIComponent(selectedClasses.join(','));
+
+            // Redirect to the constructed URL
+            window.location = url;
+        });
 
         $('#signature-label').popover({
             content: 'Τα στοιχεία για την υπογραφή ανακτώνται αυτόματα απο την καρτέλα <a href="<?php echo base_url('school'); ?>" target="_blank">Στοιχεία Φροντιστηρίου</a>.<br>Μπορείτε να επεξεργαστείτε την υποσημείωση από τις <a href="mailinglist/settings">Ρυθμίσεις</a>.',

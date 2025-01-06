@@ -158,16 +158,20 @@ class Mailinglist extends CI_Controller
 				$cc_email_list[]=array('email'=>$value);
 			}
 		} else {
-			$cc_email_list = null;
+			$cc_email_list = [];
 		}
 
 		$this->load->model('reports/Mailinglist_model');
-		$email_list = $this->Mailinglist_model->get_emails();
+		if(!empty($postdata['classes'])){
+			$email_list = $this->Mailinglist_model->get_emails($postdata['classes']);
+		} else {
+			$email_list = [];
+		}
+
 				
 		// Load the GraphEmailLibrary
 		$this->load->library('GraphEmailLibrary');
 
-		$this->load->model('Mailinglist_model');
 		$settings = $this->Mailinglist_model->get_settings();
 		$note = $settings['note'];
 
@@ -186,12 +190,17 @@ class Mailinglist extends CI_Controller
 		// Append the signature to the email body
 		$email_content = $email_body . $email_signature;
 
-		// Use the library to send the email
-		$result = $this->graphemaillibrary->send_emails($email_subject, $email_content, $recipient_emails, $cc_recipient_emails, $sender_email, $replyto_email);
-		// $result = array( //testing
+
+		// Test - DO NOT SEND - Simulate successful sending
+		// $simulate = array( //testing
 		// 	'status' => 'success',
-		// 	'message' => 'testing'
+		// 	'message' => 'Testing of email sending seems to be successful!'
 		// );
+		// $result = json_encode($simulate);
+		
+		// Use the library to SEND the email
+		$result = $this->graphemaillibrary->send_emails($email_subject, $email_content, $recipient_emails, $cc_recipient_emails, $sender_email, $replyto_email);
+
 
 		// If mail sending was a success, store the data to the mail_history table
 		$res = json_decode($result);
@@ -224,37 +233,57 @@ class Mailinglist extends CI_Controller
 	}
 
 	// Generate the CSV File for download the mailing list with the selected classes!
-	public function getMailinglistData()
+	public function getMailinglistData($data=null)
 	{
-		$filename = "mailinglist_export.csv";
-		// output headers so that the file is downloaded rather than displayed
-		header('Content-Type: text/csv; charset=utf-8');
-		header("Content-Description: File Transfer");
-		header("Content-Disposition: attachment; filename=$filename");
-
-		$this->load->model('reports/Mailinglist_model');
-		$res = $this->Mailinglist_model->mailinglist_export_data();
-
-		// use ob_clean() to clean (erase) the output buffer. If not, I get blank lines at the start!!!
-		ob_clean();
-		$file = fopen('php://output', 'w');
-
-		$header = array(
-			"Name",
-			"Email"
-		);
-		fputcsv($file, $header);
-
-		foreach ($res['mailinglist'] as $row) {
-			$valuesArray = array();
-			foreach ($row as $name => $value) {
-				$valuesArray[] = $value;
-			}
-			fputcsv($file, $valuesArray);
+		if ($data){
+			$decodedData = urldecode($data);
+			$classes = explode(",", $decodedData);
+		} else {
+			$classes = [];
 		}
 
-		fclose($file);
-		exit;
+		if (!empty($classes)){
+			$filename = "mailinglist_export.csv";
+			// output headers so that the file is downloaded rather than displayed
+			header('Content-Type: text/csv; charset=utf-8');
+			header("Content-Description: File Transfer");
+			header("Content-Disposition: attachment; filename=$filename");
+
+			$this->load->model('reports/Mailinglist_model');
+			$res = $this->Mailinglist_model->mailinglist_export_data($classes);
+
+			// I can use the Mailinglist_model/get_emails function if I want like below but the CSV file
+			// will only have the emails. I prefer a seperate function so that I also have more fields like the name and/or
+			// the class!
+
+			//$output = $this->Mailinglist_model->mailinglist_export_data($classes);
+			// foreach($output as $row) 
+			// {
+			// $res['mailinglist'][] = $row;
+			// }
+
+			// use ob_clean() to clean (erase) the output buffer. If not, I get blank lines at the start!!!
+			ob_clean();
+			$file = fopen('php://output', 'w');
+
+			$header = array(
+				"Name",
+				"Email",
+				"Τάξη"
+			);
+			fputcsv($file, $header);
+
+			foreach ($res['mailinglist'] as $row) {
+				$valuesArray = array();
+				foreach ($row as $name => $value) {
+					$valuesArray[] = $value;
+				}
+				fputcsv($file, $valuesArray);
+			}
+
+			fclose($file);
+			exit;
+		}
 	}
 
 }
