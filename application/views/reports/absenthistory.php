@@ -232,6 +232,7 @@ $(window).on("resize", function (e) {
         <!-- <li><a href="<?php echo base_url()?>history">Σύνοψη</a></li> -->
         <li><a href="<?php echo base_url()?>history/apy">ΑΠΥ</a></li>
         <li class="active"><a href="<?php echo base_url()?>history/absences">Απουσιών</a></li>
+        <li><a href="<?php echo base_url()?>history/mail">Ηλ.Ταχυδρομείου</a></li>
       </ul>
 
       <p></p>

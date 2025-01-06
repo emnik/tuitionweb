@@ -52,7 +52,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         // 'copy', 
         {
           extend: 'copy',
-          title: function () { return "Ιστορικό ΑΠΥ"; },
+          title: function () { return "Ιστορικό Ηλ.Ταχυδρομείου"; },
             exportOptions: {
             orthogonal: "exportCopy"
           }
@@ -60,7 +60,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         // 'excel', 
         {
           extend: 'excel',
-          title: function () { return "Ιστορικό ΑΠΥ"; },
+          title: function () { return "Ιστορικό Ηλ.Ταχυδρομείου"; },
             exportOptions: {
             orthogonal: "exportExcel"
           }
@@ -69,7 +69,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         {
           extend: 'pdf',
           // add title to pdf
-          title: function () { return "Ιστορικό ΑΠΥ"; },
+          title: function () { return "Ιστορικό Ηλ.Ταχυδρομείου"; },
           exportOptions: {
             orthogonal: "exportPdf"
           }
@@ -77,14 +77,14 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
         // 'print'
         {
           extend: 'print',
-          title: function () { return "Ιστορικό ΑΠΥ"; },
+          title: function () { return "Ιστορικό Ηλ.Ταχυδρομείου"; },
             exportOptions: {
             orthogonal: "exportPrint"
           }
         },
         ],
         "ajax": {
-        "url": "<?php echo base_url()?>history/gethistoryapydata",
+        "url": "<?php echo base_url()?>history/getmailhistorydata",
         "dataSrc": function(data){
             if(data == false){
                 return [];
@@ -98,49 +98,20 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
     },
         "processing": true,
         "columns": [
-            { "data": "surname"},
-            { "data": "name"},
-            { "data": "apy_no"},
-            { "data": "apy_dt", 
-                      "mRender": function ( data, type, row ) {
-                            return (moment(data).format("D/M/YYYY"));
-                        }},
-            { "data": "amount",
-              "render": function (data, type, row, meta) {
-                if (data == null) {data='0'};
-                if (type ==="display" || type ==="exportPdf" || type ==="exportPrint" ){
-                    return data+'€';
-                }
-                else 
-                {
-                    return data;
-                }
+            { "data": "created_at"},
+            { "data": "subject"},
+            { "data": "content"},
+            { "data": "recipients",
+              "mRender": function(data, type, row){
+                return '<div style="min-width:250px; max-width:800px; white-space:normal">'+data+'</div>';
               }
             },
-            { "data": "is_credit", 
-              "render": function ( data, type, row ) {
-                    if (type === 'display'){
-                        if (data === '1') {
-                            return '<input type="checkbox" class="editor-active" onclick="return false;" checked>';
-                        } else {
-                            return '<input type="checkbox" onclick="return false;" class="editor-active">';
-                        }
-                    }
-                    else {
-                        return data;
-                        }
-                    }
-                },
-            { "data": "month_range"},
-            { "data": "notes"},
             ],
-        "order": [[2, 'desc']],    
+        "order": [[1, 'desc']],    
         "sort": false,
         "filter": true,
         "columnDefs": [
-            { "searchable": true, "targets": [6] }  //don't filter class name and course
-            //they will be filtered via input boxes in the table footer!
-        ],
+            { "searchable": true}        ],
         "paginate": true,
         "drawCallback": function () {
             if ($(this).find('.dataTables_empty').length == 1 && $('#monthfilter').text()!="") {
@@ -179,7 +150,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
           "loadingRecords": "Φόρτωση καταλόγου ...",
           "processing": "Επεξεργασία...",   
           "search": "Αναζήτηση:",
-          "zeroRecords": '<div class="alert alert-danger"><span style="font-family:\'Play\';font-weight:700;"></span>Δεν υπάρχουν καταχωρημένες ΑΠΥ!</div>'
+          "zeroRecords": '<div class="alert alert-danger"><span style="font-family:\'Play\';font-weight:700;"></span>Δεν έχουν αποσταλεί email!</div>'
         }
      } );
 
@@ -266,22 +237,16 @@ $(window).on("resize", function (e) {
 	        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
           <li class="active"><a href="<?php echo base_url('reports/initial')?>">Συγκεντρωτικές Αναφορές</a></li>
           <li class="active">Ιστορικό</li>
-          <li class="active">ΑΠΥ</li>
+          <li class="active">Ηλ.Ταχυδρομείου</li>
 	      </ul>
       </div>
       
-     <!-- <p> 
-      <h3>
-        Ιστορικό
-      </h3>
-    </p> -->
-        
 
       <ul class="nav nav-tabs">
         <!-- <li><a href="<?php echo base_url()?>history">Σύνοψη</a></li> -->
-        <li class="active"><a href="<?php echo base_url()?>history/apy">ΑΠΥ</a></li>
+        <li><a href="<?php echo base_url()?>history/apy">ΑΠΥ</a></li>
         <li><a href="<?php echo base_url()?>history/absences">Απουσιών</a></li>
-        <li><a href="<?php echo base_url()?>history/mail">Ηλ.Ταχυδρομείου</a></li>
+        <li class="active"><a href="<?php echo base_url()?>history/mail">Ηλ.Ταχυδρομείου</a></li>
       </ul>
 
       <p></p>
@@ -295,37 +260,27 @@ $(window).on("resize", function (e) {
           <span class="icon">
             <i class="icon-book"></i>
           </span>
-          <h3 class="panel-title">Αποδείξεις</h3>
+          <h3 class="panel-title">Ηλ. Ταχυδρομείο</h3>
        </div> 
         <div class="panel-body">
-          <div class="alert alert-danger alert-dismissible" role="alert">
+          <!-- <div class="alert alert-danger alert-dismissible" role="alert">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             Οι αποδείξεις αφορούν πληρωμές για την <u>επιλεγμένη διαχειριστική περίοδο</u>. Αν έχει κοπεί απόδειξη που αφορά προηγούμενη διαχειριστική περίοδο <strong>δεν</strong> εμφανίζεται εδώ!
-          </div>
+          </div> -->
         <!-- <h4>Αναφορές</h4> -->
         <table id="tbl1" class="table datatable table-striped" style="width:100%">
     			<thead>
     		        <tr>
-    		        	<th>Επίθετο</th>
-    		        	<th>Όνομα</th>
-                        <th>Αρ. ΑΠΥ</th>
                         <th>Ημερομηνία</th>
-                        <th>Ποσό</th>
-                        <th>Επι πιστώσει</th>
-                        <th>Μήνας/-ες</th>
-                        <th>Παρατηρήσεις</th>
+                        <th>Θέμα</th>
+                        <th>Μήνυμα</th>
+                        <th>Παραλήπτες</th>
     		        </tr>
     		    </thead>
             <tbody>
             </tbody>
             <tfoot>
           <tr>
-            <th>
-                <label for="monthfilter">Φίλτρο Μήνα:</label>
-                <input type="text" class="search_init form-control" id="monthfilter" name="search_months" value="Φίλτρο Μήνα" class="search_init" /></th>
-            <th></th>
-            <th></th>
-            <th></th>
             <th></th>
             <th></th>
             <th></th>

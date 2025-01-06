@@ -61,11 +61,22 @@ class History extends CI_Controller {
         
 		$startsch=$this->session->userdata('startsch');
 		
-		// $this->load->library("firephp");
-		// $this->firephp->info($data['aaData']);
-
 		$this->load->view('include/header');
 		$this->load->view('reports/absenthistory', $data);
+		$footer_data['regs']=true;
+		$this->load->view('include/footer', $footer_data);
+	}
+
+	public function mail()
+	{
+		$this->load->model('login_model');
+	    $user=$this->login_model->get_user_name($this->session->userdata('user_id'));
+        $data['user']=$user;
+        
+		$startsch=$this->session->userdata('startsch');
+		
+		$this->load->view('include/header');
+		$this->load->view('reports/mailhistory', $data);
 		$footer_data['regs']=true;
 		$this->load->view('include/footer', $footer_data);
 	}
@@ -90,5 +101,14 @@ class History extends CI_Controller {
 		echo json_encode($res);
 	}
 
+	public function getmailhistorydata()
+	{
+		header('Content-Type: application/x-json; charset=utf-8');
+
+		$this->load->model('reports/history_model');
+   		$res=$this->history_model->get_mailhistorydata();
+		
+		echo json_encode($res);
+	}
 
 }
