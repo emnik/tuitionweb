@@ -129,6 +129,11 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label>API Key</label>
+                                <textarea rows="5" disabled class="form-control" id="apikey" name="apikey"><?php echo (!empty($smsconf['apikey'])) ? $smsconf['apikey'] : ''; ?></textarea>
+                            </div>                            
                         </div>
                     </div>
                 </div>

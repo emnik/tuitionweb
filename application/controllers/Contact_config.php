@@ -43,10 +43,17 @@ class Contact_config extends CI_Controller
 		if (!empty($_POST)) {
 			foreach ($_POST as $key => $value) 
 			{
-				$microsoftdata[$key]=$value;
+				if($key == 'mailclientsecret' || $key == 'mailclientid' || $key == 'tenantid'){
+					$microsoftdata[$key]=$value;
+				} else if ($key == 'apikey'){
+					$smsconfdata[$key]=$value;
+				}
 			};
 			$this->Contact_config_model->update_microsoft_data($microsoftdata);
+			$this->Contact_config_model->update_smsto_data($smsconfdata);
+
 			$data['ews'] = $microsoftdata;
+			$data['smsconf'] = $smsconfdata;
 		}
 		else 
 		{
@@ -55,6 +62,11 @@ class Contact_config extends CI_Controller
             if (!empty($microsoftdata)){
                 $data['ews'] = $microsoftdata[0]; //[0] as I only have one record!!!
             }
+
+			$smsconfdata = $this->Contact_config_model->get_sms_settings();
+			if (!empty($smsconfdata)){
+				$data['smsconf'] = $smsconfdata[0]; //[0] as I only have one record!!!
+			}
 		}
 
 

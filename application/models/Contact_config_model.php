@@ -7,7 +7,7 @@ class Contact_config_model extends CI_Model {
       parent::__construct();
    }
 
-
+    // Mail configuration
    public function get_settings() {
     $query = $this->db->select('*')->get('mailconf');
 
@@ -41,4 +41,37 @@ class Contact_config_model extends CI_Model {
         }
     }
 
+    //SMS configuration
+    public function get_sms_settings() {
+        $query = $this->db->select('*')->get('smsconf');
+    
+        if ($query->num_rows() > 0) 
+            {
+                foreach($query->result_array() as $row) 
+                {
+                    $smsconf[] = $row;
+                }
+    
+                return $smsconf;
+            }
+            else 
+            {
+                return false;
+            }
+       }
+    
+       public function update_smsto_data($smsconfdata){
+            foreach($smsconfdata as $key => $value){
+                if ($value === "") $smsconfdata[$key] = null;
+            }
+    
+            // if (empty($smsconfdata['apikey'])){ //new record so insert!
+            //     $this->db->insert('smsconf', $smsconfdata);
+            // }
+            // else {
+                // $this->db->where('apikey', $smsconfdata['apikey']);
+                $this->db->update('smsconf', $smsconfdata);
+            
+            // }
+        }    
 }

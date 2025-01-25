@@ -35,8 +35,9 @@ span.select2.select2-container.select2-container--default{
     }
 
     // Make submitForm accessible by attaching it to the window object so that I can use it outside the <script type="module">!!!
-    window.submitForm = function() {
-        var queryString = prepareData();
+    window.submitForm = function(queryString) {
+        // var queryString = prepareData();
+        // console.log(queryString);
         if (queryString!==false){
             // Make the AJAX request
             $.ajax({
@@ -118,7 +119,7 @@ span.select2.select2-container.select2-container--default{
         // Convert the filtered formData back to a query string
         const queryString = $.param(formData);
 
-        console.log(queryString);
+        // console.log(queryString);
         if (submit) {
             return queryString;
         } else {
@@ -126,8 +127,6 @@ span.select2.select2-container.select2-container--default{
             show_msg(err_message, 'error');
             return false;
         }
-
-        
     }
 
     // Function to validate email
@@ -174,6 +173,32 @@ span.select2.select2-container.select2-container--default{
         $('#response-container').html(message);
     }
 
+    $("button[id='cancelMail'], button[id='closeModal']").click(function() {
+            $('#sendConfirm').modal('hide');
+        });
+
+    var mailData = '';
+    $("button[id='submitbtn']").click(function() {
+        mailData = prepareData();
+        if (mailData!==false){
+            $('#sendConfirm').modal();
+        }
+    });
+
+    $("button[id='sendMail']").click(function() {
+        $('#sendConfirm').modal('hide');
+        window.submitForm(mailData);
+        reset();
+    });
+
+    function reset() {
+        editorInstance.setData('');
+        $('#subject').val('');
+        $('#customaddress').val(null).trigger('change');
+        $('#result').addClass("hidden");
+        $('#selectClass').val(null).trigger('change');
+    }
+
 </script>
 
 <script type="text/javascript">
@@ -200,10 +225,6 @@ span.select2.select2-container.select2-container--default{
         });
 
 
-        // $("button[id='getMailinglistData']").click(function() {
-        //     window.location = '<?php echo base_url(); ?>mailinglist/getMailinglistData';
-        // })
-
         $("button[id='getMailinglistData']").click(function() {
             // Get the selected values from the selectClass element
             var selectedClasses = $('#selectClass').val(); // This will return an array of selected values
@@ -227,6 +248,8 @@ span.select2.select2-container.select2-container--default{
             $('#result').addClass("hidden"); // Hide the alert instead of removing it
         });
 
+
+
     }) //end of (document).ready(function())
 </script>
 
@@ -235,6 +258,26 @@ span.select2.select2-container.select2-container--default{
 </head>
 
 <body>
+
+    <div class="modal fade" id="sendConfirm" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" data-target=".bs-example-modal-sm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" id="closeModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Επιβεβαίωση Αποστολής</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Είστε σίγουροι ότι θέλετε να στείλετε το email;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancelMail" class="btn btn-danger" data-dismiss="modal">Ακύρωση</button>
+                    <button type="button" id="sendMail" class="btn btn-primary">Αποστολή</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
     <div class="wrapper">
         <!--body wrapper for css sticky footer-->
 
@@ -251,15 +294,14 @@ span.select2.select2-container.select2-container--default{
             <div>
                 <ul class="breadcrumb">
                     <li><a href="<?php echo base_url(); ?>"><i class="icon-home"> </i> Αρχική </a></li>
-                    <li class="active"><a href="<?php echo base_url('reports/initial'); ?>">Συγκεντρωτικές Αναφορές</a></li>
+                    <!-- <li class="active"><a href="<?php echo base_url('reports/initial'); ?>">Συγκεντρωτικές Αναφορές</a></li> -->
                     <li class="active">Επικοινωνία</li>
                 </ul>
             </div>
 
 
             <ul class="nav nav-tabs">
-                <li><a href="<?php echo base_url('telephones'); ?>">Τηλέφωνα</a></li>
-                <li><a href="<?php echo base_url('telephones/exports'); ?>">Ομαδικά SMS / Επαφές Google</a></li>
+                <li><a href="<?php echo base_url('communication'); ?>">Ομαδικά SMS</a></li>
                 <li class="active"><a href="<?php echo base_url('mailinglist'); ?>">Λίστα Ηλ. Ταχυδρομείου</a></li>
             </ul>
 
@@ -344,14 +386,14 @@ span.select2.select2-container.select2-container--default{
 
                                 <div class="row">
                                     <div class='col-xs-12  form-group' >    
-                                        <label>Προεπισκόπιση Υπογραφής: <i style="cursor:pointer;" class="icon-question-sign" id="signature-label"></i></label>
+                                        <label>Προεπισκόπιση Υπογραφής: <i  class="icon-question-sign" id="signature-label"></i></label>
                                         <?php echo $signature; ?>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class='col-xs-12'  style="margin-top:10px;">
-                                        <button class="btn btn-primary pull-right" id='submitbtn' type='button' onclick="submitForm()">Αποστολή</button>
+                                        <button class="btn btn-primary pull-right" id='submitbtn' type='button'>Αποστολή</button>
                                     </div>
                                     <div class='col-xs-12'  style="margin-top:10px;">
                                         <div id="result" class="alert alert-success alert-dismissible hidden" role="alert">

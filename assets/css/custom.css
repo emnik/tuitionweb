@@ -20,7 +20,43 @@
 	--background-color: #586E75;
 	--light-color: #eee8d5;
 	--light-secondary-color: #fdf6e3;
-	--dark-color: #073642; */
+	--dark-color: #073642; 
+}*/
+
+span.select2.select2-container.select2-container--default{
+  display: inline;
+}
+
+/* SMS info styling */
+.smsInfo {
+  margin-top: 10px;
+  line-height: 10px;
+  font-size: smaller;
+}
+
+.icon-question-sign, .icon-info-sign {
+  cursor: pointer;
+}
+.modalSMStextHeader{
+  background-color: var(--secondary-color);
+  color: var(--light-color);
+  /* border-radius: 9px 9px 0px 0px; */
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.modalSMStext {
+  border-style: solid;
+  border-width: 1px;
+  /* border-radius: 9px; */
+  border-color: var(--accent-color);
+  line-height: 2em;
+  background-color: whitesmoke;
+  padding: 15px;
+  /* margin: 15px 200px; */
+  font-size: 14px;
 }
 
 .pager li>a, .pager li>span {
@@ -340,13 +376,23 @@ ul.nav.nav-pills li a.active{
 }
 
 .panel-title {
-  float: left;
+  /* float: left;
   padding-top: 5px;
   padding-left: 10px;
   margin-bottom: 15px;
   font-size: 14px;
+  font-family: 'Jura', sans-serif; */
+
+  padding-top: 5px;
+  padding-left: 10px;
+  margin-bottom: -24px;
+  font-size: 14px;
   font-family: 'Jura', sans-serif;
+  display: flex;
+  justify-content: space-between;
 }
+
+
 
 .panel>.panel-heading>.buttons {
   float: right;
@@ -820,6 +866,9 @@ body.slide-active {
   position: relative
 }
 
+
+
+
 /* screw writing importants and shit, just stick it in max width since these classes are not shared between sizes */
 
 @media (max-width:767px) {
@@ -899,7 +948,7 @@ body.slide-active {
 
 .btn-danger{
   background: red;
-  font-size: 12px;
+  /* font-size: 12px; */
 }
 
 @media (min-width:768px) {

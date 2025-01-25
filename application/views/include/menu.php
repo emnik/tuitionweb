@@ -21,6 +21,7 @@
                         <li id="menu-student"><a href="<?php echo base_url('student') ?>">Μαθητολόγιο</a></li>
                         <li id="menu-schedule"><a href="<?php echo base_url('schedule/index/' . date('w')) ?>">Πρόγραμμα</a></li>
                         <li id="menu-exams"><a href="<?php echo base_url('exam') ?>">Διαγωνίσματα</a></li>
+                        <li id="menu-communication"><a href="<?php echo base_url('communication') ?>">Επικοινωνία</a></li>
                         <li class="divider"></li>
                         <li class="dropdown-header">Οργάνωση/Διαχείριση</li>
                         <li id="menu-staff"><a href="<?php echo base_url('staff') ?>">Προσωπικό</a></li>
@@ -32,11 +33,12 @@
                         <li class="dropdown-header">Συγκεντρωτικές Αναφορές</li>
                         <li id="menu-reports"><a href="<?php echo base_url('reports') ?>">Αναφορές</a></li>
                         <li id="menu-history"><a href="<?php echo base_url('history') ?>">Ιστορικό</a></li>
-                        <li id="menu-telephones"><a href="<?php echo base_url('telephones') ?>">Επικοινωνία</a></li>
+                        <li id="menu-telephones"><a href="<?php echo base_url('telephones') ?>">Τηλέφωνα</a></li>
                         <li id="menu-fincance"><a href="<?php echo base_url('finance') ?>">Οικονομικά</a></li>
                         <li class="divider"></li>
                         <li class="dropdown-header">Διαχείριση Εφαρμογής</li>
                         <li id="menu-users"><a href="<?php echo base_url('user') ?>">Λογαριασμοί χρηστών</a></li>
+                        <li id="menu-users"><a href="<?php echo base_url('contact_config') ?>">Contact Services Configuration</a></li>
                     </ul>
                 </li>
             </ul>

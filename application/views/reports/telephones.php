@@ -1,26 +1,13 @@
 
-<!-- <link href="<?php echo base_url('assets/tabletools/css/TableTools.css') ?>" rel="stylesheet"> -->
-
-<!-- <script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/js/jquery.dataTables.min.js') ?>"></script> -->
-<!-- <script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/js/dataTables.bootstrap.js') ?>"></script> -->
-<!-- <script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/js/jquery.dataTables.rowGrouping.js') ?>"></script> -->
-
-<!-- <script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/tabletools/js/ZeroClipboard.js') ?>"></script>  -->
-<!-- <script type="text/javascript" charset="utf-8" src="<?php echo base_url('assets/tabletools/js/TableTools.min.js') ?>"></script> -->
-
-<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jszip-2.5.0/dt-1.10.22/b-1.6.4/b-colvis-1.6.4/b-html5-1.6.4/b-print-1.6.4/fc-3.3.1/r-2.2.6/rg-1.1.2/sl-1.3.1/datatables.min.css"/> -->
- 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jszip-2.5.0/dt-1.10.22/b-1.6.4/b-colvis-1.6.4/b-html5-1.6.4/b-print-1.6.4/fc-3.3.1/r-2.2.6/rg-1.1.2/sl-1.3.1/datatables.min.js"></script>
 
-<!-- <link href="<?php echo base_url('assets/css/dataTables.bootstrap.css') ?>" rel="stylesheet"> -->
 <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap.min.css" rel="stylesheet"
 >
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 
 <style type="text/css">
-  /* .dataTables_processing{padding-left: 16px;} */
   .dtrg-group.dtrg-start{background-color:lightgray;}
   .selected{background-color: #89A452;}
 </style>
@@ -38,7 +25,7 @@ $(document).ready(function(){
   //Menu current active links and Title
   $('#menu-reports-summary').addClass('active');
   $('#menu-telephones').addClass('active');
-  $('#menu-header-title').text('Επικοινωνία');
+  $('#menu-header-title').text('Τηλέφωνα');
 
 // add sorting methods for currency columns
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
@@ -335,7 +322,7 @@ function clicklink1(){
 	      <ul class="breadcrumb">
 	        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
           <li class="active"><a href="<?php echo base_url('reports/initial')?>">Συγκεντρωτικές Αναφορές</a></li>
-	        <li class="active">Επικοινωνία</li>
+	        <li class="active">Τηλέφωνα</li>
 	      </ul>
       </div>
       
@@ -347,8 +334,8 @@ function clicklink1(){
         
     <ul class="nav nav-tabs">
         <li class="active"><a href="<?php echo base_url('telephones')?>">Τηλέφωνα</a></li>
-        <li><a href="<?php echo base_url('telephones/exports')?>">Ομαδικά SMS / Επαφές Google</a></li>
-        <li><a href="<?php echo base_url('mailinglist')?>">Λίστα Ηλ. Ταχυδρομείου</a></li>
+        <li><a href="<?php echo base_url('telephones/exports')?>">Επαφές Google</a></li>
+        <!-- <li><a href="<?php echo base_url('mailinglist')?>">Λίστα Ηλ. Ταχυδρομείου</a></li> -->
       </ul>
 
       <p></p>

@@ -90,73 +90,85 @@
             <div class="col-xs-12">
             <!--first row-->
             <div class="row">
-            <div class="col-xs-12">
-              <div class="welcome-section-title">
-                <i class="icon-minus"></i>
-                <i class="icon-plus" style="display:none"></i>
-                 Λειτουργία Φροντιστηρίου
-              </div>
+              <div class="col-xs-12">
+                <div class="welcome-section-title">
+                  <i class="icon-minus"></i>
+                  <i class="icon-plus" style="display:none"></i>
+                    Λειτουργία Φροντιστηρίου
+                </div>
 
-            <div class="col-xs-12 welcome-section-body">    
-            <div class="col-sm-3 col-xs-6 welcome">
-              <button type="submit" class="btn-link" name="submitbtn" value="submit1">
-                <i class="icon-group icon-4x"></i>
-                <h4>Μαθητολόγιο</h4>
-              </button>
-              <div class="small">
-                Στοιχεία /
-                Επικοινωνία /
-                Φοίτηση /
-                Οικονομικά
-              </div>
-            </div>
+                <div class="col-xs-12 welcome-section-body">    
+                  <div class="col-sm-3 col-xs-6 welcome">
+                    <button type="submit" class="btn-link" name="submitbtn" value="submit1">
+                      <i class="icon-group icon-4x"></i>
+                      <h4>Μαθητολόγιο</h4>
+                    </button>
+                    <div class="small">
+                      Στοιχεία /
+                      Επικοινωνία /
+                      Φοίτηση /
+                      Οικονομικά
+                    </div>
+                  </div>
 
-            <div class="col-sm-3 col-xs-6 welcome">
-              <button type="submit" class="btn-link" name="submitbtn" value="submit10">
-                <i class="icon-calendar icon-4x"></i>
-                <h4>Πρόγραμμα</h4>
-              </button>
-              <div class="small">
-                Ημερήσιο Πρόγραμμα
-              </div>
-            </div>
+                <div class="col-sm-3 col-xs-6 welcome">
+                  <button type="submit" class="btn-link" name="submitbtn" value="submit10">
+                    <i class="icon-calendar icon-4x"></i>
+                    <h4>Πρόγραμμα</h4>
+                  </button>
+                  <div class="small">
+                    Ημερήσιο Πρόγραμμα
+                  </div>
+                </div>
 
-            <div class="clearfix visible-xs"></div>
+                <div class="clearfix visible-xs"></div>
             
-            <div class="col-sm-3 col-xs-6 welcome">
-              <button type="submit" class="btn-link" name="submitbtn" value="submit12">
-                <i class="icon-pencil icon-4x"></i>
-                <h4>Διαγωνίσματα</h4>
-              </button>
-              <div class="small">
-                Προγραμματισμός /
-                Επιτηρητές
+                <div class="col-sm-3 col-xs-6 welcome">
+                  <button type="submit" class="btn-link" name="submitbtn" value="submit12">
+                    <i class="icon-pencil icon-4x"></i>
+                    <h4>Διαγωνίσματα</h4>
+                  </button>
+                  <div class="small">
+                    Προγραμματισμός /
+                    Επιτηρητές
+                  </div>
+                </div>
+
+
+                <!-- <div class="col-sm-3 col-xs-6 welcome">
+                  <button disabled type="submit" class="btn-link" name="submitbtn" value="submit8">
+                    <i class="icon-paper-clip icon-4x"></i>
+                    <h4>Αρχεία</h4>
+                  </button>
+                  <div class="small">
+                        Διαχείριση αρχείων
+                  </div>
+                </div> -->
+
+                <!-- <div class="col-sm-3 col-xs-6 welcome">
+                  <button disabled type="submit" class="btn-link" name="submitbtn" value="submit9">
+                    <i class="icon-bullhorn  icon-4x"></i>
+                    <h4>Ανακοινώσεις</h4>
+                  </button>
+                  <div class="small">
+                    Προς υποσύστημα καθηγητών /
+                    γονέων / μαθητών
+                  </div>
+                </div> -->
+
+                <div class="col-sm-3 col-xs-6 welcome">
+                  <button type="submit" class="btn-link" name="submitbtn" value="submit15">
+                    <i class="icon-comments-alt  icon-4x"></i>
+                    <h4>Επικοινωνία</h4>
+                  </button>
+                  <div class="small">
+                    Αποστολή μηνυμάτων SMS /
+                    Λίστα Ηλ. Ταχυδρομείου
+                  </div>
+                </div>                
+                
               </div>
             </div>
-
-
-            <!-- <div class="col-sm-3 col-xs-6 welcome">
-              <button disabled type="submit" class="btn-link" name="submitbtn" value="submit8">
-                <i class="icon-paper-clip icon-4x"></i>
-                <h4>Αρχεία</h4>
-              </button>
-              <div class="small">
-                    Διαχείριση αρχείων
-              </div>
-            </div> -->
-
-            <div class="col-sm-3 col-xs-6 welcome">
-              <button disabled type="submit" class="btn-link" name="submitbtn" value="submit9">
-                <i class="icon-bullhorn  icon-4x"></i>
-                <h4>Ανακοινώσεις</h4>
-              </button>
-              <div class="small">
-                Προς υποσύστημα καθηγητών /
-                γονέων / μαθητών
-              </div>
-            </div>
-    </div>
-                          </div>
           </div>
           <!--end of first row-->
 
@@ -265,14 +277,14 @@
 
             <div class="col-sm-3 col-xs-6 welcome">
               <button type="submit" class="btn-link" name="submitbtn" value="submit7">
-                <i class="icon-comments-alt icon-4x"></i>
-                <h4>Επικοινωνία</h4>
+                <i class="icon-phone icon-4x"></i>
+                <h4>Τηλέφωνα</h4>
               </button>
               <div class="small">
                 Τηλεφωνικοί Κατάλογοι
                 Μαθητών /
                 Προσωπικού /
-                Ομαδικά SMS / Επαφές Google, Λίστα Ηλ. Ταχυδρομείου
+                Επαφές Google
               </div>
             </div>
 

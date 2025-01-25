@@ -59,19 +59,31 @@ $(document).ready(function() {
  // Move apy --------------------------------------------------------
 
     $('#selectStdToMoveApy').select2({
+      dropdownParent: $('#moveApyModal'),
       minimumInputLength: 2,
       ajax: {
         url: "<?php echo base_url()?>welcome/user_list",
         dataType: 'json',
-        data: function (term, page) {
+        delay: 250,
+        data: function (params) {
           return {
-            q: term //sends the typed letters to the controller
+            q: params.term //sends the typed letters to the controller
           };
         },
-        results: function (data, page) {
-          return { results: data }; //data needs to be {{id:"",text:""},{id:"",text:""}}...
+        processResults: function (data) {
+          return {
+            results: data //data needs to be [{id:"",text:""}]
+          };
         }
       }
+    });
+
+    // Manually set the selected value when an option is chosen
+    $('#selectStdToMoveApy').on('select2:select', function (e) {
+        // Manually set and trigger change
+      var data = e.params.data;
+        console.log('Selected:', data);
+      $(e.currentTarget).find("option[value='" + data.id + "']").attr('selected','selected');
     });
 
     $('#moveApyModal').on('shown.bs.modal', function(){
@@ -611,7 +623,7 @@ $(document).ready(function() {
 		<div class="modal-body">
 			 <div class="form-group">
 			 	<label for="single" class="control-label">Επιλέξτε μαθητή/μαθήτρια:</label>
- 			 	<input class="form-control" id="selectStdToMoveApy" type="hidden" name="optionvalue" />
+ 			 	<input style="color:black;" class="form-control" id="selectStdToMoveApy" type="hidden" name="optionvalue" />
 			 </div>
 		</div>
 		<div class="modal-footer">

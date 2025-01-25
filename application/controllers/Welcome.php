@@ -161,7 +161,7 @@ public function index() {
 				redirect('history');
 				break;		
 
-			case 'submit9': // Ιστορικό
+			case 'submit9': // Αναφορές
 				redirect('reports');
 				break;							
 			
@@ -179,10 +179,16 @@ public function index() {
 
 			case 'submit13': // Λογαριασμοί Χρηστών
 				redirect('user');
-				break;									
-			case 'submit14': // Λογαριασμοί Χρηστών
+				break;					
+
+			case 'submit14': // Ρυθμίσεις επικοινωνίας
 				redirect('contact_config');
-				break;									
+				break;	
+
+			case 'submit15': // Eπικοινωνία
+				redirect('communication');
+			break;						
+
 			}
 
 	}

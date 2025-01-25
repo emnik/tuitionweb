@@ -21,7 +21,8 @@ ob_start();
 
 
   // $config['base_url']	= 'http://localhost:8080/tuitionweb/';
-  $config['base_url']	= 'http://manos-inspiron-5547.local:8080/tuitionweb/';
+  //$config['base_url']	= 'http://manos-inspiron-5547.local:8080/tuitionweb/';
+  $config['base_url']	= 'http://192.168.1.9:8080/tuitionweb/';
   // $config['base_url']	= 'http://manos-inspiron-5547.local/tuitionweb/';
   // $config['base_url']	= 'http://localhost/tuitionweb/';
   // $config['base_url']	= 'http://192.168.1.123:8080/tuitionweb/';
