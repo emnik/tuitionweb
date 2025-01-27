@@ -40,7 +40,7 @@ class Mailinglist extends CI_Controller
 
 		if (!empty($subsection)) redirect('settings');
 
-		$this->load->model('reports/Mailinglist_model');
+		$this->load->model('Mailinglist_model');
 		$this->load->model('Contact_config_model');
 
 		// check the microsoft web services configuration
@@ -67,7 +67,7 @@ class Mailinglist extends CI_Controller
 		$data['signature'] = $this->generate_signature($note);
 
 		$this->load->view('include/header');
-		$this->load->view('reports/mailing_list', $data);
+		$this->load->view('communication/mailing_list', $data);
 		$footer_data['regs']=true;
 		$this->load->view('include/footer', $footer_data);
 	}
@@ -79,7 +79,7 @@ class Mailinglist extends CI_Controller
 
 		$startsch = $this->session->userdata('startsch');
 
-		$this->load->model('reports/Mailinglist_model');
+		$this->load->model('Mailinglist_model');
 		$postdata = $this->input->post();
 
 		if (!empty($postdata)) {
@@ -99,7 +99,7 @@ class Mailinglist extends CI_Controller
 		}
 
 		$this->load->view('include/header');
-		$this->load->view('reports/mailing_list_settings', $data);
+		$this->load->view('communication/mailing_list_settings', $data);
 		$footer_data['regs']=true;
 		$this->load->view('include/footer', $footer_data);		
 	}
@@ -161,7 +161,7 @@ class Mailinglist extends CI_Controller
 			$cc_email_list = [];
 		}
 
-		$this->load->model('reports/Mailinglist_model');
+		$this->load->model('Mailinglist_model');
 		if(!empty($postdata['classes'])){
 			$email_list = $this->Mailinglist_model->get_emails($postdata['classes']);
 		} else {
@@ -228,7 +228,7 @@ class Mailinglist extends CI_Controller
 
 	public function addToMailHistory($maildata){
 	
-		$this->load->model('reports/Mailinglist_model');
+		$this->load->model('Mailinglist_model');
 		$this->Mailinglist_model->add_to_mail_history($maildata);
 	}
 
@@ -249,7 +249,7 @@ class Mailinglist extends CI_Controller
 			header("Content-Description: File Transfer");
 			header("Content-Disposition: attachment; filename=$filename");
 
-			$this->load->model('reports/Mailinglist_model');
+			$this->load->model('Mailinglist_model');
 			$res = $this->Mailinglist_model->mailinglist_export_data($classes);
 
 			// I can use the Mailinglist_model/get_emails function if I want like below but the CSV file

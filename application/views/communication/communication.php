@@ -388,8 +388,8 @@ function generateFile() {
 
     <!-- Menu start -->
     <!-- dirname(__DIR__) gives the path one level up by default -->
-    <!-- <?php include dirname(__DIR__).'/include/menu.php'; ?>  -->
-    <?php include(__DIR__ .'/include/menu.php');?>
+    <?php include dirname(__DIR__).'/include/menu.php'; ?> 
+    <!-- <?php include(__DIR__ .'/include/menu.php');?> -->
     <!-- Menu end -->
 
         <!-- main container

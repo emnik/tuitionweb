@@ -44,6 +44,25 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
     }
 });
 
+    // Custom sorting plugin for date format DD/MM/YYYY
+    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        "date-eu-pre": function (a) {
+            var x;
+            if (a.trim() !== '') {
+                var euDatea = a.trim().split('/');
+                x = (euDatea[2] + euDatea[1] + euDatea[0]) * 1;
+            } else {
+                x = Infinity;
+            }
+            return x;
+        },
+        "date-eu-asc": function (a, b) {
+            return a - b;
+        },
+        "date-eu-desc": function (a, b) {
+            return b - a;
+        }
+    });
 
     oTable1 = $('#tbl1').DataTable({
         dom: 'Blfrtip',
@@ -98,12 +117,13 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
     },
         "processing": true,
         "columns": [
+            { "data": "id"},
             { "data": "surname"},
             { "data": "name"},
             { "data": "apy_no"},
             { "data": "apy_dt", 
                       "mRender": function ( data, type, row ) {
-                            return (moment(data).format("D/M/YYYY"));
+                            return (moment(data).format("DD/MM/YYYY"));
                         }},
             { "data": "amount",
               "render": function (data, type, row, meta) {
@@ -134,37 +154,30 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             { "data": "month_range"},
             { "data": "notes"},
             ],
-        "order": [[2, 'desc']],    
-        "sort": false,
+        "order": [[0, 'desc']],    
+        "sort": true,
         "filter": true,
         "columnDefs": [
-            { "searchable": true, "targets": [6] }  //don't filter class name and course
-            //they will be filtered via input boxes in the table footer!
+            { // change visible to false if you don't want the payment_id visible.
+              // I keep it for able to reset the sorting based on payment_id after
+              // the user has sorted the table based on other columns.
+                "targets": 0,
+                "visible": true,
+                "orderable": true
+            },
+            {
+                "targets": 4,
+                "type": "date-eu",
+                "render": function (data, type, row) {
+                    return moment(data).format("DD/MM/YYYY");
+                }
+            },
+            { // Not all the the columns have meaning to be sortable
+                "targets": [2,5,7,8],
+                "orderable": false
+            }
         ],
         "paginate": true,
-        "drawCallback": function () {
-            if ($(this).find('.dataTables_empty').length == 1 && $('#monthfilter').text()!="") {
-                $('th').hide();
-                // $('#tbl1_filter').hide();
-                $('#tbl1_search').hide();
-                $('#tbl1_length').hide();
-                $('#tbl1_info').hide();
-                $('.dt-buttons').hide();
-                $('#tbl1_paginate').hide();
-                $('#monthfilter').hide();
-
-                // $('.dataTables_empty').css({ "border-top": "1px solid #111" });
-
-            } else {
-                $('th').show();
-                $('#tbl1_filter').show();
-                $('#tbl1_search').show();
-                $('#tbl1_length').show();
-                $('#tbl1_info').show();
-                $('.dt-buttons').show();
-                $('#tbl1_paginate').show();
-            }
-        },        
         "language": {
           "paginate": {
               "first":    "Πρώτη",
@@ -209,40 +222,7 @@ $(window).on("resize", function (e) {
             $(".dt-buttons").addClass("pull-right");
         }
     }
-
-  //INDIVIDUAL COLUMN FILTERING
-  //To filter individual columns we add the input keys to the table footer (see table code)
-
-  $("tfoot input").keyup( function () {
-    /* Filter on the column (the index) of this element */
-    //oTable.fnFilter( this.value, $("tfoot input").index(this)+4);//+4 is needed for getting the right  column index because I don't have input in every column!!! 
-    oTable1.column($("tfoot input").index(this)+5).search(this.value).draw();
-  } );
-  
-  /*
-   * Support functions to provide a little bit of 'user friendlyness' to the textboxes in 
-   * the footer
-   */
-  $("tfoot input").each( function (i) {
-     asInitVals[i] = this.value;
-  } );
-  
-  $("tfoot input").focus( function () {
-    if ( this.className == "search_init form-control" )
-    {
-      this.className = "form-control";
-      this.value = "";
-    }
-  } );
-  
-  $("tfoot input").blur( function (i) {
-    if ( this.value == "" )
-    {
-      this.className = "search_init form-control";
-      this.value = asInitVals[$("tfoot input").index(this)];
-    }
-  } );   
-     
+    
 }) //end of (document).ready(function())
 
 </script>
@@ -270,15 +250,9 @@ $(window).on("resize", function (e) {
 	      </ul>
       </div>
       
-     <!-- <p> 
-      <h3>
-        Ιστορικό
-      </h3>
-    </p> -->
-        
+      
 
       <ul class="nav nav-tabs">
-        <!-- <li><a href="<?php echo base_url()?>history">Σύνοψη</a></li> -->
         <li class="active"><a href="<?php echo base_url()?>history/apy">ΑΠΥ</a></li>
         <li><a href="<?php echo base_url()?>history/absences">Απουσιών</a></li>
         <li><a href="<?php echo base_url()?>history/mail">Ηλ.Ταχυδρομείου</a></li>
@@ -302,10 +276,10 @@ $(window).on("resize", function (e) {
           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             Οι αποδείξεις αφορούν πληρωμές για την <u>επιλεγμένη διαχειριστική περίοδο</u>. Αν έχει κοπεί απόδειξη που αφορά προηγούμενη διαχειριστική περίοδο <strong>δεν</strong> εμφανίζεται εδώ!
           </div>
-        <!-- <h4>Αναφορές</h4> -->
         <table id="tbl1" class="table datatable table-striped" style="width:100%">
     			<thead>
     		        <tr>
+                  <th>payment_id</th>
     		        	<th>Επίθετο</th>
     		        	<th>Όνομα</th>
                         <th>Αρ. ΑΠΥ</th>
@@ -320,9 +294,8 @@ $(window).on("resize", function (e) {
             </tbody>
             <tfoot>
           <tr>
-            <th>
-                <label for="monthfilter">Φίλτρο Μήνα:</label>
-                <input type="text" class="search_init form-control" id="monthfilter" name="search_months" value="Φίλτρο Μήνα" class="search_init" /></th>
+            <th></th>
+            <th></th>
             <th></th>
             <th></th>
             <th></th>

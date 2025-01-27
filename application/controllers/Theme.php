@@ -38,8 +38,6 @@ class Theme extends CI_Controller {
 
     public function set_theme() {
         $user_id = $this->session->userdata('user_id'); // Assuming you're using session for user authentication
-        //$data = json_decode(file_get_contents('php://input'), true);
-        //$theme_id = $data['theme_id'] ?? null;
     
         $theme_id = $this->input->post('theme_id');
 
