@@ -256,6 +256,7 @@ $(window).on("resize", function (e) {
         <li class="active"><a href="<?php echo base_url()?>history/apy">ΑΠΥ</a></li>
         <li><a href="<?php echo base_url()?>history/absences">Απουσιών</a></li>
         <li><a href="<?php echo base_url()?>history/mail">Ηλ.Ταχυδρομείου</a></li>
+        <li><a href="<?php echo base_url()?>history/sms">SMS</a></li>
       </ul>
 
       <p></p>

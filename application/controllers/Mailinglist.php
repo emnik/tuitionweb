@@ -164,10 +164,11 @@ class Mailinglist extends CI_Controller
 		$this->load->model('Mailinglist_model');
 		if(!empty($postdata['classes'])){
 			$email_list = $this->Mailinglist_model->get_emails($postdata['classes']);
+			$history_email_list = $this->Mailinglist_model->mailinglist_export_data($postdata['classes']);
 		} else {
 			$email_list = [];
+			$history_email_list=[];
 		}
-
 				
 		// Load the GraphEmailLibrary
 		$this->load->library('GraphEmailLibrary');
@@ -191,15 +192,15 @@ class Mailinglist extends CI_Controller
 		$email_content = $email_body . $email_signature;
 
 
-		// Test - DO NOT SEND - Simulate successful sending
-		// $simulate = array( //testing
-		// 	'status' => 'success',
-		// 	'message' => 'Testing of email sending seems to be successful!'
-		// );
-		// $result = json_encode($simulate);
+		//Test - DO NOT SEND - Simulate successful sending
+		$simulate = array( //testing
+			'status' => 'success',
+			'message' => 'Testing of email sending seems to be successful!'
+		);
+		$result = json_encode($simulate);
 		
 		// Use the library to SEND the email
-		$result = $this->graphemaillibrary->send_emails($email_subject, $email_content, $recipient_emails, $cc_recipient_emails, $sender_email, $replyto_email);
+		//$result = $this->graphemaillibrary->send_emails($email_subject, $email_content, $recipient_emails, $cc_recipient_emails, $sender_email, $replyto_email);
 
 
 		// If mail sending was a success, store the data to the mail_history table
@@ -215,11 +216,24 @@ class Mailinglist extends CI_Controller
 				return $recipient['email']; 
 			}, $recipients);
 
+			if (!empty($cc_recipient_emails)) {
+				foreach ($cc_recipient_emails as $key => $value) {
+					$history_cc_email_list[] = array(
+						'Name' => 'custom cc recipient',
+						'Email' => $value['email'],
+						'Class' => '-'
+					);
+				}
+				$history_email_list['mailinglist'] = array_merge($history_email_list['mailinglist'], $history_cc_email_list);
+			}
+
 			$historyData = array(
 				'subject' => $email_subject,
 				'content' => $email_body,
-				'recipients' => implode(', ', $emailArray)
+				// 'recipients' => implode(', ', $emailArray)
+				'recipients' => json_encode($history_email_list['mailinglist'])
 			);
+			
 			$this->addToMailHistory($historyData);
 		}
 		header('Content-Type: application/json');

@@ -4,7 +4,7 @@ Tuitionweb is a tuition management system for private tuitions in Greece. It is 
 
 ## Installation
 
-No realeses yet. It is mainly develop for personal use...
+No realeses yet. It is mainly developed for personal use...
 
 ## Documentation
 

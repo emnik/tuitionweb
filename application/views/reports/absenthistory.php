@@ -216,7 +216,7 @@ $(window).on("resize", function (e) {
 	      <ul class="breadcrumb">
 	        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
           <li class="active"><a href="<?php echo base_url('reports/initial')?>">Συγκεντρωτικές Αναφορές</a></li>
-	        <li class="active">Ιστορικό</li>
+	      <li class="active">Ιστορικό</li>
           <li class="active">Απουσιών</li>
 	      </ul>
       </div>
@@ -229,10 +229,10 @@ $(window).on("resize", function (e) {
         
 
       <ul class="nav nav-tabs">
-        <!-- <li><a href="<?php echo base_url()?>history">Σύνοψη</a></li> -->
         <li><a href="<?php echo base_url()?>history/apy">ΑΠΥ</a></li>
         <li class="active"><a href="<?php echo base_url()?>history/absences">Απουσιών</a></li>
         <li><a href="<?php echo base_url()?>history/mail">Ηλ.Ταχυδρομείου</a></li>
+        <li><a href="<?php echo base_url()?>history/sms">SMS</a></li>
       </ul>
 
       <p></p>

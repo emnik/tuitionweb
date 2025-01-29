@@ -156,6 +156,31 @@ class SMSto_lib
         }
     }
 
+    public function get_list_contacts($id){
+        $curl = curl_init();
+        $api_key = $this->CI->Contact_config_model->get_sms_settings()[0]['apikey'];
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => 'https://sms.to/v1/people/contacts?list_ids='.$id,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'GET',
+          CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer ' . $api_key,
+            'Content-Type: application/json'
+          ),
+        ));
+        
+        $response = curl_exec($curl);
+        
+        curl_close($curl);
+        return $response;
+    }
+
     public function get_estimate(){
         $curl = curl_init();
         $api_key = $this->CI->Contact_config_model->get_sms_settings()[0]['apikey'];

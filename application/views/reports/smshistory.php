@@ -30,7 +30,7 @@ $(document).ready(function(){
   
   var recipientsTable;
   $.ajax({
-      url: '<?php echo base_url()?>history/getmailhistorydata',
+      url: '<?php echo base_url()?>history/getsmshistorydata',
       method: 'GET',
       dataType: 'json',
       success: function(data) {
@@ -47,9 +47,8 @@ $(document).ready(function(){
                 if (Array.isArray(recipients)) {
                     recipients.forEach(function(recipient) {
                         var row = '<tr>' +
-                                  '<td>' + recipient.Name + '</td>' +
-                                  '<td>' + recipient.Email + '</td>' +
-                                  '<td>' + recipient.Class + '</td>' +
+                                  '<td>' + recipient.firstname + '</td>' +
+                                  '<td>' + recipient.phone + '</td>' +
                                   '</tr>';
                         recipientsTableBody.append(row);
                     });
@@ -64,9 +63,8 @@ $(document).ready(function(){
                     // sort: false,
                     buttons: dataTableButtons,
                     columns: [
-                        { "data": "Name" },
-                        { "data": "Email" },
-                        { "data": "Class" }
+                        { "data": "firstname" },
+                        { "data": "phone" },
                     ],
                     paging: true, // Enable pagination
                     searching: true, // searching
@@ -109,7 +107,7 @@ var dataTableButtons = [
         // 'copy', 
         {
           extend: 'copy',
-          title: function () { return "Ιστορικό Ηλ.Ταχυδρομείου"; },
+          title: function () { return "Ιστορικό μηνυμάτων SMS"; },
             exportOptions: {
             orthogonal: "exportCopy"
           }
@@ -117,7 +115,7 @@ var dataTableButtons = [
         // 'excel', 
         {
           extend: 'excel',
-          title: function () { return "Ιστορικό Ηλ.Ταχυδρομείου"; },
+          title: function () { return "Ιστορικό μηνυμάτων SMS"; },
             exportOptions: {
             orthogonal: "exportExcel"
           }
@@ -126,7 +124,7 @@ var dataTableButtons = [
         {
           extend: 'pdf',
           // add title to pdf
-          title: function () { return "Ιστορικό Ηλ.Ταχυδρομείου"; },
+          title: function () { return "Ιστορικό μηνυμάτων SMS"; },
           exportOptions: {
             orthogonal: "exportPdf"
           }
@@ -134,7 +132,7 @@ var dataTableButtons = [
         // 'print'
         {
           extend: 'print',
-          title: function () { return "Ιστορικό Ηλ.Ταχυδρομείου"; },
+          title: function () { return "Ιστορικό μηνυμάτων SMS"; },
             exportOptions: {
             orthogonal: "exportPrint"
           }
@@ -278,8 +276,7 @@ $(window).on("resize", function (e) {
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Email</th>
-                  <th>Class</th>
+                  <th>Phone</th>
                 </tr>
               </thead>
               <tbody id="recipients-table-body">
@@ -310,7 +307,7 @@ $(window).on("resize", function (e) {
 	        <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
           <li class="active"><a href="<?php echo base_url('reports/initial')?>">Συγκεντρωτικές Αναφορές</a></li>
           <li class="active">Ιστορικό</li>
-          <li class="active">Ηλ.Ταχυδρομείου</li>
+          <li class="active">SMS</li>
 	      </ul>
       </div>
       
@@ -319,8 +316,8 @@ $(window).on("resize", function (e) {
         <!-- <li><a href="<?php echo base_url()?>history">Σύνοψη</a></li> -->
         <li><a href="<?php echo base_url()?>history/apy">ΑΠΥ</a></li>
         <li><a href="<?php echo base_url()?>history/absences">Απουσιών</a></li>
-        <li class="active"><a href="<?php echo base_url()?>history/mail">Ηλ.Ταχυδρομείου</a></li>
-        <li><a href="<?php echo base_url()?>history/sms">SMS</a></li>
+        <li><a href="<?php echo base_url()?>history/mail">Ηλ.Ταχυδρομείου</a></li>
+        <li class="active"><a href="<?php echo base_url()?>history/sms">SMS</a></li>
       </ul>
 
       <p></p>
@@ -334,7 +331,7 @@ $(window).on("resize", function (e) {
           <span class="icon">
             <i class="icon-book"></i>
           </span>
-          <h3 class="panel-title">Ηλ. Ταχυδρομείο</h3>
+          <h3 class="panel-title">Μηνύματα SMS</h3>
        </div> 
         <div class="panel-body">
         <table id="tbl1" class="table datatable table-striped" style="width:100%">

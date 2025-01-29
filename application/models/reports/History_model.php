@@ -69,13 +69,12 @@ class History_model extends CI_Model {
    }
 
    public function get_mailhistorydata()
-   // I've set a limit to the last 20 mails...
    {
     $query=$this->db
-    ->select(array('created_at', 'subject', 'content', 'recipients'))
+    ->select(array('id', 'created_at', 'subject', 'content', 'recipients'))
     ->from('mail_history')
     ->order_by('id', 'desc')
-    ->limit(20)
+   //  ->limit(20)
     ->get();
 
 
@@ -93,5 +92,29 @@ class History_model extends CI_Model {
     }
    }
 
+
+   public function get_smshistorydata()
+   {
+    $query=$this->db
+    ->select(array('id', 'created_at', 'subject', 'content', 'recipients'))
+    ->from('sms_history')
+    ->order_by('id', 'desc')
+    ->get();
+
+
+    if ($query->num_rows() > 0) 
+    {
+      foreach($query->result_array() as $row) 
+      {
+         $output['aaData'][] = $row;
+      }
+      return $output;
+    }
+    else 
+    {
+         return false;
+    }
+   }
+   
 
 }

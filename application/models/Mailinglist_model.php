@@ -35,7 +35,7 @@ class Mailinglist_model extends CI_Model {
       $MySQL = $MySQL."WHERE (`term`.`active` = 1) ";
       $MySQL = $MySQL."AND (`registration`.`class_id` IN (".$classes.")) ";
       $MySQL = $MySQL."AND (`contact`.`email` is not NULL) ";
-      $MySQL = $MySQL."order by `registration`.`id` ASC;" ;
+      $MySQL = $MySQL."order by `Name` ASC;" ;
    
       $query = $this->db->query($MySQL);
       if ($query->num_rows() > 0) 

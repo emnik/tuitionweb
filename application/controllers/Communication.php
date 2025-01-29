@@ -207,9 +207,37 @@ class Communication extends CI_Controller
 		$message = $this->input->post('message');
 		$this->load->library('SMSto_lib');
 		$result = $this->smsto_lib->send_sms($list_id, $message);
+		echo $result; // Encode it back to JSON to send as response
+
+		// If the SMS was sent successfully, get the list of contacts and save the SMS to the history
 		$result_json = json_decode($result, true); // Convert JSON string to PHP array
-		echo json_encode($result_json); // Encode it back to JSON to send as response
+		if ($result_json['success'] === true){
+			$get_send_data = $this->smsto_lib->get_list_contacts($list_id);
+			$get_send_data_json = json_decode($get_send_data, true); // Convert JSON string to PHP array
+			if (isset($get_send_data_json['success']) && $get_send_data_json['success'] === true){
+				$contacts = [];
+    			// Iterate through the data array
+				foreach ($get_send_data_json['data'] as $item) {
+					$contacts[] = [
+						'firstname' => $item['firstname'],
+						'phone' => $item['phone']
+					];
+				}
+				$smsdata = [
+					'subject' => $get_send_data_json['data'][0]['list_contacts'][0]['name'],
+					'content' => $message,
+					'recipients' => json_encode($contacts)
+				];
+				$this->addToSMSHistory($smsdata);
+			}
+		}
 	}
+
+	public function addToSMSHistory($smsdata){
+	
+		$this->load->model('Communication_model');
+		$this->Communication_model->add_to_sms_history($smsdata);
+	}	
 
 	public function cancelSMS(){
 		$list_id = $this->input->post('list_id');

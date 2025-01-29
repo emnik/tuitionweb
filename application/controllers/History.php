@@ -81,6 +81,20 @@ class History extends CI_Controller {
 		$this->load->view('include/footer', $footer_data);
 	}
 
+	public function sms()
+	{
+		$this->load->model('login_model');
+	    $user=$this->login_model->get_user_name($this->session->userdata('user_id'));
+        $data['user']=$user;
+        
+		$startsch=$this->session->userdata('startsch');
+		
+		$this->load->view('include/header');
+		$this->load->view('reports/smshistory', $data);
+		$footer_data['regs']=true;
+		$this->load->view('include/footer', $footer_data);
+	}
+
 	public function gethistoryapydata()
 	{
 		header('Content-Type: application/x-json; charset=utf-8');
@@ -111,4 +125,13 @@ class History extends CI_Controller {
 		echo json_encode($res);
 	}
 
+	public function getsmshistorydata()
+	{
+		header('Content-Type: application/x-json; charset=utf-8');
+
+		$this->load->model('reports/history_model');
+   		$res=$this->history_model->get_smshistorydata();
+		
+		echo json_encode($res);
+	}	
 }
