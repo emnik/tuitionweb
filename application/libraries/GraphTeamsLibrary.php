@@ -15,12 +15,14 @@ class GraphTeamsLibrary
         $this->CI->load->model('Teams_model'); // Adjust the model name as needed
     }
 
-    public function test_teams()
+    public function do($action, $data=null)
     {
         // Get the authorization token
         $token = $this->getAuthorizationToken();
         if ($token) {
-            $result = $this->get_users($token);
+            if ($action == 'reset'){
+                $result = $this->get_users($token);
+            }
             return $result; //this is the JSON object returned by the get_users() function
         } else {
             return json_encode(array(

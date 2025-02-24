@@ -205,8 +205,8 @@ span.select2.select2-container.select2-container--default{
 
     $(document).ready(function() {
         //Menu current active links and Title
-        $('#menu-reports-summary').addClass('active');
-        $('#menu-telephones').addClass('active');
+        $('#menu-operation').addClass('active');
+        $('#menu-communication').addClass('active');
         $('#menu-header-title').text('Επικοινωνία');
 
         $('#selectClass').select2({

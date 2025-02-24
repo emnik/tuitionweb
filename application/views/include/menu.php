@@ -35,7 +35,7 @@
                         <li id="menu-reports"><a href="<?php echo base_url('reports') ?>">Αναφορές</a></li>
                         <li id="menu-history"><a href="<?php echo base_url('history') ?>">Ιστορικό</a></li>
                         <li id="menu-telephones"><a href="<?php echo base_url('telephones') ?>">Τηλέφωνα</a></li>
-                        <li id="menu-fincance"><a href="<?php echo base_url('finance') ?>">Οικονομικά</a></li>
+                        <li id="menu-finance"><a href="<?php echo base_url('finance') ?>">Οικονομικά</a></li>
                         <li class="divider"></li>
                         <li class="dropdown-header">Διαχείριση Εφαρμογής</li>
                         <li id="menu-users"><a href="<?php echo base_url('user') ?>">Λογαριασμοί χρηστών</a></li>

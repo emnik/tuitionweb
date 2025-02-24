@@ -18,9 +18,6 @@
 
 <script type="text/javascript">
 
-// var oTable1;
-// var asInitVals = new Array(); //for specific columns filtering with input field below
-
 $(document).ready(function(){ 
 
   //Menu current active links and Title

@@ -46,18 +46,17 @@ public function index(){
 	$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
 	$data['user']=$user;
 
-	//$this->load->library('graphTeamsLibrary');
-	//$teams=$this->graphteamslibrary->test_teams();
-	
-	$this->load->model('teams_model');
-	$teamsUsers=$this->teams_model->get_teams_users();
 
-	if ($teamsUsers) {
-		$data['teams'] = $teamsUsers;
-		}
-	else {
-		$data['teams'] = false;
-	}
+	
+	// $this->load->model('teams_model');
+	// $teamsUsers=$this->teams_model->get_teams_users();
+
+	// if ($teamsUsers) {
+	// 	$data['teams'] = $teamsUsers;
+	// 	}
+	// else {
+	// 	$data['teams'] = false;
+	// }
 	
 	$this->load->view('include/header');
 	$this->load->view('teams', $data);
@@ -66,5 +65,53 @@ public function index(){
 
 }
 
+public function getAllTeams()
+{
+	header('Content-Type: application/x-json; charset=utf-8');
+
+	$this->load->model('teams_model');
+	$res=$this->teams_model->getAllTeams();
+
+	echo json_encode($res);
+}
+
+public function getCurrentStudents()
+{
+	header('Content-Type: application/x-json; charset=utf-8');
+
+	$this->load->model('teams_model');
+	$res=$this->teams_model->getCurrentStudents();
+
+	echo json_encode($res);
+}
+
+public function getObsoleteUsers()
+{
+	header('Content-Type: application/x-json; charset=utf-8');
+
+	$this->load->model('teams_model');
+	$res=$this->teams_model->getObsoleteUsers();
+
+	echo json_encode($res);
+}
+
+public function getCurrentTeachers()
+{
+	header('Content-Type: application/x-json; charset=utf-8');
+
+	$this->load->model('teams_model');
+	$res=$this->teams_model->getCurrentTeachers();
+
+	echo json_encode($res);
+}
+
+public function resetTeamsData(){
+	header('Content-Type: application/x-json; charset=utf-8');
+
+	$this->load->library('graphTeamsLibrary');
+	$res=$this->graphteamslibrary->do('reset');
+
+	echo $res;
+}
 
 }

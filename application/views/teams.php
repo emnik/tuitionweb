@@ -1,8 +1,6 @@
-<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap.min.js"></script>
-
-<link href="<?php echo base_url('assets/css/dataTables.bootstrap.css') ?>" rel="stylesheet">
-<link href="<?php echo base_url('assets/tabletools/css/TableTools.css'); ?>" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
@@ -21,8 +19,26 @@
   $(document).ready(function() {
     //Menu current active links and Title
     $('#menu-operation').addClass('active');
-    $('#menu-student').addClass('active');
+    $('#menu-teams').addClass('active');
     $('#menu-header-title').text('Microsoft Teams');
+
+    var dataTableOptions = {
+      "language": {
+          "paginate": {
+              "first":    "Πρώτη",
+              "previous": "",
+              "next":     "",
+              "last":     "Τελευταία"
+          },
+          "info": "Εμφανίζονται οι _START_ έως _END_ από τις _TOTAL_",
+          "infoEmpty": "Εμφάνιζονται 0 εγγραφές",
+          "infoFiltered": "Φιλτράρισμα από _MAX_ συνολικά εγγραφές",
+          "lengthMenu": "Εγγραφές/σελ. _MENU_",
+          "loadingRecords": "Φόρτωση καταλόγου ...",
+          "processing": "Επεξεργασία...",   
+          "search": "Αναζήτηση:"
+      }
+    };
 
     // Custom sorting function for the select column
     $.fn.dataTable.ext.order['dom-checkbox'] = function(settings, col) {
@@ -31,107 +47,176 @@
       });
     };
 
-    // Ensure the table element exists
-    if ($('#stdbook').length) {
-      // Initialize the DataTable
-      oTable = $('#stdbook').DataTable({
-        "responsive": true,
-        "processing": true,
-        "paging": true,
-        "pageLength": 10, // Number of records per page
-        "columnDefs": [
-          // { "orderable": false, "targets": [1] }, // Disable sorting on the second column (id)
-          { "orderDataType": "dom-checkbox", "targets": 0 } // Custom sorting for the first column (select box)
-        ],
-        "language": {
-          "paginate": {
-            "first": "Πρώτη",
-            "previous": "",
-            "next": "",
-            "last": "Τελευταία"
-          },
-          "info": "Εμφανίζονται οι _START_ έως _END_ από τους _TOTAL_ μαθητές",
-          "infoEmpty": "Εμφάνιζονται 0 εγγραφές",
-          "infoFiltered": "Φιλτράρισμα από _MAX_ συνολικούς χρήστες",
-          "lengthMenu": "_MENU_",
-          "loadingRecords": "Φόρτωση καταλόγου...",
-          "processing": "Επεξεργασία...",
-          "search": "",
-          "zeroRecords": "Δεν βρέθηκαν εγγραφές"
+    $('#selectFields').on('change', function() {
+      $('#obsolete-warning').addClass('hidden');
+      var select = $(this).val();
+      // console.log(select);
+      var url;
+      if (select === 'alldata'){
+        url = '<?php echo base_url()?>teams/getAllTeams';
+      } else if (select === 'curStudents'){
+        url = '<?php echo base_url()?>teams/getCurrentStudents';
+      } else if (select === 'olderStudents'){
+        url = '<?php echo base_url()?>teams/getObsoleteUsers';
+        $('#obsolete-warning').removeClass('hidden');
+      } else if (select === 'curTeachers'){
+        url = '<?php echo base_url()?>teams/getCurrentTeachers';
+      }
+      getRemoteData(url);
+    });
+
+    function getRemoteData(selectedUrl){
+      $.ajax({
+        url: selectedUrl,
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            data=data['aaData'];
+            // console.log(data);
+            handleSuccess(data);
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error: ' + status + error);
         }
       });
+    }
 
-      // Handle row selection
-      $('#stdbook tbody').on('change', 'input[type="checkbox"]', function() {
-        var id = $(this).val();
-        if ($(this).is(':checked')) {
+    function handleSuccess(data) {
+      if (oTable) {
+        oTable.destroy();
+        selectedIds = [];
+      }
+      oTable = $('#stdbook').DataTable({
+        data: data,
+        processing: true,
+        columns: [
+          {
+            data: "id",
+            render: function(data, type, row) {
+              return '<input type="checkbox" value="' + data + '">';
+            },
+            orderable: true,
+            orderDataType: 'dom-checkbox'
+          },
+          { data: "surname" },
+          { data: "givenName" },
+          { data: "mail" },
+          { data: "id" },          
+        ],
+        filter: true,
+        paginate: true,
+        language: {
+          paginate: dataTableOptions.language.paginate,
+          info: dataTableOptions.language.info,
+          infoEmpty: dataTableOptions.language.infoEmpty,
+          infoFiltered: dataTableOptions.language.infoFiltered,
+          lengthMenu: dataTableOptions.language.lengthMenu,
+          loadingRecords: dataTableOptions.language.loadingRecords,
+          processing: dataTableOptions.language.processing,
+          search: dataTableOptions.language.search,
+          zeroRecords: ''
+        }
+      });
+    }
+
+    // Handle row selection
+    $('#stdbook tbody').on('change', 'input[type="checkbox"]', function() {
+      var id = $(this).val();
+      if ($(this).is(':checked')) {
+        if (!selectedIds.includes(id)) {
+          selectedIds.push(id);
+        }
+      } else {
+        selectedIds = selectedIds.filter(function(value) {
+          return value != id;
+        });
+      }
+
+      // Update "Select All" checkbox state
+      var allChecked = $('#stdbook tbody input[type="checkbox"]:checked').length > 0 ? true : false;
+      $('#select-all').prop('checked', allChecked);
+    });
+
+    // Handle "Select All" checkbox
+    $('#select-all').on('change', function() {
+      var rows = oTable.rows({ 'search': 'applied' }).nodes();
+      $('input[type="checkbox"]', rows).prop('checked', this.checked);
+      if (this.checked) {
+        $('input[type="checkbox"]', rows).each(function() {
+          var id = $(this).val();
           if (!selectedIds.includes(id)) {
             selectedIds.push(id);
           }
-        } else {
+        });
+      } else {
+        $('input[type="checkbox"]', rows).each(function() {
+          var id = $(this).val();
           selectedIds = selectedIds.filter(function(value) {
             return value != id;
           });
-        }
-      });
+        });
+      }
+    });
 
-      // Handle "Select All" checkbox
-      $('#select-all').on('change', function() {
-        var rows = oTable.rows({ 'search': 'applied' }).nodes();
-        $('input[type="checkbox"]', rows).prop('checked', this.checked);
-        if (this.checked) {
-          $('input[type="checkbox"]', rows).each(function() {
-            var id = $(this).val();
-            if (!selectedIds.includes(id)) {
-              selectedIds.push(id);
+    /* Add a click handler for the student-card btn */
+    $('#student-card').click(function() {
+      if (selectedIds.length === 1) {
+        var id = selectedIds[0]; // Assuming the ID is in the first column
+        // window.open('student/card/' + id, '_self', false);
+        alert(id);
+      } else {
+        alert("Για τη συγκεκριμένη ενέργεια πρέπει να έχετε επιλέξει ένα μονο χρήστη!");
+      }
+    });
+
+    $('#reset').click(function() {
+      $('body').css('cursor', 'wait');
+      $.ajax({
+        url: '<?php echo base_url()?>teams/resetTeamsData',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            $('body').css('cursor', 'default');
+            console.log(data);
+            if (data.status === 'success') {
+              alert('Τα δεδομένα των Microsoft Teams λήφθηκαν επιτυχώς.');
+              getRemoteData('<?php echo base_url()?>teams/getAllTeams');
+            } else {
+              alert('Προέκυψε σφάλμα κατά την επαναφορά των δεδομένων των Microsoft Teams.');
+              console.error('Error: ' + data.message);
             }
-          });
-        } else {
-          $('input[type="checkbox"]', rows).each(function() {
-            var id = $(this).val();
-            selectedIds = selectedIds.filter(function(value) {
-              return value != id;
-            });
-          });
+        },
+        error: function(xhr, status, error) {
+            $('body').css('cursor', 'default');
+            alert('Προέκυψε σφάλμα κατά την επαναφορά των δεδομένων των Microsoft Teams.');
+            console.error('AJAX Error: ' + status + error);
         }
       });
+    });
 
-      /* Add a click handler for the student-card btn */
-      $('#student-card').click(function() {
-        if (selectedIds.length === 1) {
-          var id = selectedIds[0]; // Assuming the ID is in the first column
-          // window.open('student/card/' + id, '_self', false);
-          alert(id);
-        } else {
-          alert("Για τη συγκεκριμένη ενέργεια πρέπει να έχετε επιλέξει ένα μονο χρήστη!");
+    /* Add a click handler for the new-reg btn */
+    $('#new-reg').click(function() {
+      // window.open('student/newreg', '_self', false);
+    });
+
+    /* Add a click handler for the del-reg btn */
+    $('#del-reg').click(function() {
+      if (selectedIds.length > 0) {
+        var r = confirm("Οι χρήστες που επιλέξατε πρόκειται να διαγραφούν. Παρακαλώ επιβεβαιώστε.");
+        if (r == true) {
+          // Perform the delete operation
+          // Example: window.open('student/delreg/' + selectedIds.join(','), '_self', false);
+          alert('Deleting users with IDs: ' + selectedIds.join(', '));
         }
-      });
+      } else {
+        alert("Δεν έχετε επιλέξει κανένα χρήστη.");
+      }
+    });
 
-      /* Add a click handler for the new-reg btn */
-      $('#new-reg').click(function() {
-        // window.open('student/newreg', '_self', false);
-      });
 
-      /* Add a click handler for the del-reg btn */
-      $('#del-reg').click(function() {
-        if (selectedIds.length > 0) {
-          var r = confirm("Οι χρήστες που επιλέξατε πρόκειται να διαγραφούν. Παρακαλώ επιβεβαιώστε.");
-          if (r == true) {
-            // Perform the delete operation
-            // Example: window.open('student/delreg/' + selectedIds.join(','), '_self', false);
-            alert('Deleting users with IDs: ' + selectedIds.join(', '));
-          }
-        } else {
-          alert("Δεν έχετε επιλέξει κανένα χρήστη.");
-        }
-      });
+    // On load get all the data
+    getRemoteData('<?php echo base_url()?>teams/getAllTeams');
 
-      <?php if (empty($teams)): ?>
-        $('#myModal').modal('show');
-      <?php endif; ?>
-    } else {
-      console.error("Table element with ID 'stdbook' not found.");
-    }
   }); //end of document(ready) function
 </script>
 
@@ -163,45 +248,45 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-md-12">
-              <div class="btn-toolbar" role="toolbar" style="margin-bottom:10px;">
-                <button class="btn btn-sm btn-danger pull-left" id="del-reg"><i class="icon-trash"></i></button>
-                <div class="btn-group pull-left">
-                  <button class="btn btn-default btn-sm"><i class="icon-refresh"></i></button>
-                  <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
-                </div>
-                <button class="btn btn-sm btn-openpage pull-right" id="student-card"><i class="icon-user"> </i>Reset Teams Data</button>
+                <div class="btn-toolbar" role="toolbar" style="margin-bottom:10px;">
+                  <button class="btn btn-sm btn-danger pull-left" id="del-reg"><i class="icon-trash"></i></button>
+                  <div class="btn-group pull-left">
+                    <button class="btn btn-default btn-sm" id="reset" data-toggle="tooltip" title="Ανάκτηση δεδομένων από τον διακομιστή του Microsoft Teams"><i class="icon-refresh"></i> Reset</button>
+                    <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
+                  </div>
+                  <div class="pull-left col-xs-3" style="margin-left: 10px;">
+                    <select id="selectFields" class="form-control input-sm">
+                      <option value="alldata">Εμφάνιση όλων</option>
+                      <option value="curStudents">Ενεργοί μαθητές</option>
+                      <option value="curTeachers">Ενεργοί καθηγητές</option>
+                      <option value="olderStudents">Παρωχημένοι λογαριασμοί</option>
+                    </select>
+                <div>
               </div>
             </div>
+            <button class="btn btn-openpage btn-sm pull-right" id="student-card"><i class="icon-user"> </i>Edit user</button>
           </div>
-          <!--width="100%" option in the table is required when there are hidden columns in the table to resize properly on window change-->
+          <div class="alert alert-danger alert-dismissable hidden" id="obsolete-warning">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>ΣΗΜΑΝΤΙΚΟ!</strong> Τα ακόλουθα δεδομένα βασίζονται στη σύγκριση των δεδομένων του Microsoft Teams με τους ενεργούς μαθητές και καθηγητές της επιλεγμένης διαχειριστικής περιόδου. <strong>Απαιτείται προσοχή στις διαγραφές</strong>!
+          </div>
           <table class="table table-striped table-bordered" id="stdbook" width="100%">
             <thead>
               <tr>
                 <th><input type="checkbox" id="select-all"></th>
-                <th>id</th>
-                <th>Όνομα</th>
                 <th>Επώνυμο</th>
+                <th>Όνομα</th>
                 <th>Username</th>
-                <th>Ομάδα</th>
+                <th>Teams user id</th>
               </tr>
             </thead>
             <tbody>
-              <?php if (!empty($teams)): ?>
-                <?php foreach ($teams as $data): ?>
-                  <tr>
-                    <td><input type="checkbox" value="<?php echo $data['id']; ?>"></td>
-                    <td><?php echo $data['id']; ?></td>
-                    <td><?php echo $data['givenName']; ?></td>
-                    <td><?php echo $data['surname']; ?></td>
-                    <td><?php echo $data['mail']; ?></td>
-                    <td><?php echo $data['jobTitle']; ?></td>
-                  </tr>
-                <?php endforeach; ?>
-              <?php endif; ?>
             </tbody>
           </table>
         </div> <!-- end of content -->
       </div> <!-- end of contentbox -->
+    </div>
+    </div>
     </div>
     <!--end of main container-->
 

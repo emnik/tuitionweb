@@ -3,9 +3,20 @@
 <script src="<?php echo base_url('assets/select2/select2.js') ?>"></script>
 <script src="<?php echo base_url('assets/select2/select2_locale_el.js') ?>"></script>
 
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/datatables_bundle/datatables.css') ?>" />
+<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/datatables_bundle/datatables.css') ?>" />
 <script type="text/javascript" src="<?php echo base_url('assets/datatables_bundle/datatables.js') ?>"></script>
-<script type="text/javascript" src="<?php echo base_url('assets/datatables_bundle/Buttons-1.6.5/js/dataTables.buttons.js') ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/datatables_bundle/Buttons-1.6.5/js/dataTables.buttons.js') ?>"></script> -->
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jszip-2.5.0/dt-1.10.22/b-1.6.4/b-colvis-1.6.4/b-html5-1.6.4/b-print-1.6.4/fc-3.3.1/r-2.2.6/rg-1.1.2/sl-1.3.1/datatables.min.js"></script>
+
+<!-- For date formating -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap.min.css" rel="stylesheet">
+
 
 
 <style>
@@ -59,10 +70,6 @@
         $('#menu-reports').addClass('active');
         $('#menu-header-title').text('Αναφορές');
 
-        // $('#selectFields').parent().parent().hide();
-        // $('#selectClass').parent().parent().removeClass();
-        // $('#selectClass').parent().parent().addClass('col-sm-10 col-xs-12');
-
         $('#selectClass').select2({
             data: <?php echo $classes; ?>,
             multiple: true,
@@ -113,7 +120,6 @@
             var optionList = $('form input[name=optionsRadios]:radio:checked');
             var reportType= optionList[0].value;
             var selList="";
-            // var fieldList="";
             if (classes.length>0){
                 selList = "'" + classes[0].text;
                 for (let index = 1; index < classes.length; index++) {
@@ -131,23 +137,11 @@
             // console.log(extraFields);
             
             DTcolumns = [{"data": 'stdname', "title":"Ονοματεπώνυμο"},{"data": 'class_name', "title":"Τάξη"}];
-            // $('#tbl2>thead>tr').append('<th>Ονοματεπώνυμο</th>');
-            // $('#tbl2>thead>tr').append('<th>Τάξη</th>');
             fieldList=[];
             extraFields.forEach(element => {
                 fieldList.push(element.id);
-                // $('#tbl2>thead>tr').append('<th>'+element.text+'</th>');
                 DTcolumns.push({"data": element.id, "title": element.text});
             });
-            
-            // if (extraFields.length>0){
-            //     fieldList = "'" + extraFields[0].id;
-            //     for (let index = 1; index < extraFields.length; index++) {
-            //         const element = extraFields[index];
-            //         fieldList = fieldList + "','" + element.id;
-            //     }
-            //     fieldList = fieldList + "'";
-            // }
             if (selList!=""){
                     generateTable(selList, reportType, fieldList);
                 }
@@ -299,158 +293,13 @@
             language: DTlanguage
         })
 
-
-        // oTable2 = $('#tbl2').DataTable({
-        //     // buttons: [
-        //     //     // 'copy', 
-        //     //     {
-        //     //         extend: 'copy',
-        //     //         footer: true,
-        //     //         title: function() {
-        //     //             return "Μαθητές ανά τάξη";
-        //     //         },
-        //     //         exportOptions: {
-        //     //             orthogonal: "exportCopy",
-        //     //             columns: [0, 1]
-        //     //         }
-        //     //     },
-        //     //     // 'excel', 
-        //     //     {
-        //     //         extend: 'excel',
-        //     //         title: function() {
-        //     //             return "Μαθητές ανά τάξη";
-        //     //         },
-        //     //         exportOptions: {
-        //     //             orthogonal: "exportExcel",
-        //     //             columns: [0, 1]
-        //     //         }
-        //     //     },
-        //     //     // 'pdf', 
-        //     //     {
-        //     //         extend: 'pdf',
-        //     //         title: function() {
-        //     //             return "Μαθητές ανά τάξη";
-        //     //         },
-        //     //         customize: function(doc) {
-        //     //             doc.styles.tableHeader = {
-        //     //                 alignment: 'left',
-        //     //                 bold: true,
-        //     //                 fillColor: 'gray'
-        //     //             }
-        //     //             doc.styles.title = {
-        //     //                 fontSize: 14
-        //     //             }
-        //     //             doc.footer = (function(page, pages) {
-        //     //                 return {
-        //     //                     columns: [
-        //     //                         {
-        //     //                             alignment: 'right',
-        //     //                             text: [
-        //     //                                 'σελ. ',
-        //     //                                 {
-        //     //                                     text: page.toString(),
-        //     //                                     italics: true
-        //     //                                 },
-        //     //                                 ' από ',
-        //     //                                 {
-        //     //                                     text: pages.toString(),
-        //     //                                     italics: true
-        //     //                                 }
-        //     //                             ]
-        //     //                         }
-        //     //                     ],
-        //     //                     margin: [50, 0]
-        //     //                 }
-        //     //             });
-
-        //     //             doc.content[1].table.widths = ['*', '*'];
-
-        //     //             // var tblBody = doc['content']['1'].table['body'];
-        //     //             // oTable2.page.len( -1 ).draw(); //show all pages to be able to use the jquery selector for highlighting the names!
-        //     //             // // get all table rows from html table
-        //     //             // $('#tbl2').find('tr').each(function(ix, row) {
-        //     //             //     // console.log(ix);
-        //     //             //     var index = ix;
-        //     //             //     // var rowElt = row;
-        //     //             //     $(row).find('td').each(function(ind, elt) {
-        //     //             //         // console.log([ind, elt]);
-        //     //             //         // console.log(tblBody[index][1].text);
-        //     //             //         // if the second cell (1) of each row is empty then it is a group header
-        //     //             //         if (tblBody[index][1].text == '') {
-        //     //             //             //style the first cell (0)
-        //     //             //             delete tblBody[index][ind].style;
-        //     //             //             tblBody[index][ind].fillColor = 'lightgray';
-        //     //             //             //style the second cell (1)
-        //     //             //             delete tblBody[index][ind + 1].style;
-        //     //             //             tblBody[index][ind + 1].fillColor = 'lightgray';
-        //     //             //         }
-        //     //             //     });
-        //     //             // });
-        //     //             // oTable2.page.len(10).draw(); //restore pagination length to default!
-        //     //         },
-        //     //         exportOptions: {
-        //     //             orthogonal: "exportPdf",
-        //     //             columns: [0, 1],
-        //     //             // grouped_array_index: 'class_name',
-        //     //             // columns: ':visible',
-        //     //         }
-        //     //     },
-        //     //     // 'print'
-        //     //     {
-        //     //         extend: 'print',
-        //     //         // autoPrint: false,
-        //     //         customize: function(win) {
-        //     //             $(win.document.body).find('td:empty').parent()
-        //     //                 // .addClass( 'compact' )
-        //     //                 .css('background-color', 'lightgray');
-        //     //         },
-        //     //         title: function() {
-        //     //             return "Μαθητές ανά τάξη";
-        //     //         },
-        //     //         exportOptions: {
-        //     //             orthogonal: "exportPrint",
-        //     //             grouped_array_index: 'class_name',
-        //     //             columns: ':visible',
-        //     //         }
-        //     //     },
-        //     // ],
-        //     dom: 'Blrtip',
-        //     processing: true,
-        //     columns: [{
-        //             "data": 'stdname'
-        //         },
-        //         {
-        //             "data": 'class_name'
-        //         }
-        //     ],
-        //     // columns: DTcolumns,
-        //     // paging: false,
-        //     ordering: false,
-        //     order: [
-        //         [1, 'asc']
-        //     ],
-        //     rowGroup: {
-        //         dataSrc: "class_name"
-        //     },
-        //     columnDefs: [{
-        //         targets: [1],
-        //         visible: false
-        //     }],
-        // })
-
-        //------------------------------------------------------------------------------------
-
-
         //bootstrap3 style fixes until datatables 1.10 is released with bootstrap3 support
 
 
         $('#tbl1').css('width', '100%');
-        // $('#tbl2').css('width', '100%');
         $(".dt-buttons").hide();
         $('#tbl1_length').hide();
-        // $('#tbl2_length').hide();
         $('#tbl1_info').hide();
-        // $('#tbl2_info').hide();
         //------------------------------------------------------------------------------------
 
 
@@ -459,8 +308,6 @@
 
         $('#tbl1_length').css({"margin-top": "10px"});
         $('#tbl1_length').css({"text-align": "left"});
-        // $('#tbl2_length').css({"margin-top": "10px"});
-        // $('#tbl2_length').css({"text-align": "left"});
         $(".dt-buttons").css({"margin-bottom": "10px"})
 
 
@@ -494,8 +341,6 @@
                         $('#tbl2_info').hide();
                         $("#tbl2_wrapper .dt-buttons").hide();
                         $('#tbl2_paginate').hide();
-                        // oTable2.clear();
-                        // $('#tbl2').DataTable().clear();
 
                         $('#tbl1').show();
                         $('#tbl1_length').show();
@@ -525,9 +370,6 @@
                         $("#tbl1_wrapper .dt-buttons").hide();
                         $('#tbl1_paginate').hide();
                         // oTable1.clear();
-
-
- 
                         
                         if ($.fn.DataTable.isDataTable('#tbl2')) {
                              $('#tbl2').DataTable().clear().destroy(); //in order to be re-initialized with different number of columns

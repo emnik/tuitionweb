@@ -30,7 +30,7 @@ var oTable2;
 $(document).ready(function(){ 
 
         //Menu current active links and Title
-        $('#menu-reports-summary').addClass('active');
+        $('#menu-operation').addClass('active');
         $('#menu-finance').addClass('active');
         $('#menu-header-title').text('Οικονομικά');
 
