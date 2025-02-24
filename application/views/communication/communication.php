@@ -2,8 +2,8 @@
     $(document).ready(function() {
 
   //Menu current active links and Title
-//   $('#menu-reports-summary').addClass('active');
-//   $('#menu-telephones').addClass('active');
+  $('#menu-operation').addClass('active');
+  $('#menu-communication').addClass('active');
   $('#menu-header-title').text('Επικοινωνία');
 
   let data = <?php echo $classes; ?>;

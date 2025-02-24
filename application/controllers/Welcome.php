@@ -189,7 +189,11 @@ public function index() {
 				redirect('communication');
 			break;						
 
-			}
+			case 'submit16': // Microsoft Teams
+				redirect('teams');
+			break;
+
+		}
 
 	}
 

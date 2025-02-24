@@ -39,7 +39,7 @@
     <!--body wrapper for css sticky footer-->
 
             <!-- Menu start -->
-            <?php include __DIR__.'/include/menu.php'; ?>
+            <?php include __DIR__ . '/include/menu.php'; ?>
         <!-- Menu end -->
 
     <!-- main container
@@ -67,8 +67,8 @@
                       <select class="form-control input-md" name="startschoolyear" id="schoolyearcombo">
                         <?php foreach ($schoolyears as $data) { ?>
                           <option value="<?php echo $data['id']; ?>" <?php if (1 == $data['active']) {
-                              echo "selected = 'selected'";
-                          } ?>>
+  echo "selected = 'selected'";
+} ?>>
                             <?php echo $data['name']; ?>
                           </option>                        
                         <?php } ?>
@@ -100,7 +100,7 @@
                 <div class="col-xs-12 welcome-section-body">    
                   <div class="col-sm-3 col-xs-6 welcome">
                     <button type="submit" class="btn-link" name="submitbtn" value="submit1">
-                      <i class="icon-group icon-4x"></i>
+                      <i class="icon-group icon-3x"></i>
                       <h4>Μαθητολόγιο</h4>
                     </button>
                     <div class="small">
@@ -111,33 +111,33 @@
                     </div>
                   </div>
 
-                <div class="col-sm-3 col-xs-6 welcome">
+                 <div class="col-sm-3 col-xs-6 welcome">
                   <button type="submit" class="btn-link" name="submitbtn" value="submit10">
-                    <i class="icon-calendar icon-4x"></i>
+                    <i class="icon-calendar icon-3x"></i>
                     <h4>Πρόγραμμα</h4>
                   </button>
                   <div class="small">
                     Ημερήσιο Πρόγραμμα
                   </div>
-                </div>
+                 </div>
 
-                <div class="clearfix visible-xs"></div>
+                 <div class="clearfix visible-xs"></div>
             
-                <div class="col-sm-3 col-xs-6 welcome">
+                 <div class="col-sm-3 col-xs-6 welcome">
                   <button type="submit" class="btn-link" name="submitbtn" value="submit12">
-                    <i class="icon-pencil icon-4x"></i>
+                    <i class="icon-pencil icon-3x"></i>
                     <h4>Διαγωνίσματα</h4>
                   </button>
                   <div class="small">
                     Προγραμματισμός /
                     Επιτηρητές
                   </div>
-                </div>
+                 </div>
 
 
                 <!-- <div class="col-sm-3 col-xs-6 welcome">
                   <button disabled type="submit" class="btn-link" name="submitbtn" value="submit8">
-                    <i class="icon-paper-clip icon-4x"></i>
+                    <i class="icon-paper-clip icon-3x"></i>
                     <h4>Αρχεία</h4>
                   </button>
                   <div class="small">
@@ -147,7 +147,7 @@
 
                 <!-- <div class="col-sm-3 col-xs-6 welcome">
                   <button disabled type="submit" class="btn-link" name="submitbtn" value="submit9">
-                    <i class="icon-bullhorn  icon-4x"></i>
+                    <i class="icon-bullhorn  icon-3x"></i>
                     <h4>Ανακοινώσεις</h4>
                   </button>
                   <div class="small">
@@ -158,7 +158,7 @@
 
                 <div class="col-sm-3 col-xs-6 welcome">
                   <button type="submit" class="btn-link" name="submitbtn" value="submit15">
-                    <i class="icon-comments-alt  icon-4x"></i>
+                    <i class="icon-comments-alt  icon-3x"></i>
                     <h4>Επικοινωνία</h4>
                   </button>
                   <div class="small">
@@ -166,8 +166,27 @@
                     Λίστα Ηλ. Ταχυδρομείου
                   </div>
                 </div>                
-                
+              
+                <div class="row"> <!--Second row inside the first group-->
+                  <div class="col-xs-12 welcome-section-body">    
+                    <div class="col-sm-3 col-xs-6 welcome">
+                      <button type="submit" class="btn-link" name="submitbtn" value="submit16">
+                        <i class="icon-windows icon-3x"></i>
+                        <h4>Microsoft Teams</h4>
+                      </button>
+                      <div class="small">
+                        Διαχείριση χρηστών
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
+
+
+
+
+              
             </div>
           </div>
           <!--end of first row-->
@@ -186,7 +205,7 @@
 
             <div class="col-sm-3 col-xs-6 welcome" >
               <button type="submit" class="btn-link" name="submitbtn" value="submit2">
-                <i class="icon-user icon-4x"></i>
+                <i class="icon-user icon-3x"></i>
                 <h4>Προσωπικό</h4>
               </button>
               <div class="small">
@@ -198,7 +217,7 @@
 
             <div class="col-sm-3 col-xs-6 welcome" >
               <button type="submit" class="btn-link" name="submitbtn" value="submit3">
-                <i class="icon-tags icon-4x"></i>
+                <i class="icon-tags icon-3x"></i>
                 <h4>Τμήματα</h4>
               </button>
               <div class="small">
@@ -212,7 +231,7 @@
 
             <div class="col-sm-3 col-xs-6 welcome" >
               <button type="submit" class="btn-link" name="submitbtn" value="submit5">
-                <i class="icon-sitemap icon-4x"></i>
+                <i class="icon-sitemap icon-3x"></i>
                 <h4>Πρόγραμμα σπουδών</h4>
               </button>
               <div class="small">
@@ -225,7 +244,7 @@
 
             <div class="col-sm-3 col-xs-6 welcome" >
               <button type="submit" class="btn-link" name="submitbtn" value="submit11">
-                <i class="icon-building icon-4x"></i>
+                <i class="icon-building icon-3x"></i>
                 <h4>Στοιχεία Φροντιστηρίου</h4>
               </button>
               <div class="small">
@@ -249,7 +268,7 @@
             <div class="col-xs-12 welcome-section-body" style="display:none;">  
             <div class="col-sm-3 col-xs-6 welcome" >
               <button type="submit" class="btn-link" name="submitbtn" value="submit9">
-                <i class="icon-copy icon-4x"></i>
+                <i class="icon-copy icon-3x"></i>
                 <h4>Αναφορές</h4>
               </button>
               <div class="small">
@@ -263,7 +282,7 @@
 
             <div class="col-sm-3 col-xs-6 welcome" >
               <button type="submit" class="btn-link" name="submitbtn" value="submit8">
-                <i class="icon-time icon-4x"></i>
+                <i class="icon-time icon-3x"></i>
                 <h4>Ιστορικό</h4>
               </button>
               <div class="small">
@@ -278,7 +297,7 @@
 
             <div class="col-sm-3 col-xs-6 welcome">
               <button type="submit" class="btn-link" name="submitbtn" value="submit7">
-                <i class="icon-phone icon-4x"></i>
+                <i class="icon-phone icon-3x"></i>
                 <h4>Τηλέφωνα</h4>
               </button>
               <div class="small">
@@ -291,7 +310,7 @@
 
             <div class="col-sm-3 col-xs-6 welcome" >
               <button type="submit" class="btn-link" name="submitbtn" value="submit4">
-                <i class="icon-money icon-4x"></i>
+                <i class="icon-money icon-3x"></i>
                 <h4>Οικονομικά</h4>
               </button>
               <div class="small">
@@ -320,7 +339,7 @@
             <div class="col-xs-12 welcome-section-body" style="display:none;">  
             <div class="col-sm-3 col-xs-6 welcome" >
               <button type="submit" class="btn-link" name="submitbtn" value="submit13">
-                <i class="icon-shield icon-4x"></i>
+                <i class="icon-shield icon-3x"></i>
                 <h4>Λογαριασμοί χρηστών</h4>
               </button>
               <div class="small">
@@ -330,7 +349,7 @@
             
             <div class="col-sm-3 col-xs-6 welcome" >
               <button type="submit" class="btn-link" name="submitbtn" value="submit14">
-                <i class="icon-puzzle-piece icon-4x"></i>
+                <i class="icon-puzzle-piece icon-3x"></i>
                 <h4>Contact Services Configuration</h4>
               </button>
               <div class="small">
@@ -340,7 +359,7 @@
 
             <div class="col-sm-3 col-xs-6 welcome" >
               <button disabled type="submit" class="btn-link" name="submitbtn" value="submit15">
-                <i class="icon-book icon-4x"></i>
+                <i class="icon-book icon-3x"></i>
                 <h4>GDPR</h4>
               </button>
               <div class="small">

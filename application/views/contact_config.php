@@ -15,7 +15,8 @@
     $(document).ready(function() {
 
     //Menu current active links and Title
-    $('#menu-users').addClass('active');
+    $('#menu-operation').addClass('active');
+    $('#menu-contact-services').addClass('active');
     $('#menu-header-title').text('Contact Services Configuration');
 
 

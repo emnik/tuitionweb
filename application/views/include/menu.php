@@ -22,6 +22,7 @@
                         <li id="menu-schedule"><a href="<?php echo base_url('schedule/index/' . date('w')) ?>">Πρόγραμμα</a></li>
                         <li id="menu-exams"><a href="<?php echo base_url('exam') ?>">Διαγωνίσματα</a></li>
                         <li id="menu-communication"><a href="<?php echo base_url('communication') ?>">Επικοινωνία</a></li>
+                        <li id="menu-teams"><a href="<?php echo base_url('teams') ?>">Microsoft Teams</a></li>
                         <li class="divider"></li>
                         <li class="dropdown-header">Οργάνωση/Διαχείριση</li>
                         <li id="menu-staff"><a href="<?php echo base_url('staff') ?>">Προσωπικό</a></li>
@@ -38,7 +39,7 @@
                         <li class="divider"></li>
                         <li class="dropdown-header">Διαχείριση Εφαρμογής</li>
                         <li id="menu-users"><a href="<?php echo base_url('user') ?>">Λογαριασμοί χρηστών</a></li>
-                        <li id="menu-users"><a href="<?php echo base_url('contact_config') ?>">Contact Services Configuration</a></li>
+                        <li id="menu-contact-services"><a href="<?php echo base_url('contact_config') ?>">Contact Services Configuration</a></li>
                     </ul>
                 </li>
             </ul>
