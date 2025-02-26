@@ -1,7 +1,3 @@
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-	
-
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jszip-2.5.0/dt-1.10.22/b-1.6.4/b-colvis-1.6.4/b-html5-1.6.4/b-print-1.6.4/fc-3.3.1/r-2.2.6/rg-1.1.2/sl-1.3.1/datatables.min.js"></script>
@@ -47,10 +43,9 @@
       });
     };
 
-    $('#selectFields').on('change', function() {
-      $('#obsolete-warning').addClass('hidden');
+    $('#selectDataSrc').on('change', function() {
+      $('#warning-alert').addClass('hidden');
       var select = $(this).val();
-      // console.log(select);
       var url;
       if (select === 'alldata'){
         url = '<?php echo base_url()?>teams/getAllTeams';
@@ -58,9 +53,14 @@
         url = '<?php echo base_url()?>teams/getCurrentStudents';
       } else if (select === 'olderStudents'){
         url = '<?php echo base_url()?>teams/getObsoleteUsers';
-        $('#obsolete-warning').removeClass('hidden');
+        $('#warning-msg').html('<strong>ΣΗΜΑΝΤΙΚΟ!</strong> Τα ακόλουθα δεδομένα βασίζονται στη σύγκριση των δεδομένων του Microsoft Teams με τους ενεργούς μαθητές και καθηγητές της επιλεγμένης διαχειριστικής περιόδου. <strong>Απαιτείται προσοχή στις διαγραφές</strong>!');
+        $('#warning-alert').removeClass('hidden');
       } else if (select === 'curTeachers'){
         url = '<?php echo base_url()?>teams/getCurrentTeachers';
+      } else if (select === 'deletedUsers'){
+        url = '<?php echo base_url()?>teams/getDeletedUsers';
+        $('#warning-msg').html('<strong>ΣΗΜΑΝΤΙΚΟ!</strong> Οι ακόλουθοι λογαριασμοί μπορούν ακόμη να ανακτηθούν');
+        $('#warning-alert').removeClass('hidden');
       }
       getRemoteData(url);
     });
@@ -70,9 +70,9 @@
         url: selectedUrl,
         method: 'GET',
         dataType: 'json',
-        success: function(data) {
-            data=data['aaData'];
-            // console.log(data);
+        success: function(remoteData) {
+            // console.log(remoteData);
+            data=remoteData['data'];
             handleSuccess(data);
         },
         error: function(xhr, status, error) {
@@ -86,7 +86,7 @@
         oTable.destroy();
         selectedIds = [];
       }
-      oTable = $('#stdbook').DataTable({
+      oTable = $('#teamsTbl').DataTable({
         data: data,
         processing: true,
         columns: [
@@ -103,6 +103,7 @@
           { data: "mail" },
           { data: "id" },          
         ],
+        order: [[1, 'asc']], // Sort by the "surname" column (index 1) in ascending order
         filter: true,
         paginate: true,
         language: {
@@ -120,10 +121,13 @@
     }
 
     // Handle row selection
-    $('#stdbook tbody').on('change', 'input[type="checkbox"]', function() {
+    $('#teamsTbl tbody').on('change', 'input[type="checkbox"]', function() {
       var id = $(this).val();
       if ($(this).is(':checked')) {
-        if (!selectedIds.includes(id)) {
+        if (selectedIds.length >= 20) {
+          alert('Batch selection is limited to 20 users');
+          $(this).prop('checked', false);
+        } else {
           selectedIds.push(id);
         }
       } else {
@@ -133,30 +137,22 @@
       }
 
       // Update "Select All" checkbox state
-      var allChecked = $('#stdbook tbody input[type="checkbox"]:checked').length > 0 ? true : false;
-      $('#select-all').prop('checked', allChecked);
+      var anyChecked = selectedIds.length > 0;
+      $('#select-all').prop('checked', anyChecked);
+      $('#select-all').prop('disabled', !anyChecked);
     });
 
     // Handle "Select All" checkbox
     $('#select-all').on('change', function() {
-      var rows = oTable.rows({ 'search': 'applied' }).nodes();
-      $('input[type="checkbox"]', rows).prop('checked', this.checked);
-      if (this.checked) {
-        $('input[type="checkbox"]', rows).each(function() {
-          var id = $(this).val();
-          if (!selectedIds.includes(id)) {
-            selectedIds.push(id);
-          }
-        });
-      } else {
-        $('input[type="checkbox"]', rows).each(function() {
-          var id = $(this).val();
-          selectedIds = selectedIds.filter(function(value) {
-            return value != id;
-          });
-        });
-      }
+        var rows = oTable.rows().nodes(); // Get all rows of the table
+        $('input[type="checkbox"]', rows).prop('checked', false);
+        selectedIds = [];
+        $('#select-all').prop('disabled', true);
+      // }
     });
+
+    // Initially disable the "Select All" checkbox
+    $('#select-all').prop('disabled', true);
 
     /* Add a click handler for the student-card btn */
     $('#student-card').click(function() {
@@ -180,7 +176,7 @@
             console.log(data);
             if (data.status === 'success') {
               alert('Τα δεδομένα των Microsoft Teams λήφθηκαν επιτυχώς.');
-              getRemoteData('<?php echo base_url()?>teams/getAllTeams');
+              $('#selectDataSrc').val('alldata').trigger('change');
             } else {
               alert('Προέκυψε σφάλμα κατά την επαναφορά των δεδομένων των Microsoft Teams.');
               console.error('Error: ' + data.message);
@@ -204,15 +200,37 @@
       if (selectedIds.length > 0) {
         var r = confirm("Οι χρήστες που επιλέξατε πρόκειται να διαγραφούν. Παρακαλώ επιβεβαιώστε.");
         if (r == true) {
-          // Perform the delete operation
-          // Example: window.open('student/delreg/' + selectedIds.join(','), '_self', false);
-          alert('Deleting users with IDs: ' + selectedIds.join(', '));
+          $('body').css('cursor', 'wait');
+          $.ajax({
+            url: '<?php echo base_url()?>teams/batchDeleteUsers',
+            method: 'POST',
+            data: { data: selectedIds },
+            dataType: 'json',
+            success: function(data) {
+                $('body').css('cursor', 'default');
+                console.log(data);
+                if (data.status === 'success') {
+                  alert('Οι χρήστες διαγράφηκαν επιτυχώς.');
+                  $('#selectDataSrc').val('alldata').trigger('change');
+                  $('#select-all').prop('checked', false);
+                  $('#select-all').prop('disabled', true);
+                } else {
+                  alert('Προέκυψε σφάλμα κατά τη διαγραφή των χρηστών.');
+                  console.error('Error: ' + data.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                $('body').css('cursor', 'default');
+                alert('Προέκυψε σφάλμα κατά τη διαγραφή των χρηστών.');
+                console.error('AJAX Error: ' + status + error);
+            }
+          });          
+          // alert('Deleting users with IDs: ' + selectedIds.join(', '));
         }
       } else {
         alert("Δεν έχετε επιλέξει κανένα χρήστη.");
       }
     });
-
 
     // On load get all the data
     getRemoteData('<?php echo base_url()?>teams/getAllTeams');
@@ -255,22 +273,25 @@
                     <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
                   </div>
                   <div class="pull-left col-xs-3" style="margin-left: 10px;">
-                    <select id="selectFields" class="form-control input-sm">
+                    <select id="selectDataSrc" class="form-control input-sm">
                       <option value="alldata">Εμφάνιση όλων</option>
                       <option value="curStudents">Ενεργοί μαθητές</option>
                       <option value="curTeachers">Ενεργοί καθηγητές</option>
                       <option value="olderStudents">Παρωχημένοι λογαριασμοί</option>
+                      <option disabled>──────────</option>
+                      <option value="deletedUsers">Διαγραμμένοι χρήστες</option>
                     </select>
                 <div>
               </div>
             </div>
             <button class="btn btn-openpage btn-sm pull-right" id="student-card"><i class="icon-user"> </i>Edit user</button>
           </div>
-          <div class="alert alert-danger alert-dismissable hidden" id="obsolete-warning">
+          <div class="alert alert-danger alert-dismissable hidden" id="warning-alert">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <strong>ΣΗΜΑΝΤΙΚΟ!</strong> Τα ακόλουθα δεδομένα βασίζονται στη σύγκριση των δεδομένων του Microsoft Teams με τους ενεργούς μαθητές και καθηγητές της επιλεγμένης διαχειριστικής περιόδου. <strong>Απαιτείται προσοχή στις διαγραφές</strong>!
+            <span id="warning-msg"></span>
+            <!-- <strong>ΣΗΜΑΝΤΙΚΟ!</strong> Τα ακόλουθα δεδομένα βασίζονται στη σύγκριση των δεδομένων του Microsoft Teams με τους ενεργούς μαθητές και καθηγητές της επιλεγμένης διαχειριστικής περιόδου. <strong>Απαιτείται προσοχή στις διαγραφές</strong>! -->
           </div>
-          <table class="table table-striped table-bordered" id="stdbook" width="100%">
+          <table class="table table-striped table-bordered" id="teamsTbl" width="100%">
             <thead>
               <tr>
                 <th><input type="checkbox" id="select-all"></th>

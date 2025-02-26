@@ -105,11 +105,33 @@ public function getCurrentTeachers()
 	echo json_encode($res);
 }
 
+
+public function getDeletedUsers(){
+	header('Content-Type: application/x-json; charset=utf-8');
+
+	$this->load->library('graphTeamsLibrary');
+	$res=$this->graphteamslibrary->do('get_deleted_users');
+
+	echo $res;	
+}
+
+
 public function resetTeamsData(){
 	header('Content-Type: application/x-json; charset=utf-8');
 
 	$this->load->library('graphTeamsLibrary');
 	$res=$this->graphteamslibrary->do('reset');
+
+	echo $res;
+}
+
+public function batchDeleteUsers(){
+	$data = $this->input->post('data');
+
+	$this->load->library('graphTeamsLibrary');
+	$res=$this->graphteamslibrary->do('delete', $data);
+
+	header('Content-Type: application/x-json; charset=utf-8');
 
 	echo $res;
 }

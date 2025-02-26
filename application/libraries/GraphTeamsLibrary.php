@@ -21,9 +21,15 @@ class GraphTeamsLibrary
         $token = $this->getAuthorizationToken();
         if ($token) {
             if ($action == 'reset'){
-                $result = $this->get_users($token);
+                $result = $this->get_users($token, $active=true);
+            } 
+            else if ($action === 'delete') {
+                $result = $this->batch_delete_users($token, $data);
             }
-            return $result; //this is the JSON object returned by the get_users() function
+            else if ($action === 'get_deleted_users') {
+                $result = $this->get_users($token, $active=false);  
+            }
+            return $result; //this is the JSON object returned by the calling function
         } else {
             return json_encode(array(
                 'status' => 'error',
@@ -71,10 +77,15 @@ class GraphTeamsLibrary
         }
     }
 
-    private function get_users($token)
+    private function get_users($token, $active)
     {
         // Define the Microsoft Graph API endpoint for retrieving the users list data
-        $graph_api_url = 'https://graph.microsoft.com/v1.0/users?%24select=id%2CgivenName%2Csurname%2C%20mail%2C%20jobTitle';
+        if ($active) {
+            $graph_api_url = 'https://graph.microsoft.com/v1.0/users?%24select=id%2CgivenName%2Csurname%2Cmail';
+        } else {
+            $graph_api_url = 'https://graph.microsoft.com/beta/directory/deletedItems/microsoft.graph.user?%24count=true&%24select=id%2Csurname%2CgivenName%2Cmail%2CotherMails%2CmobilePhone%2CdeletedDateTime%2CsignInSessionsValidFromDateTime&%24orderby=deletedDateTime%20desc';
+        }
+        
         $headers = array(
             'Authorization: Bearer ' . $token,
             'Content-Type: application/json',
@@ -106,9 +117,19 @@ class GraphTeamsLibrary
             }
         } while ($next_link);
 
-        // Insert each user into the teams table only if all data were successfully retrieved
-        if ($all_data_retrieved) {
-            $this->CI->Teams_model->insert_into_teams_table($data);
+        // store the data in the database
+        if ($active) {
+            // Insert each user into the teams table only if all data were successfully retrieved
+            if ($all_data_retrieved) {
+                $res = $this->CI->Teams_model->insert_into_teams_table($data);
+            }
+
+            if (!$res) {
+                return json_encode(array(
+                    'status' => 'error',
+                    'message' => 'Error inserting users into the database'
+                ));
+            }
         }
 
         return json_encode(array(
@@ -117,6 +138,70 @@ class GraphTeamsLibrary
             'data' => $data
         ));
     }
+
+    private function batch_delete_users($token, $data)
+    {
+        // Define the Microsoft Graph API endpoint for deleting users
+        $graph_api_url = 'https://graph.microsoft.com/v1.0/users/';
+        $headers = array(
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json',
+            'ConsistencyLevel: eventual'
+        );
+
+        $deleted_users = [];
+        // $not_deleted_users = [];
+        $batch_request = array('requests' => array());
+
+        foreach ($data as $index => $uid) {
+            $batch_request['requests'][] = array(
+            'id' => (string)($index + 1),
+            'method' => 'DELETE',
+            'url' => "/users/{$uid}"
+            );
+        }
+
+        // Send the batch request to Microsoft Graph API
+        $batch_url = 'https://graph.microsoft.com/v1.0/$batch';
+        $response = $this->curl_post($batch_url, json_encode($batch_request), $headers);
+
+        // Check if the request was successful
+        if ($response['status_code'] == 200) {
+            $response_data = json_decode($response['response'], true);
+            foreach ($response_data['responses'] as $res) {
+                if ($res['status'] == 204) {
+                    $deleted_users[] = $data[$res['id'] - 1]; // Add the user ID to the deleted users array ($res['id'] is the corresponding 'id' property of the batch request array)
+                } 
+            }
+        } else {
+            return json_encode(array(
+            'status' => 'error',
+            'message' => "Error deleting users. Status code: {$response['status_code']}. Response: " . $response['response']
+            ));
+        }
+
+        if (!empty($deleted_users)){
+            $res = $this->CI->Teams_model->delete_from_teams_table($deleted_users);
+
+            if (!$res) {
+                return json_encode(array(
+                    'status' => 'error',
+                    'message' => 'Error deleted users from local database. Though succesully deleted from Microsoft Server. Please Reset!'
+                ));
+            }
+
+        }
+
+        return json_encode(array(
+            'status' => 'success',
+            'message' => 'Users deleted successfully!',
+            'data' => $deleted_users
+        ));
+    }
+
+
+
+    // -----------------CURL HELPER FUNCTIONS-----------------
 
     // Curl post helper function to return both the response and status code
     private function curl_post($url, $data, $headers = array())
@@ -148,4 +233,5 @@ class GraphTeamsLibrary
         // Return both the response and the status code as an associative array
         return array('response' => $response, 'status_code' => $status_code);
     }
+
 }

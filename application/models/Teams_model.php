@@ -9,6 +9,12 @@ class Teams_model extends CI_Model {
 
    public function insert_into_teams_table($data)
    {
+       // Start a transaction
+       $this->db->trans_start();
+
+       // Empty the teams table
+       $this->db->empty_table('teams');
+
        // Insert each user into the teams table
        foreach ($data as $user) {
            $this->db->replace('teams', array(
@@ -18,6 +24,38 @@ class Teams_model extends CI_Model {
                'mail' => $user['mail']
            ));
        }
+
+       // Complete the transaction
+       $this->db->trans_complete();
+
+       // Check if the transaction was successful
+       if ($this->db->trans_status() === FALSE) {
+           // Generate an error... or use the log_message() function to log your error
+           return false;
+       } else {
+           return true;
+       }
+   }
+
+   public function delete_from_teams_table($deleted_users){
+      // Start a transaction
+      $this->db->trans_start();
+
+      // Delete each user from the teams table
+      foreach ($deleted_users as $user_id) {
+         $this->db->delete('teams', array('id' => $user_id));
+      }
+
+      // Complete the transaction
+      $this->db->trans_complete();
+
+      // Check if the transaction was successful
+      if ($this->db->trans_status() === FALSE) {
+         // Generate an error... or use the log_message() function to log your error
+         return false;
+      } else {
+         return true;
+      }
    }
 
    public function getAllTeams() {
@@ -30,7 +68,7 @@ class Teams_model extends CI_Model {
       {
          foreach($query->result_array() as $row) 
          {
-            $output['aaData'][] = $row;
+            $output['data'][] = $row;
          }
          return $output;
       }
@@ -54,7 +92,7 @@ class Teams_model extends CI_Model {
       {
          foreach($query->result_array() as $row) 
          {
-            $output['aaData'][] = $row;
+            $output['data'][] = $row;
          }
          return $output;
       }
@@ -83,6 +121,7 @@ class Teams_model extends CI_Model {
           WHERE e.active = 1
          )
          AND t.mail != 'info@spoudh.gr'
+         AND t.mail != 'manos@spoudh.gr'
          ORDER BY t.surname, t.givenName
       ");
 
@@ -90,7 +129,7 @@ class Teams_model extends CI_Model {
       {
          foreach($query->result_array() as $row) 
          {
-            $output['aaData'][] = $row;
+            $output['data'][] = $row;
          }
          return $output;
       }
@@ -115,7 +154,7 @@ class Teams_model extends CI_Model {
       {
          foreach($query->result_array() as $row) 
          {
-            $output['aaData'][] = $row;
+            $output['data'][] = $row;
          }
          return $output;
       }

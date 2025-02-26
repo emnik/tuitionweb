@@ -781,12 +781,12 @@ li.select2-search-choice {
 
 .btn-success, .btn-openpage, .btn-reset, .btn-openpage:focus, .btn-success:focus {
   background: var(--accent-color);
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.07) inset, 0 1px 2px 0 rgba(0, 0, 0, 0.09), 0 0 0 rgba(0, 0, 0, 0);
+  /* box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.07) inset, 0 1px 2px 0 rgba(0, 0, 0, 0.09), 0 0 0 rgba(0, 0, 0, 0); */
   color: var(--light-color);
-  font-size: 12px;
-  height: 34px;
-  padding: 0 14px;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  /* font-size: 12px; */
+  /* height: 34px; */
+  /* padding: 0 14px; */
+  /* text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2); */
 }
 
 .btn-modal {
