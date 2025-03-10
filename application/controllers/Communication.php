@@ -42,6 +42,15 @@ class Communication extends CI_Controller
 
 		$startsch = $this->session->userdata('startsch');
 
+		// check the SMS.to configuration
+		$this->load->model('Contact_config_model');
+		$config = $this->Contact_config_model->get_sms_settings();
+		if (!empty($config[0]['apikey'])){
+			$data['config']='success';
+		} else {
+			$data['config']='error';
+		}
+
 		$this->load->model('communication_model');
 		$classes = $this->communication_model->get_classes();
 		if ($classes) {

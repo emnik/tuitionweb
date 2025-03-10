@@ -415,7 +415,7 @@ function generateFile() {
             <p></p>
 
             <div class="row">
-                <div class='col-lg-6 col-xs-12'>
+                <div class='<?php if ($config === 'success') {echo 'col-lg-6';} ?> col-xs-12'>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <span class="icon">
@@ -498,7 +498,7 @@ function generateFile() {
                         </div>
                     </div>
                 </div>
-
+<?php if($config ==='success'):?>
                 <div class="col-lg-6 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -556,6 +556,7 @@ function generateFile() {
                         </div>
                     </div>
                 </div>
+<?php endif;?>                
             </div>     
             <!-- <div class="row">      
                 <div class="col-xs-12">

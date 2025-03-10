@@ -39,7 +39,7 @@
                         <li class="divider"></li>
                         <li class="dropdown-header">Διαχείριση Εφαρμογής</li>
                         <li id="menu-users"><a href="<?php echo base_url('user') ?>">Λογαριασμοί χρηστών</a></li>
-                        <li id="menu-contact-services"><a href="<?php echo base_url('contact_config') ?>">Contact Services Configuration</a></li>
+                        <li id="menu-contact-services"><a href="<?php echo base_url('contact_config') ?>">Ρυθμίσεις Εξωτερικών API</a></li>
                     </ul>
                 </li>
             </ul>

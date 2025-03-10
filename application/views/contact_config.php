@@ -17,7 +17,7 @@
     //Menu current active links and Title
     $('#menu-operation').addClass('active');
     $('#menu-contact-services').addClass('active');
-    $('#menu-header-title').text('Contact Services Configuration');
+    $('#menu-header-title').text('Ρυθμίσεις Εξωτερικών API');
 
 
 
@@ -66,7 +66,7 @@
             <ul class="breadcrumb">
             <li><a href="<?php echo base_url()?>"><i class="icon-home"> </i> Αρχική </a></li>
             <li>Ρυθμίσεις</li>
-            <li class="active">Contact Services Configuration</li>
+            <li class="active">Ρυθμίσεις Εξωτερικών API</li>
             </ul>
         </div>
 
@@ -79,7 +79,7 @@
                         <span class="icon">
                             <i class="icon-envelope-alt"></i>
                         </span>
-                        <h3 class="panel-title">Email (via Microsoft Web Services)</h3>
+                        <h3 class="panel-title">Microsoft Teams / email (via Microsoft Graph)</h3>
                         <div class="buttons">
                             <button enabled id="editform1" type="button" class="btn btn-default btn-sm pull-right" data-toggle="button"><i class="icon-edit"></i></button>
                         </div>
@@ -123,7 +123,7 @@
                         <span class="icon">
                             <i class="icon-location-arrow"></i>
                         </span>
-                        <h3 class="panel-title">SMS (via SMS.to service)</h3>
+                        <h3 class="panel-title">SMS (via SMS.to)</h3>
                         <div class="buttons">
                             <button enabled id="editform2" type="button" class="btn btn-default btn-sm pull-right" data-toggle="button"><i class="icon-edit"></i></button>
                         </div>                        
@@ -148,6 +148,6 @@
         </div>
 
     </div> <!--end of main container-->
-
+</div>
 <div class="push"></div>
 </div> <!-- end of body wrapper-->

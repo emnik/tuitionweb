@@ -46,18 +46,22 @@ public function index(){
 	$user=$this->login_model->get_user_name($this->session->userdata('user_id'));
 	$data['user']=$user;
 
+	$this->load->model('Contact_config_model');
+	// check the microsoft web services configuration
+	$mainCheck = $this->Contact_config_model->get_settings();
+	if (!empty($mainCheck[0]['tenantid']) && !empty($mainCheck[0]['mailclientsecret']) && !empty($mainCheck[0]['mailclientid'])){
+		$data['configGraphAPI']='success';
+	} else {
+		$data['configGraphAPI']='error';
+	}
+	// check the SMS.to configuration
+	$secondaryCheck = $this->Contact_config_model->get_sms_settings();
+	if (!empty($secondaryCheck[0]['apikey'])){
+		$data['configSMS']='success';
+	} else {
+		$data['configSMS']='error';
+	}
 
-	
-	// $this->load->model('teams_model');
-	// $teamsUsers=$this->teams_model->get_teams_users();
-
-	// if ($teamsUsers) {
-	// 	$data['teams'] = $teamsUsers;
-	// 	}
-	// else {
-	// 	$data['teams'] = false;
-	// }
-	
 	$this->load->view('include/header');
 	$this->load->view('teams', $data);
 	$footer_data['regs']=true;
@@ -129,11 +133,210 @@ public function batchDeleteUsers(){
 	$data = $this->input->post('data');
 
 	$this->load->library('graphTeamsLibrary');
-	$res=$this->graphteamslibrary->do('delete', $data);
-
+	$res=$this->graphTeamsLibrary->do('delete', $data);
 	header('Content-Type: application/x-json; charset=utf-8');
 
 	echo $res;
 }
+
+public function updateUser(){
+	// Retrieve the posted data
+	$data = $this->input->post(array(
+		'userId', 'surname', 'givenName', 'displayName', 'mail', 'otherMails', 'mobilePhone', 'password', 'forceChangePasswordNextSignIn'
+	));
+
+	// Prepare the body for the graph update API request based on the data that are not null
+	$updateData = array_filter($data, function($value) {
+		return !is_null($value) && $value !== '';
+	});
+
+	// Map the input data to the Microsoft Graph API fields
+	$updateDataMapped = array(
+		'surname' => $updateData['surname'] ?? null,
+		'givenName' => $updateData['givenName'] ?? null,
+		'displayName' => $updateData['displayName'] ?? null,
+		'mail' => $updateData['mail'] ?? null,
+		'otherMails' => isset($updateData['otherMails']) ? array_map('trim', explode(',', $updateData['otherMails'])) : null,
+		'mobilePhone' => $updateData['mobilePhone'] ?? null,
+		'passwordProfile' => array(
+			'password' => $updateData['password'] ?? null,
+			'forceChangePasswordNextSignIn' => isset($updateData['forceChangePasswordNextSignIn']) ? filter_var($updateData['forceChangePasswordNextSignIn'], FILTER_VALIDATE_BOOLEAN) : null,
+		),
+	);
+
+	// Remove null values, including nested array elements
+	$updateDataMapped = array_filter($updateDataMapped, function($value) {
+		if (is_array($value)) {
+			return !empty(array_filter($value, function($nestedValue) {
+				return !is_null($nestedValue) && $nestedValue !== '';
+			}));
+		}
+		return !is_null($value) && $value !== '';
+	});
+
+	// Extract userId for the patch URL
+	$userId = $updateData['userId'];
+	unset($updateData['userId']);
+
+	// Assuming the graphTeamsLibrary expects a JSON string
+	$updateDataJson = json_encode($updateDataMapped);
+
+	$this->load->library('graphTeamsLibrary');
+	$res = $this->graphteamslibrary->do('update', $updateDataJson, $userId);
+
+	header('Content-Type: application/x-json; charset=utf-8');
+
+	echo $res;
+
+	// testing response
+	// echo json_encode(array(
+	// 	'status' => 'success',
+	// 	'message' => 'User updated successfully!'
+	// ));
+}
+
+public function sendUsingSMSto(){
+	$data = $this->input->post(array(
+		'to', 'message'
+	));
+	
+	$to = $data['to'];
+	$message = $data['message'];
+
+	$this->load->library('SMSto_lib');
+	$result = $this->smsto_lib->send_single_sms($to, $message);
+
+	header('Content-Type: application/x-json; charset=utf-8');
+	echo $result;	
+}
+
+public function send_single_email() {
+	
+	$this->load->model('Teams_model');
+	$this->load->library('GraphEmailLibrary');
+
+	// Get the POST data
+	$email_address = $this->input->post('email_address');
+	$email_body = $this->input->post('email_body');
+	$email_subject = $this->input->post('email_subject');
+
+	// Get the sender email from the Teams_model
+	$mail_settings = $this->Teams_model->get_mail_settings();
+	$sender_email = $mail_settings['senderaddress'];
+	$replyto_email = $mail_settings['replytoaddress'];
+
+	// Prepare the email list
+	$email_list = array(
+		array('email' => $email_address)
+	);
+
+	// Prepare the CC email list (empty in this case)
+	$cc_email_list = array();
+
+	// Send the email using GraphEmailLibrary
+	$result = $this->graphemaillibrary->send_emails($email_subject, $email_body, $email_list, $cc_email_list, $sender_email, $replyto_email);
+
+	// Return the result as JSON
+	echo $result;
+}
+
+public function saveMessageToHistory() {
+    // Retrieve the posted data
+    $data = $this->input->post(array('id', 'message_body'));
+
+    // Prepare the data for the model
+    $id = $data['id'];
+    $message_body = $data['message_body'];
+
+    // Load the model
+    $this->load->model('Teams_model');
+
+    // Save the message history
+    $result = $this->Teams_model->save_message_history($id, $message_body);
+
+	$response = array();
+	if ($result) {
+		$response = array(
+			'status' => 'success',
+			'message' => 'Message saved successfully!'
+		);
+	} else {
+		$response = array(
+			'status' => 'error',
+			'message' => 'An error occurred while saving the message!'
+		);
+	}
+
+	// Return the result as JSON
+	header('Content-Type: application/x-json; charset=utf-8');
+	echo json_encode($response);
+}
+
+public function getMsgHistoryData() {
+	// Retrieve the posted data
+	$data = $this->input->post(array('id'));
+
+	// Prepare the data for the model
+	$id = $data['id'];
+
+	// Load the model
+	$this->load->model('Teams_model');
+
+	// Get the message history
+	$result = $this->Teams_model->get_message_history($id);
+
+	$response = array();
+
+	if ($result) {
+		$response = array(
+			'status' => 'success',
+			'message' => 'Message history retrieved successfully!',
+			'data' => $result
+		);
+	} else {
+		$response = array(
+			'status' => 'error',
+			'message' => 'An error occurred while retrieving the message history!'
+		);
+	}
+
+	// Return the result as JSON
+	header('Content-Type: application/x-json; charset=utf-8');
+	echo json_encode($response);
+}
+
+public function getStudentLocalData() {
+    // Retrieve the posted data
+    $data = $this->input->post(array('surname', 'givenName'));
+
+    // Prepare the data for the model
+    $surname = $data['surname'];
+    $name = $data['givenName'];
+
+    // Load the model
+    $this->load->model('Teams_model');
+
+    // Save the message history
+    $result = $this->Teams_model->getStudentLocalData($surname, $name);
+
+	$response = array();
+	if ($result) {
+		$response = array(
+			'status' => 'success',
+			'message' => 'Student local found!',
+			'data' => $result
+		);
+	} else {
+		$response = array(
+			'status' => 'error',
+			'message' => 'No local student data found!'
+		);
+	}
+
+	// Return the result as JSON
+	header('Content-Type: application/x-json; charset=utf-8');
+	echo json_encode($response);
+}
+
 
 }

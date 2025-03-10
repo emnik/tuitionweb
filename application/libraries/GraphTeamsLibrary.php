@@ -15,7 +15,7 @@ class GraphTeamsLibrary
         $this->CI->load->model('Teams_model'); // Adjust the model name as needed
     }
 
-    public function do($action, $data=null)
+    public function do($action, $data=null, $userId=null)
     {
         // Get the authorization token
         $token = $this->getAuthorizationToken();
@@ -28,6 +28,9 @@ class GraphTeamsLibrary
             }
             else if ($action === 'get_deleted_users') {
                 $result = $this->get_users($token, $active=false);  
+            }
+            else if ($action === 'update') {
+                $result = $this->update($token, $data, $userId);
             }
             return $result; //this is the JSON object returned by the calling function
         } else {
@@ -81,9 +84,9 @@ class GraphTeamsLibrary
     {
         // Define the Microsoft Graph API endpoint for retrieving the users list data
         if ($active) {
-            $graph_api_url = 'https://graph.microsoft.com/v1.0/users?%24select=id%2CgivenName%2Csurname%2Cmail';
+            $graph_api_url = 'https://graph.microsoft.com/v1.0/users?%24select=id%2CdisplayName%2CgivenName%2Csurname%2Cmail%2CmobilePhone%2CotherMails';
         } else {
-            $graph_api_url = 'https://graph.microsoft.com/beta/directory/deletedItems/microsoft.graph.user?%24count=true&%24select=id%2Csurname%2CgivenName%2Cmail%2CotherMails%2CmobilePhone%2CdeletedDateTime%2CsignInSessionsValidFromDateTime&%24orderby=deletedDateTime%20desc';
+            $graph_api_url = 'https://graph.microsoft.com/beta/directory/deletedItems/microsoft.graph.user?%24count=true&%24select=id%2CdisplayName%2Csurname%2CgivenName%2Cmail%2CotherMails%2CmobilePhone%2CdeletedDateTime%2CsignInSessionsValidFromDateTime&%24orderby=deletedDateTime%20desc';
         }
         
         $headers = array(
@@ -117,7 +120,7 @@ class GraphTeamsLibrary
             }
         } while ($next_link);
 
-        // store the data in the database
+        // store the data of active (not deleted) users in the database
         if ($active) {
             // Insert each user into the teams table only if all data were successfully retrieved
             if ($all_data_retrieved) {
@@ -150,7 +153,6 @@ class GraphTeamsLibrary
         );
 
         $deleted_users = [];
-        // $not_deleted_users = [];
         $batch_request = array('requests' => array());
 
         foreach ($data as $index => $uid) {
@@ -200,6 +202,51 @@ class GraphTeamsLibrary
     }
 
 
+    public function update($token, $data, $userId)
+    {
+        // Define the Microsoft Graph API endpoint for updating a user
+        $graph_api_url = 'https://graph.microsoft.com/v1.0/users/' . $userId;
+        $headers = array(
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json'
+        );
+
+        // Send the request to Microsoft Graph API
+        $response = $this->curl_patch($graph_api_url, $data, $headers);
+
+        // Check if the request was successful
+        if ($response['status_code'] == 204) {
+            // Update the local database
+            
+            $update_data = json_decode($data, true);
+
+            // Check if $data only contains the passwordProfile property
+            if (isset($update_data['passwordProfile']) && count($update_data) === 1) {
+                return json_encode(array(
+                    'status' => 'success',
+                    'message' => 'User password updated successfully!'
+                ));
+            }
+            $res = $this->CI->Teams_model->update_user_in_teams_table($userId, $update_data);
+
+            if ($res) {
+                return json_encode(array(
+                    'status' => 'success',
+                    'message' => 'User updated successfully!'
+                ));
+            } else {
+                return json_encode(array(
+                    'status' => 'error',
+                    'message' => 'User updated in Microsoft Graph but failed to update in local database. Please Reset!'
+                ));
+            }
+        } else {
+            return json_encode(array(
+                'status' => 'error',
+                'message' => "Error updating the user. Status code: {$response['status_code']}. Response: " . $response['response']
+            ));
+        }
+    }
 
     // -----------------CURL HELPER FUNCTIONS-----------------
 
@@ -234,4 +281,19 @@ class GraphTeamsLibrary
         return array('response' => $response, 'status_code' => $status_code);
     }
 
+    private function curl_patch($url, $data, $headers = array())
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        // Return both the response and the status code as an associative array
+        return array('response' => $response, 'status_code' => $status_code);
+    }
 }

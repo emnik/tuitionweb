@@ -64,14 +64,7 @@ class Contact_config_model extends CI_Model {
             foreach($smsconfdata as $key => $value){
                 if ($value === "") $smsconfdata[$key] = null;
             }
-    
-            // if (empty($smsconfdata['apikey'])){ //new record so insert!
-            //     $this->db->insert('smsconf', $smsconfdata);
-            // }
-            // else {
-                // $this->db->where('apikey', $smsconfdata['apikey']);
-                $this->db->update('smsconf', $smsconfdata);
-            
-            // }
+
+            $this->db->update('smsconf', $smsconfdata);
         }    
 }

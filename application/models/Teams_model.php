@@ -19,9 +19,12 @@ class Teams_model extends CI_Model {
        foreach ($data as $user) {
            $this->db->replace('teams', array(
                'id' => $user['id'],
+               'displayName' => $user['displayName'],
                'givenName' => $user['givenName'],
                'surname' => $user['surname'],
-               'mail' => $user['mail']
+               'mail' => $user['mail'],
+               'mobilePhone' => $user['mobilePhone'],
+               'otherMails' => isset($user['otherMails']) && is_array($user['otherMails']) && !empty($user['otherMails']) ? json_encode($user['otherMails']) : null
            ));
        }
 
@@ -58,6 +61,34 @@ class Teams_model extends CI_Model {
       }
    }
 
+   public function update_user_in_teams_table($userId, $data)
+   {
+       // Remove fields that should not be stored locally
+       if (isset($data['passwordProfile'])) {
+           unset($data['passwordProfile']['password']);
+           unset($data['passwordProfile']['forceChangePasswordNextSignIn']);
+           if (empty($data['passwordProfile'])) {
+               unset($data['passwordProfile']);
+           }
+       }
+
+       // Encode the otherMails field as a JSON string if it exists
+       if (isset($data['otherMails']) && is_array($data['otherMails'])) {
+           $data['otherMails'] = json_encode($data['otherMails']);
+       }
+
+       // Update the user data in the teams table
+       $this->db->where('id', $userId);
+       $this->db->update('teams', $data);
+
+       // Check if the update was successful
+       if ($this->db->affected_rows() > 0) {
+           return true;
+       } else {
+           return false;
+       }
+   }
+
    public function getAllTeams() {
       $query=$this
          ->db
@@ -80,7 +111,7 @@ class Teams_model extends CI_Model {
 
    public function getCurrentStudents(){
       $query = $this->db->query("
-         SELECT t.id, t.mail, t.surname, t.givenName
+         SELECT t.id, t.displayName, t.mail, t.surname, t.givenName, t.mobilePhone, t.otherMails
          FROM teams t
          JOIN registration r ON t.surname = r.surname
          AND t.givenName = r.name 
@@ -102,9 +133,30 @@ class Teams_model extends CI_Model {
       }
    }
 
+
+   public function getStudentLocalData($surname, $givenName){
+      $query = $this->db->query("
+         SELECT c.std_mobile
+         FROM contact c
+         JOIN registration r ON c.reg_id = r.id
+         WHERE r.term_id = (SELECT id FROM term WHERE active = 1)
+         AND r.surname = ?
+         AND r.name = ?
+      ", array($surname, $givenName));
+
+      if ($query->num_rows() === 1) 
+      {
+         return $query->row_array();
+      }
+      else 
+      {
+            return false;
+      }
+   }
+
    public function getObsoleteUsers(){
       $query = $this->db->query("
-         SELECT t.id, t.mail, t.surname, t.givenName
+         SELECT t.id, t.displayName, t.mail, t.surname, t.givenName, t.mobilePhone, t.otherMails
          FROM teams t
          WHERE t.id NOT IN (
           SELECT t1.id
@@ -141,7 +193,7 @@ class Teams_model extends CI_Model {
 
    public function getCurrentTeachers(){
       $query = $this->db->query("
-         SELECT DISTINCT t.id, t.mail, t.surname, t.givenName
+         SELECT DISTINCT t.id, t.displayName, t.mail, t.surname, t.givenName, t.mobilePhone, t.otherMails
          FROM teams t
          JOIN employee e ON t.surname = e.surname
          AND (t.givenName = e.name
@@ -164,5 +216,43 @@ class Teams_model extends CI_Model {
       }
    }   
 
+   public function get_mail_settings()
+   {
+       $query = $this->db->get('mailsettings');
+       return $query->row_array(); // Assuming there's only one row
+   }   
+
+
+   public function save_message_history($id, $message_body) {
+      // Check if a record with the same id exists
+      $this->db->where('id', $id);
+      $query = $this->db->get('teamsHistory');
+  
+      if ($query->num_rows() > 0) {
+          // Update the existing record
+          $this->db->where('id', $id);
+          $result = $this->db->update('teamsHistory', array(
+           'message' => $message_body,
+           'datetime' => date('Y-m-d H:i:s') // Update the datetime field with the current date/time
+          ));
+      } else {
+          // Insert a new record
+          $result = $this->db->insert('teamsHistory', array('id' => $id, 'message' => $message_body));
+      }
+  
+      return $result;
+  }
+
+
+  public function get_message_history($id) {
+      $this->db->where('id', $id);
+      $query = $this->db->get('teamsHistory');
+  
+      if ($query->num_rows() > 0) {
+          return $query->row();
+      } else {
+          return false;
+      }
+  }
 
 }

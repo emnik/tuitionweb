@@ -350,10 +350,10 @@
             <div class="col-sm-3 col-xs-6 welcome" >
               <button type="submit" class="btn-link" name="submitbtn" value="submit14">
                 <i class="icon-puzzle-piece icon-3x"></i>
-                <h4>Contact Services Configuration</h4>
+                <h4>Ρυθμίσεις Εξωτερικών API</h4>
               </button>
               <div class="small">
-                Ρυθμίσεις για αποστολή SMS / Email / ...
+                Ρυθμίσεις για αποστολή SMS / Email / Microsoft Teams...
               </div>
             </div>            
 

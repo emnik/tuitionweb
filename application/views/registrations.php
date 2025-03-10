@@ -1,11 +1,5 @@
-<!-- <script src="<?php echo base_url('assets/js/jquery.dataTables.min.js') ?>"></script> -->
-<!-- <script src="<?php echo base_url('assets/js/dataTables.bootstrap.js') ?>"></script>  -->
-
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.js" ></script> -->
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap.min.js"></script>
-<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> -->
-<!-- <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap.min.css" rel="stylesheet"> -->
 
 <link href="<?php echo base_url('assets/css/dataTables.bootstrap.css') ?>" rel="stylesheet">
 

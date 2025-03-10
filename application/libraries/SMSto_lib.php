@@ -294,4 +294,33 @@ public function estimate_list_message($list_id, $message){
         curl_close($curl);
         return $response;
     }
+
+    public function send_single_sms($to, $message){
+        $curl = curl_init();
+        $api_key = $this->CI->Contact_config_model->get_sms_settings()[0]['apikey'];
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://api.sms.to/sms/send',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS =>'{
+            "message": "'.$message.'",
+            "to": "'.$to.'"
+        }',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer ' . $api_key,
+            'Content-Type: application/json'
+        ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
+    }
 }
