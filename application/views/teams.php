@@ -392,18 +392,25 @@
               if (mobilePhone && !mobilePhone.startsWith('+30')) {
                 mobilePhone = '+30' + mobilePhone;
               }
-              if (mobilePhone.length === 13) {
-                $('#mobilePhone').val(mobilePhone);
-                $('#localDataMessage').text('Το τηλέφωνο ενημερώθηκε από τη βάση δεδομένων του φροντιστηρίου.');
-                $('#localDataMessage').removeClass('hidden');
-               } else {
-                $('#mobilePhone').val('');
-                $('#localDataMessage').text('Το διαθέσιμο τηλέφωνο αφαιρέθηκε λόγω λανθασμένου αριθμού ψηφίων.');
-                $('#localDataMessage').removeClass('hidden');
-               }
+              console.log('Mobile Phone: ' + mobilePhone);
+              console.log('Current Mobile Phone: ' + initialFormData['mobilePhone']);
+              if (mobilePhone.trim() !== initialFormData['mobilePhone'].trim()) {
+                if (mobilePhone.length === 13) {
+                  $('#mobilePhone').val(mobilePhone);
+                  $('#localPhoneDataMessage').text('Το τηλέφωνο ενημερώθηκε από τη βάση δεδομένων του φροντιστηρίου.');
+                  $('#localPhoneDataMessage').removeClass('hidden');
+                } else {
+                  $('#mobilePhone').val('');
+                  $('#localPhoneDataMessage').text('Το διαθέσιμο τηλέφωνο αφαιρέθηκε λόγω λανθασμένου αριθμού ψηφίων.');
+                  $('#localPhoneDataMessage').removeClass('hidden');
+                }
+                toggleSMSRadios();
+              } else {
+                $('#localPhoneDataMessage').addClass('hidden');
+              }
             } else {
               console.error('Error: ' + rdata.message);
-              $('#localDataMessage').addClass('hidden');
+              $('#localPhoneDataMessage').addClass('hidden');
             }
         },
         error: function(xhr, status, error) {
@@ -476,6 +483,7 @@ var initialFormData = {};
       dataType: 'json',
       success: function(response) {
         if (response.status === 'success') {
+          $('#localPhoneDataMessage').addClass('hidden');
           alert('Η ενημέρωση ήταν επιτυχης!');
           // notify user
           var email = $('#mail').val();
@@ -952,7 +960,7 @@ var initialFormData = {};
                     <div class="form-group">
                       <label for="mobilePhone">Mobile Phone</label>
                       <input type="text" class="form-control" id="mobilePhone" name="mobilePhone">
-                      <small id="localDataMessage" class="text-muted hidden"></small>
+                      <small id="localPhoneDataMessage" class="text-muted hidden"></small>
                     </div>
                   </div>
                 </div>
