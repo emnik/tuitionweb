@@ -23,11 +23,16 @@
     $('#menu-teams').addClass('active');
     $('#menu-header-title').text('Microsoft Teams');
 
-    $('#notify, #resend').popover({
+    if(md.phone()===null){
+        $('#notifyUserViaSMS').closest('.radio').addClass('hidden');
+        $('#resendMsgViaSMS').closest('.radio').addClass('hidden');
+        $('#addedNotifyUserViaSMS').closest('.radio').addClass('hidden');
+    }
+
+    $('#notify, #resend, #addedNotify').popover({
       html: false,
       title: 'Ενεργοποίηση επιλογών ενημέρωσης χρήστη',
-      content: "Συμπληρώστε τα πεδία τηλεφώνου (mobilePhone) και email (otherMails) στην καρτέλα 'Στοιχεία Χρήστη' για την ενεργοποίηση όλων των επιλογών ενημέρωσης χρήστη.",
-      // container: 'body',
+      content: "Συμπληρώστε τα πεδία τηλεφώνου και email για την ενεργοποίηση όλων των επιλογών ενημέρωσης χρήστη.",
       placement: 'top',
       trigger: 'click'
     });
@@ -91,7 +96,7 @@
           "loadingRecords": "Φόρτωση καταλόγου ...",
           "processing": "Επεξεργασία...",   
           "search": "Αναζήτηση:",
-          "zeroRecords": '<button class="btn btn-primary" id="add-new">Δημιουργία νέου λογαριαμού</button>'
+          "zeroRecords": '<button class="btn btn-primary" id="add-new">Δημιουργία λογαριαμού</button>'
       }
     };
 
@@ -104,7 +109,7 @@
 
     function whenNoRecord(action){
       if (action === 'add'){
-        dataTableOptions.language.zeroRecords = '<button class="btn btn-primary" id="add-new">Δημιουργία νέου λογαριαμού</button>';
+        dataTableOptions.language.zeroRecords = '<button class="btn btn-primary" id="add-new">Δημιουργία λογαριαμού</button>';
       } else {
         dataTableOptions.language.zeroRecords = '';
       }
@@ -151,6 +156,29 @@
       }
       getRemoteData(url);
     });
+
+
+    function getDomain(callback){
+      $.ajax({
+        url: '<?php echo base_url()?>teams/getDomain',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+            if (data.status === 'success') {
+              $('#domain').text('@'+data.domain);
+              callback(false);
+            } else {
+              console.error('Error: ' + data.message);
+              callback(true);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error: ' + status + error);
+            callback(true);
+        }
+      });
+    }
 
     function getRemoteData(selectedUrl){
       $.ajax({
@@ -265,6 +293,7 @@
     // Initially disable the "Select All" checkbox
     $('#select-all').prop('disabled', true);
 
+   
     /* Add a click handler for the student-card btn */
     $('#student-card').click(function() {
       if (selectedIds.length === 1) {
@@ -286,14 +315,9 @@
       }
       $('#password').val(''); // Clear the password field
       $('#forceChangePasswordNextSignIn').prop('checked', false);
-      toggleEmailRadios();
-      toggleSMSRadios();
+      toggleEmailRadios('edit');
+      toggleSMSRadios('edit');
 
-
-      if(md.phone()===null){
-          $('#notifyUserViaSMS').closest('.radio').addClass('hidden');
-          $('#resendMsgViaSMS').closest('.radio').addClass('hidden');
-      }
 
       $('#myModal').modal('show');
       } else {
@@ -326,9 +350,14 @@
       });
     });
 
+    // Event delegation for dynamically added #add-new button
+    $(document).on('click', '#add-new', function() {
+      $('#myModal2').modal('show');
+    });
+    
     /* Add a click handler for the new-reg btn */
-    $('#new-reg').click(function() {
-      // window.open('student/newreg', '_self', false);
+    $('#new-reg, #add-new').click(function() {
+      $('#myModal2').modal('show');
     });
 
     /* Add a click handler for the del-reg btn */
@@ -392,9 +421,9 @@
               if (mobilePhone && !mobilePhone.startsWith('+30')) {
                 mobilePhone = '+30' + mobilePhone;
               }
-              console.log('Mobile Phone: ' + mobilePhone);
-              console.log('Current Mobile Phone: ' + initialFormData['mobilePhone']);
-              if (mobilePhone.trim() !== initialFormData['mobilePhone'].trim()) {
+              // console.log('Mobile Phone: ' + mobilePhone);
+              // console.log('Current Mobile Phone: ' + initialFormData['mobilePhone']);
+              if (mobilePhone && mobilePhone.trim() !== initialFormData['mobilePhone'].trim()) {
                 if (mobilePhone.length === 13) {
                   $('#mobilePhone').val(mobilePhone);
                   $('#localPhoneDataMessage').text('Το τηλέφωνο ενημερώθηκε από τη βάση δεδομένων του φροντιστηρίου.');
@@ -404,7 +433,7 @@
                   $('#localPhoneDataMessage').text('Το διαθέσιμο τηλέφωνο αφαιρέθηκε λόγω λανθασμένου αριθμού ψηφίων.');
                   $('#localPhoneDataMessage').removeClass('hidden');
                 }
-                toggleSMSRadios();
+                toggleSMSRadios('edit');
               } else {
                 $('#localPhoneDataMessage').addClass('hidden');
               }
@@ -419,7 +448,19 @@
       });
     }
 
-// -------------------Modal-----------------------
+// -------------------Modal1-----------------------
+
+$('#doNotNotifyUser').on('change', function() {
+  if ($(this).is(':checked')) {
+    $('#userNotificationMethods').addClass('hidden');
+  } else {
+    $('#userNotificationMethods').removeClass('hidden');
+    $('#notifyUserViaPersonalEmail').prop('checked', false);
+    $('#notifyUserViaEmail').prop('checked', false);
+    $('#notifyUserViaSMS').prop('checked', false);
+    $('#notifyUserViaSMSto').prop('checked', false);
+  }
+});
 
 var initialFormData = {};
   
@@ -474,8 +515,15 @@ var initialFormData = {};
     if (Object.keys(alteredData).length === 1 && alteredData.hasOwnProperty('userId')) {
       alert('Δεν έχουν γίνει αλλαγές στα δεδομένα.');
       return;
+    } else if ($('#doNotNotifyUser').is(':checked') && $('#password').val() !== '') {
+      if (!confirm('Πρόκειται να επαναφέρετε τον κωδικό πρόσβασης, αλλά έχετε επιλέξει να μην στείλετε ειδοποίηση. Θέλετε να συνεχίσετε;')) {
+        return;
+      }
+    } else if ($('#password').val() !== '' && !$('#doNotNotifyUser').is(':checked') && !$('#notifyUserViaPersonalEmail').is(':checked') && !$('#notifyUserViaEmail').is(':checked') && !$('#notifyUserViaSMS').is(':checked') && !$('#notifyUserViaSMSto').is(':checked')) {
+      alert('Παρακαλώ επιλέξτε έναν τρόπο αποστολής της ειδοποίησης.');
+      return;
     }
-     
+
     $.ajax({
       url: '<?php echo base_url()?>teams/updateUser',
       method: 'POST',
@@ -576,6 +624,10 @@ var initialFormData = {};
 
 
   $('#reSendMsg').on('click', function(){
+    if (!$('#resendMsgViaPersonalEmail').is(':checked') && !$('#resendMsgViaEmail').is(':checked') && !$('#resendMsgViaSMS').is(':checked') && !$('#resendMsgViaSMSto').is(':checked')) {
+      alert('Παρακαλώ επιλέξτε έναν τρόπο αποστολής του μηνύματος.');
+      return;
+    }
     var email = $('#mail').val();
     if ($('#resendMsgViaPersonalEmail').is(':checked') && $('#lastMessage').val() !== '') {
         var mailtoLink = 'mailto:';
@@ -649,15 +701,21 @@ var initialFormData = {};
     }
   });
 
-  // Reset form data when the modal is closed
+  // Reset form data when the modal1 (edit user) is closed
   $('#myModal').on('hidden.bs.modal', function() {
     $('#updateUserForm')[0].reset();
     $('#messageDate').text(''); // Clear the content of the span element
     var curDataSrc = $('#selectDataSrc').val();
     $('#selectDataSrc').val(curDataSrc).trigger('change');
-    // $('#select-all').trigger('change');
-    // $('#select-all').prop('checked', false);
-    // $('#select-all').prop('disabled', true);
+  });
+
+  // Reset form data when the modal2 (add user) is closed
+  $('#myModal2').on('hidden.bs.modal', function() {
+    $('#addUserForm')[0].reset();
+    $('#selectStd').find('option').remove(); // this clears the select2 options (and obviously its value)
+    $('#domain').text('...'); // Clear the content of the span element
+    var curDataSrc = $('#selectDataSrc').val();
+    $('#selectDataSrc').val(curDataSrc).trigger('change');
   });
 
   // Function to store the message sent to the database
@@ -682,54 +740,89 @@ var initialFormData = {};
   }
 
   // Function to enable SMS radio buttons if mobilePhone is not empty
-  function toggleSMSRadios() {
-    var mobilePhone = $('#mobilePhone').val();
-    if (mobilePhone.trim() !== '') {
-      $('#notifyUserViaSMSto').prop('disabled', false);
-      $('#notifyUserViaSMS').prop('disabled', false);
-      $('#resendMsgViaSMSto').prop('disabled', false);
-      $('#resendMsgViaSMS').prop('disabled', false);
+  function toggleSMSRadios(action) {
+    if (action === 'edit'){
+      var mobilePhone = $('#mobilePhone').val();
+      if (mobilePhone.trim() !== '') {
+        $('#notifyUserViaSMSto').prop('disabled', false);
+        $('#notifyUserViaSMS').prop('disabled', false);
+        $('#resendMsgViaSMSto').prop('disabled', false);
+        $('#resendMsgViaSMS').prop('disabled', false);
+      } else {
+        $('#notifyUserViaSMSto').prop('disabled', true);
+        $('#notifyUserViaSMSto').prop('checked', false);
+        $('#resendMsgViaSMSto').prop('disabled', true);
+        $('#resendMsgViaSMSto').prop('checked', false);
+        // I don't disable the notifyUserViaSMS and resendMsgViaSMS radio buttons because it will be shown only
+        // on mobile devices where the user can input the number manually
+        $('#notifyUserViaSMS').prop('disabled', true);
+        $('#notifyUserViaSMS').prop('checked', false);
+        $('#resendMsgViaSMS').prop('disabled', true);
+        $('#resendMsgViaSMS').prop('checked', false);
+      }
     } else {
-      $('#notifyUserViaSMSto').prop('disabled', true);
-      $('#notifyUserViaSMSto').prop('checked', false);
-      $('#resendMsgViaSMSto').prop('disabled', true);
-      $('#resendMsgViaSMSto').prop('checked', false);
-      // I don't disable the notifyUserViaSMS and resendMsgViaSMS radio buttons because it will be shown only
-      // on mobile devices where the user can input the number manually
-      $('#notifyUserViaSMS').prop('disabled', true);
-      $('#notifyUserViaSMS').prop('checked', false);
-      $('#resendMsgViaSMS').prop('disabled', true);
-      $('#resendMsgViaSMS').prop('checked', false);
+      var mobilePhone = $('#addMobilePhone').val();
+      if (mobilePhone.trim() !== '') {
+        $('#addedNotifyUserViaSMSto').prop('disabled', false);
+        $('#addedNotifyUserViaSMS').prop('disabled', false);
+      } else {
+        $('#addedNotifyUserViaSMSto').prop('disabled', true);
+        $('#addedNotifyUserViaSMSto').prop('checked', false);
+        // I don't disable the notifyUserViaSMS and resendMsgViaSMS radio buttons because it will be shown only
+        // on mobile devices where the user can input the number manually
+        $('addedNotifyUserViaSMS').prop('disabled', true);
+        $('addedNotifyUserViaSMS').prop('checked', false);
+      }
     }
+
   }
 
   // Bind the change event to the mobilePhone input field
-  $('#mobilePhone').on('input', toggleSMSRadios);
+  $('#mobilePhone, #addMobilePhone').on('input', function() {
+    toggleSMSRadios($(this).attr('id') === 'mobilePhone' ? 'edit' : 'add');
+  });
 
   // Function to enable email radio buttons if otherMails is not empty
-  function toggleEmailRadios() {
-    var otherMails = $('#otherMails').val();
-    if (otherMails.trim() !== '') {
-      $('#notifyUserViaEmail').prop('disabled', false);
-      $('#notifyUserViaPersonalEmail').prop('disabled', false);
-      $('#resendMsgViaEmail').prop('disabled', false);
-      $('#resendMsgViaPersonalEmail').prop('disabled', false);
+  function toggleEmailRadios(action) {
+    if (action === 'edit'){
+      var otherMails = $('#otherMails').val();
+      if (otherMails.trim() !== '') {
+        $('#notifyUserViaEmail').prop('disabled', false);
+        $('#notifyUserViaPersonalEmail').prop('disabled', false);
+        $('#resendMsgViaEmail').prop('disabled', false);
+        $('#resendMsgViaPersonalEmail').prop('disabled', false);
+      } else {
+        $('#notifyUserViaEmail').prop('disabled', true);
+        $('#notifyUserViaEmail').prop('checked', false);
+        $('#resendMsgViaEmail').prop('disabled', true);
+        $('#resendMsgViaEmail').prop('checked', false);
+        // I don't disable the notifyUserViaPersonalEmail and resendMsgViaPersonalEmail radio buttons because it will
+        // trigger the devices email client where the user can input the email manually
+        $('#notifyUserViaPersonalEmail').prop('disabled', true);
+        $('#notifyUserViaPersonalEmail').prop('checked', false);
+        $('#resendMsgViaPersonalEmail').prop('disabled', true);
+        $('#resendMsgViaPersonalEmail').prop('checked', false);
+      }
     } else {
-      $('#notifyUserViaEmail').prop('disabled', true);
-      $('#notifyUserViaEmail').prop('checked', false);
-      $('#resendMsgViaEmail').prop('disabled', true);
-      $('#resendMsgViaEmail').prop('checked', false);
-      // I don't disable the notifyUserViaPersonalEmail and resendMsgViaPersonalEmail radio buttons because it will
-      // trigger the devices email client where the user can input the email manually
-      $('#notifyUserViaPersonalEmail').prop('disabled', true);
-      $('#notifyUserViaPersonalEmail').prop('checked', false);
-      $('#resendMsgViaPersonalEmail').prop('disabled', true);
-      $('#resendMsgViaPersonalEmail').prop('checked', false);
+      var otherMails = $('#addOtherMails').val();
+      if (otherMails.trim() !== '') {
+        $('#addedNotifyUserViaEmail').prop('disabled', false);
+        $('#addedNotifyUserViaPersonalEmail').prop('disabled', false);
+      } else {
+        $('#addedNotifyUserViaEmail').prop('disabled', true);
+        $('#addedNotifyUserViaEmail').prop('checked', false);
+        // I don't disable the notifyUserViaPersonalEmail and resendMsgViaPersonalEmail radio buttons because it will
+        // trigger the devices email client where the user can input the email manually
+        $('#addedNotifyUserViaPersonalEmail').prop('disabled', true);
+        $('#addedNotifyUserViaPersonalEmail').prop('checked', false);
+      }
     }
   }
 
   // Bind the change event to the otherMails input field
-  $('#otherMails').on('input', toggleEmailRadios);
+  $('#otherMails, #addOtherMails').on('input', function() { 
+    toggleEmailRadios($(this).attr('id') === 'otherMails' ? 'edit' : 'add'); 
+  });
 
   // ------------ Password generation code -----------------
   // Function to generate a random password
@@ -760,11 +853,17 @@ var initialFormData = {};
   }
 
   // Bind the generate password button click event
-  $('#generatePassword').on('click', function() {
+  $('#generatePassword, #addUserGeneratePassword').on('click', function() {
+    var selector = $(this.id)['selector'];
     var passwordLength = 8; // Set the desired password length here
     var newPassword = generateRandomPassword(passwordLength); // Generate a password with the specified length
-    $('#password').val(newPassword); // Set the generated password in the input field
-    $('#password').trigger('input'); // Trigger input event to check complexity
+    if (selector === 'addUserGeneratePassword') {
+      $('#addUserPassword').val(newPassword); // Set the generated password in the input field
+      $('#addUserPassword').trigger('input'); // Trigger input event to check complexity
+    } else {
+      $('#password').val(newPassword); // Set the generated password in the input field
+      $('#password').trigger('input'); // Trigger input event to check complexity
+    }
   });  
 
   // Function to check password complexity
@@ -801,29 +900,134 @@ var initialFormData = {};
   }
 
   // Check password complexity on input
-  $('#password').on('input', function() {
+  $('#password, #addUserPassword').on('input', function() {
     var password = $(this).val();
+    var messageSelector = $(this).attr('id') === 'password' ? '#password-complexity-message' : '#add-password-complexity-message';
     if (password === "") {
-      $('#password-complexity-message').hide();
+      $(messageSelector).hide();
       return;
     }
     var isValid = checkPasswordComplexity(password);
     if (!isValid) {
-      $('#password-complexity-message').text('Ο κωδικός πρέπει να περιλαμβάνει τουλάχιστον τρία από τα εξής: Κεφαλαία γράμματα (A-Z), Μικρά γράμματα (a-z), Αριθμούς (0-9), Σύμβολα (π.χ., @, #, $, κ.λπ.)  και να έχει μήκος τουλάχιστον 8 χαρακτήρες.').show();
+      $(messageSelector).text('Ο κωδικός πρέπει να περιλαμβάνει τουλάχιστον τρία από τα εξής: Κεφαλαία γράμματα (A-Z), Μικρά γράμματα (a-z), Αριθμούς (0-9), Σύμβολα (π.χ., @, #, $, κ.λπ.)  και να έχει μήκος τουλάχιστον 8 χαρακτήρες.').show();
     } 
     else {
-      $('#password-complexity-message').hide();
+      $(messageSelector).hide();
     }
   });
 
   // Hide the password complexity message initially
   $('#password-complexity-message').hide();
 
-  }); //end of document(ready) function
 
+  // Add new user modal
+
+  $('#myModal2').on('shown.bs.modal', function() {  
+    getDomain(function(error) {
+      if (error) {
+        alert('Υπήρξε σφάλμα κατά την ανάκτηση του domain. Παρακαλώ δοκιμάστε ξανά.');
+        $('#myModal2').modal('hide');
+      }
+    });
+  });
+
+  $('#addUserAutoGeneratePassword').on('click', function(){
+    if ($(this).is(':checked')){
+      $('#addPasswordFields').addClass('hidden');
+    } else {
+      $('#addPasswordFields').removeClass('hidden');
+    }
+  });
+
+  // Select 2
+  $('#selectStd').select2({
+  dropdownParent: $('#myModal2'),
+  // width: 'resolve',
+    minimumInputLength: 2,
+    ajax: {
+        url: "<?php echo base_url('welcome/user_list'); ?>",
+        dataType: 'json',
+        delay: 250,
+        data: function(params) {
+            return { q: params.term };
+        },
+        processResults: function(data) {
+            console.log(data);  // Inspect the returned JSON
+            return {
+                results: data  // Use the grouped structure directly
+            };
+        },
+        cache: true
+    },
+    placeholder: 'όνομα / επώνυμο / τηλέφωνο / τελευταία ψηφία τηλεφώνου',
+    allowClear: false,
+    selectOnClose: true
+});
+
+$('#selectStd').on('select2:select', function (e) {
+  var data = e.params.data;
+  console.log('Selected:', data);
+  var id = String(data.id);
+  var text = String(data.text);
+  var group = String(data.group);
+
+  $(this).find('option').remove(); // Remove any other option
+  var newOption = new Option(text, id, true, true);
+  $(this).append(newOption).trigger('change');
+
+  if (id !== '') {
+    $.ajax({
+      url: '<?php echo base_url()?>teams/getDataForNewAccount',
+      method: 'POST',
+      data: { id: id, group: group },
+      dataType: 'json',
+      success: function(rdata) {
+        console.log(rdata);
+        if (rdata.status === 'success') {
+          var data = rdata.data;
+          $('#addSurname').val(data.surname);
+          $('#addGivenName').val(data.name);
+          $('#addDisplayName').val(data.displayName);
+          $('#userPrincipalName').val(data.userPrincipalName);
+          if (data.mobile) {
+            var mobilePhone = data.mobile;
+            if (!mobilePhone.startsWith('+30')) {
+              mobilePhone = '+30' + mobilePhone;
+            }
+            if (mobilePhone.length === 13 || (mobilePhone.length === 10 && mobilePhone.startsWith('+30'))) {
+              $('#addMobilePhone').val(mobilePhone);
+            } else {
+              $('#addMobilePhone').val('');
+              alert('Το τηλέφωνο δεν έχει έγκυρο αριθμό ψηφίων.');
+            }
+          } else {
+            $('#addMobilePhone').val('');
+          }
+          if (group === 'Μαθητές'){
+            $('#addLicence').val('student');
+          } else {
+            $('#addLicence').val('teacher');
+          }
+        } else {
+          alert('Προέκυψε σφάλμα κατά την ανάκτηση των δεδομένων του χρήστη.');
+          console.error('Error: ' + rdata.message);
+        }
+        toggleEmailRadios('add');
+        toggleSMSRadios('add');
+      },
+      error: function(xhr, status, error) {
+        alert('Προέκυψε σφάλμα κατά την ανάκτηση των δεδομένων του χρήστη.');
+        console.error('AJAX Error: ' + status + error);
+      }
+    });
+  }    
+});
+
+
+
+}); //end of document(ready) function
 
 </script>
-
 
 </head>
 
@@ -931,8 +1135,8 @@ var initialFormData = {};
               <div class="tab-pane active" id="mainData">
                 <div class="row">
                   <div class="col-sm-6 col-xs-12">
-                    <div class="form-group">
-                      <label for="userId">Teams User ID</label>
+                    <div class="form-group hidden">
+                      <label for="userId">ID λογαριαμού χρήστη</label>
                       <input type="text" class="form-control" id="userId" name="userId" readonly>
                     </div>
                     <div class="form-group">
@@ -944,21 +1148,21 @@ var initialFormData = {};
                       <input type="text" class="form-control" id="givenName" name="givenName" required>
                     </div>
                     <div class="form-group">
-                      <label for="displayName">Display Name</label>
+                      <label for="displayName">Εμφανιζόμενο όνομα</label>
                       <input type="text" class="form-control" id="displayName" name="displayName" required>
                     </div>
                   </div>
                   <div class="col-sm-6 col-xs-12">
                     <div class="form-group">
-                      <label for="mail">Mail / Username</label>
+                      <label for="mail">Όνομα χρήστη</label>
                       <input type="email" class="form-control" id="mail" name="mail" readonly>
                     </div>
                     <div class="form-group">
-                      <label for="otherMails">Other Emails</label>
+                      <label for="otherMails">Διευθύνσεις email</label>
                       <input type="text" class="form-control" id="otherMails" name="otherMails">
                     </div>
                     <div class="form-group">
-                      <label for="mobilePhone">Mobile Phone</label>
+                      <label for="mobilePhone">Κινητό τηλέφωνο</label>
                       <input type="text" class="form-control" id="mobilePhone" name="mobilePhone">
                       <small id="localPhoneDataMessage" class="text-muted hidden"></small>
                     </div>
@@ -969,11 +1173,11 @@ var initialFormData = {};
                 <div class="row">
                   <div class="col-xs-12">
                     <div class="form-group">
-                      <label for="password">New Password</label>
+                      <label for="password">Νέος κωδικός</label>
                       <div class="input-group">
                       <input type="text" class="form-control" id="password" name="password">
                       <span class="input-group-btn">
-                        <button class="btn btn-primary" id="generatePassword" type="button">Generate</button>
+                        <button class="btn btn-primary" id="generatePassword" type="button">Δημιουργία</button>
                       </span>
                       </div>
                       <small id="password-complexity-message" class="text-danger"></small>
@@ -981,14 +1185,20 @@ var initialFormData = {};
                     <div class="form-group">
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox" id="forceChangePasswordNextSignIn" name="forceChangePasswordNextSignIn" /> Force Change Password Next Sign-In
+                          <input type="checkbox" id="forceChangePasswordNextSignIn" name="forceChangePasswordNextSignIn" /> Επιβολή αλλαγής κωδικού στην επόμενη είσοδο.
                         </label>
                       </div>
                     </div>
                     </form>
                     <div class="form-group">
                     <label>Ενημέρωση Χρήστη <span><i id="notify" class="icon icon-info-sign"></i></span></label>
-                    <div class="radio"  style="margin-top: 0px;">
+                    <div class="checkbox" style="margin-top: 0px;">
+                      <label>
+                      <input type="checkbox" id="doNotNotifyUser" value="doNotNotifyUser" name="disableUserNotification" checked> Να μην αποσταλεί ειδοποίηση
+                      </label>
+                    </div>
+                    <div id="userNotificationMethods" class="hidden">
+                      <div class="radio">
                       <label>
                         <input type="radio" id="notifyUserViaPersonalEmail" value="notifyUserViaPersonalEmail" name="notifyUser"> με Email (μέσω προσωπικού email)
                       </label>
@@ -1010,6 +1220,7 @@ var initialFormData = {};
                         <input type="radio" id="notifyUserViaSMS" value="notifyUserViaSMS" name="notifyUser"> με SMS (μέσω κινητού τηλεφώνου)
                       </label>
                       </div>
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -1070,4 +1281,148 @@ var initialFormData = {};
       </div>
     </div>
   </div>
+<!-- Second modal for Adding new account -->
+<div id="myModal2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModal2Label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 id="myModal2Label">Δημιουργία Λογαριασμού</h3>
+        </div>
+        <div class="modal-body">
+          <form id="addUserForm">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+			 	          <label for="selectStd" class="control-label">Επιλογή Μαθητή:</label>
+ 			 	          <input class="form-control" id="selectStd" type="hidden" name="optionvalue" style="width:100%"/>
+			          </div>                
+              </div>
+            </div>
+                <div class="row">
+                  <div class="col-sm-6 col-xs-12">
+                    <div class="form-group">
+                      <label for="addSurname">Επώνυμο</label>
+                      <input type="text" class="form-control" id="addSurname" name="surname" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="addGivenName">Όνομα</label>
+                      <input type="text" class="form-control" id="addGivenName" name="givenName" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="addDisplayName">Εμφανιζόμενο όνομα</label>
+                      <input type="text" class="form-control" id="addDisplayName" name="displayName" required>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-xs-12">
+                    <div class="form-group">
+                      <label for="userPrincipalName">Όνομα χρήστη</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="userPrincipalName" name="userPrincipalName">
+                        <span class="input-group-addon" id='domain' readonly>...</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="addOtherMails">Διευθύνσεις email</label>
+                      <input type="text" class="form-control" id="addOtherMails" name="otherMails">
+                    </div>
+                    <div class="form-group">
+                      <label for="addMobilePhone">Κινητό τηλέφωνο</label>
+                      <input type="text" class="form-control" id="addMobilePhone" name="mobilePhone">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                  <div class="form-group">
+                    <label>Password</label>
+                    <div class="checkbox">
+                    <label>
+                      <input type="checkbox" id="addUserAutoGeneratePassword" checked/> Αυτόματη δημιουργία κωδικού
+                    </label>
+                    </div>
+                  </div>
+                  <div class="form-group hidden" id="addPasswordFields">
+                    <div class="input-group">
+                    <input type="text" class="form-control" id="addUserPassword" name="password">
+                    <span class="input-group-btn">
+                      <button class="btn btn-primary" id="addUserGeneratePassword" type="button">Δημιουργία</button>
+                    </span>
+                    </div>
+                    <small id="add-password-complexity-message" class="text-danger"></small>
+                  </div>
+                  <div class="form-group">
+                    <div class="checkbox">
+                    <label>
+                      <input type="checkbox" id="addForceChangePasswordNextSignIn" name="forceChangePasswordNextSignIn" /> Επιβολή αλλαγής κωδικού στην επόμενη είσοδο.
+                    </label>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label for="addLicence">Εκχώρηση άδειας</label>
+                      <select class="form-control" id="addLicence" name="licence">
+                        <option value="student">Office 365 A1 για σπουδαστές</option>
+                        <option value="teacher">Office 365 A1 για διδακτικό προσωπικό</json>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                </form>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                    <label>Ενημέρωση Χρήστη <span><i id="addedNotify" class="icon icon-info-sign"></i></span></label>
+                    <div class="radio"  style="margin-top: 0px;">
+                      <label>
+                        <input type="radio" id="addedNoNotify" value="addedNoNotify" name="addedNotifyUser" checked> Να μην αποσταλεί ειδοποίηση
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" id="addedNotifyUserViaPersonalEmail" value="addedNotifyUserViaPersonalEmail" name="addedNotifyUser" disabled> με Email (μέσω προσωπικού email)
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" id="addedNotifyUserViaEmail" value="addedNotifyUserViaEmail" name="addedNotifyUser" disabled> με Email (μέσω εταιρικού email)
+                      </label>
+                    </div>                      
+                    <?php if($configSMS === 'success'):?>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" id="addedNotifyUserViaSMSto" value="addedNotifyUserViaSMSto" name="addedNotifyUser" disabled> με SMS (μέσω υπηρεσίας SMS.to)
+                      </label>
+                    </div>
+                    <?php endif;?>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" id="addedNotifyUserViaSMS" value="addedNotifyUserViaSMS" name="addedNotifyUser" disabled> με SMS (μέσω κινητού τηλεφώνου)
+                      </label>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+
+          <div class="modal-footer" >
+            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Κλείσιμο</button>
+            <button id="addSubmit" class="btn btn-primary">Αποθήκευση</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+  
+</div>
+
+  
 </body>

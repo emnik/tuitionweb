@@ -10,17 +10,14 @@
    <title>Πρόγραμμα Διαχείρισης Φροντιστηρίου</title>
 
    <!--the css file ordering is important to work everything as intented. Do not change! -->
-   <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"> -->
-   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+  
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
    <link rel="icon" href="<?=base_url()?>/favicon-96x96.png" type="image/png">
 
    <link href="<?php echo base_url('assets/FooTable-2/css/footable.core.css') ?>" rel="stylesheet">
 
-   <!-- Themming -->
-   <link rel="stylesheet" type="text/css" href="<?php echo base_url('theme-styles'); ?>"> <!-- Set the :root CSS variables! -->
-   <link href="<?php echo base_url('assets/css/custom.css') ?>" rel="stylesheet">
+
 
    <!-- CKeditor -->
    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.css">
@@ -43,31 +40,14 @@
    
    <script src="<?php echo base_url('assets/FooTable-2/js/footable.js') ?>"></script>
  
+   <!-- CDN for select2 Newer Version -->
+   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+ 
+   <!-- Themming -->
+   <link rel="stylesheet" type="text/css" href="<?php echo base_url('theme-styles'); ?>"> <!-- Set the :root CSS variables! -->
+   <link href="<?php echo base_url('assets/css/custom.css') ?>" rel="stylesheet">    
 
-   <style type="text/css">
-        .br-icon{
-            position: fixed;
-            padding-left:8px;
-            padding-top:8px;
-            color:lightgray;
-            bottom: 17px;
-            right: 17px;
-            z-index: 100;
-            height: 46px;
-            width: 46px;
-            border-radius: 100%;
-            background-color: #e91e63;
-            box-shadow: 2px 2px 10px 1px rgba(0,0,0,0.58);
-            -webkit-backface-visibility: hidden;
-                  backface-visibility: hidden;
-            -webkit-transform: scale(0.9);
-                      transform: scale(0.9);
-            cursor: pointer;
-        }
-        .br-icon:hover{
-            transform: scale(1.1);
-        }
-    </style>
 
 <!-- http://antesarkkinen.com/blog/easy-jquery-scroll-to-top-of-the-page-code-snippet/ -->
 <script type="text/javascript">

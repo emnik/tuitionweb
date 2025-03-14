@@ -133,9 +133,17 @@ public function batchDeleteUsers(){
 	$data = $this->input->post('data');
 
 	$this->load->library('graphTeamsLibrary');
-	$res=$this->graphTeamsLibrary->do('delete', $data);
+	$res=$this->graphteamslibrary->do('delete', $data);
 	header('Content-Type: application/x-json; charset=utf-8');
 
+	echo $res;
+}
+
+public function getDomain(){
+
+	$this->load->library('graphTeamsLibrary');
+	$res=$this->graphteamslibrary->do('get_domain');
+	header('Content-Type: application/x-json; charset=utf-8');
 	echo $res;
 }
 
@@ -338,5 +346,50 @@ public function getStudentLocalData() {
 	echo json_encode($response);
 }
 
+public function getDataForNewAccount(){
+    // Retrieve the posted data
+    $data = $this->input->post(array('id', 'group'));
+
+    // Prepare the data for the model
+    $id = $data['id'];
+	$group = $data['group'];
+
+	$this->load->model('Teams_model');
+	$result=$this->Teams_model->getDataForNewAccount($id, $group);
+
+	$response = array();
+	if ($result) {
+		$userPrincipalName = $this->convertToLatin($result['name'] . mb_substr($result['surname'], 0, 12));
+		$userPrincipalName = strtolower($userPrincipalName);
+		$result['userPrincipalName'] = $userPrincipalName;
+		$response = array(
+			'status' => 'success',
+			'message' => 'Data retrieved successfully!',
+			'data' => $result
+		);
+	} else {
+		$response = array(
+			'status' => 'error',
+			'message' => 'An error occurred while retrieving the data!'
+		);
+	}
+
+	header('Content-Type: application/x-json; charset=utf-8');
+	echo json_encode($response);
+}
+
+private function convertToLatin($string) {
+	$transliterationTable = array(
+	  'Α' => 'A', 'Β' => 'B', 'Γ' => 'G', 'Δ' => 'D', 'Ε' => 'E', 'Ζ' => 'Z', 'Η' => 'H', 'Θ' => 'Th',
+	  'Ι' => 'I', 'Κ' => 'K', 'Λ' => 'L', 'Μ' => 'M', 'Ν' => 'N', 'Ξ' => 'X', 'Ο' => 'O', 'Π' => 'P',
+	  'Ρ' => 'R', 'Σ' => 'S', 'Τ' => 'T', 'Υ' => 'Y', 'Φ' => 'F', 'Χ' => 'Ch', 'Ψ' => 'Ps', 'Ω' => 'O',
+	  'α' => 'a', 'β' => 'b', 'γ' => 'g', 'δ' => 'd', 'ε' => 'e', 'ζ' => 'z', 'η' => 'h', 'θ' => 'th',
+	  'ι' => 'i', 'κ' => 'k', 'λ' => 'l', 'μ' => 'm', 'ν' => 'n', 'ξ' => 'x', 'ο' => 'o', 'π' => 'p',
+	  'ρ' => 'r', 'σ' => 's', 'τ' => 't', 'υ' => 'u', 'φ' => 'f', 'χ' => 'ch', 'ψ' => 'ps', 'ω' => 'o',
+	  'ς' => 's', 'ά' => 'a', 'έ' => 'e', 'ή' => 'h', 'ί' => 'i', 'ό' => 'o', 'ύ' => 'u', 'ώ' => 'o',
+	  'Ά' => 'A', 'Έ' => 'E', 'Ή' => 'H', 'Ί' => 'I', 'Ό' => 'O', 'Ύ' => 'Y', 'Ώ' => 'O'
+	);
+	return strtr($string, $transliterationTable);
+  }
 
 }

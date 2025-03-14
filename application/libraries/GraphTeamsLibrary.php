@@ -20,7 +20,7 @@ class GraphTeamsLibrary
         // Get the authorization token
         $token = $this->getAuthorizationToken();
         if ($token) {
-            if ($action == 'reset'){
+            if ($action === 'reset'){
                 $result = $this->get_users($token, $active=true);
             } 
             else if ($action === 'delete') {
@@ -31,6 +31,9 @@ class GraphTeamsLibrary
             }
             else if ($action === 'update') {
                 $result = $this->update($token, $data, $userId);
+            }
+            else if ($action === 'get_domain') {
+                $result = $this->get_domain($token);
             }
             return $result; //this is the JSON object returned by the calling function
         } else {
@@ -244,6 +247,41 @@ class GraphTeamsLibrary
             return json_encode(array(
                 'status' => 'error',
                 'message' => "Error updating the user. Status code: {$response['status_code']}. Response: " . $response['response']
+            ));
+        }
+    }
+
+    public function get_domain($token)
+    {
+        // Define the Microsoft Graph API endpoint for retrieving the domain data
+        $graph_api_url = 'https://graph.microsoft.com/v1.0/domains';
+        $headers = array(
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json'
+        );
+
+        // Send the request to Microsoft Graph API
+        $response = $this->curl_get($graph_api_url, $headers);
+
+        // Check if the request was successful
+        if ($response['status_code'] == 200) {
+            $response_data = json_decode($response['response'], true);
+            $default_domain = null;
+            foreach ($response_data['value'] as $domain) {
+                if (isset($domain['isDefault']) && $domain['isDefault']) {
+                    $default_domain = $domain['id'];
+                    break;
+                }
+            }
+            return json_encode(array(
+                'status' => 'success',
+                'message' => 'Domain data retrieved successfully!',
+                'domain' => $default_domain
+            ));
+        } else {
+            return json_encode(array(
+                'status' => 'error',
+                'message' => "Error retrieving the domain data. Status code: {$response['status_code']}. Response: " . $response['response']
             ));
         }
     }

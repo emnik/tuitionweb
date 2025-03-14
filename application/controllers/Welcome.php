@@ -44,6 +44,8 @@ public function user_list() {
     if ($list) {
         $currentStds = [];
         $prevStds = [];
+        $teachers = [];
+        $data = [];
 
         foreach ($list as $stud) {
             $studentData = [
@@ -51,21 +53,32 @@ public function user_list() {
                 "text" => $stud['stdname']
             ];
 
-            // Group students based on the term
-            if ($stud['termid'] == $termid) {
-                $currentStds[] = $studentData;
+            if ($stud['role'] === 'student') {
+                // Group students based on the term
+				$studentData['group'] = 'Μαθητές';
+                if ($stud['termid'] == $termid) {
+                    $currentStds[] = $studentData;
+                } else {
+                    $studentData['text'] .= ' - ' . $stud['termname']; // Add term name for previous students
+					$prevStds[] = $studentData;
+                }
             } else {
-                $studentData['text'] .= ' - ' . $stud['termname']; // Add term name for previous students
-                $prevStds[] = $studentData;
+				$studentData['group'] = 'Καθηγητές';
+				$teachers[] = $studentData;
             }
         }
 
         // Organize data into Select2 nested structure
-        $data = [
-            ["text" => "Επιλεγμένη διαχ. περίοδος", "children" => $currentStds],
-            ["text" => "Υπόλοιπες διαχ. περίοδοι", "children" => $prevStds]
-        ];
-    } else {
+		if (!empty($currentStds)) {
+            $data[] = ["text" => "Μαθητές - Επιλεγμένη διαχ. περίοδος", "children" => $currentStds];
+        }
+        if (!empty($prevStds)) {
+            $data[] = ["text" => "Μαθητές - Υπόλοιπες διαχ. περίοδοι", "children" => $prevStds];
+        }
+        if (!empty($teachers)) {
+            $data[] = ["text" => "Καθηγητές", "children" => $teachers];
+        }
+	} else {
         $data = [[
             "id" => "0",
             "text" => "Κανένα αποτέλεσμα..."

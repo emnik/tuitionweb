@@ -134,7 +134,35 @@ class Teams_model extends CI_Model {
    }
 
 
+   public function getDataForNewAccount($id, $group)
+   {
+      if ($group === 'Μαθητές') {
+         $query = $this->db->query("
+         SELECT CONCAT(r.name, ' ', r.surname) AS 'displayName', r.surname, r.name, c.std_mobile as 'mobile'
+         FROM contact c
+         JOIN registration r ON c.reg_id = r.id
+         WHERE r.id = ?
+         ", array($id));
+      } else {
+         $query = $this->db->query("
+         SELECT CONCAT(e.name, ' ', e.surname) AS 'displayName', e.surname, e.name, e.mobile
+         FROM employee e
+         WHERE e.id = ?
+         ", array($id));      
+      }
+
+      if ($query->num_rows() === 1) 
+      {
+         return $query->row_array();
+      }
+      else 
+      {
+            return false;
+      }
+   }
+
    public function getStudentLocalData($surname, $givenName){
+      // for getting the mobile phone of the student - TODO: also the email
       $query = $this->db->query("
          SELECT c.std_mobile
          FROM contact c

@@ -51,8 +51,12 @@ class Welcome_model extends CI_Model {
 
    public function get_student_names_ids($filter=null){
 
+      $query1 = null;
+      $query2 = null;
+      $result = [];
+
       if (!is_null($filter)){
-         $this->db
+         $query1 = $this->db
          ->select(array('registration.id', 'CONCAT_WS(" ", registration.surname, registration.name)  as stdname', 'term.name as termname', 'term.id as termid'))
          ->from('registration')
          ->join('term', 'registration.term_id=term.id')
@@ -72,28 +76,49 @@ class Welcome_model extends CI_Model {
          ->or_like('contact.mothers_mobile', $filter, 'before')
          ->or_like('contact.home_tel', $filter, 'before')
          ->or_like('contact.work_tel', $filter, 'before')
-         // the next 3 lines are the older implementation...
-         //->where("((`registration`.`surname` LIKE '%".$filter."%' OR `registration`.`name` LIKE '%".$filter."%'))")
-         // ->where("(`registration`.`surname` LIKE '%".$filter."%' )") // searching in every position
-         //->where("(`registration`.`surname` LIKE '".$filter."%' )") //searching from the start
          ->order_by('registration.surname', 'ASC')
          ->order_by('registration.name', 'ASC')
-         ->order_by('termid', 'DESC');
+         ->order_by('termid', 'DESC')
+         ->get();
+
+         // For the teachers
+         $query2 = $this->db
+         ->select(array('employee.id', 'CONCAT_WS(" ", employee.surname, employee.name)  as stdname'))
+         ->from('employee')
+         ->where('employee.is_tutor', 1)
+         ->like('employee.surname', $filter, 'after') // 'after' is like $filter% that starts searching from the beginning!
+         ->or_like('employee.name', $filter, 'after')
+         //also search telephones from either with the whole num or with the first or last digits!!!
+         // for the first digits
+         ->or_like('employee.mobile', $filter, 'after') 
+         ->or_like('employee.home_tel', $filter, 'after') 
+         // for the last digits
+         ->or_like('employee.mobile', $filter, 'before') // 'before' is like %$filter that starts searching from the end!
+         ->or_like('employee.home_tel', $filter, 'before')
+         ->order_by('employee.surname', 'ASC')
+         ->order_by('employee.name', 'ASC')
+         ->get();
       };
       
-      //$test_query = $this->db->get_compiled_select();
-      $query=$this->db->get();
-
-      if ($query->num_rows() > 0) 
-      {
-         foreach($query->result_array() as $row) 
-         {
-            $students[] = $row;
+      if ($query1->num_rows() > 0) {
+         $role = 'student';
+         foreach($query1->result_array() as $row) {
+            $row['role'] = $role;
+            $result[] = $row;
          }
-         return $students;
       }
-      else 
-      {
+
+      if ($query2->num_rows() > 0) {
+         $role = 'teacher';
+         foreach($query2->result_array() as $row) {
+            $row['role'] = $role;
+            $result[] = $row;
+         }
+      }
+
+      if (!empty($result)) {
+         return $result;
+      } else {
          return false;
       }
    }

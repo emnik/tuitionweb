@@ -27,17 +27,6 @@
 
 <?php if(!empty($regs) and $regs===true):?>
 
-<!-- LOCAL select 2 (older version) -->
-<!-- <link href="<?php //echo base_url('assets/select2/select2.css')?>" rel="stylesheet">
-<link href="<?php // echo base_url('assets/select2/select2-bootstrap.css')?>" rel="stylesheet">
-<script src="<?php //echo base_url('assets/select2/select2.js')?>"></script>
-<script src="<?php //echo base_url('assets/select2/select2_locale_el.js')?>"></script> -->
-
-<!-- CDN for select2 Newer Version -->
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-	
-
 <script type="text/javascript">
 
 $(document).keydown(function(event) {
@@ -96,7 +85,12 @@ $(document).ready(function(){
     	// Manually set and trigger change
 		var data = e.params.data;
     	console.log('Selected:', data);
-		$(e.currentTarget).find("option[value='" + data.id + "']").attr('selected','selected');
+		var id = String(data.id);
+		var text = String(data.text);
+		// $(e.currentTarget).find("option[value='" + data.id + "']").attr('selected','selected');
+		$(this).find('option').remove(); // Remove any other option
+  		var newOption = new Option(text, id, true, true);
+  		$(this).append(newOption).trigger('change');
 	});
 
 	   $('#footerModal').on('shown.bs.modal', function(){
@@ -224,7 +218,7 @@ function resubscribe(){
 		</div>
 		<div class="modal-body">
 			 <div class="form-group">
-			 	<label for="single" class="control-label">Αναζήτηση:</label>
+			 	<label for="selectbox" class="control-label">Αναζήτηση:</label>
  			 	<input class="form-control" id="selectbox" type="hidden" name="optionvalue" style="width:100%"/>
 			 </div>
 			<div class="btn-group">
