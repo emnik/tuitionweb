@@ -139,6 +139,18 @@ public function batchDeleteUsers(){
 	echo $res;
 }
 
+public function permanentlyDeleteUsers(){
+	$data = $this->input->post('data');
+	$id = $data[0];
+
+	$this->load->library('graphTeamsLibrary');
+	$res=$this->graphteamslibrary->do('permanently_delete', null, $id);
+	header('Content-Type: application/x-json; charset=utf-8');
+
+	echo $res;
+	// echo json_encode(array('status' => 'success'));
+}
+
 public function getOrganizationMetadata(){
 
 	$this->load->library('graphTeamsLibrary');

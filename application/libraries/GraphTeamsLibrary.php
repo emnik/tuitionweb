@@ -32,6 +32,10 @@ class GraphTeamsLibrary
                 // Delete the users
                 $result = $this->batch_delete_users($token, $data);
             }
+            else if ($action === 'permanently_delete') {
+                // Permenately delete the user
+                $result = $this->permanently_delete($token, $userId);
+            }
             else if ($action === 'get_deleted_users') {
                 // Get the deleted users data
                 $result = $this->get_users($token, $active=false);  
@@ -569,6 +573,33 @@ class GraphTeamsLibrary
         }
     }
 
+    private function permanently_delete($token, $userId)
+    {
+        // Define the Microsoft Graph API endpoint for permenately deleting a user
+        $graph_api_url = 'https://graph.microsoft.com/v1.0/directory/deletedItems/' . $userId;
+        $headers = array(
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json',
+            'ConsistencyLevel: eventual'
+        );
+
+        // Send the request to Microsoft Graph API
+        $response = $this->curl_delete($graph_api_url, $headers);
+
+        // Check if the request was successful
+        if ($response['status_code'] == 204) {
+            return json_encode(array(
+                'status' => 'success',
+                'message' => 'User permenately deleted successfully!'
+            ));
+        } else {
+            return json_encode(array(
+                'status' => 'error',
+                'message' => "Error permenately deleting the user. Status code: {$response['status_code']}. Response: " . $response['response']
+            ));
+        }
+    }
+
     // -----------------CURL HELPER FUNCTIONS-----------------
 
     // Curl post helper function to return both the response and status code
@@ -608,6 +639,21 @@ class GraphTeamsLibrary
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        // Return both the response and the status code as an associative array
+        return array('response' => $response, 'status_code' => $status_code);
+    }
+
+    private function curl_delete($url, $headers = array())
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);

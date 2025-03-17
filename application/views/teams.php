@@ -117,7 +117,14 @@
 
     $('#restore').on('click', function(){
       var id = selectedIds[0]; // Assuming the ID is in the first column
-      console.log(id);
+      if (selectedIds.length === 0) {
+        alert('Δεν έχετε επιλέξει κανένα χρήστη.');
+        return;
+      }
+      if (!confirm('Ο επιλεγμένος χρήστης θα επαναφερθεί. Θέλετε να συνεχίσετε;')) {
+        return;
+      }
+      // console.log(id);
       $.ajax({
           url: '<?php echo base_url()?>teams/restoreUser',
           data: { id: id },
@@ -173,6 +180,7 @@
         $('#warning-alert').removeClass('hidden');
         $('#student-card').addClass('hidden');
         $('#restore').removeClass('hidden');
+        $('#del-reg').removeClass('hidden');
       }
       getRemoteData(url);
     });
@@ -203,6 +211,7 @@
     }
 
     function getRemoteData(selectedUrl){
+      $('body').css('cursor', 'wait');
       $.ajax({
         url: selectedUrl,
         method: 'GET',
@@ -226,6 +235,9 @@
       oTable = $('#teamsTbl').DataTable({
         data: data,
         processing: true,
+        initComplete: function(settings, json) {
+          $('body').css('cursor', 'default');
+        },
         paging: true,
         responsive: true,
         responsive: {
@@ -390,8 +402,40 @@
     $('#del-reg, #del-reg-modal').click(function() {
       // console.log(selectedIds);
       if (selectedIds.length > 0) {
-        var r = confirm("Οι χρήστες που επιλέξατε πρόκειται να διαγραφούν. Παρακαλώ επιβεβαιώστε.");
-        if (r == true) {
+        if ($('#selectDataSrc').val() === 'deletedUsers') {
+          var r = confirm("Οι χρήστες που επιλέξατε πρόκειται να διαγραφούν ΟΡΙΣΤΙΚΑ. Παρακαλώ επιβεβαιώστε.");
+          if (r == true) {
+            $('body').css('cursor', 'wait');
+            $.ajax({
+              url: '<?php echo base_url()?>teams/permanentlyDeleteUsers',
+              method: 'POST',
+              data: { data: selectedIds },
+              dataType: 'json',
+              success: function(data) {
+                  console.log(data);
+                  if (data.status === 'success') {
+                    alert('Οι χρήστες διαγράφηκαν οριστικά.');
+                    setTimeout(function() {
+                      $('#select-all').prop('checked', false);
+                      $('#select-all').prop('disabled', true);
+                      $('#selectDataSrc').val('deletedUsers').trigger('change');
+                      $('body').css('cursor', 'default');
+                    }, 1000);
+                  } else {
+                    alert('Προέκυψε σφάλμα κατά την οριστική διαγραφή των χρηστών.');
+                    console.error('Error: ' + data.message);
+                  }
+              },
+              error: function(xhr, status, error) {
+                  $('body').css('cursor', 'default');
+                  alert('Προέκυψε σφάλμα κατά την οριστική διαγραφή των χρηστών.');
+                  console.error('AJAX Error: ' + status + error);
+              }
+            });
+          }
+        } else {
+          var r = confirm("Οι χρήστες που επιλέξατε πρόκειται να διαγραφούν. Παρακαλώ επιβεβαιώστε.");
+          if (r == true) {
           $('body').css('cursor', 'wait');
           $.ajax({
             url: '<?php echo base_url()?>teams/batchDeleteUsers',
@@ -422,6 +466,7 @@
           });          
           // alert('Deleting users with IDs: ' + selectedIds.join(', '));
         }
+      }
       } else {
         alert("Δεν έχετε επιλέξει κανένα χρήστη.");
       }
