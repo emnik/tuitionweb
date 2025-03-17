@@ -139,10 +139,10 @@ public function batchDeleteUsers(){
 	echo $res;
 }
 
-public function getDomain(){
+public function getOrganizationMetadata(){
 
 	$this->load->library('graphTeamsLibrary');
-	$res=$this->graphteamslibrary->do('get_domain');
+	$res=$this->graphteamslibrary->do('get_organization_metadata');
 	header('Content-Type: application/x-json; charset=utf-8');
 	echo $res;
 }
@@ -153,10 +153,7 @@ public function updateUser(){
 		'userId', 'surname', 'givenName', 'displayName', 'mail', 'otherMails', 'mobilePhone', 'password', 'forceChangePasswordNextSignIn'
 	));
 
-	// Prepare the body for the graph update API request based on the data that are not null
-	$updateData = array_filter($data, function($value) {
-		return !is_null($value) && $value !== '';
-	});
+	$updateData = $data;
 
 	// Map the input data to the Microsoft Graph API fields
 	$updateDataMapped = array(
@@ -164,30 +161,31 @@ public function updateUser(){
 		'givenName' => $updateData['givenName'] ?? null,
 		'displayName' => $updateData['displayName'] ?? null,
 		'mail' => $updateData['mail'] ?? null,
-		'otherMails' => isset($updateData['otherMails']) ? array_map('trim', explode(',', $updateData['otherMails'])) : null,
-		'mobilePhone' => $updateData['mobilePhone'] ?? null,
+		'otherMails' => isset($updateData['otherMails']) && $updateData['otherMails'] !== '' ? array_map('trim', explode(',', $updateData['otherMails'])) : array(),
+		'mobilePhone' => $updateData['mobilePhone'] === '' ? null : $updateData['mobilePhone'],
 		'passwordProfile' => array(
 			'password' => $updateData['password'] ?? null,
-			'forceChangePasswordNextSignIn' => isset($updateData['forceChangePasswordNextSignIn']) ? filter_var($updateData['forceChangePasswordNextSignIn'], FILTER_VALIDATE_BOOLEAN) : null,
+			'forceChangePasswordNextSignIn' => isset($updateData['forceChangePasswordNextSignIn']) ? filter_var($updateData['forceChangePasswordNextSignIn'], FILTER_VALIDATE_BOOLEAN) : false,
 		),
 	);
 
-	// Remove null values, including nested array elements
-	$updateDataMapped = array_filter($updateDataMapped, function($value) {
-		if (is_array($value)) {
-			return !empty(array_filter($value, function($nestedValue) {
-				return !is_null($nestedValue) && $nestedValue !== '';
-			}));
-		}
-		return !is_null($value) && $value !== '';
-	});
+	// Remove the password field if it is empty or null
+	if (is_null($updateDataMapped['passwordProfile']['password']) || $updateDataMapped['passwordProfile']['password'] === '') {
+		unset($updateDataMapped['passwordProfile']['password']);
+		unset($updateDataMapped['passwordProfile']['forceChangePasswordNextSignIn']);
+	}
+
+	// If passwordProfile is empty after removing the password, remove the entire passwordProfile
+	if (empty($updateDataMapped['passwordProfile'])) {
+		unset($updateDataMapped['passwordProfile']);
+	}
 
 	// Extract userId for the patch URL
 	$userId = $updateData['userId'];
 	unset($updateData['userId']);
 
 	// Assuming the graphTeamsLibrary expects a JSON string
-	$updateDataJson = json_encode($updateDataMapped);
+	$updateDataJson = json_encode($updateDataMapped, JSON_UNESCAPED_UNICODE);
 
 	$this->load->library('graphTeamsLibrary');
 	$res = $this->graphteamslibrary->do('update', $updateDataJson, $userId);
@@ -313,6 +311,45 @@ public function getMsgHistoryData() {
 	echo json_encode($response);
 }
 
+public function restoreUser(){
+	$data = $this->input->post(array('id'));
+	$id = $data['id'];
+
+	$this->load->library('graphTeamsLibrary');
+	$deletedData = $this->graphteamslibrary->do('get_deleted_user', null, $id);
+	$deletedDataDecoded = json_decode($deletedData, true);
+
+	if ($deletedDataDecoded['status'] === 'error') {
+		header('Content-Type: application/x-json; charset=utf-8');
+		echo $deletedData;
+		return;
+	} else {
+		$deletedDataDecodedResponse = $deletedDataDecoded['data'];
+		unset($deletedDataDecodedResponse['@odata.context']);
+		unset($deletedDataDecodedResponse['@odata.type']);
+
+		$res=$this->graphteamslibrary->do('restore', null, $id);
+		$resDecoded = json_decode($res, true);
+		if ($resDecoded['status'] === 'success') {
+			$this->load->model('Teams_model');
+			$inserted = $this->Teams_model->add_single_user_in_teams_table($deletedDataDecodedResponse);
+			if ($inserted) {
+				header('Content-Type: application/x-json; charset=utf-8');
+				echo json_encode(array(
+					'status' => 'success',
+					'message' => 'User restored successfully!'
+				));
+			} else {
+				header('Content-Type: application/x-json; charset=utf-8');
+				echo json_encode(array(
+					'status' => 'error',
+					'message' => 'User restored in Microsoft Graph but failed to insert into local database. Please Reset!'
+				));
+			}
+		}
+	}
+}
+
 public function getStudentLocalData() {
     // Retrieve the posted data
     $data = $this->input->post(array('surname', 'givenName'));
@@ -359,6 +396,9 @@ public function getDataForNewAccount(){
 
 	$response = array();
 	if ($result) {
+		if (preg_match('/[^a-zA-Z0-9]/', $result['name'])) {
+			$result['name'] = explode(' ', $result['name'])[0];
+		}
 		$userPrincipalName = $this->convertToLatin($result['name'] . mb_substr($result['surname'], 0, 12));
 		$userPrincipalName = strtolower($userPrincipalName);
 		$result['userPrincipalName'] = $userPrincipalName;
@@ -392,4 +432,119 @@ private function convertToLatin($string) {
 	return strtr($string, $transliterationTable);
   }
 
+  public function addUser(){
+	// Retrieve the posted data
+	$data = $this->input->post(array(
+		'givenName', 'surname', 'displayName', 'mailNickname', 'otherMails', 'mobilePhone', 'password', 'forceChangePasswordNextSignIn', 'userPrincipalName', 'licence', 'countryLetterCode'
+	));
+
+	// prepare the body for the graph create user API request
+	$createData = array(
+		'accountEnabled' => true,
+		'givenName' => $data['givenName'],
+		'surname' => $data['surname'],
+		'displayName' => $data['displayName'],
+		'mailNickname' => $data['mailNickname'],
+		'userPrincipalName' => $data['userPrincipalName'],
+		'otherMails' => isset($data['otherMails']) && $data['otherMails'] !== '' ? array_map('trim', explode(',', $data['otherMails'])) : array(),
+		'mobilePhone' => $data['mobilePhone'],
+		'usageLocation'=> $data['countryLetterCode'], //needed for the license assignment
+		'passwordProfile' => array(
+			'password' => $data['password'],
+			'forceChangePasswordNextSignIn' => isset($data['forceChangePasswordNextSignIn']) ? filter_var($data['forceChangePasswordNextSignIn'], FILTER_VALIDATE_BOOLEAN) : null,
+		),
+	);
+
+	// Remove null values, including nested array elements
+	$createData = array_filter($createData, function($value) {
+		if (is_array($value)) {
+			return !empty(array_filter($value, function($nestedValue) {
+				return !is_null($nestedValue) && $nestedValue !== '';
+			}));
+		}
+		return !is_null($value) && $value !== '';
+	});
+
+	// Assuming the graphTeamsLibrary expects a JSON string
+	$createDataJson = json_encode($createData, JSON_UNESCAPED_UNICODE);
+
+	$this->load->library('graphTeamsLibrary');
+	$res = $this->graphteamslibrary->do('create', $createDataJson);
+
+	$resDecoded = json_decode($res, true);
+
+	if ($resDecoded['status'] === 'error') {
+		// Return the error message
+		header('Content-Type: application/x-json; charset=utf-8');
+		echo $res;
+	} else {
+		if ($data['licence'] === 'student'){
+			$licence = '314c4481-f395-4525-be8b-2ec4bb1e9d91'; // Office 365 A1 for Students
+		} else {
+			$licence = '94763226-9b3c-4e75-a931-5c89701abe66'; // Office 365 A1 for Faculty
+		}
+		
+		$id = $resDecoded['id'];
+		$licenseData = array(
+			'addLicenses' => array(
+				array(
+					'skuId' => $licence,
+					'disabledPlans' => array()
+				),
+			),
+			'removeLicenses' => array()
+		);
+
+		$licenseDataJson = json_encode($licenseData);
+		// Assign the license to the user
+		$licenceResponse = $this->graphteamslibrary->do('assign_licence', $licenseDataJson, $id);
+		header('Content-Type: application/x-json; charset=utf-8');
+		
+		$licenceResponseDecoded = json_decode($licenceResponse, true);
+		if ($licenceResponseDecoded['status'] === 'error') {
+			// Return the error message
+			echo $licenceResponse;
+		} else {
+			//get the user data and store it in the local database
+			// mail property takes time to be set in the Microsoft Graph API
+			sleep(2); // wait for 2 seconds before trying
+			$userData = $this->graphteamslibrary->do('get_single_user', null, $id);
+			$userDataDecoded = json_decode($userData, true);
+			$userDataDecoded = $userDataDecoded['data'];
+
+			// Retry 3 times fetching the data if 'mail' property is not set or empty
+			$retryCount = 0;
+			while (empty($userDataDecoded['mail']) && $retryCount < 3) {
+				sleep(2); // wait for 2 seconds before retrying
+				$userData = $this->graphteamslibrary->do('get_single_user', null, $id);
+				$userDataDecoded = json_decode($userData['data'], true);
+				$retryCount++;
+			}
+			if (empty($userDataDecoded['mail'])) {
+				// set it manually
+				$userDataDecoded['mail'] = $data['userPrincipalName'];
+			}
+			unset($userDataDecoded['@odata.context']);
+			$this->load->model('Teams_model');
+			$inserted = $this->Teams_model->add_single_user_in_teams_table($userDataDecoded);
+
+			if ($inserted) {
+				// Return the success message
+				echo json_encode(array(
+					'status' => 'success',
+					'message' => 'User created successfully!',
+					'data' => array(
+						'id' => $id
+					)
+				));
+			} else {
+				// Return the error message
+				echo json_encode(array(
+					'status' => 'error',
+					'message' => 'User created in Microsoft Graph but failed to insert into local database. Please Reset!'
+				));
+			}
+		}
+	}
+  }
 }

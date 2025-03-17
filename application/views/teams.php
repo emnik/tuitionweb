@@ -29,7 +29,7 @@
         $('#addedNotifyUserViaSMS').closest('.radio').addClass('hidden');
     }
 
-    $('#notify, #resend, #addedNotify').popover({
+    $('#notify, #resend, #addedDoNotNotifyLabel').popover({
       html: false,
       title: 'Ενεργοποίηση επιλογών ενημέρωσης χρήστη',
       content: "Συμπληρώστε τα πεδία τηλεφώνου και email για την ενεργοποίηση όλων των επιλογών ενημέρωσης χρήστη.",
@@ -115,6 +115,30 @@
       }
     }
 
+    $('#restore').on('click', function(){
+      var id = selectedIds[0]; // Assuming the ID is in the first column
+      console.log(id);
+      $.ajax({
+          url: '<?php echo base_url()?>teams/restoreUser',
+          data: { id: id },
+          method: 'POST',
+          dataType: 'json',
+          success: function(response) {
+            console.log(response);
+            if (response.status === 'success') {
+              alert('Ο χρήστης ανακτήθηκε επιτυχώς.');
+              $('#selectDataSrc').val('deletedUsers').trigger('change');
+            } else {
+              alert('Προέκυψε σφάλμα κατά την ανάκτηση του χρήστη.');
+              console.error('Error: ' + response.message);
+            }
+          },
+          error: function(xhr, status, error) {
+              console.error('AJAX Error: ' + status + error);
+          }
+        });
+    })
+
     $('#selectDataSrc').on('change', function() {
       // console.log('Selected value: ' + $(this).val());
       $('#select-all').trigger('change');
@@ -139,10 +163,6 @@
         $('#warning-msg').html('<strong>ΣΗΜΑΝΤΙΚΟ!</strong> Τα ακόλουθα δεδομένα βασίζονται στη σύγκριση των δεδομένων του Microsoft Teams με τους ενεργούς μαθητές και καθηγητές της επιλεγμένης διαχειριστικής περιόδου. <strong>Απαιτείται προσοχή στις διαγραφές</strong>!<br/>Μπορείτε να διαγράψετε ταυτόχρονα μέχρι <u>20 χρήστες</u>.');
         $('#warning-alert').removeClass('hidden');
         $('#del-reg').removeClass('hidden');
-        //if on phone the reset button text is ommited!
-        if(md.phone()!==null){
-            $('#reset').html('<i class="icon-refresh"></i>');
-        }
       } else if (select === 'curTeachers'){
         whenNoRecord('add');
         url = '<?php echo base_url()?>teams/getCurrentTeachers';
@@ -157,19 +177,21 @@
       getRemoteData(url);
     });
 
-
-    function getDomain(callback){
+    var countryCode=null;
+    function getOrganizationMetadata(callback){
       $.ajax({
-        url: '<?php echo base_url()?>teams/getDomain',
+        url: '<?php echo base_url()?>teams/getOrganizationMetadata',
         method: 'GET',
         dataType: 'json',
-        success: function(data) {
-            console.log(data);
-            if (data.status === 'success') {
-              $('#domain').text('@'+data.domain);
+        success: function(rdata) {
+            console.log(rdata);
+            var data = rdata.data;
+            if (rdata.status === 'success') {
+              $('#domain').text('@'+data.default_domain);
+              countryCode = data.countryLetterCode;
               callback(false);
             } else {
-              console.error('Error: ' + data.message);
+              console.error('Error: ' + rdata.message);
               callback(true);
             }
         },
@@ -204,6 +226,7 @@
       oTable = $('#teamsTbl').DataTable({
         data: data,
         processing: true,
+        paging: true,
         responsive: true,
         responsive: {
           details: {
@@ -214,20 +237,20 @@
         },
         columns: [
           {
-            data: "id",
+            data: "id", // column 0
             render: function(data, type, row) {
               return '<input type="checkbox" value="' + data + '">';
             },
             orderable: true,
             orderDataType: 'dom-checkbox'
           },
-          { data: "displayName" },
-          { data: "surname" },
-          { data: "givenName" },
-          { data: "mail" },
-          { data: "id" },
-          { data: "mobilePhone" },
-          { data: "otherMails" }          
+          { data: "displayName" }, // column 1
+          { data: "surname" }, // column 2
+          { data: "givenName" }, // column 3
+          { data: "mail" }, // column 4
+          { data: "id" }, // column 5
+          { data: "mobilePhone" }, // column 6
+          { data: "otherMails" } // column 7
         ],
         order: [[2, 'asc']], // Sort by the "surname" column (index 1) in ascending order
         columnDefs: [
@@ -326,6 +349,9 @@
     });
 
     $('#reset').click(function() {
+      if (!confirm('Όλα τα τοπικά δεδομένα που αφορούν τους λογαριασμούς Microsoft θα διαγραφούν και θα ανανεωθούν με τα απομακρυσμένα δεδομένα από τους διακομιστές της Microsoft. Θέλετε να συνεχίσετε;')) {
+        return;
+      }
       $('body').css('cursor', 'wait');
       $.ajax({
         url: '<?php echo base_url()?>teams/resetTeamsData',
@@ -466,10 +492,18 @@ var initialFormData = {};
   
   // Store initial form data when the modal is shown
   $('#myModal').on('show.bs.modal', function() {
+    $('#modalUserName').text('(' + $('#givenName').val() + ' ' + $('#surname').val() + ')');
     $('a[href="#mainData"]').tab('show');
     $('#del-reg-modal').removeClass('hidden');
     $('#submit').removeClass('hidden');
     $('#reSendMsg').addClass('hidden');
+    $('#doNotNotifyUser').prop('checked', true);
+    $('#userNotificationMethods').addClass('hidden');
+    $('#notifyUserViaPersonalEmail').prop('checked', false);
+    $('#notifyUserViaEmail').prop('checked', false);
+    $('#notifyUserViaSMS').prop('checked', false);
+    $('#notifyUserViaSMSto').prop('checked', false);
+    
     initialFormData = {};
     $('#updateUserForm').find('input').each(function() {
       var name = $(this).attr('name');
@@ -482,7 +516,7 @@ var initialFormData = {};
         initialFormData[name] = $(this).val();
       }
     });
-    // console.log(initialFormData);
+    console.log('initialFormData: ',initialFormData);
     getStudentLocalData(initialFormData['surname'], initialFormData['givenName']);
   });
 
@@ -501,18 +535,29 @@ var initialFormData = {};
         // Exclude radio buttons from initial form data
       } else {
         value = $(this).val();
-        if (initialFormData[name] !== value) {
+        // if (initialFormData[name] !== value) {
           // console.log(name + ': ' + initialFormData[name] + ' -> ' + value);
           alteredData[name] = value;
-        }
+        // }
       }
     });
 
     alteredData['userId'] = $('#userId').val(); // Ensure the userId is always included
 
-    // console.log(alteredData);
+    console.log('alteredData: ', alteredData);
 
-    if (Object.keys(alteredData).length === 1 && alteredData.hasOwnProperty('userId')) {
+    // Compare initialFormData and alteredData
+    var changesMade = false;
+    for (var key in alteredData) {
+      if (alteredData.hasOwnProperty(key) && initialFormData.hasOwnProperty(key)) {
+        if (alteredData[key] !== initialFormData[key]) {
+          changesMade = true;
+          break;
+        }
+      }
+    }
+
+    if (!changesMade) {
       alert('Δεν έχουν γίνει αλλαγές στα δεδομένα.');
       return;
     } else if ($('#doNotNotifyUser').is(':checked') && $('#password').val() !== '') {
@@ -523,7 +568,7 @@ var initialFormData = {};
       alert('Παρακαλώ επιλέξτε έναν τρόπο αποστολής της ειδοποίησης.');
       return;
     }
-
+    $('body').css('cursor', 'wait');
     $.ajax({
       url: '<?php echo base_url()?>teams/updateUser',
       method: 'POST',
@@ -534,7 +579,7 @@ var initialFormData = {};
           $('#localPhoneDataMessage').addClass('hidden');
           alert('Η ενημέρωση ήταν επιτυχης!');
           // notify user
-          var email = $('#mail').val();
+          // var email = $('#mail').val();
           if ($('#notifyUserViaPersonalEmail').is(':checked') && $('#password').val() !== '') {
             var mailtoLink = 'mailto:';
             var otherMails = $('#otherMails').val();
@@ -545,6 +590,7 @@ var initialFormData = {};
             window.open(mailtoLink);
             var id=$('#userId').val();
             saveMsgToDb(id, 'Ο ΔΙΑΧΕΙΡΙΣΤΗΣ ΕΧΕΙ ΕΠΑΝΑΦΕΡΕΙ ΤΟΝ ΚΩΔΙΚΟ ΠΡΟΣΒΑΣΗΣ ΤΟΥ ΧΡΗΣΤΗ ' + $('#mail').val() + ' ΣΕ: ' + $('#password').val());
+            $('body').css('cursor', 'default');
           } else if ($('#notifyUserViaEmail').is(':checked') && $('#password').val() !== '') {
             var email_address = $('#otherMails').val();
             if (email_address.trim() !== '') {
@@ -563,15 +609,18 @@ var initialFormData = {};
                 success: function(response) {
                     var result = JSON.parse(response);
                     if (result.status === 'success') {
+                        $('body').css('cursor', 'default');
                         alert('Το email στάλθηκε επιτυχώς!');
                         var id=$('#userId').val();
                         saveMsgToDb(id, email_body);
                     } else {
+                        $('body').css('cursor', 'default');
                         alert('Προέκυψε σφάλμα κατά την αποστολή του email: ' + result.message);
                     }
                 },
                 error: function() {
-                    alert('Προέκυψε σφάλμα κατά την αποστολή του email');
+                  $('body').css('cursor', 'default');
+                  alert('Προέκυψε σφάλμα κατά την αποστολή του email');
                 }
             });
           } else if ($('#notifyUserViaSMS').is(':checked') && $('#password').val() !== '') {
@@ -583,6 +632,7 @@ var initialFormData = {};
             window.open(phoneSMS);
             var id=$('#userId').val();
             saveMsgToDb(id, 'Ο ΔΙΑΧΕΙΡΙΣΤΗΣ ΕΧΕΙ ΕΠΑΝΑΦΕΡΕΙ ΤΟΝ ΚΩΔΙΚΟ ΠΡΟΣΒΑΣΗΣ ΤΟΥ ΧΡΗΣΤΗ ' + $('#mail').val() + ' ΣΕ: ' + $('#password').val());
+            $('body').css('cursor', 'default');
           } else if ($('#notifyUserViaSMSto').is(':checked') && $('#password').val() !== '') {
             var to = $('#mobilePhone').val();
             var message = 'Ο ΔΙΑΧΕΙΡΙΣΤΗΣ ΕΧΕΙ ΕΠΑΝΑΦΕΡΕΙ ΤΟΝ ΚΩΔΙΚΟ ΠΡΟΣΒΑΣΗΣ ΤΟΥ ΧΡΗΣΤΗ ' + $('#mail').val() + ' ΣΕ: ' + $('#password').val();
@@ -593,19 +643,31 @@ var initialFormData = {};
               dataType: 'json',
               success: function(response) {
                 if (response.success) {
+                  $('body').css('cursor', 'default');
                   alert('Το μήνυμα SMS στάλθηκε επιτυχώς!');
                   var id=$('#userId').val();
                   saveMsgToDb(id, message);
                 } else {
+                  $('body').css('cursor', 'default');
                   alert('Προέκυψε σφάλμα κατά την αποστολή του μηνύματος SMS: ' + response.message);
                 }
               },
               error: function(xhr, status, error) {
+                $('body').css('cursor', 'default');
                 alert('AJAX Error: ' + status + error);
               }
             });
+          } 
+          else {
+            $('body').css('cursor', 'default');
+          //   // save to history even if the user is not notified
+          //   if ($('#password').val() !== '') {
+          //     var id=$('#userId').val();
+          //     saveMsgToDb(id, 'Ο ΔΙΑΧΕΙΡΙΣΤΗΣ ΕΧΕΙ ΕΠΑΝΑΦΕΡΕΙ ΤΟΝ ΚΩΔΙΚΟ ΠΡΟΣΒΑΣΗΣ ΤΟΥ ΧΡΗΣΤΗ ' + $('#mail').val() + ' ΣΕ: ' + $('#password').val());
+          //   }
           }
         } else {
+          $('body').css('cursor', 'default');
           alert('Προέκυψε σφάλμα κατά την ενημέρωση του χρήστη: ' + response.message);
         }
         // Update initialFormData with alteredData
@@ -617,6 +679,7 @@ var initialFormData = {};
         // console.log(initialFormData);
       },
       error: function(xhr, status, error) {
+        $('body').css('cursor', 'default');
         alert('AJAX Error: ' + status + error);
       }
     });
@@ -923,9 +986,16 @@ var initialFormData = {};
   // Add new user modal
 
   $('#myModal2').on('shown.bs.modal', function() {  
-    getDomain(function(error) {
+    $('#addedNoNotify').prop('checked', true);
+    $('#addedUserNotificationMethods').addClass('hidden');
+    $('#addedNotifyUserViaEmail').prop('checked', false);
+    $('#addedNotifyUserViaPersonalEmail').prop('checked', false);
+    $('#addedNotifyUserViaSMS').prop('checked', false);
+    $('#addedNotifyUserViaSMSto').prop('checked', false);
+
+    getOrganizationMetadata(function(error) {
       if (error) {
-        alert('Υπήρξε σφάλμα κατά την ανάκτηση του domain. Παρακαλώ δοκιμάστε ξανά.');
+        alert('Υπήρξε σφάλμα κατά την ανάκτηση των μεταδεδομένων του οργανισμού σας. Παρακαλώ δοκιμάστε ξανά.');
         $('#myModal2').modal('hide');
       }
     });
@@ -959,7 +1029,7 @@ var initialFormData = {};
         },
         cache: true
     },
-    placeholder: 'όνομα / επώνυμο / τηλέφωνο / τελευταία ψηφία τηλεφώνου',
+    placeholder: 'πληκτρολογήστε όνομα / επώνυμο / τηλέφωνο / τελευταία ψηφία τηλεφώνου',
     allowClear: false,
     selectOnClose: true
 });
@@ -1023,7 +1093,176 @@ $('#selectStd').on('select2:select', function (e) {
   }    
 });
 
+$('#addedNoNotify').on('click', function(){
+  if ($(this).is(':checked')){
+    $('#addedUserNotificationMethods').addClass('hidden');
+    $('#addedNotifyUserViaEmail').prop('checked', false);
+    $('#addedNotifyUserViaPersonalEmail').prop('checked', false);
+    $('#addedNotifyUserViaSMS').prop('checked', false);
+    $('#addedNotifyUserViaSMSto').prop('checked', false);
+  } else {
+    $('#addedUserNotificationMethods').removeClass('hidden');
+  }
+  });
 
+  $('#addSubmit').on('click', function(){
+    var requiredFields = ['#addSurname', '#addGivenName', '#addDisplayName', '#userPrincipalName', '#addLicence'];
+    for (var i = 0; i < requiredFields.length; i++) {
+      if ($(requiredFields[i]).val() === '') {
+      alert('Παρακαλώ συμπληρώστε όλα τα απαιτούμενα πεδία.');
+      return;
+      }
+    }
+
+    if ($('#addedNoNotify').is(':checked')) {
+      if (!confirm('Πρόκειται να δημιουργήσετε νέο λογαριασμό χρήστη, αλλά έχετε επιλέξει να μην στείλετε ειδοποίηση. Θέλετε να συνεχίσετε;')) {
+        return;
+      }
+    } else if (!$('#addedNoNotify').is(':checked') && !$('#addedNotifyUserViaPersonalEmail').is(':checked') && !$('#addedNotifyUserViaEmail').is(':checked') && !$('#addedNotifyUserViaSMS').is(':checked') && !$('#addedNotifyUserViaSMSto').is(':checked')) {
+      alert('Παρακαλώ επιλέξτε έναν τρόπο αποστολής της ειδοποίησης.');
+      return;
+    }
+
+    var formData = $('#addUserForm').serializeArray();
+    var addData = {};
+    $.each(formData, function(index, field) {
+      addData[field.name] = field.value;
+    });
+
+    if ($('#addUserAutoGeneratePassword').is(':checked')) {
+      addData['password'] = generateRandomPassword(8); // Generate a password with the specified length
+    } else {
+      if ($('#addUserPassword').val() === '') {
+        alert('Παρακαλώ εισάγετε τον κωδικό πρόσβασης.');
+        return;
+      }
+    }
+
+    if ($('#addForceChangePasswordNextSignIn').is(':checked')) {
+      addData['forceChangePasswordNextSignIn'] = true;
+    } else {
+      addData['forceChangePasswordNextSignIn'] = false;
+    }
+
+    addData['mailNickname'] = addData['userPrincipalName'];
+    addData['userPrincipalName'] = addData['userPrincipalName'] + $('#domain').text();
+    addData['countryLetterCode'] = countryCode;
+
+    $('body').css('cursor', 'wait');
+
+    $.ajax({
+      url: '<?php echo base_url()?>teams/addUser',
+      method: 'POST',
+      data: addData,
+      dataType: 'json',
+      success: function(response) {
+        if (response.status === 'success') {
+          $('body').css('cursor', 'default');
+          var rdata = response.data;
+          var id = rdata['id'];
+          alert('Ο λογαριασμός δημιουργήθηκε επιτυχώς!');
+
+          // notify user
+          if (!$('#addedNoNotify').is(':checked')) {
+            if ($('#addedNotifyUserViaPersonalEmail').is(':checked') && addData['password'] !== '') {
+            var mailtoLink = 'mailto:';
+            var otherMails = $('#addOtherMails').val();
+            if (otherMails.trim() !== '') {
+              mailtoLink += otherMails.split(',')[0]; // Use the first email in the list
+            }
+            mailtoLink += '?subject=Microsoft Teams - Password resetted&body=Ο ΧΡΗΣΤΗΣ ' + addData['userPrincipalName'] + ' ΔΗΜΙΟΥΡΓΗΘΗΚΕ ΜΕ ΚΩΔΙΚΟ ΠΡΟΣΒΑΣΗΣ : ' + addData['password'];
+            $('body').css('cursor', 'default');
+            window.open(mailtoLink);
+            saveMsgToDb(id, 'Ο ΧΡΗΣΤΗΣ ' + addData['userPrincipalName'] + ' ΔΗΜΙΟΥΡΓΗΘΗΚΕ ΜΕ ΚΩΔΙΚΟ ΠΡΟΣΒΑΣΗΣ: ' + addData['password']);
+            $('#myModal2').modal('hide');
+            } else if ($('#addedNotifyUserViaEmail').is(':checked') && addData['password'] !== '') {
+            var email_address = addData['otherMails'];
+            if (email_address.trim() !== '') {
+              email_address = email_address.split(',')[0]; // Use the first email in the list
+            }
+            var email_body = 'Ο ΧΡΗΣΤΗΣ ' + addData['userPrincipalName'] + ' ΔΗΜΙΟΥΡΓΗΘΗΚΕ ΜΕ ΚΩΔΙΚΟ ΠΡΟΣΒΑΣΗΣ: ' + addData['password'];
+            var email_subject= 'Microsoft Teams - Password resetted';
+            $.ajax({
+              url: 'teams/send_single_email',
+              type: 'POST',
+              data: {
+                email_address: email_address,
+                email_body: email_body,
+                email_subject: email_subject
+              },
+              success: function(response) {
+                var result = JSON.parse(response);
+                if (result.status === 'success') {
+                  $('body').css('cursor', 'default');
+                  alert('Το email στάλθηκε επιτυχώς!');
+                  saveMsgToDb(id, email_body);
+                  $('#myModal2').modal('hide');
+                } else {
+                  $('body').css('cursor', 'default');
+                  alert('Προέκυψε σφάλμα κατά την αποστολή του email: ' + result.message);
+                  $('#myModal2').modal('hide');
+                }
+              },
+              error: function() {
+                $('body').css('cursor', 'default');
+                alert('Προέκυψε σφάλμα κατά την αποστολή του email');
+                $('#myModal2').modal('hide');
+              }
+            });
+            } else if ($('#addedNotifyUserViaSMS').is(':checked') && addData['password'] !== '') {
+            var phoneSMS = 'sms:';
+            if (addData['mobilePhone']) {
+              phoneSMS += addData['mobilePhone'];
+            }
+            phoneSMS += '?body=Ο ΧΡΗΣΤΗΣ ' + addData['userPrincipalName'] + ' ΔΗΜΙΟΥΡΓΗΘΗΚΕ ΜΕ ΚΩΔΙΚΟ ΠΡΟΣΒΑΣΗΣ: ' + addData['password'];
+            window.open(phoneSMS);
+            saveMsgToDb(id, 'Ο ΧΡΗΣΤΗΣ ' + addData['userPrincipalName'] + ' ΔΗΜΙΟΥΡΓΗΘΗΚΕ ΜΕ ΚΩΔΙΚΟ ΠΡΟΣΒΑΣΗΣ: ' + addData['password']);
+            $('body').css('cursor', 'default');
+            $('#myModal2').modal('hide');
+            } else if ($('#addedNotifyUserViaSMSto').is(':checked') && addData['password'] !== '') {
+            var to = addData['mobilePhone'];
+            var message = 'Ο ΧΡΗΣΤΗΣ ' + addData['userPrincipalName'] + ' ΔΗΜΙΟΥΡΓΗΘΗΚΕ ΜΕ ΚΩΔΙΚΟ ΠΡΟΣΒΑΣΗΣ: ' + addData['password'];
+            $.ajax({
+              url: '<?php echo base_url()?>teams/sendUsingSMSto',
+              method: 'POST',
+              data: { to: to, message: message },
+              dataType: 'json',
+              success: function(response) {
+              if (response.success) {
+                $('body').css('cursor', 'default');
+                alert('Το μήνυμα SMS στάλθηκε επιτυχώς!');
+                saveMsgToDb(id, message);
+                $('#myModal2').modal('hide');
+              } else {
+                $('body').css('cursor', 'default');
+                alert('Προέκυψε σφάλμα κατά την αποστολή του μηνύματος SMS: ' + response.message);
+                $('#myModal2').modal('hide');
+              }
+              },
+              error: function(xhr, status, error) {
+                $('body').css('cursor', 'default');
+                alert('AJAX Error: ' + status + error);
+                $('#myModal2').modal('hide');
+              }
+            });
+            }
+          } else {
+            $('body').css('cursor', 'default');
+            $('#myModal2').modal('hide');
+          }
+        } else {
+          $('body').css('cursor', 'default');
+          alert('Προέκυψε σφάλμα κατά τη δημιουργία του λογαριασμού: ' + response.message);
+          $('#myModal2').modal('hide');
+        }
+      },
+      error: function(xhr, status, error) {
+        $('body').css('cursor', 'default');
+        alert('AJAX Error: ' + status + error);
+        $('#myModal2').modal('hide');
+      }
+    });
+  });
 
 }); //end of document(ready) function
 
@@ -1053,6 +1292,9 @@ $('#selectStd').on('select2:select', function (e) {
             <i class="icon-windows"></i>
           </span>
           <h3 class="panel-title">Microsoft Teams</h3>
+          <div class="buttons">
+            <button class="btn btn-default btn-sm" id="reset" data-toggle="tooltip" title="Ανάκτηση δεδομένων από τον διακομιστή του Microsoft Teams"><i class="icon-refresh"></i> Reset</button>
+          </div>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -1065,7 +1307,6 @@ $('#selectStd').on('select2:select', function (e) {
                 <div class="btn-toolbar" role="toolbar" style="margin-bottom:10px;">
                   <button class="btn btn-sm hidden btn-danger pull-left" id="del-reg"><i class="icon-trash"></i></button>
                   <div class="btn-group pull-left">
-                    <button class="btn btn-default btn-sm" id="reset" data-toggle="tooltip" title="Ανάκτηση δεδομένων από τον διακομιστή του Microsoft Teams"><i class="icon-refresh"></i> Reset</button>
                     <button class="btn btn-default btn-sm" id="new-reg"><i class="icon-plus"></i></button>
                   </div>
                   <div class="pull-left col-md-3 col-xs-5">
@@ -1091,13 +1332,13 @@ $('#selectStd').on('select2:select', function (e) {
             <thead>
               <tr>
                 <th><input type="checkbox" id="select-all"></th>
-                <th>Display Name</th>
+                <th>Ονοματεπώνυμο</th>
                 <th>Επώνυμο</th>
                 <th>Όνομα</th>
-                <th>Username</th>
-                <th>Teams user id</th>
-                <th>mobilePhone</th>
-                <th>otherMails</th>
+                <th>Όνομα Χρήστη</th>
+                <th>teams uid</th>
+                <th>Τηλέφωνο</th>
+                <th>Διευθύνσεις email</th>
               </tr>
             </thead>
             <tbody>
@@ -1122,7 +1363,7 @@ $('#selectStd').on('select2:select', function (e) {
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h3 id="myModalLabel">Επεξεργασία Χρήστη </h3>
+          <h3 id="myModalLabel">Επεξεργασία Χρήστη <span class="small" id="modalUserName"></span></h3>
         </div>
         <div class="modal-body">
           <form id="updateUserForm">
@@ -1302,21 +1543,21 @@ $('#selectStd').on('select2:select', function (e) {
                 <div class="row">
                   <div class="col-sm-6 col-xs-12">
                     <div class="form-group">
-                      <label for="addSurname">Επώνυμο</label>
+                      <label for="addSurname">Επώνυμο *</label>
                       <input type="text" class="form-control" id="addSurname" name="surname" required>
                     </div>
                     <div class="form-group">
-                      <label for="addGivenName">Όνομα</label>
+                      <label for="addGivenName">Όνομα *</label>
                       <input type="text" class="form-control" id="addGivenName" name="givenName" required>
                     </div>
                     <div class="form-group">
-                      <label for="addDisplayName">Εμφανιζόμενο όνομα</label>
+                      <label for="addDisplayName">Εμφανιζόμενο όνομα *</label>
                       <input type="text" class="form-control" id="addDisplayName" name="displayName" required>
                     </div>
                   </div>
                   <div class="col-sm-6 col-xs-12">
                     <div class="form-group">
-                      <label for="userPrincipalName">Όνομα χρήστη</label>
+                      <label for="userPrincipalName">Όνομα χρήστη *</label>
                       <div class="input-group">
                         <input type="text" class="form-control" id="userPrincipalName" name="userPrincipalName">
                         <span class="input-group-addon" id='domain' readonly>...</span>
@@ -1365,7 +1606,7 @@ $('#selectStd').on('select2:select', function (e) {
                 <div class="row">
                   <div class="col-xs-12">
                     <div class="form-group">
-                      <label for="addLicence">Εκχώρηση άδειας</label>
+                      <label for="addLicence">Εκχώρηση άδειας *</label>
                       <select class="form-control" id="addLicence" name="licence">
                         <option value="student">Office 365 A1 για σπουδαστές</option>
                         <option value="teacher">Office 365 A1 για διδακτικό προσωπικό</json>
@@ -1379,34 +1620,36 @@ $('#selectStd').on('select2:select', function (e) {
                 <div class="row">
                   <div class="col-xs-12">
                     <div class="form-group">
-                    <label>Ενημέρωση Χρήστη <span><i id="addedNotify" class="icon icon-info-sign"></i></span></label>
-                    <div class="radio"  style="margin-top: 0px;">
-                      <label>
-                        <input type="radio" id="addedNoNotify" value="addedNoNotify" name="addedNotifyUser" checked> Να μην αποσταλεί ειδοποίηση
-                      </label>
-                    </div>
-                    <div class="radio">
-                      <label>
-                        <input type="radio" id="addedNotifyUserViaPersonalEmail" value="addedNotifyUserViaPersonalEmail" name="addedNotifyUser" disabled> με Email (μέσω προσωπικού email)
-                      </label>
-                    </div>
-                    <div class="radio">
-                      <label>
-                        <input type="radio" id="addedNotifyUserViaEmail" value="addedNotifyUserViaEmail" name="addedNotifyUser" disabled> με Email (μέσω εταιρικού email)
-                      </label>
-                    </div>                      
-                    <?php if($configSMS === 'success'):?>
-                    <div class="radio">
-                      <label>
-                        <input type="radio" id="addedNotifyUserViaSMSto" value="addedNotifyUserViaSMSto" name="addedNotifyUser" disabled> με SMS (μέσω υπηρεσίας SMS.to)
-                      </label>
-                    </div>
-                    <?php endif;?>
-                    <div class="radio">
-                      <label>
-                        <input type="radio" id="addedNotifyUserViaSMS" value="addedNotifyUserViaSMS" name="addedNotifyUser" disabled> με SMS (μέσω κινητού τηλεφώνου)
-                      </label>
-                    </div>
+                      <label>Ενημέρωση Χρήστη <span><i id="addedDoNotNotifyLabel" class="icon icon-info-sign"></i></span></label>
+                      <div class="checkbox" style="margin-top: 0px;">
+                        <label>
+                        <input type="checkbox" id="addedNoNotify" value="addedNoNotify" name="addedNotifyUser" checked> Να μην αποσταλεί ειδοποίηση
+                        </label>
+                      </div>
+                      <div id="addedUserNotificationMethods" class="hidden">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" id="addedNotifyUserViaPersonalEmail" value="addedNotifyUserViaPersonalEmail" name="addedNotifyUser" disabled> με Email (μέσω προσωπικού email)
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" id="addedNotifyUserViaEmail" value="addedNotifyUserViaEmail" name="addedNotifyUser" disabled> με Email (μέσω εταιρικού email)
+                          </label>
+                        </div>                      
+                        <?php if($configSMS === 'success'):?>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" id="addedNotifyUserViaSMSto" value="addedNotifyUserViaSMSto" name="addedNotifyUser" disabled> με SMS (μέσω υπηρεσίας SMS.to)
+                          </label>
+                        </div>
+                        <?php endif;?>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" id="addedNotifyUserViaSMS" value="addedNotifyUserViaSMS" name="addedNotifyUser" disabled> με SMS (μέσω κινητού τηλεφώνου)
+                          </label>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

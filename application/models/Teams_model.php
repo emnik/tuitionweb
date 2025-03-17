@@ -61,6 +61,26 @@ class Teams_model extends CI_Model {
       }
    }
 
+   public function add_single_user_in_teams_table($data)
+   {
+      // Encode the otherMails field as a JSON string if it exists
+      if (isset($data['otherMails']) && is_array($data['otherMails'])) {
+      $data['otherMails'] = json_encode($data['otherMails']);
+      } else {
+         $data['otherMails'] = array();
+      }
+
+       // Insert the user data in the teams table
+       $this->db->insert('teams', $data);
+
+       // Check if the insert was successful
+       if ($this->db->affected_rows() > 0) {
+           return true;
+       } else {
+           return false;
+       }
+   }
+
    public function update_user_in_teams_table($userId, $data)
    {
        // Remove fields that should not be stored locally
@@ -85,7 +105,17 @@ class Teams_model extends CI_Model {
        if ($this->db->affected_rows() > 0) {
            return true;
        } else {
-           return false;
+           // Check if the data is the same
+           $this->db->where('id', $userId);
+           $query = $this->db->get('teams');
+           $existingData = $query->row_array();
+           $data['id'] = $userId; // Ensure the ID is set
+
+           if ($existingData == $data) {
+               return true; // The data is the same
+           } else {
+               return false;
+           }
        }
    }
 
@@ -134,11 +164,38 @@ class Teams_model extends CI_Model {
    }
 
 
+   // public function getCurrentStudentsWithoutAccount(){
+   //    $query = $this->db->query("
+   //       SELECT r.surname, r.name
+   //       FROM registration r
+   //       WHERE r.term_id = (SELECT id FROM term WHERE active = 1)
+   //       AND CONCAT(r.name, ' ', r.surname) NOT IN (
+   //          SELECT CONCAT(t.givenName, ' ', t.surname)
+   //          FROM teams t
+   //       )
+   //       ORDER BY r.surname, r.name
+   //    ");
+
+   //    if ($query->num_rows() > 0) 
+   //    {
+   //       foreach($query->result_array() as $row) 
+   //       {
+   //          $output['data'][] = $row;
+   //       }
+   //       return $output;
+   //    }
+   //    else 
+   //    {
+   //          return false;
+   //    }
+   // }
+
+
    public function getDataForNewAccount($id, $group)
    {
       if ($group === 'Μαθητές') {
          $query = $this->db->query("
-         SELECT CONCAT(r.name, ' ', r.surname) AS 'displayName', r.surname, r.name, c.std_mobile as 'mobile'
+         SELECT CONCAT(SUBSTRING_INDEX(SUBSTRING_INDEX(r.name, ' ', 1), '-', 1), ' ', r.surname) AS 'displayName', r.surname, r.name, c.std_mobile as 'mobile'
          FROM contact c
          JOIN registration r ON c.reg_id = r.id
          WHERE r.id = ?

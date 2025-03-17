@@ -23,11 +23,12 @@
 	--dark-color: #073642; 
 }*/
 
+/* Fix select2 arrow position in the search field (in desktop) */
 .select2-container--default .select2-selection--single .select2-selection__arrow {
-  position: relative!important;
-  top: -25px !important;
-  left: 97% !important;
-  right: unset !important;
+  position: relative;
+  top: -25px ;
+  left: 97% ;
+  right: unset ;
 }
 
 span.select2.select2-container.select2-container--default{
@@ -1002,4 +1003,18 @@ body.slide-active {
 .form-control[disabled] {
   background-color: var(--light-secondary-color);
   filter:brightness(80%);
+}
+
+
+@media (max-width: 768px) {
+  /* Fix select2 dropbox position in mobile */
+  .select2-dropdown.select2-dropdown--below {
+    top: -25px;
+  }
+
+    /* Fix select2 arrow possition in select2 field in mobile */
+  .select2-container--default .select2-selection--single .select2-selection__arrow b {
+    margin-top : 10px;
+  }
+
 }

@@ -21,19 +21,48 @@ class GraphTeamsLibrary
         $token = $this->getAuthorizationToken();
         if ($token) {
             if ($action === 'reset'){
+                // Reset the users data
                 $result = $this->get_users($token, $active=true);
+            }
+            else if ($action === 'get_single_user') {
+                // Get a single user data
+                $result = $this->get_single_user($token, $userId);
             } 
             else if ($action === 'delete') {
+                // Delete the users
                 $result = $this->batch_delete_users($token, $data);
             }
             else if ($action === 'get_deleted_users') {
+                // Get the deleted users data
                 $result = $this->get_users($token, $active=false);  
             }
+            else if ($action === 'get_deleted_user') {
+                // Get a single deleted user data
+                $result = $this->get_deleted_user($token, $userId);
+            }
+            else if ($action === 'restore') {
+                // Restore the deleted user
+                $result = $this->restore_user($token, $userId);
+            }
             else if ($action === 'update') {
+                // Update the user data
                 $result = $this->update($token, $data, $userId);
             }
             else if ($action === 'get_domain') {
+                // Get the domain data
                 $result = $this->get_domain($token);
+            } 
+            else if ($action === 'create') {
+                // Create a new user
+                $result = $this->create_user($token, $data);
+            }
+            else if ($action === 'assign_licence'){
+                // Assign a licence to a user
+                $result = $this->assign_licence($token, $data, $userId);
+            }
+            else if ($action === 'get_organization_metadata'){
+                // Get the organization metadata
+                $result = $this->get_organization_metadata($token);
             }
             return $result; //this is the JSON object returned by the calling function
         } else {
@@ -205,7 +234,7 @@ class GraphTeamsLibrary
     }
 
 
-    public function update($token, $data, $userId)
+    private function update($token, $data, $userId)
     {
         // Define the Microsoft Graph API endpoint for updating a user
         $graph_api_url = 'https://graph.microsoft.com/v1.0/users/' . $userId;
@@ -251,7 +280,7 @@ class GraphTeamsLibrary
         }
     }
 
-    public function get_domain($token)
+    private function get_domain($token)
     {
         // Define the Microsoft Graph API endpoint for retrieving the domain data
         $graph_api_url = 'https://graph.microsoft.com/v1.0/domains';
@@ -282,6 +311,260 @@ class GraphTeamsLibrary
             return json_encode(array(
                 'status' => 'error',
                 'message' => "Error retrieving the domain data. Status code: {$response['status_code']}. Response: " . $response['response']
+            ));
+        }
+    }
+
+
+    private function get_organization_metadata($token)
+    {
+        // Define the Microsoft Graph API endpoint for retrieving the organization metadata
+        $graph_api_url = 'https://graph.microsoft.com/v1.0/organization';
+        $headers = array(
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json'
+        );
+
+        // Send the request to Microsoft Graph API
+        $response = $this->curl_get($graph_api_url, $headers);
+
+        // Check if the request was successful
+        if ($response['status_code'] == 200) {
+            $response_data = json_decode($response['response'], true);
+            $default_domain = null;
+            $countryLetterCode = null;
+            foreach ($response_data['value'] as $organization) {
+                if(isset($organization['countryLetterCode'])){
+                    $countryLetterCode = $organization['countryLetterCode'];
+                }
+                if(isset($organization['verifiedDomains'])){
+                    foreach ($organization['verifiedDomains'] as $domain) {
+                        if (isset($domain['isDefault']) && $domain['isDefault']) {
+                            $default_domain = $domain['name'];
+                            break;
+                        }
+                    }
+                }
+            }
+            $data = array(
+                'default_domain' => $default_domain,
+                'countryLetterCode' => $countryLetterCode
+            );
+            return json_encode(array(
+                'status' => 'success',
+                'message' => 'Organization metadata retrieved successfully!',
+                'data' => $data
+            ));
+        } else {
+            return json_encode(array(
+                'status' => 'error',
+                'message' => "Error retrieving the organization metadata. Status code: {$response['status_code']}. Response: " . $response['response']
+            ));
+        }
+    }
+
+
+    private function create_user($token, $data)
+    {
+        // Define the Microsoft Graph API endpoint for creating a user
+        $graph_api_url = 'https://graph.microsoft.com/v1.0/users';
+        $headers = array(
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json'
+        );
+
+        // Send the request to Microsoft Graph API
+        $createResult = $this->curl_post($graph_api_url, $data, $headers);
+
+        // Check if the request was successful
+        if ($createResult['status_code'] == 201) {
+            $createResultData = json_decode($createResult['response'], true);
+            return json_encode(array(
+                'status' => 'success',
+                'message' => 'User created successfully!',
+                'id' => $createResultData['id']
+            ));
+            // Retrieve the user data to use them in the local database
+
+            // This is not working because the mail property is not returned in the response
+            // unless the user has assigned a licence!
+
+            // $created_user_data = $this->get_single_user($token, json_decode($createResult['response'], true)['id']);
+            // $created_user_data = json_decode($created_user_data, true);
+            // if ($created_user_data['status'] == 'error') {
+            //     return json_encode(array(
+            //         'status' => 'error',
+            //         'message' => $created_user_data['message']
+            //     ));
+            // } else {
+            //     $insert_data = $created_user_data['data'];
+            //     $res = $this->CI->Teams_model->add_single_user_in_teams_table($insert_data);
+
+            //     if ($res) {
+            //         return json_encode(array(
+            //             'status' => 'success',
+            //             'message' => 'User created successfully!',
+            //             'id' => $insert_data['id']
+            //         ));
+            //     } else {
+            //         return json_encode(array(
+            //             'status' => 'error',
+            //             'message' => 'User created in Microsoft Graph but failed to insert into local database. Please Reset!'
+            //         ));
+            //     }
+            // }
+
+            // Previously I used the response from the create user request to insert the user data into the local database
+            // but that did not work as expected because the response does not contain all the user data
+            // for example the otherMails property is not returned in the response!!!
+
+            // $insert_data = json_decode($createResult['response'], true);
+            // if(!isset($insert_data['mail'])){
+            //     $insert_data['mail'] = $insert_data['userPrincipalName'];
+            // }
+            // if(!isset($insert_data['otherMails'])){
+            //     $insert_data['otherMails'] = [];
+            // }
+            // if(!isset($insert_data['mobilePhone'])){
+            //     $insert_data['mobilePhone'] = '';
+            // }
+            // $res = $this->CI->Teams_model->add_single_user_in_teams_table($insert_data);
+
+            // if ($res) {
+            //     return json_encode(array(
+            //         'status' => 'success',
+            //         'message' => 'User created successfully!',
+            //         'id' => $insert_data['id']
+            //     ));
+            // } else {
+            //     return json_encode(array(
+            //         'status' => 'error',
+            //         'message' => 'User created in Microsoft Graph but failed to insert into local database. Please Reset!'
+            //     ));
+            // }
+        } else {
+        // Decode the JSON response
+        $response_data = json_decode($createResult['response'], true);
+
+        // Extract the error message if it exists
+        $error_message = isset($response_data['error']['message']) ? $response_data['error']['message'] : $createResult['response'];
+
+        return json_encode(array(
+            'status' => 'error',
+            'message' => "Error creating the user. Status code: {$createResult['status_code']}. Response: " . $error_message
+        ));
+        }
+    }
+
+    private function assign_licence($token, $data, $userId)
+    {
+        // Define the Microsoft Graph API endpoint for assigning a licence to a user
+        $graph_api_url = 'https://graph.microsoft.com/v1.0/users/' . $userId . '/assignLicense';
+        $headers = array(
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json'
+        );
+
+        // Send the request to Microsoft Graph API
+        $response = $this->curl_post($graph_api_url, $data, $headers);
+
+        // Check if the request was successful
+        if ($response['status_code'] == 200) {
+            return json_encode(array(
+                'status' => 'success',
+                'message' => 'Licence assigned successfully!'
+            ));
+        } else {
+            return json_encode(array(
+                'status' => 'error',
+                'message' => "Error assigning the licence. Status code: {$response['status_code']}. Response: " . $response['response']
+            ));
+        }
+    }
+
+
+    private function get_single_user($token, $userId)
+    {
+        // Define the Microsoft Graph API endpoint for retrieving a user
+        $graph_api_url = 'https://graph.microsoft.com/v1.0/users/' . $userId . '?%24select=id%2CdisplayName%2CgivenName%2Csurname%2Cmail%2CmobilePhone%2CotherMails';
+        $headers = array(
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json',
+            'ConsistencyLevel: eventual'
+        );
+
+        // Send the request to Microsoft Graph API
+        $response = $this->curl_get($graph_api_url, $headers);
+
+        // Check if the request was successful
+        if ($response['status_code'] == 200) {
+            $response_data = json_decode($response['response'], true);
+            return json_encode(array(
+                'status' => 'success',
+                'message' => 'User retrieved successfully!',
+                'data' => $response_data
+            ));
+        } else {
+            return json_encode(array(
+                'status' => 'error',
+                'message' => "Error retrieving the user. Status code: {$response['status_code']}. Response: " . $response['response']
+            ));
+        }
+    }
+
+    private function restore_user($token, $userId)
+    {
+        // Define the Microsoft Graph API endpoint for restoring a deleted user
+        $graph_api_url = 'https://graph.microsoft.com/v1.0/directory/deletedItems/' . $userId . '/restore';
+        $headers = array(
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json',
+            'ConsistencyLevel: eventual'
+        );
+
+        // Send the request to Microsoft Graph API
+        $response = $this->curl_post($graph_api_url, null, $headers);
+        $response_data = json_decode($response['response'], true);
+
+        // Check if the request was successful
+        if ($response['status_code'] == 200) {
+            return json_encode(array(
+                'status' => 'success',
+                'message' => 'User restored successfully!'
+            ));
+        } else {
+            return json_encode(array(
+                'status' => 'error',
+                'message' => "Error restoring the user. Status code: {$response['status_code']}. Response: " . $response['response']
+            ));
+        }
+    }
+
+    private function get_deleted_user($token, $userId)
+    {
+        // Define the Microsoft Graph API endpoint for retrieving a deleted user
+        $graph_api_url = 'https://graph.microsoft.com/v1.0/directory/deletedItems/' . $userId .'?$select=id,displayName,givenName,surname,mail,mobilePhone,otherMails';
+        $headers = array(
+            'Authorization: Bearer ' . $token,
+            'Content-Type: application/json',
+            'ConsistencyLevel: eventual'
+        );
+
+        // Send the request to Microsoft Graph API
+        $response = $this->curl_get($graph_api_url, $headers);
+
+        // Check if the request was successful
+        if ($response['status_code'] == 200) {
+            $response_data = json_decode($response['response'], true);
+            return json_encode(array(
+                'status' => 'success',
+                'message' => 'Deleted user retrieved successfully!',
+                'data' => $response_data
+            ));
+        } else {
+            return json_encode(array(
+                'status' => 'error',
+                'message' => "Error retrieving the deleted user. Status code: {$response['status_code']}. Response: " . $response['response']
             ));
         }
     }
