@@ -216,7 +216,12 @@ class Communication extends CI_Controller
 		$message = $this->input->post('message');
 		$this->load->library('SMSto_lib');
 		$result = $this->smsto_lib->send_sms($list_id, $message);
-		echo $result; // Encode it back to JSON to send as response
+		// $result = json_encode(array(
+		// 	'success' => true,
+		// 	'message' => 'simulate successful testing'
+		// ));
+		header('Content-Type: application/json; charset=utf-8');
+		echo $result; 
 
 		// If the SMS was sent successfully, get the list of contacts and save the SMS to the history
 		$result_json = json_decode($result, true); // Convert JSON string to PHP array
@@ -232,10 +237,16 @@ class Communication extends CI_Controller
 						'phone' => $item['phone']
 					];
 				}
+				foreach ($get_send_data_json['data'][0]['list_contacts'] as $list) {
+					if ($list['user_list_id'] == $list_id) {
+						$subject = $list['name'];
+					};
+				}
 				$smsdata = [
-					'subject' => $get_send_data_json['data'][0]['list_contacts'][0]['name'],
+					// 'subject' => $get_send_data_json[0]['list_contacts'][0]['name'],
+					'subject' => $subject,
 					'content' => $message,
-					'recipients' => json_encode($contacts)
+					'recipients' => json_encode($contacts, JSON_UNESCAPED_UNICODE)
 				];
 				$this->addToSMSHistory($smsdata);
 			}

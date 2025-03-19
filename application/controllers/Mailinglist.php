@@ -168,6 +168,7 @@ class Mailinglist extends CI_Controller
 		} else {
 			$email_list = [];
 			$history_email_list=[];
+			$history_email_list['mailinglist']=[];
 		}
 				
 		// Load the GraphEmailLibrary
@@ -231,7 +232,7 @@ class Mailinglist extends CI_Controller
 				'subject' => $email_subject,
 				'content' => $email_body,
 				// 'recipients' => implode(', ', $emailArray)
-				'recipients' => json_encode($history_email_list['mailinglist'])
+				'recipients' => json_encode($history_email_list['mailinglist'], JSON_UNESCAPED_UNICODE)
 			);
 			
 			$this->addToMailHistory($historyData);

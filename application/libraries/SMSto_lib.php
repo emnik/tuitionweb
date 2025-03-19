@@ -156,29 +156,45 @@ class SMSto_lib
         }
     }
 
-    public function get_list_contacts($id){
+    public function get_list_contacts($id) {
         $curl = curl_init();
         $api_key = $this->CI->Contact_config_model->get_sms_settings()[0]['apikey'];
-
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => 'https://sms.to/v1/people/contacts?list_ids='.$id,
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => '',
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => 'GET',
-          CURLOPT_HTTPHEADER => array(
-            'Authorization: Bearer ' . $api_key,
-            'Content-Type: application/json'
-          ),
-        ));
-        
-        $response = curl_exec($curl);
-        
+        $all_contacts = [];
+        $page = 1;
+    
+        do {
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://sms.to/v1/people/contacts?list_ids=' . $id . '&limit=100&page=' . $page,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: Bearer ' . $api_key,
+                    'Content-Type: application/json'
+                ),
+            ));
+    
+            $response = curl_exec($curl);
+            $response_data = json_decode($response, true);
+    
+            if (isset($response_data['success']) && $response_data['success'] === true) {
+                $all_contacts = array_merge($all_contacts, $response_data['data']);
+                $page++;
+            } else {
+                break; // Stop if there's an error or no more data
+            }
+        } while (isset($response_data['last_page']) && $page <= $response_data['last_page']);
+    
         curl_close($curl);
-        return $response;
+        $result = array(
+            'success' => true,
+            'data' => $all_contacts
+        );
+        return json_encode($result);
     }
 
     public function get_estimate(){
