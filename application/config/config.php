@@ -20,9 +20,10 @@ ob_start();
 */
 
 
-  // $config['base_url']	= 'http://localhost:8080/tuitionweb/';
-  //$config['base_url']	= 'http://manos-inspiron-5547.local:8080/tuitionweb/';
-  $config['base_url']	= 'http://192.168.1.9:8080/tuitionweb/';
+  $config['base_url']	= 'http://localhost:8081/tuitionweb/';
+  // $config['base_url']	= 'http://manos-inspiron-5547.local:8080/tuitionweb/';
+  // $config['base_url']	= 'http://192.168.3.21:8081/tuitionweb/';
+  // $config['base_url']='';
   // $config['base_url']	= 'http://manos-inspiron-5547.local/tuitionweb/';
   // $config['base_url']	= 'http://localhost/tuitionweb/';
   // $config['base_url']	= 'http://192.168.1.123:8080/tuitionweb/';
@@ -420,7 +421,7 @@ $config['rewrite_short_tags'] = FALSE;
 | Comma-delimited, e.g. '10.0.1.200,10.0.1.201'
 |
 */
-$config['proxy_ips'] = '';
+$config['proxy_ips'] = 'https://tuitionweb.manosn.gr, 192.168.3.98';
 
 /*
 | -------------------------------------------------------------------

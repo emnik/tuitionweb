@@ -1,13 +1,13 @@
 #filters {
-    background-color: white;
+    background-color: var(--light-secondary-color);
     padding-top: 20px;
     padding-bottom: 20px;
     border-left-style: solid;
     border-left-width: 1px;
-    border-left-color: turquoise;
+    border-left-color: var(--light-secondary-color);
     border-right-style: solid;
     border-right-width: 1px;
-    border-right-color: turquoise;
+    border-right-color: var(--light-secondary-color);
     margin-right:0px;
     margin-left:0px;
 }
@@ -37,6 +37,7 @@ h4, h5, h6 {
     font-size: 0;
     position: relative;
     background: white;
+    background-color: var(--light-secondary-color);
     border-color: gainsboro;
     border-right-width: 1px;
     border-right-style: solid;

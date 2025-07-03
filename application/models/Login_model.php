@@ -21,7 +21,7 @@ class Login_model extends CI_Model
 
 		$result=array('username_err'=>true, 'password_err'=>true, 'data'=>false);
 
-		$q = $this->db->query("SELECT * FROM `user` WHERE `username`='".$username."' AND ( (`expires` > '".date('Y-m-d')."' ) OR (`expires` = NULL) OR (`expires` = '0000-00-00')) Limit 1;");		
+		$q = $this->db->query("SELECT * FROM `user` WHERE `username`='".$username."' AND ( (`expires` > '".date('Y-m-d')."' ) OR (`expires` IS NULL)) Limit 1;");		
 			
 		if ($q->num_rows() > 0)
 		{
@@ -59,6 +59,11 @@ class Login_model extends CI_Model
 			->limit(1)
 			->get();
 		
+		// if ($q->result_array() && count($q->result_array()) == 1)
+		// {
+		// 	return $q->row();
+		// }
+
 		if ($q->num_rows() > 0)
 		{
 			return $q->row();

@@ -79,7 +79,6 @@ public function delreg($id){
 
 
 public function resubscribe(){ 
-	header('Content-Type: application/x-json; charset=utf-8');
 	$data=$this->input->post();
 	// $this->load->library('firephp');
 	// $this->firephp->info($data);
@@ -99,6 +98,7 @@ public function resubscribe(){
 			}
 		}
 	}
+	header('Content-Type: application/x-json; charset=utf-8');
 	echo json_encode($result);
 } 
 

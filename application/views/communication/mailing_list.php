@@ -1,9 +1,3 @@
-<style  type="text/css">
-span.select2.select2-container.select2-container--default{
-    display: inline;
-}
-</style>
-
 <!-- https://ckeditor.com/ckeditor-5/builder/ -->
 <!-- Free version does not have image / files capabilities. I can have links though to them if I upload the necessary files to the website! -->
 <!-- After configuration choose Vanilla JS > Cloud CDN > Copy Code Snipsets  -->

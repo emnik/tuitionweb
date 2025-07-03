@@ -95,7 +95,7 @@ class User extends CI_Controller {
             };
 
             if (isset($formdata['noexpire'])){
-                if ($formdata['noexpire']=='on') {$formdata['expires']='0000-00-00';}
+                if ($formdata['noexpire']=='on') {$formdata['expires']=NULL;}
                 unset($formdata['noexpire']);
             }
             

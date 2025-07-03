@@ -374,7 +374,7 @@
                                         <div class="form-group datecontainer">
                                             <label>Ημερομηνία λήξης</label>
                                             <input disabled class="form-control" id="usrexprires" type="text" placeholder="" name="expires" value="<?php 
-                                                if ($userdata['expires']!='0000-00-00') {
+                                                if (!is_null($userdata['expires'])) {
                                                     echo implode('-', array_reverse(explode('-', $userdata['expires'])));
                                                     } ?>">
                                         </div>
@@ -383,7 +383,7 @@
                                         <div class="checkbox">
                                             <label></label>
                                                 <input disabled id="usrnoexpire" type="checkbox" name="noexpire" 
-                                                <?php if($userdata['expires']=='0000-00-00') echo 'checked';?>> Ο λογαριασμός αυτός δε λήγει πoτέ
+                                                <?php if(is_null($userdata['expires'])) echo 'checked';?>> Ο λογαριασμός αυτός δε λήγει πoτέ
                                             </label>
                                         </div>
                                     </div>

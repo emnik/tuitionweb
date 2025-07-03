@@ -64,6 +64,7 @@ class Teachingplan_model extends CI_Model
 			->where('employee.id', $id)
 			->group_by('section.id')
 			->group_by('section_program.id')
+			->group_by('class`.`class_name')
 			->order_by('class.class_name', 'ASC')
 			->order_by('section.section', 'ASC');
 

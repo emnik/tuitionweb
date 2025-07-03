@@ -15,14 +15,15 @@ class Theme_model extends CI_Model
         $this->db->join('themes', 'themes.id = user_preferences.theme_id');
         $this->db->where('user_preferences.user_id', $user_id);
         $query = $this->db->get();
-
-        return $query->row_array();
+        
+        $theme = $query->row_array();
+        return $theme;
     }
 
     public function update_user_theme($user_id, $theme_id) {
         $this->db->where('user_id', $user_id);
         $this->db->update('user_preferences', ['theme_id' => $theme_id]);
-    
+
         return $this->db->affected_rows() > 0;
     }
     

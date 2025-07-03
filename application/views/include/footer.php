@@ -1,4 +1,4 @@
-    <footer class="footer">
+<footer class="footer">
         <div class="container">
 			<div class="row">
 				<div class="col-lg-9 col-sm-8 col-xs-12 pull-left">
@@ -130,17 +130,25 @@ $(document).ready(function(){
     // When a theme is selected
     $(document).on('click', '.theme-option', function() {
         var themeId = $(this).data('theme-id');
+		var currentThemeId = '<?php echo $this->session->userdata("current_theme_id") ? $this->session->userdata("current_theme_id") : ""; ?>'; // Get from session
+		console.log('Selected theme ID:', themeId);
+		console.log('Current theme ID:', currentThemeId);
+
+        if (themeId == currentThemeId) {
+            // Selected theme is the same as current, do nothing
+            return;
+        }
 
         // Update the theme for the user (via AJAX or form submission)
         $.ajax({
             url: '<?php echo base_url('theme/set_theme'); ?>',  // Adjust the URL
             method: 'POST',
             data: { theme_id: themeId },
-			dataType: 'json',
+            dataType: 'json',
             success: function(response) {
                 if (response.success) {
                    location.reload();  // reload the page to apply the theme
-               } else {
+                } else {
                     alert('Failed to update theme.');
                 }
             }
@@ -172,7 +180,7 @@ function fastgo(section){
 
 function resubscribe(){
 	id=$('#selectbox').val();
-	
+	console.log(id);
 	$.ajax({
 		url: "<?php echo base_url()?>student/resubscribe",
 		method: 'post',
@@ -245,3 +253,4 @@ function resubscribe(){
 </body>
 
 </html>
+

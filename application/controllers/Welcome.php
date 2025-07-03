@@ -104,7 +104,15 @@ public function index() {
 	//$this->output->enable_profiler(TRUE);
 	
 	$this->load->model('login_model');
-	$data['user']=$this->login_model->get_user_name($this->session->userdata('user_id'));
+	$user_id = $this->session->userdata('user_id');
+	$data['user']=$this->login_model->get_user_name($user_id);
+
+	$this->load->model('Theme_model');
+    $theme = $this->Theme_model->get_user_theme($user_id);
+	if (isset($theme['id'])) {
+		$this->session->set_userdata(array('current_theme_id' => $theme['id'])); // Store the current theme ID in session
+	}
+	        
 
 	$this->load->model('welcome_model');
 

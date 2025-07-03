@@ -120,7 +120,7 @@ class Registrations_model extends CI_Model {
       //copy anything from contact that remains the same
       $MySQL2 = "INSERT INTO `contact` ";
       $MySQL2 = $MySQL2."(`id`, `mothers_mobile`, `fathers_mobile`, `std_mobile`, `home_tel`, `work_tel`, `email`, `reg_id`) ";
-      $MySQL2 = $MySQL2."SELECT NULL, `mothers_mobile`, `fathers_mobile`, `std_mobile`, `home_tel`, `work_tel`, `email` '".$newregid."' ";
+      $MySQL2 = $MySQL2."SELECT NULL, `mothers_mobile`, `fathers_mobile`, `std_mobile`, `home_tel`, `work_tel`, `email`, '".$newregid."' ";
       $MySQL2 = $MySQL2."FROM `contact` WHERE `reg_id` = '".$regid."' ";
       $this->db->query($MySQL2);
 

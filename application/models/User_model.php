@@ -74,7 +74,7 @@ class User_model extends CI_Model {
     public function newuser()
     {
        //insert new record in user table
-       $data = array('id' => 'null', 'group_id' => 'null', 'created' => date("Y-m-d H:i:s"), 'expires' => '0000-00-00');
+       $data = array('id' => 'null', 'group_id' => 'null', 'created' => date("Y-m-d H:i:s"), 'expires' => NULL);
        $this->db->insert('user', $data);
        $uid = $this->db->insert_id();
        return $uid;

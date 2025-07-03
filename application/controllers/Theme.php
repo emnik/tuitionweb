@@ -10,7 +10,7 @@ class Theme extends CI_Controller {
     public function load_css() {
         $user_id = $this->session->userdata('user_id'); // Assume user ID is stored in session
         $theme = $this->Theme_model->get_user_theme($user_id);
-
+ 
         if (!$theme) {
             // Define default theme values if none found
             $theme = [
@@ -22,7 +22,7 @@ class Theme extends CI_Controller {
                 'light_secondary_color' => '#eae8fa',
                 'dark_color' => '#1a535c',
             ];
-        }
+        }         
 
         header("Content-Type: text/css; charset=UTF-8");
         echo ":root {
@@ -50,6 +50,7 @@ class Theme extends CI_Controller {
         $updated = $this->Theme_model->update_user_theme($user_id, $theme_id);
     
         if ($updated) {
+            $this->session->set_userdata(array('current_theme_id' => $theme_id)); // Store the current theme ID in session
             echo json_encode(['success' => true]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to update theme']);

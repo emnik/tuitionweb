@@ -23,16 +23,32 @@
 	--dark-color: #073642; 
 }*/
 
-/* Fix select2 arrow position in the search field (in desktop) */
-.select2-container--default .select2-selection--single .select2-selection__arrow {
-  position: relative;
-  top: -25px ;
-  left: 97% ;
-  right: unset ;
+
+.select2-container--default .select2-selection--multiple {
+    background-color: var(--light-secondary-color);
 }
 
-span.select2.select2-container.select2-container--default{
-  display: inline;
+.select2-container--open .select2-dropdown--below {
+	background-color: var(--light-secondary-color);
+}
+
+.select2-container--default .select2-selection--single {
+	background-color: var(--light-secondary-color);
+	/* border: 1px solid var(--secondary-color); */
+}
+
+.select2-search--dropdown .select2-search__field {
+	background-color: var(--light-secondary-color);
+}
+
+.ck.ck-editor .ck-editor__top .ck-sticky-panel .ck-toolbar {
+	z-index: var(--ck-z-panel);
+	background-color: var(--light-color);
+}
+
+.ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
+	/* border-color: var(--ck-color-base-border); */
+	background-color: var(--light-secondary-color);
 }
 
 

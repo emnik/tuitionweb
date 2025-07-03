@@ -154,13 +154,13 @@
                                     <div class="col-md-6 col-sm-6">
                                         <div class="form-group datecontainer">
                                             <label>Έναρξη Περιόδου</label>
-                                            <input disabled class="form-control" id="termstart" type="text" placeholder="" name="start" value="<?php echo implode('-', array_reverse(explode('-', $termdata['start']))); ?>">
+                                            <input disabled class="form-control" id="termstart" type="text" placeholder="" name="start" value="<?php echo !empty($termdata['start']) ? implode('-', array_reverse(explode('-', $termdata['start']))) : ''; ?>">
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-6">
                                         <div class="form-group datecontainer">
                                             <label>Λήξη Περιόδου</label>
-                                            <input disabled class="form-control" id="termend" type="text" placeholder="" name="end" value="<?php echo implode('-', array_reverse(explode('-', $termdata['end']))); ?>">
+                                            <input disabled class="form-control" id="termend" type="text" placeholder="" name="end" value="<?php echo !empty($termdata['end']) ? implode('-', array_reverse(explode('-', $termdata['end']))) : ''; ?>">
                                         </div>
                                     </div>
                                 </div>

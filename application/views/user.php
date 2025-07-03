@@ -174,7 +174,7 @@ $(document).ready(function() {
                 <td><?php echo $data["username"];?></td>
                 <td><?php echo $dbgroup[$data["group_id"]];?></td>
                 <td><?php echo date_format(date_create($data["created"]),"d/m/Y");?></td>
-                <td><?php if ($data['expires']=='0000-00-00')
+                <td><?php if (is_null($data['expires']))
                         { 
                             echo 'Ποτέ';
                         } 

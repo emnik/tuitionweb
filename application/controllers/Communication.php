@@ -327,8 +327,17 @@ class Communication extends CI_Controller
 	{
 		$missingPhones = [];
 		$data = [];
-		$option = $postdata['options'][0];
-		if ($option['name'] == 'exampleRadios') {
+		// Search for the option with name 'exampleRadios'
+		$option = null;
+		if (isset($postdata['options']) && is_array($postdata['options'])) {
+			foreach ($postdata['options'] as $opt) {
+				if (isset($opt['name']) && $opt['name'] === 'exampleRadios') {
+					$option = $opt;
+					break;
+				}
+			}
+		}
+		if ($option) {
 			switch ($option['value']) {
 				case 'option1': // Γονείς
 					foreach ($res['bulkSMS'] as $row) {
@@ -400,7 +409,7 @@ class Communication extends CI_Controller
 					break;
 			}
 		}
-		return ['data' => $data, 'missingPhones' => $missingPhones];
+		return array('data' => $data, 'missingPhones' => $missingPhones);
 	}
 	
 	private function generateCSV($data, $includeHeaders)
